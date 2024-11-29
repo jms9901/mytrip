@@ -4,9 +4,9 @@
   "settings": {
     "width": 5000,
     "height": 5000,
-    "scrollTop": -2012.9765,
-    "scrollLeft": -1272.9211,
-    "zoomLevel": 0.82,
+    "scrollTop": -1489.8694,
+    "scrollLeft": -2320,
+    "zoomLevel": 0.94,
     "show": 511,
     "database": 4,
     "databaseName": "",
@@ -307,7 +307,6 @@
           "rtRYuc_t-YqPRjJ2jGhQO",
           "ncdnM6oNvNDwqhPUPVTwu",
           "mqQKhe2eYrIdrdTBNEoee",
-          "qt3o1XSkijjsw8COEcZkN",
           "8hVk8k8mumB31pSrbbYUw",
           "QVF6Jw2AIvqi1mojodhkk",
           "yTGV95YbpHpBMJt-aQiuh",
@@ -340,7 +339,7 @@
           "color": "#009688"
         },
         "meta": {
-          "updateAt": 1732865225646,
+          "updateAt": 1732867575609,
           "createAt": 1732682290838
         }
       },
@@ -2229,7 +2228,7 @@
         "name": "user_count",
         "comment": "결제에 관련된 인원수",
         "dataType": "INT",
-        "default": "1",
+        "default": "",
         "options": 8,
         "ui": {
           "keys": 0,
@@ -2239,7 +2238,7 @@
           "widthDefault": 60
         },
         "meta": {
-          "updateAt": 1732865168772,
+          "updateAt": 1732867613961,
           "createAt": 1732686901699
         }
       },
@@ -4365,7 +4364,7 @@
             "_4Mymz3NK6YbVwGbVkImZ"
           ],
           "x": 4794.9916,
-          "y": 1509.8038,
+          "y": 1485.8038,
           "direction": 8
         },
         "meta": {
@@ -4393,7 +4392,7 @@
             "sEwajOmLHMl_iTj4PCBoq"
           ],
           "x": 4530.9916,
-          "y": 1509.8038,
+          "y": 1485.8038,
           "direction": 8
         },
         "meta": {
@@ -4440,7 +4439,7 @@
             "g2NwD1LFmijpLy9KTRFIq"
           ],
           "x": 4398.9916,
-          "y": 1337.8038000000001,
+          "y": 1325.8038000000001,
           "direction": 1
         },
         "end": {
@@ -4496,7 +4495,7 @@
             "g2NwD1LFmijpLy9KTRFIq"
           ],
           "x": 4398.9916,
-          "y": 1452.4704666666669,
+          "y": 1432.4704666666669,
           "direction": 1
         },
         "end": {
@@ -4524,7 +4523,7 @@
             "g2NwD1LFmijpLy9KTRFIq"
           ],
           "x": 4398.9916,
-          "y": 1223.1371333333334,
+          "y": 1219.1371333333334,
           "direction": 1
         },
         "end": {
@@ -6181,7 +6180,7 @@
     "qt3o1XSkijjsw8COEcZkN": [
       "tableColumnEntities",
       1732682703302,
-      -1,
+      1732867575607,
       {
         "name": 1732682874342,
         "dataType": 1732683735879,
@@ -6358,7 +6357,7 @@
       {
         "name": 1732686980843,
         "dataType": 1732687010521,
-        "default": 1732687162942,
+        "default": 1732867613960,
         "comment": 1732687051821,
         "options(notNull)": 1732865168771
       }
