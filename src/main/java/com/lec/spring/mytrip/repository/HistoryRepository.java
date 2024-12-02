@@ -1,4 +1,4 @@
 package com.lec.spring.mytrip.repository;
 
-public interface FlightRepository {
+public interface HistoryRepository {
 }

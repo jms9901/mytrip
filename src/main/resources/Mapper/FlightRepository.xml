@@ -9,34 +9,7 @@
         SELECT airport_code, airport_name, airport_city, airport_country
         FROM airport
     </select>
-    <!--분리하기-->
-    <!-- 검색 기록 저장 -->
-    <insert id="saveSearchRecord" parameterType="com.lec.spring.domain.SearchHistory">
-        INSERT INTO search_history (user_id, qry_url, start_name, end_name)
-        VALUES (#{userId}, #{qryUrl}, #{startName}, #{endName})
-    </insert>
 
-    <!-- 최근 검색 기록 조회 -->
-    <select id="getRecentSearches" parameterType="int" resultType="com.lec.spring.domain.SearchHistory">
-        SELECT search_history_id, user_id, qry_url, start_name, end_name
-        FROM search_history
-        WHERE user_id = #{userId}
-        ORDER BY search_history_id DESC
-            LIMIT 10
-    </select>
-
-    <!-- 특정 검색 기록 삭제 -->
-    <delete id="deleteSearchRecord" parameterType="int">
-        DELETE FROM search_history
-        WHERE search_history_id = #{searchHistoryId}
-    </delete>
-
-    <!-- 특정 검색 기록 조회 -->
-    <select id="getSearchRecordById" parameterType="int" resultType="com.lec.spring.domain.SearchHistory">
-        SELECT search_history_id, user_id, qry_url, start_name, end_name
-        FROM search_history
-        WHERE search_history_id = #{searchHistoryId}
-    </select>
 
 
 
