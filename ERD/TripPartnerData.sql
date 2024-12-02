@@ -1,17 +1,42 @@
-insert into user (user_email, user_password, user_username, user_name, user_phonenumber, user_birthday, user_profile, user_provider, user_introdution, user_authorization, business_companynumber)
+#  user admin 데이터
+insert into user (user_email, user_password, user_username, user_name, user_phonenumber, user_birthday, user_profile, user_provider, user_introdution, user_authorization)
 values ('fullstackK08@naver.com',
         '1234',
-        'k08',
+        'admin1234',
         '이경원',
         '010-8297-0195',
         '2000-04-24',
         '',
         '',
         '',
-        'admin',
-        ''
+        'admin'
+        ),
+        (
+         'wonwon123123@naver.com',
+         '1234',
+         'user1234',
+         '이경원',
+        '010-1234-1234',
+         '2000-02-11',
+         '',
+         '',
+         '',
+         'user'
         );
 
+# business 데이터
+insert into user (user_email, user_password,user_username,user_name,user_phonenumber,user_authorization,business_companynumber)
+ values       (
+        'business@naver.com',
+         '1234',
+         'business1234',
+         '이경원',
+         '010-1111-1111',
+         'business',
+         '123-11-12345'
+        ) ;
+
+# city data
 insert into city (city_name, city_continent, city_language, city_currency, city_img, city_nation, q1_id,q2_id,q3_id,q4_id,q5_id)
 values(
        '괌',
@@ -82,8 +107,11 @@ values(
          '유럽',
          '프랑스어',
          '유로',
-         '',
+         'http://blogfiles.naver.net/20160902_140/klaus_kim_1472823422803dmSP9_JPEG/IMG_2836.JPG',
          '프랑스',
-
-
+         'A',
+         'A',
+         'B',
+         'A',
+         'A'
         )
