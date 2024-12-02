@@ -1,4 +1,4 @@
 package com.lec.spring.mytrip.repository;
 
-public class UserRepository {
+public interface UserRepository {
 }

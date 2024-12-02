@@ -1,4 +1,4 @@
 package com.lec.spring.mytrip.service;
 
-public class MainpageService {
+public interface MainpageService {
 }
