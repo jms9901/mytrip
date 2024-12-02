@@ -1,12 +1,10 @@
-package com.lec.spring.mytrip.repository;
+package com.lec.spring.mytrip.service;
 
 import com.lec.spring.mytrip.domain.History;
 
-
 import java.util.List;
 
-
-public interface HistoryRepository {
+public interface HistoryService {
     // 검색 기록 저장
     void saveSearch(History history);
 
