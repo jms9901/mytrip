@@ -54,7 +54,7 @@ CREATE TABLE board_liked
 
 CREATE TABLE city
 (
-    city_id       INT           NOT NULL COMMENT '도시 ID',
+    city_id       INT           NOT NULL AUTO_INCREMENT COMMENT '도시 ID',
     city_name     VARCHAR(20)   NOT NULL COMMENT '도시 이름',
     city_continent VARCHAR(50)   NOT NULL COMMENT '도시의 대륙',
     city_language VARCHAR(20)   NOT NULL COMMENT '도시의 언어',
