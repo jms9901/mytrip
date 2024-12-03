@@ -3,55 +3,42 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.lec.spring.mytrip.domain.User">
+<mapper namespace="com.lec.spring.mytrip.repository.UserRepository">
     <sql id="SELECT_USER">
         select
-            user_id "id",
-            user_email "email",
-            user_password "password",
-            user_username "username",
-            user_phonenumber "phonenumber",
-            user_regdate "regdate",
-            user_profile "profile",
-            user_provider "provider",
-            user_introdution "introdution",
-            user_authorization "authorization",
-            business_companynumber "companynumber"
+            user_id as "id",
+            user_email as "email",
+            user_password as "password",
+            user_username as "username",
+            user_phonenumber as "phoneNumber",
+            user_regdate as "regDate",
+            user_profile as "profile",
+            user_provider as "provider",
+            user_introdution as "introduction",
+            user_authorization as "authorization",
+            business_companynumber as "companyNumber"
         from user
         where 1=1
     </sql>
-    <select id="findById" resultType="com.lec.spring.mytrip.domain.User">
+
+    <select id="findById" parameterType="long" resultType="com.lec.spring.mytrip.domain.User">
         <include refid="SELECT_USER"/>
-        and user_id = #{user_id}
+        and user_id = #{id}
     </select>
 
-    <select id="findBuUsername" resultType="com.lec.spring.mytrip.domain.User">
+    <select id="findByUsername" parameterType="string" resultType="com.lec.spring.mytrip.domain.User">
         <include refid="SELECT_USER"/>
-        and user_username = #{user_username}
+        and user_username = #{username}
     </select>
 
     <insert id="save" flushCache="true" parameterType="com.lec.spring.mytrip.domain.User"
-    useGeneratedKeys="true" keyProperty="user_id" keyColumn="user_id">
-        insert into user (user_email, user_password, user_username, user_name, user_phonenumber, user_birthday, user_provider, business_companynumber)
-        values(#{user_email}, #{user_password}, #{user_usernmame}, #{user_name} , #{user_phonenumber}, #{user_birthday}, #{user_provider}, #{business_companynumber})
+            useGeneratedKeys="true" keyProperty="id" keyColumn="user_id">
+        insert into user (
+            user_email, user_password, user_username, user_name,
+            user_phonenumber, user_birthday, user_provider, business_companynumber
+        ) values (
+                     #{email}, #{password}, #{username}, #{name},
+                     #{phoneNumber}, #{birthday}, #{provider}, #{companyNumber}
+                 )
     </insert>
-
-    <update></update>
 </mapper>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -24,9 +24,7 @@ public class User {
 
     private String username;  // 사용자 아이디
 
-
     private String name;  // 사용자 이름
-
 
     @JsonIgnore
     private LocalDateTime regDate;  // 회원 가입일
