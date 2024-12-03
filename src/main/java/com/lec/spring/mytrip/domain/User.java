@@ -1,10 +1,7 @@
 package com.lec.spring.mytrip.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -20,6 +17,8 @@ public class User {
 
     @JsonIgnore
     private String password;  // 사용자 비밀번호
+
+    @ToString.Exclude
     @JsonIgnore
     private String re_password;  // 비밀번호 확인 입력
 
