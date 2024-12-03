@@ -5,6 +5,7 @@
     "width": 5000,
     "height": 5000,
 <<<<<<< HEAD
+<<<<<<< HEAD
     "scrollTop": -1824.2875,
     "scrollLeft": -1218.4687,
     "zoomLevel": 0.79,
@@ -12,6 +13,11 @@
     "scrollTop": -2130.1932,
     "scrollLeft": -1915.0213,
     "zoomLevel": 0.19,
+>>>>>>> main
+=======
+    "scrollTop": -2342.8562,
+    "scrollLeft": -3110.0728,
+    "zoomLevel": 1,
 >>>>>>> main
     "show": 511,
     "database": 4,
@@ -1094,7 +1100,7 @@
         "comment": "도시 ID",
         "dataType": "INT",
         "default": "",
-        "options": 10,
+        "options": 11,
         "ui": {
           "keys": 1,
           "widthName": 60,
@@ -1103,7 +1109,7 @@
           "widthDefault": 60
         },
         "meta": {
-          "updateAt": 1732778296316,
+          "updateAt": 1733123725690,
           "createAt": 1732680702940
         }
       },
@@ -5371,7 +5377,7 @@
       {
         "name": 1732680723349,
         "options(notNull)": 1732680783389,
-        "options(autoIncrement)": 1732778241391,
+        "options(autoIncrement)": 1733123725689,
         "dataType": 1732680791325,
         "comment": 1732778296316,
         "options(primaryKey)": 1732681001047
