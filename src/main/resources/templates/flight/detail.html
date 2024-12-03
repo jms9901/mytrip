@@ -4,147 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>항공권 상세 페이지</title>
-    <style>
-        /* 공통 스타일 */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-image: url('/static/img/OkinawaImg.jpg'); /* 배경 이미지 URL */
-            background-size: cover;
-            background-position: center;
-            color: #333;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-        }
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="../../static/css/flight/detail.css">
 
-        h1 {
-            color: white;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-        }
-
-        .container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-        }
-
-        .ticket {
-            display: flex;
-            flex-direction: row;
-            align-items: stretch;
-            justify-content: center;
-            width: 700px;
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            margin-bottom: 20px;
-        }
-
-        /* 왼쪽 이미지 섹션 */
-        .ticket-image {
-            flex: 1;
-            background-image: url('/static/img/FrankfurtImg.jpg'); /* 이미지 URL */
-            background-size: cover;
-            background-position: center;
-        }
-
-        /* 오른쪽 텍스트 섹션 */
-        .ticket-details {
-            flex: 2;
-            background: linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.07)), /* 투명도 줄임 */
-            url('/static/img/flight/airport.png'); /* 배경 이미지 URL */
-            background-repeat: no-repeat;
-            background-position: center;
-            background-size: contain;
-
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .ticket-header {
-            text-transform: uppercase;
-            font-weight: bold;
-            font-size: 18px;
-            color: #555;
-            margin-bottom: 10px;
-        }
-
-        .route {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            font-size: 20px;
-            font-weight: bold;
-        }
-
-        .route span {
-            font-size: 14px;
-            color: #888;
-        }
-
-        .details {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
-        }
-
-        .details div {
-            text-align: left;
-        }
-
-        .details div p {
-            margin: 4px 0;
-            font-size: 14px;
-            color: #333;
-        }
-
-        .details div p span {
-            font-weight: bold;
-        }
-
-        .special-message {
-            font-size: 12px;
-            color: #666;
-            text-align: center;
-            margin-top: 10px;
-        }
-
-        .price {
-            font-size: 16px;
-            font-weight: bold;
-            color: #555;
-            margin-top: 10px;
-            text-align: right;
-        }
-
-        .reservation-button-container {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .reservation-button {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        .reservation-button:hover {
-            background-color: #0056b3;
-        }
-    </style>
+    <!-- jQuery 추가 -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 <h1>항공권 상세 페이지</h1>
@@ -234,5 +98,9 @@
         <button class="reservation-button">항공권 예약하기</button>
     </div>
 </div>
+
+
+
 </body>
+<script src = "../../static/JS/flight/detail.js" type="text/javascript"></script>
 </html>
