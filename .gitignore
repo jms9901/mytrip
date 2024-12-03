@@ -38,3 +38,6 @@ out/
 
 ### git ###
 ERD/
+
+### application-dev ###
+application-dev.yml
