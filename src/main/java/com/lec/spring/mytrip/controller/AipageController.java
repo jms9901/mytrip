@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/aipage")
 public class AipageController {
 
+
     // TODO 1: 사용자가 시작 버튼을 누르면 질문과 보기 데이터를 요청
 
 
