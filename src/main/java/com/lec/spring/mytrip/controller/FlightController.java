@@ -46,12 +46,12 @@ public class FlightController {
     }
 
     // 검색 기록을 저장하는 엔드포인트
-    @PostMapping("/history")
+    @PostMapping("/history/save")
     public void saveSearch(@RequestBody History history) {
         historyService.saveSearch(history);
     }
 
-    // 특정 사용자의 최근 검색 기록을 조회하는 엔드포인트 (최대 5개)
+    // 특정 사용자의 최근 검색 기록을 조회하는 엔드포인트 (최대 5개) 띵킹필
     @GetMapping("/history/user/{userId}")
     public List<History> getSearches(@PathVariable int userId) {
         return historyService.getSearches(userId);
