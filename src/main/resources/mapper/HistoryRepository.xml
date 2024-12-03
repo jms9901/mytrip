@@ -3,24 +3,25 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.lec.spring.repository.HistoryRepository">
+<mapper namespace="com.lec.spring.mytrip.repository.HistoryRepository">
 
-    <!--매핑 저장-->
-    <resultMap id="historyResultMap" type="com.lec.spring.domain.History">
+    <!-- 매핑 저장 -->
+    <resultMap id="historyResultMap" type="com.lec.spring.mytrip.domain.History">
         <id column="search_history_id" property="searchHistoryId"/>
         <result column="user_id" property="userId"/>
         <result column="qry_url" property="qryUrl"/>
         <result column="start_name" property="startName"/>
         <result column="end_name" property="endName"/>
     </resultMap>
+
     <!-- 검색 기록 저장 -->
-    <insert id="saveSearch" parameterType="com.lec.spring.domain.History" flushCache="true">
+    <insert id="saveSearch" parameterType="com.lec.spring.mytrip.domain.History" flushCache="true">
         INSERT INTO search_history (user_id, qry_url, start_name, end_name)
         VALUES (#{userId}, #{qryUrl}, #{startName}, #{endName})
     </insert>
 
     <!-- 최근 검색 기록 조회 -->
-    <select id="getSearches" parameterType="int" resultType="com.lec.spring.domain.History">
+    <select id="getSearches" parameterType="int" resultMap="historyResultMap">
         SELECT search_history_id, user_id, qry_url, start_name, end_name
         FROM search_history
         WHERE user_id = #{userId}
@@ -35,13 +36,10 @@
     </delete>
 
     <!-- 특정 검색 기록 조회 -->
-    <select id="getSearchRecordById" parameterType="int" resultType="com.lec.spring.domain.History">
+    <select id="getSearchRecordById" parameterType="int" resultMap="historyResultMap">
         SELECT search_history_id, user_id, qry_url, start_name, end_name
         FROM search_history
         WHERE search_history_id = #{searchHistoryId}
     </select>
-
-
-
 
 </mapper>
