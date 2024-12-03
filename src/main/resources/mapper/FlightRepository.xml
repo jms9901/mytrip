@@ -3,9 +3,9 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.lec.spring.repository.FlightRepository">
+<mapper namespace="com.lec.spring.mytrip.repository.FlightRepository">
     <!-- 공항 데이터 조회 -->
-    <select id="getAllAirports" resultType="com.lec.spring.domain.Flight">
+    <select id="getAllAirports" resultType="com.lec.spring.mytrip.domain.Flight">
         SELECT airport_code, airport_name, airport_city, airport_country
         FROM airport
     </select>
