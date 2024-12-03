@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>항공권 상세 페이지</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="../../static/css/flight/detail.css">
+
+    <!-- jQuery 추가 -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<h1>항공권 상세 페이지</h1>
+<div class="container">
+    <!-- 가는 티켓 -->
+    <div class="ticket">
+        <!-- 왼쪽 이미지 섹션 -->
+        <div class="ticket-image" style="background-image: url('/static/img/FrankfurtImg.jpg');"></div>
+
+        <!-- 오른쪽 텍스트 섹션 -->
+        <div class="ticket-details">
+            <div>
+                <div class="ticket-header">Boarding Pass</div>
+                <div class="route">
+                    <div>
+                        ICN <span>Incheon</span>
+                    </div>
+                    <div>✈</div>
+                    <div>
+                        OKA <span>Okinawa</span>
+                    </div>
+                </div>
+                <div class="details">
+                    <div>
+                        <p><span>NAME:</span> John Doe</p>
+                        <p><span>DESTINATION:</span> Okinawa, Japan</p>
+                    </div>
+                    <div>
+                        <p><span>DATE:</span> 2024-12-05</p>
+                        <p><span>TIME:</span> 10:00AM</p>
+                    </div>
+                </div>
+                <div class="price">
+                    Price: ₩120,000
+                </div>
+            </div>
+            <div>
+                <div class="special-message">
+                    Have a great trip to Okinawa!
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 오는 티켓 -->
+    <div class="ticket">
+        <!-- 왼쪽 이미지 섹션 -->
+        <div class="ticket-image" style="background-image: url('/static/img/FrankfurtImg.jpg');"></div>
+
+        <!-- 오른쪽 텍스트 섹션 -->
+        <div class="ticket-details">
+            <div>
+                <div class="ticket-header">Boarding Pass</div>
+                <div class="route">
+                    <div>
+                        OKA <span>Okinawa</span>
+                    </div>
+                    <div>✈</div>
+                    <div>
+                        ICN <span>Incheon</span>
+                    </div>
+                </div>
+                <div class="details">
+                    <div>
+                        <p><span>NAME:</span> John Doe</p>
+                        <p><span>DESTINATION:</span> Incheon, South Korea</p>
+                    </div>
+                    <div>
+                        <p><span>DATE:</span> 2024-12-12</p>
+                        <p><span>TIME:</span> 6:00PM</p>
+                    </div>
+                </div>
+                <div class="price">
+                    Price: ₩130,000
+                </div>
+            </div>
+            <div>
+                <div class="special-message">
+                    Welcome back home!
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 예약 버튼 -->
+    <div class="reservation-button-container">
+        <button class="reservation-button">항공권 예약하기</button>
+    </div>
+</div>
+
+
+
+</body>
+<script src = "../../static/JS/flight/detail.js" type="text/javascript"></script>
+</html>
