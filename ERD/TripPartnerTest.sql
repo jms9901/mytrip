@@ -39,3 +39,6 @@ delete from friendship;
 delete from guest_book;
 delete from messageroom;
 delete from message;
+
+alter table user
+add column user_status varchar(20);

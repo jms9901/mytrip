@@ -7,8 +7,8 @@ public interface UserRepository {
     User findById(Long id);
 
     // 특정  username 의 user 리턴
-    User findbyUsername(String username);
+    User findByUsername(String username);
 
     // 새로운 user 등록
-    int saveUser (User user);
+    int save (User user);
 }
