@@ -9,11 +9,11 @@
     <form action="">
         <div>
             <!-- 출발지 -->
-            <select>
+            <select id="fromEntityId">
                 <!-- <option value=""></option> -->
             </select>
             <!-- 도착지 -->
-            <select>
+            <select id="toEntityId">
                 <!-- <option value=""></option> -->
             </select>
             <!-- 날짜선택 -->
@@ -22,12 +22,59 @@
             <button id="end-date-btn">오는 날</button>
             <input type="hidden" name="endDate" id="end-date-value">
             <!-- 인원선택 -->
-            <button></button>
+            <button id="open-selection-btn">인원 및 좌석 선택</button>
+
+            <div id="selection-container">
+                <!-- 인원 선택 -->
+                <div class="section" id="passenger-selection">
+                    <h3>인원 선택</h3>
+                    <div class="passenger-item">
+                        <span>성인</span>
+                        <span id="adult-count">0</span>
+                        <div class="btn-group">
+                            <button onclick="changeCount('adult', -1)">-</button>
+                            <button onclick="changeCount('adult', 1)">+</button>
+                        </div>
+                    </div>
+                    <div class="passenger-item">
+                        <span>어린이</span>
+                        <span id="child-count">0</span>
+                        <div class="btn-group">
+                            <button onclick="changeCount('child', -1)">-</button>
+                            <button onclick="changeCount('child', 1)">+</button>
+                        </div>
+                    </div>
+                    <div class="passenger-item">
+                        <span>아기</span>
+                        <span id="infant-count">0</span>
+                        <div class="btn-group">
+                            <button onclick="changeCount('infant', -1)">-</button>
+                            <button onclick="changeCount('infant', 1)">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 좌석 선택 -->
+                <div class="section" id="seat-selection">
+                    <h3>좌석 선택</h3>
+                    <select name="seat-1">
+                        <option value="">이코노미</option>
+                        <option value="">비즈니스</option>
+                        <option value="">프리미엄</option>
+                        <option value="">퍼스트</option>
+                    </select>
+                </div>
+            </div>
         </div>
         <div>
             <button>조회</button>
         </div>
     </form>
 </div>
+
+
+
+
+
 </body>
 </html>
