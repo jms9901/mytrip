@@ -4,6 +4,7 @@ body{
 	background-color:#fcfcfc;
 	margin:0;
 	padding:0;
+	font-family: 'Kaushan Script'
 }
 
 .flipbook-viewport{
@@ -173,8 +174,9 @@ body{
 	position: absolute;
 	width: 90%;
 	height: 150px;
-	border: solid red 1px;
+	/*border: solid red 1px;*/
 	margin: 15px;
+	background-color: white;
 	left: 47%;
 	top: 15%;
 	transform: translate(-50%,-50%);
@@ -189,7 +191,8 @@ body{
 	position: absolute;
 	width: 90%;
 	height: 80px;
-	border: solid red 1px;
+	/*border: solid red 1px;*/
+	background-color: white;
 	margin: 15px;
 	left: 47%;
 	top: 36%;
@@ -201,23 +204,42 @@ body{
 	position: absolute;
 	width: 90%;
 	height: 100px;
-	border: solid red 1px;
+	/*border: solid red 1px;*/
 	margin: 15px;
+	background-color: white;
 	left: 47%;
 	top: 53%;
 	transform: translate(-50%,-50%);
 	border-radius: 10px;
+	align-items: center;
+	justify-content: center;
+	display: flex;
+}
+.Connections{
+	font-size: 30px;
+
+
+}
+.ConnectionsCnt{
+	font-size: 25px;
+	margin-left: 20px;
+	cursor: pointer;
 }
 .mypageCityLiked{
 	position: absolute;
 	width: 90%;
 	height: 180px;
-	border: solid red 1px;
+	/*border: solid red 1px;*/
 	margin: 15px;
+	background-color: white;
 	left: 47%;
 	top: 78%;
 	transform: translate(-50%,-50%);
 	border-radius: 10px;
+	align-items: center;
+	justify-content: center;
+	display: flex;
+	flex-direction: column;
 	
 }
 .recentPost{
@@ -226,6 +248,7 @@ body{
 	height: 88%;
 	border: solid red 1px;
 	margin: 15px;
+	/*background-color: white;*/
 	top: 3%;
 }
 
@@ -248,10 +271,11 @@ body{
 	font-size: 16px;     /* 글자 크기 */
 	font-weight: bold;   /* 글자 굵기 */
 	margin: 20px;
+	cursor: pointer;
 }
 
 .InfoName{
-	width: 200px;
+	width: 180px;
 	height: 80px;
 	border: solid red 1px;
 	display: flex;
@@ -262,7 +286,7 @@ body{
 }
 
 .decorateName{
-	width: 200px;
+	width: 180px;
 	height: 30px;
 	border: solid red 1px;
 	display: flex;
@@ -338,3 +362,34 @@ body{
 	background-repeat: no-repeat;
 }
 
+.myPageGoHome{
+	position:fixed;
+	background-repeat: no-repeat;
+	right: 100px;
+	width: 200px;
+	height: 300px;
+	top: -250px;
+	background-size: contain;
+	transition: top 0.3s ease;
+}
+.myPageGoHome:hover{
+	top: -150px;
+	cursor: pointer;
+}
+.CityLikedImg{
+	border: solid red 1px;
+	width: 250px;
+	height: 130px;
+	cursor: pointer;
+}
+.CityLikedTitle{
+
+}
+.myPageUpdate{
+	margin-top: 10px;
+	margin-right: 10px;
+	width: 10%;
+	height: 100%;
+	background-repeat: no-repeat;
+	cursor: pointer;
+}
