@@ -393,3 +393,70 @@ body{
 	background-repeat: no-repeat;
 	cursor: pointer;
 }
+.updateUserModal{
+	width: 400px;
+	height: 500px;
+	margin-left: 52%;
+	margin-top:8%;
+	z-index: 9999;
+	/*border: solid blue 1px;*/
+	background-color: black;
+	opacity: 50%;
+	border-radius: 10px;
+	display: none;
+	position: fixed;
+	align-content: center;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+
+}
+.NameAndImg{
+	width: 90%;
+	height: 27%;
+	border-radius: 10px;
+	border: solid green 1px;
+	background-color: white;
+	opacity: 1;
+	margin: 5%;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	align-content: center;
+
+
+}
+.IntroduceMyself{
+	width: 90%;
+	height: 18%;
+	border-radius: 10px;
+	border: solid green 1px;
+	background-color: white;
+	margin: 5%;
+}
+.UpdatePassword{
+	width: 90%;
+	height: 37%;
+	border-radius: 10px;
+	border: solid green 1px;
+	background-color: white;
+	margin: 5%;
+}
+
+.Updatecircle {
+	width: 100px;         /* 원의 지름 */
+	height: 100px;        /* 원의 지름 */
+	border: solid red 1px; /* 원의 색상 */
+	border-radius: 50%;  /* 동그라미 모양으로 만듦 */
+	display: flex;       /* 정렬을 위해 Flexbox 사용 */
+	justify-content: center; /* 중앙 정렬 */
+	align-items: center; /* 중앙 정렬 */
+	font-size: 16px;     /* 글자 크기 */
+	font-weight: bold;   /* 글자 굵기 */
+	margin: 20px;
+	cursor: pointer;
+}
+
+.closeUpdateModal{
+	right: 10px;
+}
