@@ -9,12 +9,7 @@
         SELECT airport_code, airport_name, airport_city, airport_country
         FROM airport
     </select>
-    <!-- 특정 공항 데이터를 조회 -->
-    <select id="getAirportById" parameterType="int" resultType="com.lec.spring.mytrip.domain.Flight">
-        SELECT airport_id, airport_code, airport_name, airport_city, airport_country
-        FROM airport
-        WHERE airport_id = #{airportId}
-    </select>
+
 
 
 

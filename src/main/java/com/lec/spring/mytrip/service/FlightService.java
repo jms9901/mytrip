@@ -9,6 +9,5 @@ public interface FlightService {
     List<Flight> getAllAirports();
 
 
-    // 특정 공항 데이터 조회
-    Flight getAirportById(int airportId);
+
 }

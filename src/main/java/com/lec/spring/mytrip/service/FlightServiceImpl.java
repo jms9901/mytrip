@@ -20,8 +20,5 @@ public class FlightServiceImpl implements FlightService {
         return flightRepository.getAllAirports();
     }
 
-    @Override
-    public Flight getAirportById(int airportId) {
-        return flightRepository.getAirportById(airportId);
-    }
+
 } // end ServiceImpl class
