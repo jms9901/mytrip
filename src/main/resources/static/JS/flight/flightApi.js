@@ -1,8 +1,21 @@
 // 공통 API 호출 및 데이터 처리 함수들
 
 function startSearch(formData) {
+
+    const roundtripUrl = "https://sky-scanner3.p.rapidapi.com/flights/search-roundtrip" +
+        "?fromEntityId=${fromAirportId}" +    // 출발 공항
+        "&toEntityId=${toAirportId}" +       // 도착 공항
+        "&departDate=${departDate}" +        // 출발일
+        "&returnDate=${returnDate}" +        // 도착일
+        "&stops=direct" +                    // 직항로 고정
+        "&currency=KRW" +                    // 금액 표시 단위
+        "&adults=${adultsHeadCnt}" +         // 성인 명 수
+        "&children=${childrenHeadCnt}" +     // 어린이 명 수
+        "&infants=${infantsHeadCnt}" +       // 24개월 미만 영유아 명 수
+        "&cabinClass=${cabinClass}";         // 객석 수준
+
     $.ajax({
-        url: "https://sky-scanner3.p.rapidapi.com/flights/search-roundtrip",
+        url: roundtripUrl,
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -10,7 +23,6 @@ function startSearch(formData) {
             "X-RapidAPI-Host": "sky-scanner3.p.rapidapi.com"
         },
         data: formData,
-        timeout: 0
     }).done(function (response) {
         const sessionId = response.data.context.sessionId;
         if (!sessionId) {
@@ -61,19 +73,8 @@ function fetchBookingDetail(itineraryId, token) {
         timeout: 0
     }).done(function (response) {
         console.log("Detail API Response:", response);
-        // 예약 세부 정보 처리
-        saveJsonToFile(response);
+        //화면에 출력
     }).fail(function (jqXHR, textStatus, errorThrown) {
         console.error("Detail API 호출 실패:", textStatus, errorThrown);
     });
-}
-
-function saveJsonToFile(jsonData) {
-    const blob = new Blob([JSON.stringify(jsonData)], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "data.json";
-    a.click();
-    URL.revokeObjectURL(url);
 }

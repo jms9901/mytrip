@@ -2,8 +2,8 @@ $(document).ready(function () {
 
     // API 엔드포인트 URL 및 설정
     const roundtripUrl = "https://sky-scanner3.p.rapidapi.com/flights/search-roundtrip" +
-        "?fromEntityId=${fromAirportId}" +    // 출발 공항
-        "&toEntityId=${toAirportId}" +       // 도착 공항
+        "?fromEntityId=${fromEntityId}" +    // 출발 공항
+        "&toEntityId=${toEntityId}" +       // 도착 공항
         "&departDate=${departDate}" +        // 출발일
         "&returnDate=${returnDate}" +        // 도착일
         "&stops=direct" +                    // 직항로 고정

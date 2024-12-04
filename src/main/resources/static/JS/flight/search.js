@@ -69,24 +69,30 @@ $(document).ready(function () {
 
     $('#infant-group .btn-decrease').on('click', function() {
         changeCount('infant', -1);
+        $("#infant-count-input").val($("#infant-count").text());
     });
 
     $('#infant-group .btn-increase').on('click', function() {
         changeCount('infant', 1);
+        $("#infant-count-input").val($("#infant-count").text());
     });
 
     $('#child-group .btn-decrease').on('click', function() {
         changeCount('child', -1);
+        $("#child-count-input").val($("#child-count").text());
     });
     $('#child-group .btn-increase').on('click', function() {
         changeCount('child', 1);
+        $("#child-count-input").val($("#child-count").text());
     });
 
     $('#adult-group .btn-decrease').on('click', function() {
         changeCount('adult', -1);
+        $("#adult-count-input").val($("#adult-count").text());
     });
     $('#adult-group .btn-increase').on('click', function() {
         changeCount('adult', 1);
+        $("#adult-count-input").val($("#adult-count").text());
     });
 
     $(".btn-increase").attr("type", "button");
