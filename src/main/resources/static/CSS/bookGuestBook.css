@@ -1,0 +1,303 @@
+
+body{
+    overflow:hidden;
+    background-color:#fcfcfc;
+    margin:0;
+    padding:0;
+    font-family: 'Kaushan Script'
+}
+
+.flipbook-viewport{
+    overflow:hidden;
+    width:100%;
+    height:100%;
+}
+
+.flipbook-viewport .container{
+    position:absolute;
+    top:55%;
+    left:50%;
+    margin:auto;
+}
+
+.flipbook-viewport .flipbook{
+    width:922px;
+    height:600px;
+    left:-461px;
+    top:-300px;
+}
+
+.flipbook-viewport .page{
+    width:461px;
+    height:600px;
+    background-color:white;
+    background-repeat:no-repeat;
+    background-size:100% 100%;
+}
+
+.flipbook .page{
+    -webkit-box-shadow:0 0 20px rgba(0,0,0,0.2);
+    -moz-box-shadow:0 0 20px rgba(0,0,0,0.2);
+    -ms-box-shadow:0 0 20px rgba(0,0,0,0.2);
+    -o-box-shadow:0 0 20px rgba(0,0,0,0.2);
+    box-shadow:0 0 20px rgba(0,0,0,0.2);
+}
+
+.flipbook-viewport .page img{
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    margin:0;
+}
+
+.flipbook-viewport .shadow{
+    -webkit-transition: -webkit-box-shadow 0.5s;
+    -moz-transition: -moz-box-shadow 0.5s;
+    -o-transition: -webkit-box-shadow 0.5s;
+    -ms-transition: -ms-box-shadow 0.5s;
+
+    -webkit-box-shadow:0 0 20px #ccc;
+    -moz-box-shadow:0 0 20px #ccc;
+    -o-box-shadow:0 0 20px #ccc;
+    -ms-box-shadow:0 0 20px #ccc;
+    box-shadow:0 0 20px #ccc;
+}
+
+.menu1 {
+    position: absolute;
+    top: 3%;
+    left:51%;
+    width: 100px;
+    height: 250px;
+    z-index: -6;
+    background-repeat: no-repeat ;
+    display: none;
+    transition: top 0.3s ease;
+}
+
+.menu2 {
+    position: absolute;
+    top: 4%;
+    left:55%;
+    width: 100px;
+    height: 250px;
+    z-index: -5;
+    background-repeat: no-repeat ;
+    display: none;
+    transition: top 0.3s ease;
+}
+
+.menu3 {
+    position: absolute;
+    top: 5%;
+    left:59%;
+    width: 100px;
+    height: 250px;
+    z-index: -4;
+    background-repeat: no-repeat ;
+    display: none;
+    transition: top 0.3s ease;
+}
+
+.menu4 {
+    position: absolute;
+    top: 6%;
+    left:63%;
+    width: 100px;
+    height: 250px;
+    z-index: -3;
+    background-repeat: no-repeat ;
+    display: none;
+    text-align: center;
+    transition: top 0.3s ease;
+}
+.menu5 {
+    position: absolute;
+    top: 7%;
+    left:67%;
+    width: 100px;
+    height: 250px;
+    z-index: -2;
+    background-repeat: no-repeat ;
+    display: none;
+    text-align: center;
+    transition: top 0.3s ease;
+}
+.menu1:hover, .menu2:hover, .menu3:hover, .menu4:hover, .menu5:hover {
+    top: 2%;
+    cursor: pointer;
+}
+.logo{
+    position:fixed;
+    background-repeat: no-repeat;
+    float: left;
+    left: 40px;
+    width: 100px;
+    height: 120px;
+    top: 20px;
+    background-size: cover;
+
+}
+.logo:hover{
+    cursor: pointer;
+}
+@keyframes rotateX {
+    0% {
+        transform: rotateY(0deg);
+    }
+    50% {
+        transform: rotateY(25deg);
+    }
+    100% {
+        transform: rotateY(0deg);
+    }
+}
+
+.goChat{
+    position: fixed;
+    size-adjust: 80%;
+    width: 160px;
+    height: 100px;
+    background-size: cover;
+    bottom: 40px;
+    right: 80px;
+    cursor: pointer;
+    transform-origin: 50% 50%;
+    transition: transform 1s ease;
+}
+.goChat:hover{animation:rotateX 0.5s ease-in-out;}
+
+.mypageUserInfo{
+    position: absolute;
+    width: 90%;
+    height: 150px;
+    /*border: solid red 1px;*/
+    margin: 15px;
+    background-color: white;
+    left: 47%;
+    top: 15%;
+    transform: translate(-50%,-50%);
+    border-radius: 10px;
+    display: flex;
+
+    gap: 20px;
+
+}
+
+.mypageUserIntroduce{
+    position: absolute;
+    width: 90%;
+    height: 80px;
+    /*border: solid red 1px;*/
+    background-color: white;
+    margin: 15px;
+    left: 47%;
+    top: 36%;
+    transform: translate(-50%,-50%);
+    border-radius: 10px;
+
+}
+.writeGuestBook{
+    width: 33px;
+    height: 33px;
+    background-size: cover;
+    z-index: 9999;
+    right: 21%;
+    top: 13%;
+    position: absolute;
+    cursor: pointer;
+}
+.addGuestBookModal{
+    width: 400px;
+    height: 500px;
+    margin-left: 52%;
+    margin-top:8%;
+    z-index: 9999;
+    /*border: solid blue 1px;*/
+    background-color: black;
+    background-color: rgba(0, 0, 0, 0.5);
+    /*opacity: 50%;*/
+    border-radius: 10px;
+    display: none;
+    position: fixed;
+    align-content: center;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+#page{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    height: 100vh;
+}
+
+
+
+
+.guestbook-entry{
+    margin-top: 10%;
+    height: 120px;  /* 적절한 크기 설정 */
+    width: 80%;    /* 전체 너비 */
+    background-size: contain;  /* 이미지가 div를 완전히 덮지 않지만 잘리지 않고 축소되어 보임 */
+    background-position: center;  /* 이미지 중앙 정렬 */
+    background-repeat: no-repeat;  /* 이미지 반복 안 함 */
+}
+
+
+
+
+
+
+
+/*<!--테스트CSS*/
+.guestbook-entry {
+    position: relative;
+    z-index: 10; /* 페이지 위로 렌더링되도록 설정 */
+
+
+    padding: 10px;
+}
+
+.leftBook, .rightBook {
+    position: relative;
+    overflow: visible; /* 텍스트가 잘리지 않도록 설정 */
+}
+.guestbook-entry h4 {
+    color: #333; /* 적절한 대비 색상 */
+    font-weight: bold;
+}
+
+.guestbook-entry p {
+    color: #555; /* 부드러운 색상 */
+}
+.myPageGoHome{
+    position:fixed;
+    background-repeat: no-repeat;
+    right: 100px;
+    width: 200px;
+    height: 300px;
+    top: -250px;
+    background-size: contain;
+    transition: top 0.3s ease;
+}
+.myPageGoHome:hover{
+    top: -150px;
+    cursor: pointer;
+}
+.backgroundGuestBook{
+    position: fixed;
+    width:461px;
+    height:600px;
+    left: 50.05%;
+    top: 82px;
+
+}
+
+
+
