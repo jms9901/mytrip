@@ -31,7 +31,7 @@ function startSearch(formData) {
         }
 
         // 세션 ID를 컨트롤러로 전달
-        $.post("/controller/startSearch", { sessionId: sessionId }, function () {
+        $.post("/search/startSearch", { sessionId: sessionId }, function () {
             console.log("새로운 세션 ID 컨트롤러에 전달 완료");
         });
     }).fail(function (jqXHR, textStatus, errorThrown) {
@@ -52,7 +52,7 @@ function fetchIncompleteData(sessionId, intervalId) {
     }).done(function (response) {
         if (response.data.context.status === "complete") {
             clearInterval(intervalId);
-            $.post("/controller/completeSearch", { data: response.data }, function () {
+            $.post("/result/completeSearch", { data: response.data }, function () {
                 console.log("완료된 데이터 컨트롤러에 전달 완료");
             });
         }
