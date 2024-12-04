@@ -4,11 +4,8 @@ import com.lec.spring.mytrip.domain.City;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-
-public interface AipageRepository {
-
-
-    // 추천 도시 조회
+@Mapper
+public interface CityRepository {
     City findCityByAnswers(
             @Param("q1Id") String q1Id,
             @Param("q2Id") String q2Id,
@@ -16,5 +13,4 @@ public interface AipageRepository {
             @Param("q4Id") String q4Id,
             @Param("q5Id") String q5Id
     );
-
 }

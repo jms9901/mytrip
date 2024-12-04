@@ -10,13 +10,10 @@ public interface AipageService {
     // 질문 데이터 제공
     List<Question> getQuestions();
 
-    // 사용자 답변 저장
-    void saveAnswers(List<String> answers);
-
     // 추천 도시 반환
-    City getRecommendedCity();
+    City getRecommendedCity(List<String> answers);
 
-    // 사용자 이름 반환
-    String getUserName();
+    // 사용자 답변 저장
+    void saveUserCityRecord(String userName, int cityId);
 
 }
