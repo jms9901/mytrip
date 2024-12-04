@@ -25,15 +25,20 @@ public class FlightController {
 
     // 검색 페이지를 렌더링하는 엔드포인트
     @GetMapping("/search")
-    public void search() {
+    public void search(Model model) {
         // 검색 페이지 처리 로직 추가 가능
+
+        List<Flight> airports = flightService.getAllAirports();
+        model.addAttribute("airports", airports);
     }
 
-    // 모든 공항 데이터를 조회하는 엔드포인트
-    @GetMapping("/airports")
-    public List<Flight> getAllAirports() {
-        return flightService.getAllAirports();
-    }
+//    // 모든 공항 데이터를 조회하는 엔드포인트
+//    @GetMapping("/airports")
+//    public String getAllAirports(Model model) {
+//        List<Flight> airports = flightService.getAllAirports();
+//        model.addAttribute("airports", airports);
+//        return "/search";
+//    }
 
     // 검색 결과 페이지를 렌더링하는 엔드포인트
     @GetMapping("/result")

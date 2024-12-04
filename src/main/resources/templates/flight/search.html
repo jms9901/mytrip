@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -12,11 +12,20 @@
         <div>
             <!-- 출발지 -->
             <select id="fromEntityId" name="fromAirportId">
-                <!-- <option value=""></option> -->
+                <option th:each="port : ${airports}" th:value="${port.airport_code}">
+                    <div>인천 국제 공항</div>
+                    <div>인천</div>
+                    <div>꼬-레아</div>
+                </option>
             </select>
             <!-- 도착지 -->
-            <select id="toEntityId" name="toAirportId">
-                <!-- <option value=""></option> -->
+            <select id="toEntityId" name="toAirportId" >
+                <option th:each="port : ${airports}" th:value="${port.airport_code}">
+                    <div th:utext="${port.airport_name}"></div>
+                    <div th:utext="${port.airport_code}"></div>
+                    <div th:utext="${port.airport_city}"></div>
+                    <div th:utext="${port.airport_country}"></div>
+                </option>
             </select>
             <!-- 날짜선택 -->
             <button id="start-date-btn">가는 날</button>
@@ -43,6 +52,7 @@
                     <div class="passenger-item">
                         <span>어린이</span>
                         <span id="child-count">0</span>
+                        <input type="hidden" name="childrenHeadCnt" id="child-count-input" value="0">
                         <div class="btn-group" id="child-group">
                             <button class="btn-decrease">-</button>
                             <button class="btn-increase">+</button>

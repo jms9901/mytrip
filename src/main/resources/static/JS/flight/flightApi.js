@@ -2,27 +2,66 @@
 
 function startSearch(formData) {
 
-    const roundtripUrl = "https://sky-scanner3.p.rapidapi.com/flights/search-roundtrip" +
-        "?fromEntityId=${fromAirportId}" +    // 출발 공항
-        "&toEntityId=${toAirportId}" +       // 도착 공항
-        "&departDate=${departDate}" +        // 출발일
-        "&returnDate=${returnDate}" +        // 도착일
-        "&stops=direct" +                    // 직항로 고정
-        "&currency=KRW" +                    // 금액 표시 단위
-        "&adults=${adultsHeadCnt}" +         // 성인 명 수
-        "&children=${childrenHeadCnt}" +     // 어린이 명 수
-        "&infants=${infantsHeadCnt}" +       // 24개월 미만 영유아 명 수
-        "&cabinClass=${cabinClass}";         // 객석 수준
+    const API_KEY = 'ea7ad1eb80msh82b3ac2477cccb9p10f649jsn801a20d72c31'
+
+    // 각 항목을 변수로 할당
+    let fromAirportId = "";
+    let toAirportId = "";
+    let departDate = "";
+    let returnDate = "";
+    let adultsHeadCnt = 0;
+    let childrenHeadCnt = 0;
+    let infantsHeadCnt = 0;
+    let cabinClass = "";
+
+    formData.forEach(function(item) {
+        if (item.name === "fromAirportId") {
+            fromAirportId = item.value;
+        }
+        if (item.name === "toAirportId") {
+            toAirportId = item.value;
+        }
+        if (item.name === "departDate") {
+            departDate = item.value;
+        }
+        if (item.name === "returnDate") {
+            returnDate = item.value;
+        }
+        if (item.name === "adultsHeadCnt") {
+            adultsHeadCnt = item.value;
+        }
+        if (item.name === "childrenHeadCnt") {
+            childrenHeadCnt = item.value;
+        }
+        if (item.name === "infantsHeadCnt") {
+            infantsHeadCnt = item.value;
+        }
+        if (item.name === "cabinClass") {
+            cabinClass = item.value;
+        }
+    });
+
+    // URL 구성
+    const roundtripUrl = `https://sky-scanner3.p.rapidapi.com/flights/search-roundtrip` +
+        `?fromEntityId=${encodeURIComponent(fromAirportId)}` +  // 출발 공항
+        `&toEntityId=${encodeURIComponent(toAirportId)}` +      // 도착 공항
+        `&departDate=${encodeURIComponent(departDate)}` +       // 출발일
+        `&returnDate=${encodeURIComponent(returnDate)}` +       // 도착일
+        `&stops=direct` +                                       // 직항로 고정
+        `&currency=KRW` +                                       // 금액 표시 단위
+        `&adults=${encodeURIComponent(adultsHeadCnt)}` +        // 성인 명 수
+        `&children=${encodeURIComponent(childrenHeadCnt)}` +    // 어린이 명 수
+        `&infants=${encodeURIComponent(infantsHeadCnt)}` +      // 유아 명 수
+        `&cabinClass=${encodeURIComponent(cabinClass)}`;        // 객석 수준
 
     $.ajax({
         url: roundtripUrl,
         method: "GET",
         headers: {
             "Content-Type": "application/json",
-            "X-RapidAPI-Key": "API_KEY",
+            "X-RapidAPI-Key": API_KEY,
             "X-RapidAPI-Host": "sky-scanner3.p.rapidapi.com"
         },
-        data: formData,
     }).done(function (response) {
         const sessionId = response.data.context.sessionId;
         if (!sessionId) {

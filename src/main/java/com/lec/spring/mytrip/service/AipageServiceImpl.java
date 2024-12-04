@@ -5,11 +5,12 @@ import com.lec.spring.mytrip.domain.City;
 import com.lec.spring.mytrip.domain.Question;
 import com.lec.spring.mytrip.repository.AipageRepository;
 import org.apache.ibatis.session.SqlSession;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@Profile("production")
 @Service
 public class AipageServiceImpl implements AipageService{
 
