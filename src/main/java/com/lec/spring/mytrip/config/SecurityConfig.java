@@ -47,7 +47,7 @@ public class SecurityConfig {
                         // 해당 url로 들어오는 요청은 인증만 필요
 //                        .requestMatchers().authenticated()
 //                        // 해당 url로 들어오는 요청은 인증 뿐아니라 권한도 필요
-//                        .requestMatchers().hasAnyRole("ROLE_USER")
+//                        .requestMatchers("").hasAnyRole("ROLE_USER")
 //                        .requestMatchers().hasAnyRole("ROLE_BUSINESS")
 //                        .requestMatchers().hasAnyRole("ROLE_ADMIN")
                         // 그 밖의 요청들은 모두 허용

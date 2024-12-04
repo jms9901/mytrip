@@ -19,9 +19,9 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(SqlSession sqlSession, PasswordEncoder passwordEncoder) {
-        this.userRepository = sqlSession.getMapper(UserRepository.class);
-        this.authorityRepository = sqlSession.getMapper(AuthorityRepository.class);
+    public UserServiceImpl(UserRepository userRepository, AuthorityRepository authorityRepository, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.authorityRepository = authorityRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -40,28 +40,21 @@ public class UserServiceImpl implements UserService {
     public int register(User user) {
         user.setUsername(user.getUsername().toLowerCase());
         user.setPassword(passwordEncoder.encode(user.getPassword()));  // 비밀번호 해싱
+
+        // 권한 설정
+        String authorization = (user.getCompanyNumber() == null || user.getCompanyNumber().isEmpty()) ? "ROLE_USER" : "ROLE_BUSINESS";
+        user.setAuthorization(authorization);  // 권한 설정
+
         userRepository.save(user);
-
-        // 권한 부여 변수 선언
-        String authorization;
-
-        // user 회원가입 시 companynumber가 없다면 일반 사용자로 권한 부여 (ROLE_USER)
-        if (user.getCompanyNumber() == null) {
-            authorization = "ROLE_USER";
-        }
-        // user 회원가입 시 companynumber가 있다면 기업 사용자로 권한 부여 (ROLE_BUSINESS)
-        else {
-            authorization = "ROLE_BUSINESS";
-        }
-
-        // 사용자 객체에 권한 설정
-        user.setAuthorization(authorization);
 
         // 권한 객체 생성 및 저장
         Authority auth = new Authority();
         auth.setUsername(user.getUsername());
         auth.setAuthority(authorization);
         authorityRepository.addAuthority(auth);
+
+        // 회원가입 성공 로그
+        System.out.println("회원가입 성공: " + user);
 
         return 1;
     }
@@ -74,3 +67,4 @@ public class UserServiceImpl implements UserService {
         return authorityRepository.findByUser(user);
     }
 }
+

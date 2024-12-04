@@ -32,13 +32,13 @@
     </select>
 
     <insert id="save" flushCache="true" parameterType="com.lec.spring.mytrip.domain.User"
-            useGeneratedKeys="true" keyProperty="id" keyColumn="user_id">
+            useGeneratedKeys="true" keyProperty="user_id" keyColumn="user_id">
         insert into user (
             user_email, user_password, user_username, user_name,
             user_phonenumber, user_birthday, user_provider, business_companynumber
         ) values (
-                     #{email}, #{password}, #{username}, #{name},
-                     #{phoneNumber}, #{birthday}, #{provider}, #{companyNumber}
+                     #{user_email}, #{user_password}, #{user_username}, #{user_name},
+                     #{user_phoneNumber}, #{user_birthday}, #{user_provider}, #{business_companyNumber}
                  )
     </insert>
 </mapper>
