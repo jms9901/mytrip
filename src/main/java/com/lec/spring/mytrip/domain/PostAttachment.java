@@ -12,5 +12,9 @@ import lombok.NoArgsConstructor;
 @Builder
 public class PostAttachment {
     private Long id;
-    private String fileName;
+    private Long board_id; // 어느 글의 첨부파일? (FK)
+
+    private String fileName;    // 저장된 파일명
+
+    private boolean isImage;
 }

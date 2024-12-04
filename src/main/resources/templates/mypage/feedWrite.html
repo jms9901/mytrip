@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" xmlns:th="http://www.thymeleaf.org">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Feed Modal</title>
+  <title>Feed Write</title>
   <link href='https://fonts.googleapis.com/css?family=Kaushan Script' rel='stylesheet'>
-  <link rel="stylesheet" href="/CSS/feedModal.css">
+  <link rel="stylesheet" href="/CSS/feedWrite.css">
 </head>
 <body>
 <!-- 피드 작성 버튼과 연결 -->
@@ -15,7 +15,7 @@
 <div class="modal-container hidden" id="feed-modal">
   <div class="modal-content" style="background-image: url(/img/feedDetailFrame.png);">
     <div class="modal-title">Write Feed Modal</div>
-    <img src="/img/checkIcon.png" type="button" id="submit-button" class="submit-button"></img>
+    <i class="bi bi-check-lg" type="button" id="submit-button" class="submit-button"></i>
 
     <!-- Left Side: Image Upload Section -->
     <div class="section">
@@ -54,6 +54,6 @@
   </div>
 </div>
 
-  <script src="/JS/feedModal.js"></script>
+  <script src="/JS/feedWrite.js"></script>
 </body>
 </html>

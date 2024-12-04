@@ -17,16 +17,17 @@ public interface FeedRepository {
     // 전체 글 목록 : 최신순
     List<Feed> findAll();
 
-    // 특정 피드 id 피드 수정
+    // 가장 최근 게시물 9개 개인정보 오른쪽 페이지에 배치
+    int findRecentFeedByUser(Long id);
+
+    // 특정 피드 id 피드 수정 -> 모달에서 처리
     int update(Feed feed);
 
-    // 특정 피드 id 피드 삭제
+    // 특정 피드 id 피드 삭제 -> 모달에서 처리
     int delete(Feed feed);
 
-    // 페이징
-    // from 부터 rows 개 만큼 select
-    List<Feed> selectFromRow(int from, int rows);
 
     // 전체 피드 개수
     int feedCountAll();
+
 }

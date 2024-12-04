@@ -3,9 +3,78 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.lec.spring.repository.FeedRepository">
+<mapper namespace="com.lec.spring.mytrip.repository.FeedRepository">
 
-    <insert id="save">
+    <sql id="SELECT_BOARD">
+        select
+            board_id "id"
+            user_id "user_id",
+            city_id "dicy_id",
+            board_subject "board_subject",
+            board_content "board_content",
+            board_view_count "board_view_count",
+            board_date "board_date",
+            board_category "board_category"
+        from board
+        where 1=1
+    </sql>
 
+    <!-- 피드 저장 -->
+    <insert id="save" flushCache="true" parameterType="com.lec.spring.mytrip.domain.Feed"
+        useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        INSERT INTO board
+            (user_id, city_id, board_subject, board_content, board_view_count, board_date, board_category)
+        VALUES
+            (#{user_id}, #{city_id}, #{board_subject}, #{board_content}, #{board_view_count}, #{board_date}, #{board_category})
     </insert>
+
+    <!-- 특정 피드 id로 글 찾기 -->
+    <select id="findById" parameterType="long" resultType="com.lec.spring.mytrip.domain.Feed">
+        <include refid="SELECT_BOARD"/>
+        WHERE board_id = #{id}
+    </select>
+
+    <!-- 특정 피드 id 글 조회수 증가 -->
+    <update id="viewCnt" parameterType="long">
+        UPDATE board
+        SET board_view_count = board_view_count + 1
+        WHERE board_id = #{id}
+    </update>
+
+    <!-- 전체 글 목록 : 최신순 -->
+    <select id="findAll" resultType="com.lec.spring.mytrip.domain.Feed">
+        <include refid="SELECT_BOARD" />
+        ORDER BY board_date DESC
+    </select>
+
+    <!-- 특정 사용자의 최신 게시물 9개 가져오기 -->
+    <select id="findRecentFeedByUser" parameterType="long" resultType="com.lec.spring.mytrip.domain.Feed">
+        <include refid="SELECT_BOARD" />
+        WHERE user_id = #{user_id}
+        ORDER BY board_date DESC
+        LIMIT 9
+    </select>
+
+    <!-- 특정 피드 id로 피드 수정 -->
+    <update id="update" flushCache="true" parameterType="com.lec.spring.mytrip.domain.Feed">
+        UPDATE board
+        SET board_subject = #{board_subject},
+            board_content = #{board_content},
+            board_category = #{board_category},
+            city_id = #{city_id}
+        WHERE board_id = #{board_id}
+    </update>
+
+    <!-- 특정 피드 id로 피드 삭제  -->
+    <delete id="delete" parameterType="long">
+        DELETE FROM board
+        WHERE board_id = #{board_id}
+    </delete>
+
+    <!-- 전체 피드 개수 -->
+    <select id="feedCountAll" resultType="int">
+        SELECT COUNT(*) FROM board
+    </select>
+
+
 </mapper>
