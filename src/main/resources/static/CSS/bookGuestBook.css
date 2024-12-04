@@ -247,6 +247,7 @@ body{
     background-size: contain;  /* 이미지가 div를 완전히 덮지 않지만 잘리지 않고 축소되어 보임 */
     background-position: center;  /* 이미지 중앙 정렬 */
     background-repeat: no-repeat;  /* 이미지 반복 안 함 */
+    text-align: center;
 }
 
 
@@ -259,8 +260,6 @@ body{
 .guestbook-entry {
     position: relative;
     z-index: 10; /* 페이지 위로 렌더링되도록 설정 */
-
-
     padding: 10px;
 }
 
