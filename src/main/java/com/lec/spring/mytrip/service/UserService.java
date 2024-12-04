@@ -16,7 +16,6 @@ public interface UserService {
     int register(User user);
 
     // 특정 user_id의 authorization 리스트로 가져오기
-    // TODO
     List<Authority> selectAuthorityById(Long id);
 
     // 특정 user_id의 status 확인

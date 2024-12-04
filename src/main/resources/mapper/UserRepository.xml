@@ -21,12 +21,12 @@
         where 1=1
     </sql>
 
-    <select id="findById" parameterType="long" resultType="com.lec.spring.mytrip.domain.User">
+    <select id="findById" resultType="com.lec.spring.mytrip.domain.User">
         <include refid="SELECT_USER"/>
         and user_id = #{id}
     </select>
 
-    <select id="findByUsername" parameterType="string" resultType="com.lec.spring.mytrip.domain.User">
+    <select id="findByUsername" resultType="com.lec.spring.mytrip.domain.User">
         <include refid="SELECT_USER"/>
         and user_username = #{username}
     </select>
