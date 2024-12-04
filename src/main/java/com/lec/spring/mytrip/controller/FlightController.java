@@ -4,9 +4,11 @@ import com.lec.spring.mytrip.domain.Flight;
 import com.lec.spring.mytrip.domain.History;
 import com.lec.spring.mytrip.service.FlightService;
 import com.lec.spring.mytrip.service.HistoryService;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 // 공항 데이터와 검색 기록을 관리하는 통합 컨트롤러
 @RestController
@@ -68,4 +70,24 @@ public class FlightController {
     public History getSearchRecordById(@PathVariable int searchHistoryId) {
         return historyService.getSearchRecordById(searchHistoryId);
     }
+/*
+    @PostMapping("/controller/startSearch")
+    public String startSearch(@RequestParam String sessionId, Model model) {
+        model.addAttribute("sessionId", sessionId);
+        return "result"; // result.html 페이지로 이동
+    }
+
+    @PostMapping("/controller/completeSearch")
+    public String completeSearch(@RequestBody Map<String, Object> data, Model model) {
+        String itineraryId = (String) data.get("itineraryId");
+        String token = (String) data.get("token");
+        model.addAttribute("itineraryId", itineraryId);
+        model.addAttribute("token", token);
+        return "detail"; // detail.html 페이지로 이동
+    }
+    */
+
+
+
+
 } // end controller

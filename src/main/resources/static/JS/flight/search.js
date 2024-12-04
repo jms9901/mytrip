@@ -1,52 +1,95 @@
 $(document).ready(function () {
-    //달력 관련 기능
-    // 현재 날짜 기준으로 오늘 이후 날짜만 선택 가능
+    // flatpickr 초기화
     const today = new Date();
 
-    // '가는 날' 설정
-    const startPicker = flatpickr("#start-date-btn", {
-        minDate: today, // 오늘 이후만 선택 가능
+    flatpickr("#start-date-btn", {
+        minDate: today,
         dateFormat: "Y-m-d",
         onChange: function (selectedDates, dateStr) {
             if (selectedDates.length > 0) {
-                $("#start-date-btn").text(dateStr); // 버튼 텍스트 업데이트
-                $("#start-date-value").val(dateStr);// 인풋 value 업데이트
+                $("#start-date-btn").text(dateStr).attr("type", "button");
+                $("#start-date-value").val(dateStr);
+                // endPicker의 minDate를 startPicker의 선택된 날짜 다음날로 설정
                 endPicker.set("minDate", new Date(selectedDates[0].getTime() + 86400000));
+                // endPicker의 입력을 활성화
+                $('#end-date-btn').prop('disabled', false); // endPicker 활성화
+                // endPicker 값을 초기화 (초깃값으로 되돌리기)
+                $("#end-date-btn").text("Select end date"); // 버튼 텍스트를 초기화
+                $("#end-date-value").val(""); // end-date-value 값을 초기화
+                endPicker.clear(); // endPicker 날짜 초기화
             }
         }
     });
 
-    // '오는 날' 설정
+    // endPicker는 처음에는 비활성화
     const endPicker = flatpickr("#end-date-btn", {
-        minDate: new Date(today.getTime() + 86400000), // 기본값: 내일부터 가능
+        minDate: new Date(today.getTime() + 86400000),
         dateFormat: "Y-m-d",
-            onChange: function (selectedDates, dateStr) {
+        onChange: function (selectedDates, dateStr) {
             if (selectedDates.length > 0) {
-                $("#end-date-btn").text(dateStr); // 버튼 텍스트 업데이트
-                $("#end-date-value").val(dateStr);// 인풋 value 업데이트
+                $("#end-date-btn").text(dateStr);
+                $("#end-date-value").val(dateStr);
             }
         }
     });
 
+    $("#start-date-btn").attr("type", "button");
 
-    // 인원수/좌석 관련
-    // 초기화
-    const counts = {
-        adult: 0,
-        child: 0,
-        infant: 0
+    // startPicker를 선택하기 전에는 endPicker를 비활성화
+    $('#end-date-btn').prop('disabled', true) // 처음에 endPicker 비활성화
+        .attr("type", "button");
+
+
+    // 인원수 초기화 및 변경 로직
+    window.changeCount = function (type, delta) {
+        const countElement = document.getElementById(`${type}-count`);
+        counts[type] = Math.max(0, counts[type] + delta);
+        countElement.textContent = counts[type];
     };
 
-    // 인원수 변경 함수
+    // 인원 및 좌석 선택 화면 열기/닫기
+    $("#open-selection-btn").on("click", function () {
+        const container = $("#selection-container");
+        container.toggle();
+    }).attr("type", "button");
+
+    // 각 그룹의 카운트를 추적하는 객체
+    let counts = {
+        infant: 0,
+        child: 0,
+        adult: 0
+    };
+
+    // changeCount 함수
     function changeCount(type, delta) {
         const countElement = document.getElementById(`${type}-count`);
-        counts[type] = Math.max(0, counts[type] + delta); // 최소값 0으로 제한
+        counts[type] = Math.max(0, counts[type] + delta); // 0 이하로 감소하지 않도록 제한
         countElement.textContent = counts[type];
     }
 
-    // 선택 화면 열기
-    document.getElementById("open-selection-btn").addEventListener("click", () => {
-        const container = document.getElementById("selection-container");
-        container.style.display = container.style.display === "none" ? "block" : "none";
+    $('#infant-group .btn-decrease').on('click', function() {
+        changeCount('infant', -1);
     });
+
+    $('#infant-group .btn-increase').on('click', function() {
+        changeCount('infant', 1);
+    });
+
+    $('#child-group .btn-decrease').on('click', function() {
+        changeCount('child', -1);
+    });
+    $('#child-group .btn-increase').on('click', function() {
+        changeCount('child', 1);
+    });
+
+    $('#adult-group .btn-decrease').on('click', function() {
+        changeCount('adult', -1);
+    });
+    $('#adult-group .btn-increase').on('click', function() {
+        changeCount('adult', 1);
+    });
+
+    $(".btn-increase").attr("type", "button");
+    $(".btn-decrease").attr("type", "button");
+
 });

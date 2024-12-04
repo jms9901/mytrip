@@ -12,19 +12,19 @@
     <form action="">
       <div>
         <!-- 출발지 -->
-        <select>
+        <select id="fromEntityId">
           <!-- <option value=""></option> -->
         </select>
         <!-- 도착지 -->
-        <select>
+        <select id="toEntityId">
           <!-- <option value=""></option> -->
         </select>
         <!-- 날짜선택 -->
-        <label for="start-date">가는 날:</label>
-        <input type="text" id="start-date" placeholder="가는 날 선택">
+        <button id="start-date-btn">가는 날</button>
+        <input type="hidden" name="startDate" id="start-date-value">
 
-        <label for="end-date">오는 날:</label>
-        <input type="text" id="end-date" placeholder="오는 날 선택">
+        <button id="end-date-btn">오는 날</button>
+        <input type="hidden" name="endDate" id="end-date-value">
         <!-- 인원선택 -->
         <button id="open-selection-btn">인원 및 좌석 선택</button>
 
@@ -35,28 +35,29 @@
             <div class="passenger-item">
               <span>성인</span>
               <span id="adult-count">0</span>
-              <div class="btn-group">
-                <button onclick="changeCount('adult', -1)">-</button>
-                <button onclick="changeCount('adult', 1)">+</button>
+              <div class="btn-group" id="adult-group">
+                <button class="btn-decrease">-</button>
+                <button class="btn-increase">+</button>
               </div>
             </div>
             <div class="passenger-item">
               <span>어린이</span>
               <span id="child-count">0</span>
-              <div class="btn-group">
-                <button onclick="changeCount('child', -1)">-</button>
-                <button onclick="changeCount('child', 1)">+</button>
+              <div class="btn-group" id="child-group">
+                <button class="btn-decrease">-</button>
+                <button class="btn-increase">+</button>
               </div>
             </div>
             <div class="passenger-item">
               <span>아기</span>
               <span id="infant-count">0</span>
-              <div class="btn-group">
-                <button onclick="changeCount('infant', -1)">-</button>
-                <button onclick="changeCount('infant', 1)">+</button>
+              <div class="btn-group" id="infant-group">
+                <button class="btn-decrease">-</button>
+                <button class="btn-increase">+</button>
               </div>
             </div>
           </div>
+
           <!-- 좌석 선택 -->
           <div class="section" id="seat-selection">
             <h3>좌석 선택</h3>
@@ -70,15 +71,7 @@
         </div>
       </div>
       <div>
-        <!-- 최근 검색 기록 -->
-        <div>
-          1
-          2
-          3
-          4
-          5
-        </div>
-        <button>조회</button>
+        <button id="api-query">조회</button>
       </div>
     </form>
   </div>
@@ -96,7 +89,7 @@
 
   </table>
   <!-- 가짜 div. 무한 스크롤 구현을 위해 스크린에 이 div가 뜨면 다음 쿼리가 진행되도록 -->
-  <div></div>
+  <div id="incomplete"></div>
 
   <!-- 페이지 상단 이동 버튼이 들어갈 자리 -->
   <div></div>
