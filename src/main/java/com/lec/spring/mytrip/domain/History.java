@@ -17,8 +17,5 @@ public class History {
     private String startName; // 출발지
     private String endName; // 도착지
 
-    // userId를 직접 가져오기 위한 메서드
-//    public int getUserId() {
-//        return user.getUserId(); // User 객체의 userId 반환
-//    }
+
 }

@@ -56,11 +56,11 @@ public class FlightController {
 //    public void saveSearchHistory(@RequestBody History history) {
 //        historyService.saveSearch(history);
 //
-//        // 5개 초과 시 가장 오래된 기록 삭제
-//        List<History> userHistory = historyService.getSearches(history.getUserId());
-//        if (userHistory.size() > 5) {
-//            historyService.deleteSearch(userHistory.get(0).getId());
-//        }
+//     // 5개 초과 시 가장 오래된 기록 삭제
+//     List<History> userHistory = historyService.getSearches(history.getUserId());
+//      if (userHistory.size() > 5) {
+//           historyService.deleteSearch(userHistory.get(0).getId());
+//       }
 //    }
 
     // 특정 사용자의 최근 검색 기록을 조회하는 엔드포인트 (최대 5개) 띵킹필
