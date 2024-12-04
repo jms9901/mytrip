@@ -3,6 +3,7 @@ package com.lec.spring.mytrip.service;
 import com.lec.spring.mytrip.domain.History;
 import com.lec.spring.mytrip.repository.HistoryRepository;
 import org.apache.ibatis.session.SqlSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
