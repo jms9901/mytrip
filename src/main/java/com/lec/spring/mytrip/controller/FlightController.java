@@ -52,6 +52,16 @@ public class FlightController {
     public void saveSearch(@RequestBody History history) {
         historyService.saveSearch(history);
     }
+//    @PostMapping("/history/save")
+//    public void saveSearchHistory(@RequestBody History history) {
+//        historyService.saveSearch(history);
+//
+//        // 5개 초과 시 가장 오래된 기록 삭제
+//        List<History> userHistory = historyService.getSearches(history.getUserId());
+//        if (userHistory.size() > 5) {
+//            historyService.deleteSearch(userHistory.get(0).getId());
+//        }
+//    }
 
     // 특정 사용자의 최근 검색 기록을 조회하는 엔드포인트 (최대 5개) 띵킹필
     @GetMapping("/history/user/{userId}")
@@ -70,14 +80,14 @@ public class FlightController {
     public History getSearchRecordById(@PathVariable int searchHistoryId) {
         return historyService.getSearchRecordById(searchHistoryId);
     }
-/*
-    @PostMapping("/controller/startSearch")
+
+    @PostMapping("/search/startSearch")
     public String startSearch(@RequestParam String sessionId, Model model) {
         model.addAttribute("sessionId", sessionId);
         return "result"; // result.html 페이지로 이동
     }
 
-    @PostMapping("/controller/completeSearch")
+    @PostMapping("/result/completeSearch")
     public String completeSearch(@RequestBody Map<String, Object> data, Model model) {
         String itineraryId = (String) data.get("itineraryId");
         String token = (String) data.get("token");
@@ -85,7 +95,7 @@ public class FlightController {
         model.addAttribute("token", token);
         return "detail"; // detail.html 페이지로 이동
     }
-    */
+
 
 
 
