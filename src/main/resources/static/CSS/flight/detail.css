@@ -139,3 +139,104 @@ h1 {
 .reservation-button:hover {
     background-color: #0056b3;
 }
+
+.price-container {
+    margin-top: 30px;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.price-container h2 {
+    margin-top: 0;
+}
+
+.price-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.price-row:last-child {
+    border-bottom: none;
+}
+
+.site-name {
+    font-weight: bold;
+    flex: 1;
+}
+
+.site-price {
+    font-size: 18px;
+    color: #007bff;
+    flex: 1;
+    text-align: right;
+}
+
+.select-button {
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.select-button:hover {
+    background-color: #0056b3;
+}
+.price-container {
+    width: 700px;
+    margin-top: 30px;
+    padding: 15px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.price-container h2 {
+    font-size: 20px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.price-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.price-row:last-child {
+    border-bottom: none;
+}
+
+.site-name {
+    font-weight: bold;
+    flex: 1;
+    color: #555;
+}
+
+.site-price {
+    font-size: 16px;
+    color: #007bff;
+    flex: 1;
+    text-align: right;
+}
+
+.select-button {
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.select-button:hover {
+    background-color: #0056b3;
+}
