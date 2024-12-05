@@ -31,8 +31,11 @@ public class UserValidator implements Validator {
         String username = user.getUsername();
         if (username == null || username.trim().isEmpty()) {
             errors.rejectValue("username", "username.required", "username 은 필수입니다.");
-        } else  {
-            errors.rejectValue("username", "username.duplicate", "이미 존재하는 아이디(username) 입니다.");
+        } else {
+            User existingUser = userService.findByUsername(username);
+            if (existingUser != null) {
+                errors.rejectValue("username", "username.duplicate", "이미 존재하는 아이디(username) 입니다.");
+            }
         }
 
         // name 검증

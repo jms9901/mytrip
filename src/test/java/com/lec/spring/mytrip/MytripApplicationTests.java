@@ -64,7 +64,7 @@ public class MytripApplicationTests {
 
         // 로그인 시도
         mockMvc.perform(SecurityMockMvcRequestBuilders.formLogin()
-                        .user("testuser")
+                        .user("user1")
                         .password("testpassword"))
                 .andExpect(status().isOk());
     }
