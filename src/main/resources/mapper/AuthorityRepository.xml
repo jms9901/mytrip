@@ -19,11 +19,12 @@
             user_username as "username",
             user_authorization as "authority"
         from user
-        where user_username = #{username}
+        where user_id = #{id}
     </select>
 
-    <insert id="addAuthority" parameterType="com.lec.spring.mytrip.domain.Authority">
-        insert into user (user_authorization)
-        values (#{authority})
-    </insert>
+    <update id="addAithority" parameterType="com.lec.spring.mytrip.domain.Authority">
+        update user
+        set user_authorization = #{authority}
+        where user_id = #{id}
+    </update>
 </mapper>

@@ -3,7 +3,7 @@ package com.lec.spring.mytrip.repository;
 import com.lec.spring.mytrip.domain.User;
 import org.apache.ibatis.annotations.Mapper;
 
-@Mapper
+
 public interface UserRepository {
     //특정 id를 가진 user 리턴
     User findById(Long id);
@@ -13,4 +13,5 @@ public interface UserRepository {
 
     // 새로운 user 등록
     int save (User user);
+    
 }

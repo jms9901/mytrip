@@ -9,13 +9,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (type === 'member') {
       document.getElementById('loginForm2').classList.remove('hidden');
-      
-      
     } else if (type === 'business') {
       document.getElementById('loginForm3').classList.remove('hidden');
-      document.getElementById('business').classList.remove('hidden')
-      
-    } 
+      document.getElementById('business').classList.remove('hidden');
+    }
   }
 
   document.getElementById("member").addEventListener("click", function () {
@@ -25,7 +22,7 @@ document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("business").addEventListener("click", function () {
     showForm('business');
   });
-  
+
   document.getElementById("submit1").addEventListener("click", function (event) {
     event.preventDefault();
     const form = document.getElementById("loginForm1");
@@ -45,7 +42,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   document.getElementById("submit2").addEventListener("click", function (event) {
     event.preventDefault();
-    const form = document.getElementById("memberForm");
+    const form = document.getElementById("loginForm2");  // ID 수정
     const inputs = form.querySelectorAll("input");
     let check = true;
 
@@ -62,7 +59,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   document.getElementById("submit3").addEventListener("click", function (event) {
     event.preventDefault();
-    const form = document.getElementById("businessForm");
+    const form = document.getElementById("loginForm3");  // ID 수정
     const inputs = form.querySelectorAll("input");
     let check = true;
 

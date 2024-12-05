@@ -19,22 +19,26 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, AuthorityRepository authorityRepository, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.authorityRepository = authorityRepository;
+    public UserServiceImpl(SqlSession sqlSession, PasswordEncoder passwordEncoder) {
+        this.userRepository = sqlSession.getMapper(UserRepository.class);
+        this.authorityRepository = sqlSession.getMapper(AuthorityRepository.class);
         this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public User findByUsername(String username) {
+        if(username == null){
+            return null;
+        }
+        System.out.println("user: " + username);
         return userRepository.findByUsername(username.toLowerCase());
     }
 
-    @Override
-    public boolean isExist(String username) {
-        User user = findByUsername(username.toLowerCase());
-        return (user != null);
-    }
+//    @Override
+//    public boolean isExist(String username) {
+//        User user = findByUsername(username.toLowerCase());
+//        return (user != null);
+//    }
 
     @Override
     public int register(User user) {
@@ -45,13 +49,17 @@ public class UserServiceImpl implements UserService {
         String authorization = (user.getCompanyNumber() == null || user.getCompanyNumber().isEmpty()) ? "ROLE_USER" : "ROLE_BUSINESS";
         user.setAuthorization(authorization);  // 권한 설정
 
-        userRepository.save(user);
+        String status = (user.getAuthorization().equalsIgnoreCase( "ROLE_BUSINESS")) ? "대기" : "승인";
+        user.setStatus(status);
 
+        userRepository.save(user);
+        System.out.println(user);
         // 권한 객체 생성 및 저장
-        Authority auth = new Authority();
-        auth.setUsername(user.getUsername());
-        auth.setAuthority(authorization);
-        authorityRepository.addAuthority(auth);
+//        Authority auth = new Authority();
+//        auth.setUsername(user.getUsername());
+//        auth.setAuthority(authorization);
+//        authorityRepository.addAuthority(auth);
+
 
         // 회원가입 성공 로그
         System.out.println("회원가입 성공: " + user);
@@ -59,12 +67,12 @@ public class UserServiceImpl implements UserService {
         return 1;
     }
 
-    @Override
-    public List<Authority> selectAuthorityById(Long id) {
-        User user = userRepository.findById(id);
-        if (user == null) return null;
-
-        return authorityRepository.findByUser(user);
-    }
+//    @Override
+//    public List<Authority> selectAuthorityById(Long id) {
+//        User user = userRepository.findById(id);
+//        if (user == null) return null;
+//
+//        return authorityRepository.findByUser(user);
+//    }
 }
 

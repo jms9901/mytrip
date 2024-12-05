@@ -31,7 +31,7 @@ public class UserValidator implements Validator {
         String username = user.getUsername();
         if (username == null || username.trim().isEmpty()) {
             errors.rejectValue("username", "username.required", "username 은 필수입니다.");
-        } else if (userService.isExist(username)) {
+        } else  {
             errors.rejectValue("username", "username.duplicate", "이미 존재하는 아이디(username) 입니다.");
         }
 

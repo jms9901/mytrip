@@ -16,7 +16,8 @@
             user_provider as "provider",
             user_introdution as "introduction",
             user_authorization as "authorization",
-            business_companynumber as "companyNumber"
+            business_companynumber as "companyNumber",
+            user_status as "status"
         from user
         where 1=1
     </sql>
@@ -32,13 +33,13 @@
     </select>
 
     <insert id="save" flushCache="true" parameterType="com.lec.spring.mytrip.domain.User"
-            useGeneratedKeys="true" keyProperty="user_id" keyColumn="user_id">
+            useGeneratedKeys="true" keyProperty="id" keyColumn="user_id">
         insert into user (
             user_email, user_password, user_username, user_name,
-            user_phonenumber, user_birthday, user_provider, business_companynumber
+            user_phonenumber, user_birthday, user_provider, business_companynumber, user_authorization, user_status
         ) values (
-                     #{user_email}, #{user_password}, #{user_username}, #{user_name},
-                     #{user_phoneNumber}, #{user_birthday}, #{user_provider}, #{business_companyNumber}
+                     #{email}, #{password}, #{username}, #{name},
+                     #{phoneNumber}, #{birthday}, #{provider}, #{companyNumber}, #{authorization}, #{status}
                  )
     </insert>
 </mapper>
