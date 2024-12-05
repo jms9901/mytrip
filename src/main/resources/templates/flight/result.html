@@ -6,75 +6,84 @@
 </head>
 <body>
 <!-- 모든 항목 담을 div -->
-<div>
-  <!-- 검색 조건 명시 및 변경 -->
+<form name="frm" th:action="@{/flight/result}" method="post" enctype="multipart/form-data">
   <div>
-    <form action="">
-      <div>
-        <!-- 출발지 -->
-        <select id="fromEntityId">
-          <!-- <option value=""></option> -->
-        </select>
-        <!-- 도착지 -->
-        <select id="toEntityId">
-          <!-- <option value=""></option> -->
-        </select>
-        <!-- 날짜선택 -->
-        <button id="start-date-btn">가는 날</button>
-        <input type="hidden" name="startDate" id="start-date-value">
+    <!-- 출발지 -->
+    <select id="fromEntityId" name="fromAirportId">
+      <option>
+        <div>인천 국제 공항</div>
+        <div>인천</div>
+        <div>꼬-레아</div>
+      </option>
+    </select>
+    <!-- 도착지 -->
+    <select id="toEntityId" name="toAirportId" >
+      <option th:each="port : ${airports}" th:value="${port.airportCode}">
+        <div th:utext="${port.airportName}"></div>
+        <div th:utext="${port.airportCode}"></div>
+        <div th:utext="${port.airportCity}"></div>
+        <div th:utext="${port.airportCountry}"></div>
+      </option>
+    </select>
+    <!-- 날짜선택 -->
+    <button id="start-date-btn">가는 날</button>
+    <input type="hidden" name="departDate" id="start-date-value">
 
-        <button id="end-date-btn">오는 날</button>
-        <input type="hidden" name="endDate" id="end-date-value">
-        <!-- 인원선택 -->
-        <button id="open-selection-btn">인원 및 좌석 선택</button>
+    <button id="end-date-btn">오는 날</button>
+    <input type="hidden" name="returnDate" id="end-date-value">
+    <!-- 인원선택 -->
+    <button id="open-selection-btn">인원 및 좌석 선택</button>
 
-        <div id="selection-container">
-          <!-- 인원 선택 -->
-          <div class="section" id="passenger-selection">
-            <h3>인원 선택</h3>
-            <div class="passenger-item">
-              <span>성인</span>
-              <span id="adult-count">0</span>
-              <div class="btn-group" id="adult-group">
-                <button class="btn-decrease">-</button>
-                <button class="btn-increase">+</button>
-              </div>
-            </div>
-            <div class="passenger-item">
-              <span>어린이</span>
-              <span id="child-count">0</span>
-              <div class="btn-group" id="child-group">
-                <button class="btn-decrease">-</button>
-                <button class="btn-increase">+</button>
-              </div>
-            </div>
-            <div class="passenger-item">
-              <span>아기</span>
-              <span id="infant-count">0</span>
-              <div class="btn-group" id="infant-group">
-                <button class="btn-decrease">-</button>
-                <button class="btn-increase">+</button>
-              </div>
-            </div>
+    <div id="selection-container">
+      <!-- 인원 선택 -->
+      <div class="section" id="passenger-selection">
+        <h3>인원 선택</h3>
+        <div class="passenger-item">
+          <span>성인</span>
+          <span id="adult-count">1</span>
+          <input type="hidden" name="adultsHeadCnt" id="adult-count-input" value="1">
+          <div class="btn-group" id="adult-group">
+            <button class="btn-decrease">-</button>
+            <button class="btn-increase">+</button>
           </div>
-
-          <!-- 좌석 선택 -->
-          <div class="section" id="seat-selection">
-            <h3>좌석 선택</h3>
-            <select name="seat-1">
-              <option value="">이코노미</option>
-              <option value="">비즈니스</option>
-              <option value="">프리미엄</option>
-              <option value="">퍼스트</option>
-            </select>
+        </div>
+        <div class="passenger-item">
+          <span>어린이</span>
+          <span id="child-count">0</span>
+          <input type="hidden" name="childrenHeadCnt" id="child-count-input" value="0">
+          <div class="btn-group" id="child-group">
+            <button class="btn-decrease">-</button>
+            <button class="btn-increase">+</button>
+          </div>
+        </div>
+        <div class="passenger-item">
+          <span>아기</span>
+          <span id="infant-count">0</span>
+          <input type="hidden" name="infantsHeadCnt" id="infant-count-input" value="0">
+          <div class="btn-group" id="infant-group">
+            <button class="btn-decrease">-</button>
+            <button class="btn-increase">+</button>
           </div>
         </div>
       </div>
-      <div>
-        <button id="api-query">조회</button>
+
+      <!-- 좌석 선택 -->
+      <div class="section" id="seat-selection">
+        <h3>좌석 선택</h3>
+        <select name="cabinClass">
+          <option value="economy">이코노미</option>
+          <option value="premium_economy">비즈니스</option>
+          <option value="business">프리미엄</option>
+          <option value="first">퍼스트</option>
+        </select>
       </div>
-    </form>
+    </div>
   </div>
+  <div>
+    <button id="api-query">조회</button>
+  </div>
+</form>
+</div>
   <!-- 검색 결과 테이블 -->
   <table>
 
@@ -94,5 +103,9 @@
   <!-- 페이지 상단 이동 버튼이 들어갈 자리 -->
   <div></div>
 </div>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="/JS/flight/result.js"></script>
 </body>
 </html>

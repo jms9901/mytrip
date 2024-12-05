@@ -2,7 +2,7 @@
 
 function startSearch(formData) {
 
-    const API_KEY = 'ea7ad1eb80msh82b3ac2477cccb9p10f649jsn801a20d72c31'
+    const API_KEY = '6400a15222msh8627a40b3bd3531p1bdef5jsnaa784d38dcf3'
 
     // 각 항목을 변수로 할당
     let fromAirportId = "";

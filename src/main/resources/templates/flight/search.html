@@ -2,13 +2,13 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>항공권 검색</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" href="/CSS/flight/search.css">
 </head>
 <body>
 <div>
-    <form name="frm" th:action="@{/flight/result}" method="post" enctype="multipart/form-data">
+    <form id="roundTrip" name="frm" th:action="@{/flight/result}" method="post" enctype="multipart/form-data">
         <div>
             <!-- 출발지 -->
             <select id="fromEntityId" name="fromAirportId">
@@ -88,11 +88,8 @@
 </div>
 
 
-
-
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="/JS/flight/search.js"></script>
-<script src="/JS/flight/flightApiBase.js"></script>
 </body>
 </html>

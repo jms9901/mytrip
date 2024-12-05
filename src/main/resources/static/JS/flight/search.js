@@ -100,4 +100,25 @@ $(document).ready(function () {
     $(".btn-increase").attr("type", "button");
     $(".btn-decrease").attr("type", "button");
 
+
+    $(".api-query").click(function (){
+        // 폼 데이터를 가져옵니다.
+        var fromAirportId = $("#fromAirportId").val();
+        var toAirportId = $("#toAirportId").val();
+        var departDate = $("#departDate").val();
+        var returnDate = $("#returnDate").val();
+        var adultsHeadCnt = $("#adultsHeadCnt").val();
+        var childrenHeadCnt = $("#childrenHeadCnt").val();
+        var infantsHeadCnt = $("#infantsHeadCnt").val();
+        var cabinClass = $("#cabinClass").val();
+
+        // 쿼리 스트링을 구성합니다.
+        var queryString = `fromEntityId=${fromAirportId}&toEntityId=${toAirportId}&departDate=${departDate}&returnDate=${returnDate}&stops=direct&currency=KRW&adults=${adultsHeadCnt}&children=${childrenHeadCnt}&infants=${infantsHeadCnt}&cabinClass=${cabinClass}`;
+
+        // URL을 설정하고 폼을 제출합니다.
+        var Url = `https://sky-scanner3.p.rapidapi.com/flights/search-roundtrip?${queryString}`;
+        $("#roundTrip").attr("roundTrip", Url);
+        $("#roundTrip").submit();
+    })
+
 });

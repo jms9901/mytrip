@@ -2,6 +2,7 @@ package com.lec.spring.mytrip.controller;
 
 import com.lec.spring.mytrip.domain.Flight;
 import com.lec.spring.mytrip.domain.History;
+import com.lec.spring.mytrip.form.FlightRoundTrip;
 import com.lec.spring.mytrip.service.FlightService;
 import com.lec.spring.mytrip.service.HistoryService;
 import org.springframework.stereotype.Controller;
@@ -44,8 +45,11 @@ public class FlightController {
 
     // 검색 결과 페이지를 렌더링하는 엔드포인트
     @PostMapping("/result")
-    public void result() {
+    public void result(@ModelAttribute FlightRoundTrip flightRoundTrip, Model model) {
         // 검색 결과 페이지 처리 로직 추가 가능
+        List<Flight> airports = flightService.getAllAirports();
+        model.addAttribute("airports", airports);
+        model.addAttribute("flightRoundTrip", flightRoundTrip);
     }
 
     // 상세 보기 페이지를 렌더링하는 엔드포인트
