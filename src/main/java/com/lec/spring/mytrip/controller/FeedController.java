@@ -98,7 +98,7 @@ public class FeedController {
     @GetMapping("/feedList")
     public String feedList(Model model) {
         model.addAttribute("feeds", feedService.list());
-        return "mypage/feedList";
+        return "feed";
     }
 
     // 피드 수정 폼
