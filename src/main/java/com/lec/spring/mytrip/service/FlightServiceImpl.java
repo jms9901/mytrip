@@ -19,6 +19,7 @@ public class FlightServiceImpl implements FlightService {
 
     @Override
     public List<Flight> getAllAirports() {
+        System.out.println("getAllAirports 서비스 단");
         return flightRepository.getAllAirports();
     }
 

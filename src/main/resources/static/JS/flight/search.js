@@ -1,4 +1,6 @@
 $(document).ready(function () {
+    console.log("search js 로드")
+
     // flatpickr 초기화
     const today = new Date();
 
