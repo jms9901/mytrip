@@ -50,8 +50,8 @@ public class FlightController {
 
     // 상세 보기 페이지를 렌더링하는 엔드포인트
     @GetMapping("/detail")
-    public void detail() {
-        // 상세 보기 페이지 처리 로직 추가 가능
+    public String detail() {
+        return "flight/detail";
     }
 
     // 검색 기록을 저장하는 엔드포인트
