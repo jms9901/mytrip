@@ -18,6 +18,7 @@
 <div class="logo">
 	<div class="logo" style="background-image: url(/img/mypageLogo.png);"></div>
 </div>
+<div class="addGuestBookModal"></div>
 <div class="myPageGoHome" style="background-image: url(/img/myPageGoHome.png)"></div>
 
 <div class="flipbook-viewport">
@@ -77,11 +78,11 @@
 		</div>
 	</div>
 </div>
-<div class="menu1" id="1" style="background-image: url(/img/mypageMenu.png);"><h4 id="Post">&nbsp;Invoice</h4></div>
-<div class="menu2" id="2" style="background-image: url(/img/mypageMenu.png);"><h4 id="PostLiked">&nbsp;Post</h4></div>
-<div class="menu3" id="3" style="background-image: url(/img/mypageMenu.png);"><h4 id="GuestBook">&nbsp;Post♥</h4></div>
+<div class="menu1" id="1" style="background-image: url(/img/mypageMenu.png);"><h4 id="Invoice">&nbsp;Invoice</h4></div>
+<div class="menu2" id="2" style="background-image: url(/img/mypageMenu.png);"><h4 id="post">&nbsp;Post</h4></div>
+<div class="menu3" id="3" style="background-image: url(/img/mypageMenu.png);"><h4 id="PostLiked">&nbsp;Post♥</h4></div>
 <div class="menu4" id="4" style="background-image: url(/img/mypageMenu.png);"><h4 id="PackageLiked">&nbsp;Package♥</h4></div>
-<div class="menu5" id="5" style="background-image: url(/img/mypageMenu.png);"><h4 id="Invoice">&nbsp;GuestBook</h4></div>
+<div class="menu5" id="5" style="background-image: url(/img/mypageMenu.png);" ><h4 id="GuestBook" onclick="window.location.href='/mypage/bookGuestBook';">&nbsp;GuestBook</h4></div>
 	<div class="goChat" style="background-image: url(/img/mypageChat.png);"></div>
 <div class="updateUserModal" >
 	<div class="NameAndImg">
@@ -91,7 +92,9 @@
 	</div>
 	<div class="IntroduceMyself"></div>
 	<div class="UpdatePassword">
-		<div class="submitUpdate"></div>
+		<div id="passwordArea"><div>password</div><input type="text" class="UserPassword"></div>
+		<div id="newpasswordArea"><div>new password</div><input type="text" class="NewUserPassword"></div>
+		<div class="submitUpdate" style="background-image: url(/img/checkIcon.png)"></div>
 	</div>
 	<div></div>
 </div>
