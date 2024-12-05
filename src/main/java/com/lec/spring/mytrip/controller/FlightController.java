@@ -4,6 +4,7 @@ import com.lec.spring.mytrip.domain.Flight;
 import com.lec.spring.mytrip.domain.History;
 import com.lec.spring.mytrip.service.FlightService;
 import com.lec.spring.mytrip.service.HistoryService;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 // 공항 데이터와 검색 기록을 관리하는 통합 컨트롤러
-@RestController
+@Controller
 @RequestMapping("/flight")
 public class FlightController {
 
@@ -48,8 +49,8 @@ public class FlightController {
 
     // 상세 보기 페이지를 렌더링하는 엔드포인트
     @GetMapping("/detail")
-    public void detail() {
-        // 상세 보기 페이지 처리 로직 추가 가능
+    public String detail() {
+        return "flight/detail";
     }
 
     // 검색 기록을 저장하는 엔드포인트
