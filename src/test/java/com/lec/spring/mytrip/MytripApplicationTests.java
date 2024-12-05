@@ -35,13 +35,13 @@ public class MytripApplicationTests {
     public void testRegister() {
         // 새로운 사용자 객체 생성
         User user = User.builder()
-                .email("user4@example.com")
-                .password(passwordEncoder.encode("testpassword"))
-                .username("user4")
-                .name("Test User")
-                .phoneNumber("010-1234-5684")
-                .birthday("1990-01-11")
-                .build();
+            .email("user4@example.com")
+            .password(passwordEncoder.encode("testpassword"))
+            .username("user4")
+            .name("Test User")
+            .phoneNumber("010-1234-5684")
+            .birthday("1990-01-11")
+            .build();
 
         // 회원가입
         int result = userService.register(user);

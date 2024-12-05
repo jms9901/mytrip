@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" th:href="@{/css/header.css}">
   <link rel="stylesheet" th:href="@{/css/login.css}">
+  <script th:src="@{/js/registerError.js}"></script>
   <title>Document</title>
 </head>
 <body>
@@ -24,7 +25,7 @@
         <h2>Welcome back,</h2>
         <label>
           <span>ID</span>
-          <input type="email" name="email" required />
+          <input type="text" name="username" required th:value="${user?.username}"/>
         </label>
         <label>
           <span>Password</span>
@@ -61,31 +62,31 @@
           <h2>Member Sign Up</h2>
           <label>
             <span>Email</span>
-            <input type="email" name="email" required />
+            <input type="email" name="email" required th:value="${user?.email}"/>
           </label>
           <label>
             <span>Password</span>
-            <input type="password" name="password" required />
+            <input type="password" name="password" required th:value="${user?.password}"/>
           </label>
           <label>
             <span>Re-Password</span>
-            <input type="password" name="re_password" required />
+            <input type="password" name="re_password" required th:value="${user?.re_password}"/>
           </label>
           <label>
             <span>ID</span>
-            <input type="text" name="username" required />
+            <input type="text" name="username" required th:value="${user?.username}"/>
           </label>
           <label>
             <span>Name</span>
-            <input type="text" name="name" required />
+            <input type="text" name="name" required th:value="${user?.name}"/>
           </label>
           <label>
             <span>Phone Number</span>
-            <input type="tel" name="phoneNumber" required />
+            <input type="tel" name="phoneNumber" required th:value="${user?.phoneNumber}"/>
           </label>
           <label>
             <span>Birthday</span>
-            <input type="date" name="birthday" required />
+            <input type="date" name="birthday" required th:value="${user?.birthday}"/>
           </label>
           <button id="submit2" type="submit" class="submit">Sign Up</button>
         </div>
@@ -95,31 +96,31 @@
           <h2>Business Sign Up</h2>
           <label>
             <span>Email</span>
-            <input type="email" name="email" required />
+            <input type="email" name="email" required th:value="${user?.email}"/>
           </label>
           <label>
             <span>Password</span>
-            <input type="password" name="password" required />
+            <input type="password" name="password" required th:value="${user?.password}"/>
           </label>
           <label>
             <span>Re-Password</span>
-            <input type="password" name="re_password" required />
+            <input type="password" name="re_password" required th:value="${user?.re_password}"/>
           </label>
           <label>
             <span>ID</span>
-            <input type="text" name="username" required />
+            <input type="text" name="username" required th:value="${user?.username}"/>
           </label>
           <label>
             <span>Name (Company Name)</span>
-            <input type="text" name="name" required />
+            <input type="text" name="name" required th:value="${user?.name}"/>
           </label>
           <label>
             <span>Phone Number</span>
-            <input type="tel" name="phoneNumber" required />
+            <input type="tel" name="phoneNumber" required th:value="${user?.phoneNumber}"/>
           </label>
           <label>
             <span>Company Number</span>
-            <input type="text" name="companyNumber" required />
+            <input type="text" name="companyNumber" required th:value="${user?.comapnyNumber}"/>
           </label>
           <button id="submit3" type="submit" class="submit">Sign Up</button>
         </div>
@@ -128,5 +129,11 @@
   </div>
 </section>
 <script th:src="@{/js/login.js}"></script>
+<script>
+  const error = /*[[${error}]]*/ 'null';
+  if (error) {
+    showErrorPopup(error);
+  }
+</script>
 </body>
 </html>

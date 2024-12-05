@@ -70,12 +70,23 @@ public class UserController {
         if (result.hasErrors()) {
             model.addAttribute("errors", result.getAllErrors());
 
+            // 전체 오류 메시지를 flash attribute에 추가
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.user", result);
+            redirectAttributes.addFlashAttribute("user", user);
+
             List<FieldError> errorList = result.getFieldErrors();
-            for(FieldError error : errorList){
+            for (FieldError error : errorList) {
                 // 가장 처음에 발견된 에러만 담아서 보낸다
-                redirectAttributes.addFlashAttribute("error", error.getCode());
+                redirectAttributes.addFlashAttribute("error", error.getDefaultMessage());
                 break;
             }
+            return "redirect:/user/login";
+        }
+
+        // 사용자명 중복 확인
+        if (userService.findByUsername(user.getUsername()) != null) {
+            redirectAttributes.addFlashAttribute("error", "이미 존재하는 아이디(username) 입니다.");
+            redirectAttributes.addFlashAttribute("user", user);
             return "redirect:/user/login";
         }
 
@@ -84,6 +95,7 @@ public class UserController {
         model.addAttribute("result", cnt);
         return page; // 회원가입 성공 후 로그인 페이지로 리다이렉트
     }
+
 
     // 로그인 오류 처리
     @PostMapping("/loginError")
