@@ -1,37 +1,71 @@
 package com.lec.spring.mytrip;
 
-import com.lec.spring.mytrip.domain.GuestBook;
-import com.lec.spring.mytrip.repository.GuestBookRepository;
+import com.lec.spring.mytrip.domain.User;
+import com.lec.spring.mytrip.service.UserService;
 import org.junit.jupiter.api.Test;
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.WebApplicationContext;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
-@MapperScan("com.lec.spring.mytrip.repository") // MyBatis Mapper 스캔
-class MytripApplicationTests {
+public class MytripApplicationTests {
 
     @Autowired
-    private GuestBookRepository guestBookRepository;
+    private WebApplicationContext context;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    private MockMvc mockMvc;
 
     @Test
-    void contextLoads() {
-        // GuestBook 엔티티를 준비합니다.
-        GuestBook guestBook = new GuestBook();
-        guestBook.setToUserId(1); // 예시로 toUserId 값을 설정
-        guestBook.setFromUserId(2); // 예시로 fromUserId 값을 설정
-        guestBook.setGuestBookContent("Test message"); // 예시로 guestBookContent 값을 설정
+    public void testRegister() {
+        // 새로운 사용자 객체 생성
+        User user = User.builder()
+            .email("user4@example.com")
+            .password(passwordEncoder.encode("testpassword"))
+            .username("user4")
+            .name("Test User")
+            .phoneNumber("010-1234-5684")
+            .birthday("1990-01-11")
+            .build();
 
-        // DB에 데이터를 삽입하는 메서드를 호출합니다.
-        guestBookRepository.writeGuestBook(guestBook);
+        // 회원가입
+        int result = userService.register(user);
+        System.out.println(user);
 
-        // 삽입 후 데이터를 검증할 수 있는 방법이 필요합니다.
-        // 예시로는 DB에서 해당 데이터가 저장되었는지 확인하는 방법이 있을 수 있습니다.
+        // 회원가입이 성공적으로 되었는지 확인
+        assertEquals(1, result);
 
-        // 삽입된 데이터를 DB에서 가져오는 메서드를 추가하거나,
-        // insert 성공 후 바로 검증할 수 있는 로직을 작성할 수 있습니다.
-        assertNotNull(guestBookRepository.findById(guestBook.getToUserId())); // 예시: 데이터를 찾아서 검증
+        // 회원가입한 사용자 정보 조회
+        User registeredUser = userService.findByUsername("testuser");
+
+        // 사용자 정보가 올바르게 저장되었는지 확인
+
+    }
+
+    @Test
+    @WithMockUser(username = "testuser", password = "testpassword", roles = "USER")
+    public void testLogin() throws Exception {
+        mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
+
+        // 로그인 시도
+        mockMvc.perform(SecurityMockMvcRequestBuilders.formLogin()
+                        .user("user1")
+                        .password("testpassword"))
+                .andExpect(status().isOk());
     }
 }

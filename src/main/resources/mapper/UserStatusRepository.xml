@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lec.spring.mytrip.domain.UserStatus">
+    <select id="findByUsername" parameterType="string" resultType="com.lec.spring.mytrip.domain.UserStatus">
+        select user_id as "id",
+               user_username as "username",
+               user_status as "status"
+        from user
+        where user_username = #{username}
+    </select>
+
+    <select id="findByUser" parameterType="com.lec.spring.mytrip.domain.User" resultType="com.lec.spring.mytrip.domain.UserStatus">
+        select
+            user_id as "id",
+            user_username as "username",
+            user_status as "status"
+        from user
+        where user_id = #{id}
+    </select>
+
+    <update id="addUserStatus" parameterType="com.lec.spring.mytrip.domain.UserStatus">
+        update user
+        set user_status = #{status}
+        where user_id = #{id}
+    </update>
+</mapper>

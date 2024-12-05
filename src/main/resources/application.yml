@@ -1,21 +1,3 @@
 spring:
-  application:
-    name: mytrip
-
-  datasource:
-    url: jdbc:mysql://localhost:3306/mytrip
-    username: mytrip
-    password: fullstack2409
-    driver-class-name: com.mysql.cj.jdbc.Driver
-
-  thymeleaf:
-    prefix: classpath:/templates/
-    suffix: .html
-    cache: false
-
-server:
-  port: 8082
-
-mybatis:
-  mapper-locations: classpath:/mapper/GuestBookRepository.xml
-  type-aliases-package: com.lec.spring.mytrip.domain
+  profiles:
+    active: dev
