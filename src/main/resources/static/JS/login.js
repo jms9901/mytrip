@@ -27,17 +27,8 @@ document.addEventListener("DOMContentLoaded", function () {
     event.preventDefault();
     const form = document.getElementById("loginForm1");
     const inputs = form.querySelectorAll("input");
-    let check = true;
+    form.submit();
 
-    inputs.forEach((element) => {
-      if (element.value.trim() === "") {
-        check = false;
-      }
-    });
-
-    if (check) {
-      form.submit();
-    }
   });
 
   document.getElementById("submit2").addEventListener("click", function (event) {
@@ -46,15 +37,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const inputs = form.querySelectorAll("input");
     let check = true;
 
-    inputs.forEach((element) => {
-      if (element.value.trim() === "") {
-        check = false;
-      }
-    });
+    form.submit();
 
-    if (check) {
-      form.submit();
-    }
   });
 
   document.getElementById("submit3").addEventListener("click", function (event) {
@@ -63,14 +47,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const inputs = form.querySelectorAll("input");
     let check = true;
 
-    inputs.forEach((element) => {
-      if (element.value.trim() === "") {
-        check = false;
-      }
-    });
 
-    if (check) {
       form.submit();
-    }
+
   });
 });

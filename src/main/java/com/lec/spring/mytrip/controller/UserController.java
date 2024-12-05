@@ -41,7 +41,10 @@ public class UserController {
     public void initBinder(WebDataBinder binder) {
         binder.setValidator(userValidator);
     }
-
+    @GetMapping("/home")
+    public String home(Model model) {
+        return "user/home";
+    }
     // 로그인 페이지
     @GetMapping("/login")
     public String login(Model model) {
@@ -61,7 +64,7 @@ public class UserController {
         // 예: 사용자가 입력한 이메일과 비밀번호로 인증을 시도합니다.
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         // TODO: 여기에 로그인 성공/실패 처리 로직 추가
-        return "redirect:/home"; // 로그인 성공 시 홈으로 리다이렉트
+        return "redirect:user/home"; // 로그인 성공 시 홈으로 리다이렉트
     }
 
     // 회원가입 처리
@@ -79,6 +82,16 @@ public class UserController {
                 // 가장 처음에 발견된 에러만 담아서 보낸다
                 redirectAttributes.addFlashAttribute("error", error.getDefaultMessage());
                 break;
+            }
+            if(userService.findByUsername(user.getUsername()) != null){
+                redirectAttributes.addFlashAttribute("error", "이미 존재하는 아이디입니다.");
+                redirectAttributes.addFlashAttribute("user", user);
+                return "redirect:/user/login";
+            }
+            if (userService.findByUsername(user.getEmail()) != null) {
+                redirectAttributes.addFlashAttribute("error", "이미 존재하는 이메일입니다.");
+                redirectAttributes.addFlashAttribute("user", user);
+                return "redirect:/user/login";
             }
             return "redirect:/user/login";
         }

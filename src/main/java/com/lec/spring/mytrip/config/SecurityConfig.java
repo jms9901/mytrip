@@ -55,7 +55,7 @@ public class SecurityConfig {
                 .formLogin(form -> form
                         .loginPage("/user/login")
                         .loginProcessingUrl("/user/login")
-                        .defaultSuccessUrl("/home", true))
+                        .defaultSuccessUrl("/user/home", true))
                 .logout(httpSecurityLogoutConfigurer -> httpSecurityLogoutConfigurer
                         .logoutUrl("/user/logout")
                         .invalidateHttpSession(false))

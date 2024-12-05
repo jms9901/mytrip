@@ -30,8 +30,17 @@ public class UserServiceImpl implements UserService {
         if(username == null){
             return null;
         }
-        System.out.println("user: " + username);
+
         return userRepository.findByUsername(username.toLowerCase());
+    }
+
+    @Override
+    public User findByEmail(String email) {
+        if(email == null){
+            return null;
+        }
+
+        return userRepository.findByEmail(email.toLowerCase());
     }
 
 //    @Override

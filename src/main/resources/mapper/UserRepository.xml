@@ -42,4 +42,10 @@
                      #{phoneNumber}, #{birthday}, #{provider}, #{companyNumber}, #{authorization}, #{status}
                  )
     </insert>
+
+    <select id="findByEmail" resultType="com.lec.spring.mytrip.domain.User">
+        <include refid="SELECT_USER"/>
+        and user_email = #{email}
+    </select>
+
 </mapper>

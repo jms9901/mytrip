@@ -8,6 +8,14 @@
   <script th:src="@{/js/registerError.js}"></script>
   <title>Document</title>
 </head>
+
+<script th:inline="javascript">
+  const error = [[${error}]];
+  if (error) {
+    showErrorPopup(error);
+  }
+</script>
+
 <body>
 <header id="header">
   <div class="topnav">
@@ -120,7 +128,7 @@
           </label>
           <label>
             <span>Company Number</span>
-            <input type="text" name="companyNumber" required th:value="${user?.comapnyNumber}"/>
+            <input type="text" name="companyNumber" required th:value="${user?.companyNumber}"/>
           </label>
           <button id="submit3" type="submit" class="submit">Sign Up</button>
         </div>
@@ -129,11 +137,6 @@
   </div>
 </section>
 <script th:src="@{/js/login.js}"></script>
-<script>
-  const error = /*[[${error}]]*/ 'null';
-  if (error) {
-    showErrorPopup(error);
-  }
-</script>
+
 </body>
 </html>
