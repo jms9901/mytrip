@@ -7,7 +7,7 @@
 
     <sql id="SELECT_BOARD">
         select
-            board_id "id"
+            board_id "id",
             user_id "user_id",
             city_id "dicy_id",
             board_subject "board_subject",

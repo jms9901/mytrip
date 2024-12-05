@@ -75,6 +75,94 @@
 
 <script type="text/javascript">
 
+   //여기서부터
+    $(document).ready(function () {
+        const apiUrl = "/bookGuestBook"; // API URL 설정
+
+
+        // 페이지 로드 시 방명록 목록을 불러오기
+        function loadGuestBooks() {
+            const toUserId = 1; // 사용자 ID (하드코딩)
+
+            $.get(`${apiUrl}/list/${toUserId}`, function (data) {
+                console.log(data); //일단 테스트용
+                $('#guestbookEntries').empty(); // 기존 목록 초기화
+
+                // 방명록 항목을 flipbook 형식으로 추가
+                data.forEach(guestBook => {
+                    const entryHtml = `
+                        <div class="guestbook-entry" >
+                            <h4>${guestBook.toUserId}</h4>
+                            <p>${guestBook.message}</p>
+                            <button class="delete-btn" data-id="${guestBook.id}">Delete</button>
+                        </div>
+                    `;
+                    $('#guestbookEntries').append(entryHtml);
+                });
+
+                // 삭제 버튼 클릭 시 삭제 처리
+                $('.delete-btn').click(function () {
+                    const guestBookId = $(this).data('id');
+                    deleteGuestBook(guestBookId);
+                });
+            });
+        }
+
+        // 방명록 추가 처리
+        $('#submitGuestBook').click(function () {
+            const name = $('#guestName').val();
+            const message = $('#guestMessage').val();
+
+            if (name && message) {
+                const guestBookData = {
+                    toUserId: 1,
+                    fromUserId: 2,
+                    // name: name,
+                    guestBookContent: message
+                };
+
+                $.ajax({
+                    url: `${apiUrl}/add`,
+                    method: 'POST',
+                    contentType: 'application/json',  // 요청의 Content-Type을 JSON으로 설정
+                    data: JSON.stringify(guestBookData),  // 데이터를 JSON 형식으로 변환
+                    success: function () {
+                        loadGuestBooks(); // 새로 추가된 방명록을 반영
+                        $('.addGuestBookModal').hide(); // 모달 닫기
+                        $('#guestName').val(''); // 입력 필드 초기화
+                        $('#guestMessage').val('');
+                    },
+                    error: function () {
+                        alert("Failed to add the guest book entry.");
+                    }
+                });
+            } else {
+                alert("Please fill in both fields!");
+            }
+
+
+
+
+            // 방명록 삭제 처리
+            function deleteGuestBook(guestBookId) {
+                $.ajax({
+                    url: `${apiUrl}/delete/${guestBookId}`,
+                    method: 'DELETE',
+                    success: function () {
+                        loadGuestBooks(); // 삭제 후 목록 갱신
+                    },
+                    error: function () {
+                        alert("Failed to delete the guest book entry.");
+                    }
+                });
+            }
+
+            // 페이지 로드 시 방명록 목록 불러오기
+            loadGuestBooks();
+        });
+    })
+    //여기까지
+
 
     function loadApp() {
 
@@ -236,6 +324,8 @@
             var message = $('#guestMessage').val();
 
             if (name !== "" && message !== "") {
+
+
 
                 const images = [
                     'url(/img/stamp1.png)',

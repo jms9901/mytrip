@@ -3,7 +3,7 @@ spring:
     name: mytrip
 
   datasource:
-    url: jdbc:mysql://localhost:3306/your_database_name
+    url: jdbc:mysql://localhost:3306/mytrip
     username: mytrip
     password: fullstack2409
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -16,3 +16,6 @@ spring:
 server:
   port: 8082
 
+mybatis:
+  mapper-locations: classpath:/mapper/GuestBookRepository.xml
+  type-aliases-package: com.lec.spring.mytrip.domain

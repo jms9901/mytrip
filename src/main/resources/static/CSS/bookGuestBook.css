@@ -248,11 +248,8 @@ body{
     background-position: center;  /* 이미지 중앙 정렬 */
     background-repeat: no-repeat;  /* 이미지 반복 안 함 */
     text-align: center;
+    left:40px;
 }
-
-
-
-
 
 
 
@@ -270,10 +267,12 @@ body{
 .guestbook-entry h4 {
     color: #333; /* 적절한 대비 색상 */
     font-weight: bold;
+    top:20px;
 }
 
 .guestbook-entry p {
     color: #555; /* 부드러운 색상 */
+    margin-top: -10px;
 }
 .myPageGoHome{
     position:fixed;

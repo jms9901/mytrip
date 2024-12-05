@@ -36,7 +36,7 @@
         values(#{user_email}, #{user_password}, #{user_usernmame}, #{user_name} , #{user_phonenumber}, #{user_birthday}, #{user_provider}, #{business_companynumber})
     </insert>
 
-    <update></update>
+<!--    <update></update>-->
 </mapper>
 
 
