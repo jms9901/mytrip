@@ -45,7 +45,7 @@ class CityRepositoryTest {
     void testFindCityByAnswers() {
         CityRepository cityRepository = sqlSession.getMapper(CityRepository.class);
 
-        City city = cityRepository.findCityByAnswers("A", "B", "A", "A", "B");
+        City city = cityRepository.findCityByAnswers("a", "b", "a", "b", "a");
         assertNotNull(city, "추천된 도시는 null입니다. 입력 데이터와 매칭되는 데이터가 DB에 있는지 확인하세요.");
         System.out.println("추천된 도시: " + city.getCityName());
     }

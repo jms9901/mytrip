@@ -10,7 +10,7 @@ spring:
   # Thymeleaf 설정
   thymeleaf:
     cache: false
-    prefix: classpath:templates/views/
+    prefix: classpath:templates/
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver

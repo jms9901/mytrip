@@ -1,31 +1,31 @@
 <!DOCTYPE html>
-<html lang="ko" >
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>여행지 추천 테스트</title>
-    <link rel="stylesheet" href="../css/header.css">
-    <link rel="stylesheet" href="../css/aipage.css">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/aipage.css}">
 </head>
 <body>
-<header id="header" style="position: absolute; width: 100%;">
+<header id="header">
     <div class="topnav">
-        <img src="../img/logo.png" alt="" class="logo">
-        <a href="#">여행지 추천</a>
-        <a href="#">여행지 게시판</a>
-        <a href="#">항공권 예약</a>
-        <a href="#">login</a>
+        <img th:src="@{/img/logo.png}" alt="" class="logo">
+        <a th:href="@{#}">여행지 추천</a>
+        <a th:href="@{#}">여행지 게시판</a>
+        <a th:href="@{#}">항공권 예약</a>
+        <a th:href="@{/user/login}">login</a>
     </div>
 </header>
+
 <div class="container">
     <!-- 시작하기 페이지 -->
     <section id="start-page" class="page">
         <div class="content">
             <h1>여행지 추천 테스트</h1>
-            <form action="/aipage/start" method="get">
-                <button type="submit">테스트 시작하기</button>
-            </form>
+            <button onclick="startTest()">테스트 시작하기</button>
             <h6>재미로 하는 여행지 추천 테스트!</h6>
+
         </div>
     </section>
 
@@ -45,12 +45,12 @@
         <div class="content">
             <h1>결과</h1>
             <p id="result-text"></p>
-            <button onclick="goToMain()">Home</button>
+            <button onclick="goToMain()">다시하기</button>
         </div>
     </section>
 
 </div>
 
-<script src="../js/aipage.js"></script>
+<script th:src="@{/js/aipage.js}"></script>
 </body>
 </html>

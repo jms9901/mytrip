@@ -7,6 +7,6 @@ import lombok.Data;
 @AllArgsConstructor
 public class Question {
     private String text;     // 질문 내용
-    private String A;  // 보기 A
-    private String B;  // 보기 B
+    private String a;  // 보기 A
+    private String b;  // 보기 B
 }
