@@ -19,7 +19,7 @@
 	<div class="logo" style="background-image: url(/img/mypageLogo.png);"></div>
 </div>
 <div class="addGuestBookModal"></div>
-<div class="myPageGoHome" style="background-image: url(/img/myPageGoHome.png)"></div>
+<div class="myPageGoHome" style="background-image: url(/img/myPageGoHome.png)" onclick="window.location.href='/mypage/bookMain';"></div>
 
 <div class="flipbook-viewport">
 
@@ -173,6 +173,8 @@ $('.closeUpdateModal').click(function(){
 	$('.updateUserModal').hide();
 });
 
+
+
 // Load the HTML4 version if there's not CSS transform
 
 function isCSSTransformSupported() {
@@ -199,24 +201,6 @@ if (isCSSTransformSupported()) {
 		loadApp();
 	});
 }
-
-// if (Modernizr.csstransforms) {
-// 	$.getScript('../../lib/animationjs/turn.js', function() {
-// 		loadApp();
-// 	});
-// } else {
-// 	$.getScript('../../lib/JQuery/turn.html4.min.js', function() {
-// 		loadApp();
-// 	});
-// }
-
-// yepnope({
-// 	test : Modernizr.csstransforms,
-// 	yep: ['../../lib/animationjs/turn.js'],				//경로 & 실제 파일 존재여부 반드시 확인
-// 	nope: ['../../lib/JQuery/turn.html4.min.js'],	//경로 & 실제 파일 존재여부 반드시 확인
-// 	both: ['css/basic.css'],				//경로 & 실제 파일 존재여부 반드시 확인
-// 	complete: loadApp
-// });
 
 </script>
 

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" th:href="@{/css/header.css}">
+  <link rel="stylesheet" th:href="@{/css/login.css}">
+  <script th:src="@{/js/registerError.js}"></script>
+  <title>Document</title>
+</head>
+
+<script th:inline="javascript">
+  const error = [[${error}]];
+  if (error) {
+    showErrorPopup(error);
+  }
+</script>
+
+<body>
+<header id="header">
+  <div class="topnav">
+    <img th:src="@{/img/logo.png}" alt="" class="logo">
+    <a th:href="@{#}">여행지 추천</a>
+    <a th:href="@{#}">여행지 게시판</a>
+    <a th:href="@{#}">항공권 예약</a>
+    <a th:href="@{/user/login}">login</a>
+  </div>
+</header>
+<section>
+  <div class="cont">
+    <form id="loginForm1" th:action="@{/user/login}" method="POST">
+      <div class="form sign-in">
+        <h2>Welcome back,</h2>
+        <label>
+          <span>ID</span>
+          <input type="text" name="username" required th:value="${user?.username}"/>
+        </label>
+        <label>
+          <span>Password</span>
+          <input type="password" name="password" required />
+        </label>
+        <p class="forgot-pass">Forgot password?</p>
+        <button id="submit1" type="submit" class="submit">Sign In</button>
+        <a th:href="@{/oauth2/authorization/kakao}"><img th:src="@{/img/kakao_login_button.png}" alt=""></a>
+        <a th:href="@{/oauth2/authorization/google}"><img th:src="@{/img/google_login_button.png}" alt=""></a>
+      </div>
+    </form>
+
+    <div class="sub-cont">
+      <div class="img">
+        <div class="img__text m--up">
+          <h2>Sign up here?</h2>
+          <p>Sign up and discover great amount of new drive course!</p>
+        </div>
+        <div class="img__text m--in">
+          <h2>One of us?</h2>
+          <p>If you already have an account, just sign in. We've missed you!</p>
+        </div>
+        <div class="img__btn" id="member">
+          <span class="m--up" onclick="showForm('member')">Member</span>
+          <span class="m--in" onclick="showForm('sign-in')">Sign In</span>
+        </div>
+        <div class="img__btn" id="business">
+          <span class="m--up" onclick="showForm('business')">Business</span>
+          <span class="m--in" onclick="showForm('sign-in')">Sign In</span>
+        </div>
+      </div>
+      <form id="loginForm2" th:action="@{/user/register}" method="POST" class="hidden">
+        <div class="form sign-up">
+          <h2>Member Sign Up</h2>
+          <label>
+            <span>Email</span>
+            <input type="email" name="email" required th:value="${user?.email}"/>
+          </label>
+          <label>
+            <span>Password</span>
+            <input type="password" name="password" required th:value="${user?.password}"/>
+          </label>
+          <label>
+            <span>Re-Password</span>
+            <input type="password" name="re_password" required th:value="${user?.re_password}"/>
+          </label>
+          <label>
+            <span>ID</span>
+            <input type="text" name="username" required th:value="${user?.username}"/>
+          </label>
+          <label>
+            <span>Name</span>
+            <input type="text" name="name" required th:value="${user?.name}"/>
+          </label>
+          <label>
+            <span>Phone Number</span>
+            <input type="tel" name="phoneNumber" required th:value="${user?.phoneNumber}"/>
+          </label>
+          <label>
+            <span>Birthday</span>
+            <input type="date" name="birthday" required th:value="${user?.birthday}"/>
+          </label>
+          <button id="submit2" type="submit" class="submit">Sign Up</button>
+        </div>
+      </form>
+      <form id="loginForm3" th:action="@{/user/register}" method="POST" class="hidden">
+        <div class="form sign-up">
+          <h2>Business Sign Up</h2>
+          <label>
+            <span>Email</span>
+            <input type="email" name="email" required th:value="${user?.email}"/>
+          </label>
+          <label>
+            <span>Password</span>
+            <input type="password" name="password" required th:value="${user?.password}"/>
+          </label>
+          <label>
+            <span>Re-Password</span>
+            <input type="password" name="re_password" required th:value="${user?.re_password}"/>
+          </label>
+          <label>
+            <span>ID</span>
+            <input type="text" name="username" required th:value="${user?.username}"/>
+          </label>
+          <label>
+            <span>Name (Company Name)</span>
+            <input type="text" name="name" required th:value="${user?.name}"/>
+          </label>
+          <label>
+            <span>Phone Number</span>
+            <input type="tel" name="phoneNumber" required th:value="${user?.phoneNumber}"/>
+          </label>
+          <label>
+            <span>Company Number</span>
+            <input type="text" name="companyNumber" required th:value="${user?.companyNumber}"/>
+          </label>
+          <button id="submit3" type="submit" class="submit">Sign Up</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+<script th:src="@{/js/login.js}"></script>
+
+</body>
+</html>
