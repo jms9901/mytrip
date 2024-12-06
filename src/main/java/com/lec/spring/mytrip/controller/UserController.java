@@ -170,7 +170,7 @@ public class UserController {
             model.addAttribute("error", "사용자 정보 업데이트에 실패했습니다.");
             return "user/editUser"; // 업데이트 실패 시 수정 페이지로 다시 렌더링
         }
-    }
+    }}
 
 
 

@@ -39,7 +39,7 @@ delete from friendship;
 delete from guest_book;
 delete from messageroom;
 delete from message;
-
+SELECT * FROM guest_book WHERE to_user_id = 1;
 alter table user
 add column user_status varchar(20);
 

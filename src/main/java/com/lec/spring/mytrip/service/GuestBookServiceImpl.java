@@ -1,6 +1,8 @@
 package com.lec.spring.mytrip.service;
 
 import com.lec.spring.mytrip.domain.GuestBook;
+import com.lec.spring.mytrip.repository.GuestBookRepository;
+import jakarta.transaction.Transactional;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Service;
 
@@ -10,9 +12,11 @@ import java.util.List;
 public class GuestBookServiceImpl implements GuestBookService {
 
     private final SqlSession sqlSession;
+    private final GuestBookRepository guestBookRepository;
 
-    public GuestBookServiceImpl(SqlSession sqlSession) {
+    public GuestBookServiceImpl(SqlSession sqlSession, GuestBookRepository guestBookRepository) {
         this.sqlSession = sqlSession;
+        this.guestBookRepository = guestBookRepository;
     }
 
     @Override
@@ -20,9 +24,10 @@ public class GuestBookServiceImpl implements GuestBookService {
         sqlSession.insert("com.lec.spring.mytrip.repository.GuestBookRepository.writeGuestBook", guestBook);
     }
 
+    @Transactional
     @Override
     public List<GuestBook> getGuestBooksByUserId(int toUserId) {
-        return sqlSession.selectList("com.lec.spring.mytrip.repository.GuestBookRepository.viewGuestBookByUserId", toUserId);
+        return guestBookRepository.viewGuestBookByUserId(toUserId);
     }
 
     @Override

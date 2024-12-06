@@ -12,6 +12,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+
 public class PrincipalDetails implements UserDetails, OAuth2User {
 
     private AuthorityRepository authorityRepository;
