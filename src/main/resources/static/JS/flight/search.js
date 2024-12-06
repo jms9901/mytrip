@@ -101,24 +101,69 @@ $(document).ready(function () {
     $(".btn-decrease").attr("type", "button");
 
 
-    $(".api-query").click(function (){
-        // 폼 데이터를 가져옵니다.
-        var fromAirportId = $("#fromAirportId").val();
-        var toAirportId = $("#toAirportId").val();
-        var departDate = $("#departDate").val();
-        var returnDate = $("#returnDate").val();
-        var adultsHeadCnt = $("#adultsHeadCnt").val();
-        var childrenHeadCnt = $("#childrenHeadCnt").val();
-        var infantsHeadCnt = $("#infantsHeadCnt").val();
-        var cabinClass = $("#cabinClass").val();
+    // $(".api-query").click(function (){
+    //     // 폼 데이터를 가져옵니다.
+    //     var fromAirportId = $("#fromAirportId").val();
+    //     var toAirportId = $("#toAirportId").val();
+    //     var departDate = $("#departDate").val();
+    //     var returnDate = $("#returnDate").val();
+    //     var adultsHeadCnt = $("#adultsHeadCnt").val();
+    //     var childrenHeadCnt = $("#childrenHeadCnt").val();
+    //     var infantsHeadCnt = $("#infantsHeadCnt").val();
+    //     var cabinClass = $("#cabinClass").val();
+    //
+    //     // 쿼리 스트링을 구성합니다.
+    //     var queryString = `fromEntityId=${fromAirportId}&toEntityId=${toAirportId}&departDate=${departDate}&returnDate=${returnDate}&stops=direct&currency=KRW&adults=${adultsHeadCnt}&children=${childrenHeadCnt}&infants=${infantsHeadCnt}&cabinClass=${cabinClass}`;
+    //
+    //     // URL을 설정하고 폼을 제출합니다.
+    //     var Url = `https://sky-scanner3.p.rapidapi.com/flights/search-roundtrip?${queryString}`;
+    //     $("#roundTrip").attr("roundTrip", Url);
+    //     $("#roundTrip").submit();
+    // })
 
-        // 쿼리 스트링을 구성합니다.
-        var queryString = `fromEntityId=${fromAirportId}&toEntityId=${toAirportId}&departDate=${departDate}&returnDate=${returnDate}&stops=direct&currency=KRW&adults=${adultsHeadCnt}&children=${childrenHeadCnt}&infants=${infantsHeadCnt}&cabinClass=${cabinClass}`;
+    // 공통 드롭다운 처리 함수
+    function setupDropdown(dropdownClass, inputId) {
+        const $dropdown = $(`.${dropdownClass}`);
+        const $button = $dropdown.closest(".custom-dropdown").find(".dropdown-button");
+        const $content = $dropdown.closest(".custom-dropdown").find(".dropdown-content");
+        const $input = $(`#${inputId}`);
 
-        // URL을 설정하고 폼을 제출합니다.
-        var Url = `https://sky-scanner3.p.rapidapi.com/flights/search-roundtrip?${queryString}`;
-        $("#roundTrip").attr("roundTrip", Url);
-        $("#roundTrip").submit();
-    })
+        // 드롭다운 열기/닫기
+        $button.on("click", function () {
+            $(".dropdown-content").not($content).removeClass("show"); // 다른 드롭다운 닫기
+            $content.toggleClass("show");
+        });
 
+        // 항목 클릭 시 선택 처리
+        $content.on("click", ".dropdown-item", function () {
+
+            const selectedValue = $(this).attr("value"); // data-value로 설정된 값
+
+            console.log("data-value: ", selectedValue);
+
+            const airportName = $(this).find(".airport-name").text();
+
+            $input.val(selectedValue);
+
+
+            // 버튼 텍스트를 선택된 공항 이름으로 업데이트
+            $button.text(airportName);
+
+            // 드롭다운 메뉴 닫기
+            $content.removeClass("show");
+        });
+    }
+
+    // 출발지 드롭다운 설정
+    setupDropdown("fromAirport", "fromEntityId");
+
+    // 도착지 드롭다운 설정
+    setupDropdown("toAirport", "toEntityId");
+
+    // 문서 클릭 시 드롭다운 닫기
+    $(document).on("click", function (event) {
+        if (!$(event.target).closest(".custom-dropdown").length) {
+            $(".dropdown-content").removeClass("show");
+        }
+    });
 });

@@ -3,12 +3,16 @@ package com.lec.spring.mytrip.controller;
 import com.lec.spring.mytrip.domain.Flight;
 import com.lec.spring.mytrip.domain.History;
 import com.lec.spring.mytrip.form.FlightRoundTrip;
+import com.lec.spring.mytrip.form.FlightRoundTripResponse;
 import com.lec.spring.mytrip.service.FlightService;
 import com.lec.spring.mytrip.service.HistoryService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -47,9 +51,34 @@ public class FlightController {
     @PostMapping("/result")
     public void result(@ModelAttribute FlightRoundTrip flightRoundTrip, Model model) {
         // 검색 결과 페이지 처리 로직 추가 가능
+        System.out.println("result 컨트롤러");
         List<Flight> airports = flightService.getAllAirports();
         model.addAttribute("airports", airports);
-        model.addAttribute("flightRoundTrip", flightRoundTrip);
+
+        try {
+            FlightRoundTripResponse flightApiResponse = flightService.roundTripApiCall(flightRoundTrip);
+
+            System.out.println("flightApiResponse 생겨먹은거  " + flightApiResponse + "\n");
+            System.out.println("flightApiResponse.getFlights() 생겨먹은거  " + flightApiResponse.getFlights());
+
+            model.addAttribute("flights", flightApiResponse.getFlights());
+            System.out.println("flights 모달 보냄");
+        } catch (Exception e) {
+            model.addAttribute("error", "항공편 조회 중 오류가 발생했습니다.");
+        }
+    }
+
+    //incomplete api 추가 요청
+    @PostMapping("/result/incomplete")
+    public ResponseEntity<List<Flight>> getApi2Data(@RequestParam String sessionId) {
+        try {
+            List<Flight> incomplete = flightService.Flightincomplete(sessionId);
+
+            // api_2 데이터 반환
+            return ResponseEntity.ok(incomplete);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.emptyList());
+        }
     }
 
     // 상세 보기 페이지를 렌더링하는 엔드포인트

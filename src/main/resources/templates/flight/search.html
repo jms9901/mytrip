@@ -10,34 +10,51 @@
 <div>
     <form id="roundTrip" name="frm" th:action="@{/flight/result}" method="post" enctype="multipart/form-data">
         <div>
+    <!-- 목적지 결정 div-->
             <!-- 출발지 -->
-            <select id="fromEntityId" name="fromAirportId">
-                <option>
-                    <div>인천 국제 공항</div>
-                    <div>인천</div>
-                    <div>꼬-레아</div>
-                </option>
-            </select>
+            <div class="custom-dropdown">
+                <button type="button" class="dropdown-button">Select Airport</button>
+                <div class="dropdown-content">
+                    <div class="dropdown-item fromAirport" value="ICN">
+                        <span class="airport-name">인천 국제 공항</span>
+                        <span class="airport-code">ICN</span>
+                        <span class="airport-city">인천</span>
+                        <span class="airport-country">꼬-레아</span>
+                    </div>
+                    <div class="dropdown-item fromAirport" value="GMP">
+                        <span class="airport-name">김포 국제 공항</span>
+                        <span class="airport-code">GMP</span>
+                        <span class="airport-city">서울</span>
+                        <span class="airport-country">한국</span>
+                    </div>
+                </div>
+            </div>
+            <input type="hidden" id="fromEntityId" name="fromAirportId">
+
             <!-- 도착지 -->
-            <select id="toEntityId" name="toAirportId" >
-                <option th:each="port : ${airports}" th:value="${port.airportCode}">
-                    <div th:utext="${port.airportName}"></div>
-                    <div th:utext="${port.airportCode}"></div>
-                    <div th:utext="${port.airportCity}"></div>
-                    <div th:utext="${port.airportCountry}"></div>
-                </option>
-            </select>
-            <!-- 날짜선택 -->
+            <div class="custom-dropdown">
+                <button type="button" class="dropdown-button">Select Airport</button>
+                <div class="dropdown-content">
+                    <div class="dropdown-item toAirport" th:each="port : ${airports}" th:value="${port.airportCode}">
+                        <span class="airport-name" th:utext="${port.airportName}"></span>
+                        <span class="airport-code" th:utext="${port.airportCode}"></span>
+                        <span class="airport-city" th:utext="${port.airportCity}"></span>
+                        <span class="airport-country" th:utext="${port.airportCity}"></span>
+                    </div>
+                </div>
+            </div>
+            <input type="hidden" id="toEntityId" name="toAirportId">
+    <!-- /목적지 결정 div-->
+    <!-- 날짜선택 -->
             <button id="start-date-btn">가는 날</button>
             <input type="hidden" name="departDate" id="start-date-value">
 
             <button id="end-date-btn">오는 날</button>
             <input type="hidden" name="returnDate" id="end-date-value">
-            <!-- 인원선택 -->
+    <!-- 인원 및 좌석 선택 -->
             <button id="open-selection-btn">인원 및 좌석 선택</button>
-
             <div id="selection-container">
-                <!-- 인원 선택 -->
+    <!-- 인원 선택 -->
                 <div class="section" id="passenger-selection">
                     <h3>인원 선택</h3>
                     <div class="passenger-item">
@@ -68,8 +85,8 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- 좌석 선택 -->
+    <!-- /인원 선택 -->
+    <!-- 좌석 선택 -->
                 <div class="section" id="seat-selection">
                     <h3>좌석 선택</h3>
                     <select name="cabinClass">
