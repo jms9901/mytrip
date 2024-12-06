@@ -1,3 +1,101 @@
+function loadApp() {
+
+	// Create the flipbook
+
+	$('.flipbook').turn({
+		// Width
+
+		width:922,
+
+		// Height
+
+		height:600,
+
+		// Elevation
+
+		elevation: 50,
+
+		// Enable gradients
+
+		gradients: true,
+
+		// Auto center this flipbook
+
+		autoCenter: true
+
+	});
+	$('.flipbook').bind('turning', function(event, page) {
+		if (page === 2) {
+			$('.menu1').show(); // Show menu after the first page turn
+			$('.menu2').show();
+			$('.menu3').show();
+			$('.menu4').show();
+			$('.menu5').show();
+		}else if (page ===1){
+			$('.menu1').hide();
+			$('.menu2').hide();
+			$('.menu3').hide();
+			$('.menu4').hide();
+			$('.menu5').hide();
+		}
+	});
+	$('.goChat').hover(function(){
+		hoverChat();
+	});
+
+	function hoverChat() {
+		let angle = 0;
+		clearInterval(shakeInterval);
+		$('.goChat').css('transform', 'rotateY(0deg)');  // 초기 상태 설정
+		let shakeInterval = setInterval(function() {
+			angle += 10;  // 한 번에 10도씩 증가
+			$('.goChat').css('transform', `rotateY(${angle}deg)`);  // Y축을 중심으로 회전
+			if (angle >= 35) {  // 35도까지 회전
+				clearInterval(shakeInterval);
+				$('.goChat').css('transform', 'rotateY(0deg)');  // 원래 위치로 돌아가게 설정
+			}
+		}, 100);  // 0.1초마다 회전
+	}
+
+}
+
+$('.myPageUpdate').click(function (){
+	$('.updateUserModal').show();
+});
+$('.closeUpdateModal').click(function(){
+	$('.updateUserModal').hide();
+});
+
+
+
+// Load the HTML4 version if there's not CSS transform
+
+function isCSSTransformSupported() {
+	var testElement = document.createElement('div');
+	var transformProperties = ['transform', 'WebkitTransform', 'MozTransform', 'OTransform', 'msTransform'];
+
+	for (var i = 0; i < transformProperties.length; i++) {
+		if (testElement.style[transformProperties[i]] !== undefined) {
+			return true; // CSS transform이 지원됩니다.
+		}
+	}
+
+	return false; // CSS transform이 지원되지 않습니다.
+}
+
+if (isCSSTransformSupported()) {
+	// transform 지원 시
+	$.getScript('../../lib/animationjs/turn.js', function() {
+		loadApp();
+	});
+} else {
+	// transform 미지원 시
+	$.getScript('../../lib/JQuery/turn.html4.min.js', function() {
+		loadApp();
+	});
+}
+
+
 
 function addPage(page, book) {
 

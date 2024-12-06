@@ -12,8 +12,7 @@ public class MyPageController {
     }
 
 
-
-    @GetMapping("/mypage/bookGuestBook")
+    @GetMapping("/mypage/bookMain/bookGuestBook")
     public String myPageGuestBook() {
         return "mypage/bookGuestBook";
     }
