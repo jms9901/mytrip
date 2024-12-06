@@ -30,8 +30,6 @@ public class User {
 
     private String providerId;  // 소셜 로그인 제공자 ID
 
-    private String phoneNumber;  // 핸드폰 번호
-
     private String profile;  // 사용자 프로필 이미지 경로
 
     private String birthday;  // 생년월일
