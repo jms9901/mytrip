@@ -15,6 +15,9 @@ public interface UserService {
     // 신규 회원등록
     int register(User user);
 
+    // 회원 정보 수정
+    int updateUser(User user);
+
     // TODO 특정 user_id의 status 확인
 
 }

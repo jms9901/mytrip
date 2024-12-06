@@ -41,10 +41,12 @@ public class UserController {
     public void initBinder(WebDataBinder binder) {
         binder.setValidator(userValidator);
     }
+
     @GetMapping("/home")
     public String home(Model model) {
         return "user/home";
     }
+
     // 로그인 페이지
     @GetMapping("/login")
     public String login(Model model) {
@@ -83,7 +85,7 @@ public class UserController {
                 redirectAttributes.addFlashAttribute("error", error.getDefaultMessage());
                 break;
             }
-            if(userService.findByUsername(user.getUsername()) != null){
+            if (userService.findByUsername(user.getUsername()) != null) {
                 redirectAttributes.addFlashAttribute("error", "이미 존재하는 아이디입니다.");
                 redirectAttributes.addFlashAttribute("user", user);
                 return "redirect:/user/login";
@@ -122,4 +124,53 @@ public class UserController {
     public String rejectAuth() {
         return "common/rejectAuth";
     }
-}
+
+    // 회원정보 수정
+    // 사용자 정보 수정 페이지 요청
+    @GetMapping("/editUser")
+    public String editUser(Model model, Authentication authentication) {
+
+        // 현재 로그인한 사용자 정보 찾기
+        String username = authentication.getName();
+        User user = userService.findByUsername(username);
+
+        if (user == null) {
+            model.addAttribute("error", "사용자를 찾을 수 없습니다.");
+            return "redirect:/mypage/bookMain"; // 사용자 정보를 찾을 수 없으면 마이페이지 메인으로
+        }
+
+        model.addAttribute("user", user); // 사용자 정보를 모델에 추가
+        return "user/editUser"; // 사용자 정보 수정 페이지 반환
+    }
+
+    // 사용자 정보 수정 처리
+    @PostMapping("/edit")
+    public String updateUser(@Valid User user,
+                             BindingResult result,
+                             Model model,
+                             RedirectAttributes redirectAttributes,
+                             Authentication authentication) {
+        if (result.hasErrors()) {
+            model.addAttribute("errors", result.getAllErrors());
+            return "user/editUser"; // 유효성 검사 실패 시 수정 페이지로 다시 렌더링
+        }
+
+        // 로그인한 사용자와 동일한 사용자만 업데이트 가능
+        String currentUsername = authentication.getName();
+        if (!currentUsername.equals(user.getUsername())) {
+            redirectAttributes.addFlashAttribute("error", "본인만 자신의 정보를 수정할 수 있습니다.");
+            return "redirect:/mypage/bookMain";
+        }
+
+        int cnt = userService.updateUser(user);
+        if (cnt > 0) {
+            redirectAttributes.addFlashAttribute("success", "사용자 정보가 성공적으로 업데이트되었습니다.");
+            return "redirect:/mypage/bookMain"; // 업데이트 성공 시 홈으로 리다이렉트
+        } else {
+            model.addAttribute("error", "사용자 정보 업데이트에 실패했습니다.");
+            return "user/editUser"; // 업데이트 실패 시 수정 페이지로 다시 렌더링
+        }
+    }
+
+
+

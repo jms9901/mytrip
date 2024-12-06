@@ -14,5 +14,8 @@ public interface UserRepository {
     // 새로운 user 등록
     int save (User user);
 
-    
+
+    // 유저 정보 수정
+    int updateUser(User user);
+
 }

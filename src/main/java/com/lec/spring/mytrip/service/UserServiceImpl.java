@@ -76,6 +76,14 @@ public class UserServiceImpl implements UserService {
         return 1;
     }
 
+
+    // 유저 정보 업데이트
+    @Override
+    public int updateUser(User user) {
+
+        return userRepository.updateUser(user);
+    }
+
 //    @Override
 //    public List<Authority> selectAuthorityById(Long id) {
 //        User user = userRepository.findById(id);
