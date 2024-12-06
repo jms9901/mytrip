@@ -2,11 +2,13 @@ package com.lec.spring.mytrip.controller;
 
 import com.lec.spring.mytrip.domain.Flight;
 import com.lec.spring.mytrip.domain.History;
-import com.lec.spring.mytrip.form.FlightRoundTrip;
-import com.lec.spring.mytrip.form.FlightRoundTripResponse;
+import com.lec.spring.mytrip.form.flight.FlightRoundTrip;
+import com.lec.spring.mytrip.form.flight.FlightRoundTripResponse;
 import com.lec.spring.mytrip.service.FlightService;
 import com.lec.spring.mytrip.service.HistoryService;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -70,15 +72,15 @@ public class FlightController {
 
     //incomplete api 추가 요청
     @PostMapping("/result/incomplete")
-    public ResponseEntity<List<Flight>> getApi2Data(@RequestParam String sessionId) {
-        try {
-            List<Flight> incomplete = flightService.Flightincomplete(sessionId);
+    public ResponseEntity<FlightRoundTripResponse> incomplete(@RequestBody Map<String, String> sessionId) {
+        System.out.println("힘세고 강한 컨트롤러");
+        System.out.println(sessionId.get("sessionId"));
 
-            // api_2 데이터 반환
-            return ResponseEntity.ok(incomplete);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.emptyList());
-        }
+        FlightRoundTripResponse incomplete = flightService.Flightincomplete(sessionId.get("sessionId"));
+        // api_2 데이터 반환
+        System.out.println("오늘도 평화로운 컨트롤러, " + incomplete);
+        return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .body(incomplete);
     }
 
     // 상세 보기 페이지를 렌더링하는 엔드포인트

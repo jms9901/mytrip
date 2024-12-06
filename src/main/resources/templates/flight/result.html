@@ -107,14 +107,15 @@
 
   <!-- 검색 결과 테이블 -->
   <table>
-
     <tr th:each="flights : ${flights}">
       <td th:text="${flights.price}"></td>
       <td th:text="${flights.departure}"></td>
     </tr>
   </table>
+
   <!-- 가짜 div. 무한 스크롤 구현을 위해 스크린에 이 div가 뜨면 다음 쿼리가 진행되도록 -->
-  <div id="incomplete" th:text="${flights.get(0).sessionId}" style="height: 1px; visibility: hidden;"></div>
+  <div id="incomplete" th:attr="data-session-id=${flights.get(0).sessionId}" style="height: 1px; visibility: hidden;"></div>
+<button id="loadMoreButton">Load More</button>
 
   <!-- 페이지 상단 이동 버튼이 들어갈 자리 -->
   <div></div>
@@ -123,6 +124,7 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="/JS/flight/result.js"></script>
 <script src="/JS/flight/search.js"></script>
 </body>
 </html>

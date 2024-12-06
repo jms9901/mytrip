@@ -1,4 +1,4 @@
-package com.lec.spring.mytrip.form;
+package com.lec.spring.mytrip.form.flight;
 
 import lombok.Data;
 

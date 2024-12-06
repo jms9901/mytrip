@@ -1,8 +1,8 @@
 package com.lec.spring.mytrip.service;
 
 import com.lec.spring.mytrip.domain.Flight;
-import com.lec.spring.mytrip.form.FlightRoundTrip;
-import com.lec.spring.mytrip.form.FlightRoundTripResponse;
+import com.lec.spring.mytrip.form.flight.FlightRoundTrip;
+import com.lec.spring.mytrip.form.flight.FlightRoundTripResponse;
 
 import java.util.List;
 
@@ -12,5 +12,5 @@ public interface FlightService {
 
     FlightRoundTripResponse roundTripApiCall(FlightRoundTrip flightRoundTrip);
 
-    List<Flight> Flightincomplete(String sessionId);
+    FlightRoundTripResponse Flightincomplete(String sessionId);
 }

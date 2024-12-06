@@ -2,9 +2,9 @@ package com.lec.spring.mytrip;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lec.spring.mytrip.form.FlightRoundTrip;
-import com.lec.spring.mytrip.form.FlightRoundTripInfo;
-import com.lec.spring.mytrip.form.FlightRoundTripResponse;
+import com.lec.spring.mytrip.form.flight.FlightRoundTrip;
+import com.lec.spring.mytrip.form.flight.FlightRoundTripInfo;
+import com.lec.spring.mytrip.form.flight.FlightRoundTripResponse;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
@@ -13,7 +13,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Component
@@ -98,11 +97,11 @@ private String apiKey = "212103701bmsh1a26a5a513ddd6ap107cecjsnda5847e292c0";
     }
 
     // api 두번째 호출
-    public FlightRoundTripResponse fetchincompleteData(FlightRoundTrip flightRoundTrip) {
+    public FlightRoundTripResponse fetchincompleteData(String sessionId) {
         System.out.println("fetchFlightData() 유틸 진입 확인");
 
         try {
-            String roundTripUrl = buildRoundTripUrl(flightRoundTrip);
+            String roundTripUrl = buildIncompleteUrl(sessionId);
             System.out.println("구성된 roundTripUrl: " + roundTripUrl); // URL 생성 확인
 
             URL url = new URL(roundTripUrl);
@@ -111,7 +110,7 @@ private String apiKey = "212103701bmsh1a26a5a513ddd6ap107cecjsnda5847e292c0";
             conn.setRequestProperty("Content-Type", "application/json");
             conn.setRequestProperty("X-RapidAPI-Key", apiKey);
             conn.setRequestProperty("X-RapidAPI-Host", "sky-scanner3.p.rapidapi.com");
-            System.out.println("연결된 URL: " + url); // 최종 URL 연결 확인
+//            System.out.println("연결된 URL: " + url); // 최종 URL 연결 확인
 
             int responseCode = conn.getResponseCode();
             System.out.println("응답 코드 확인: " + responseCode); // 응답 코드 확인
@@ -126,18 +125,16 @@ private String apiKey = "212103701bmsh1a26a5a513ddd6ap107cecjsnda5847e292c0";
                 in.close();
 
                 // API 응답 내용 출력
-                System.out.println("API 응답 내용: " + response.toString());
+//                System.out.println("API 응답 내용: " + response.toString());
 
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode rootNode = objectMapper.readTree(response.toString());
                 JsonNode flightsNode = rootNode.path("data");
 
                 // rootNode를 먼저 출력하여 구조 확인
-                System.out.println("rootNode 내용: " + rootNode.toString());
+//                System.out.println("rootNode 내용: " + rootNode.toString());
 
                 List<FlightRoundTripInfo> flights = parseFlights(flightsNode);
-
-
 
                 FlightRoundTripResponse flightRoundTripResponse = new FlightRoundTripResponse();
                 flightRoundTripResponse.setFlights(flights);
@@ -151,6 +148,19 @@ private String apiKey = "212103701bmsh1a26a5a513ddd6ap107cecjsnda5847e292c0";
             throw new RuntimeException("API 호출 중 예외 발생", e);
         }
     }
+
+    //API 쿼리 URL 구성
+    private String buildIncompleteUrl(String sessionId) throws Exception {
+
+        return "https://sky-scanner3.p.rapidapi.com/flights/search-incomplete" +
+                "?sessionId=" + sessionId +
+                "&stops=direct" +
+                "&currency=KRW" +
+                "&market=KR" +
+                "&locale=ko-KR"
+                ;
+    }
+
 
     //  roundTrip Api 에서 필요한 값 추출
     private List<FlightRoundTripInfo> parseFlights(JsonNode flightsNode) {
@@ -175,6 +185,8 @@ private String apiKey = "212103701bmsh1a26a5a513ddd6ap107cecjsnda5847e292c0";
 
             flight.setToken(token);
             flight.setSessionId(sessionId);
+
+            System.out.println("여기, 유틸" + flight.toString());
 
             flights.add(flight);
         }
