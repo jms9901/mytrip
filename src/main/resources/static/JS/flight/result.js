@@ -17,6 +17,13 @@ $(document).ready(function () {
         loadMoreData(sessionId);
     });
 
+    $('.detailApiCall').on('submit', function(event) {
+        event.preventDefault(); // 폼 제출을 잠시 멈춤
+        var token = $('div[data-token]').attr('data-token'); // div에서 token 값 가져오기
+        $('.tokenInput').val(token); // hidden input에 값 설정하기
+        this.submit(); // 폼 제출
+    });
+
 });
 
 
@@ -42,13 +49,20 @@ function loadMoreData(sessionId) {
 
                 $.each(data.flights, function(index, flight) { // flights 배열 순회
 
-                    const $newRow = $('<tr>'); // 새로운 행 생성
-                    const $priceCell = $('<td>').text(flight.price); // 가격 셀 생성 및 값 추가
-                    const $departureCell = $('<td>').text(flight.departure); // 출발 셀 생성 및 값 추가
+                    const newRowHtml = `
+                    <tr>
+                        <form id="form-flight-${flight.id}" class="flight-form" action="/flight/detail" method="post">
+                            <input type="hidden" class="flight-form" name="flightId" value="${flight.id}">
+                            <td class="departure-cell" >${flight.outDeparture}</td>
+                            <td class="button-cell">
+                                <button class="detailApiBtn" type="submit">${flight.price}</button>
+                            </td>
+                        </form>
+                    </tr>
+                    `;
 
-                    $newRow.append($priceCell, $departureCell); // 행에 셀 추가
-                    $tableBody.append($newRow); // 테이블에 새 행 추가
-
+                    // 테이블 본문에 추가
+                    $('#incompleteResult').append(newRowHtml);
                 });
             } else {
                 console.log("추가 데이타가 읍스요.");

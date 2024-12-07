@@ -167,35 +167,40 @@ private String apiKey = "6400a15222msh8627a40b3bd3531p1bdef5jsnaa784d38dcf3";
     //  roundTrip Api 에서 필요한 값 추출
     private List<FlightRoundTripInfo> parseFlights(JsonNode flightsNode) {
         List<FlightRoundTripInfo> flights = new ArrayList<>();
-        FlightRoundTripInfo flight = new FlightRoundTripInfo();
 
-        //토큰과 세션 아이디, 그리고 status 추출. 토큰은 1번째 api 에서만 있음
-
+        // 토큰과 세션 아이디, 그리고 status 추출
         String token = "";
-        if(!flightsNode.path("token").asText().isEmpty()){
+        if (!flightsNode.path("token").asText().isEmpty()) {
             token = flightsNode.path("token").asText();
         }
         String sessionId = flightsNode.path("context").path("sessionId").asText();
         String callStatus = flightsNode.path("context").path("status").asText();
 
-
-        flight.setToken(token);
-        flight.setSessionId(sessionId);
-        flight.setSessionId(callStatus);
-
-
         for (JsonNode flightNode : flightsNode.path("itineraries")) {
+            // 새로운 객체 생성
+            FlightRoundTripInfo flight = new FlightRoundTripInfo();
+
+            // 공통 값 설정
+            flight.setToken(token);
+            flight.setSessionId(sessionId);
+            flight.setCallStatus(callStatus);
+
+            // itinerary별 값 설정
             String id = flightNode.path("id").asText();
             String price = flightNode.path("price").path("formatted").asText();
             String departure = flightNode.path("legs").get(0).path("departure").asText();
 
             flight.setId(id);
             flight.setPrice(price);
-            flight.setDeparture(departure);
+            flight.setOutDeparture(departure);
 
-            System.out.println("여기, 유틸" + flight.toString());
+            System.out.println("여기, 유틸: " + flight.toString());
 
+            // 리스트에 추가
             flights.add(flight);
+
+            // 객체 참조 제거 (더 이상 사용되지 않도록 설정)
+            flight = null;
         }
 
         return flights;
