@@ -10,13 +10,15 @@ public class FlightRoundTripInfo {
     String totalResults; // 총 결과 검색 수
     String departure;   // 출발일시
     String durationInMinutes; //  걸리는 시간(분)
-    String arrival; // 도착시간
+    String arrival; // 도착일시
     String originDisplayCode; // 출발공항코드 ex) ICN
     String destinationDisplayCode; // 도착공항코드 ex) ICN
-
+    String airportName; // 항공사이름
 
     String originName; // 출발 공항 이름
     String destinationName; // 도착 공항 이름
+    String city; // 도착 도시
+    String country; // 도착 국가
 
 
 
