@@ -2,9 +2,11 @@ package com.lec.spring.mytrip.controller;
 
 import com.lec.spring.mytrip.domain.Flight;
 import com.lec.spring.mytrip.domain.History;
+import com.lec.spring.mytrip.form.flight.FlightDetailResponse;
 import com.lec.spring.mytrip.form.flight.FlightRoundTrip;
 import com.lec.spring.mytrip.form.flight.FlightRoundTripResponse;
 import com.lec.spring.mytrip.service.FlightService;
+import com.lec.spring.mytrip.service.FlightServiceImpl;
 import com.lec.spring.mytrip.service.HistoryService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -25,10 +27,12 @@ public class FlightController {
 
     private final FlightService flightService;
     private final HistoryService historyService;
+    private final FlightServiceImpl flightServiceImpl;
 
-    public FlightController(FlightService flightService, HistoryService historyService) {
+    public FlightController(FlightService flightService, HistoryService historyService, FlightServiceImpl flightServiceImpl) {
         this.flightService = flightService;
         this.historyService = historyService;
+        this.flightServiceImpl = flightServiceImpl;
     }
 
     // 검색 페이지를 렌더링하는 엔드포인트
@@ -83,10 +87,25 @@ public class FlightController {
                 .body(incomplete);
     }
 
-    // 상세 보기 페이지를 렌더링하는 엔드포인트
     @GetMapping("/detail")
-    public String detail() {
-        return "flight/detail";
+    public ResponseEntity<?> getFlightDetail(
+//            @RequestParam String itineraryId,
+//            @RequestParam String token
+    ) {
+        try {
+            System.out.println("getFlightDetail 호출됨");
+
+            // 서비스 호출
+            FlightDetailResponse response = flightService.fetchFlightDetail("12409-2412161930--32179-0-9970-2412162345|9970-2412280100--32179-0-12409-2412280825", "eyJhIjoxLCJjIjowLCJpIjowLCJjYyI6ImVjb25vbXkiLCJvIjoiSUNOIiwiZCI6IkJLSyIsImQxIjoiMjAyNC0xMi0xNiIsImQyIjoiMjAyNC0xMi0yOCJ9");
+
+            // 응답 반환
+            System.out.println("response Controller : " + response);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            System.out.println("API 호출 중 오류: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("오류 발생: " + e.getMessage());
+        }
     }
 
     // 검색 기록을 저장하는 엔드포인트

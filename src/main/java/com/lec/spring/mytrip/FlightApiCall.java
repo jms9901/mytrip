@@ -13,14 +13,16 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Component
 public class FlightApiCall {
 
 //    @Value("${api.flight.key}") 실 서비스 단에서 바꾸죠
 //    private String apiKey;
-private String apiKey = "212103701bmsh1a26a5a513ddd6ap107cecjsnda5847e292c0";
+private String apiKey = "6400a15222msh8627a40b3bd3531p1bdef5jsnaa784d38dcf3";
 
     // api 최초 호출
     public FlightRoundTripResponse fetchFlightData(FlightRoundTrip flightRoundTrip) {
@@ -197,4 +199,72 @@ private String apiKey = "212103701bmsh1a26a5a513ddd6ap107cecjsnda5847e292c0";
 
         return flights;
     }
-}
+
+    public List<Map<String, String>> fetchFlightDetail(String itineraryId, String token) {
+        try {
+            String detailUrl = buildDetailUrl(itineraryId, token);
+
+            URL url = new URL(detailUrl);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setRequestProperty("X-RapidAPI-Key", apiKey);
+            conn.setRequestProperty("X-RapidAPI-Host", "sky-scanner3.p.rapidapi.com");
+
+            int responseCode = conn.getResponseCode();
+            if (responseCode != HttpURLConnection.HTTP_OK) {
+                throw new RuntimeException("API 호출 실패. 응답 코드: " + responseCode);
+            }
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            StringBuilder response = new StringBuilder();
+            String inputLine;
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode rootNode = objectMapper.readTree(response.toString());
+
+            return parsePricingOptions(rootNode.path("data").path("itinerary").path("pricingOptions"));
+
+        } catch (Exception e) {
+            throw new RuntimeException("API 호출 중 오류 발생", e);
+        }
+    }
+
+    private List<Map<String, String>> parsePricingOptions(JsonNode pricingOptionsNode) {
+        List<Map<String, String>> pricingOptions = new ArrayList<>();
+
+        for (JsonNode optionNode : pricingOptionsNode) {
+            for (JsonNode agentNode : optionNode.path("agents")) {
+                Map<String, String> option = new HashMap<>();
+                option.put("siteName", agentNode.path("name").asText());
+                option.put("price", "₩" + agentNode.path("price").asText());
+                option.put("url", agentNode.path("url").asText());
+                pricingOptions.add(option);
+            }
+        }
+        System.out.println("pricingOptions: ApiCall" + pricingOptions);
+        return pricingOptions;
+    }
+
+    private String buildDetailUrl(String itineraryId, String token) {
+        try {
+            return "https://sky-scanner3.p.rapidapi.com/flights/detail" +
+                    "?itineraryId=" + URLEncoder.encode(itineraryId, "UTF-8") +
+                    "&token=" + URLEncoder.encode(token, "UTF-8") +
+                    "&stops=direct" + // 직항만 필터링
+                    "&market=KR" +    // 마켓 정보 (KR: 한국)
+                    "&currency=KRW" + // 화폐 정보 (KRW: 원화)
+                    "&locale=ko-KR";  // 로케일 정보 (ko-KR: 한국어)
+        } catch (Exception e) {
+            throw new RuntimeException("URL 구성 중 오류 발생: " + e.getMessage(), e);
+        }
+    }
+
+
+
+
+} // end class

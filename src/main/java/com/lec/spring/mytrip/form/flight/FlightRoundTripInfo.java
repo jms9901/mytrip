@@ -23,4 +23,5 @@ public class FlightRoundTripInfo {
                 ", sessionId='" + sessionId + '\'' +
                 '}';
     }
+
 }
