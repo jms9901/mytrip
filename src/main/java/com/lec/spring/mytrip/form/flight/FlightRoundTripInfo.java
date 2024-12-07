@@ -1,8 +1,6 @@
-package com.lec.spring.mytrip.form;
+package com.lec.spring.mytrip.form.flight;
 
 import lombok.Data;
-
-import java.util.Date;
 
 @Data
 public class FlightRoundTripInfo {

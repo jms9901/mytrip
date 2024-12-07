@@ -2,8 +2,8 @@ package com.lec.spring.mytrip.service;
 
 import com.lec.spring.mytrip.FlightApiCall;
 import com.lec.spring.mytrip.domain.Flight;
-import com.lec.spring.mytrip.form.FlightRoundTrip;
-import com.lec.spring.mytrip.form.FlightRoundTripResponse;
+import com.lec.spring.mytrip.form.flight.FlightRoundTrip;
+import com.lec.spring.mytrip.form.flight.FlightRoundTripResponse;
 import com.lec.spring.mytrip.repository.FlightRepository;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Service;
@@ -44,8 +44,14 @@ public class FlightServiceImpl implements FlightService {
     }
 
     @Override
-    public List<Flight> Flightincomplete(String sessionId) {
-        return List.of();
+    public FlightRoundTripResponse Flightincomplete(String sessionId) {
+        System.out.println("안냐쎄요 월리 너의 수의지롱");
+
+        FlightRoundTripResponse f = flightApiCall.fetchincompleteData(sessionId);
+        System.out.println("서비스 단 api에서 받아온  값 확인" + f);
+        return f;
+
+//        return flightApiCall.fetchincompleteData(sessionId);
     }
 
 
