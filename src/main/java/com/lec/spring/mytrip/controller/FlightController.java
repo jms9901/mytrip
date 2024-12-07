@@ -61,7 +61,7 @@ public class FlightController {
             FlightRoundTripResponse flightApiResponse = flightService.roundTripApiCall(flightRoundTrip);
 
             System.out.println("flightApiResponse 생겨먹은거  " + flightApiResponse + "\n");
-            System.out.println("flightApiResponse.getFlights() 생겨먹은거  " + flightApiResponse.getFlights());
+            System.out.println("flightApiResponse.getFlights() 생겨먹은거  " + flightApiResponse.getFlights() + "\n");
 
             model.addAttribute("flights", flightApiResponse.getFlights());
             System.out.println("flights 모달 보냄");

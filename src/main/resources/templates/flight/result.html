@@ -106,11 +106,13 @@
 </div>
 
   <!-- 검색 결과 테이블 -->
-  <table>
-    <tr th:each="flights : ${flights}">
-      <td th:text="${flights.price}"></td>
-      <td th:text="${flights.departure}"></td>
-    </tr>
+  <table id="apiResult">
+    <tbody id="incompleteResult">
+      <tr th:each="flights : ${flights}">
+        <td th:text="${flights.price}"></td>
+        <td th:text="${flights.departure}"></td>
+      </tr>
+    </tbody>
   </table>
 
   <!-- 가짜 div. 무한 스크롤 구현을 위해 스크린에 이 div가 뜨면 다음 쿼리가 진행되도록 -->

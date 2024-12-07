@@ -22,74 +22,41 @@ $(document).ready(function () {
 
 function loadMoreData(sessionId) {
     console.log("불러오기 더 정보")
-    // 서버에서 api_2의 추가 데이터를 요청
-    fetch('http://localhost:8082/flight/result/incomplete', {
-        method: 'POST',  // HTTP 요청 방식 (POST)
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            sessionId: sessionId
-            // 더 필요하면 추가
-        })
-    })
-        // .then(response => response.json())  // 서버에서 받은 JSON 데이터 처리
-        // .then(data => {
-        //     console.log("일단 이거 실행은 되냐")
-        //     console.log(data.length)
-        //     if (data.length > 0) {
-        //         console.log("data")
-        //         const tableBody = document.querySelector('#flights-table tbody');  // 기존 테이블의 tbody 선택
-        //
-        //         data.forEach(flight => {
-        //             const newRow = document.createElement('tr');  // 새로운 행 생성
-        //             const priceCell = document.createElement('td');
-        //             priceCell.textContent = flight.price;  // 가격 데이터 추가
-        //             const departureCell = document.createElement('td');
-        //             departureCell.textContent = flight.departure;  // 출발지 데이터 추가
-        //
-        //             newRow.appendChild(priceCell);  // 새 행에 가격 셀 추가
-        //             newRow.appendChild(departureCell);  // 새 행에 출발 셀 추가
-        //             tableBody.appendChild(newRow);  // 새 행을 테이블에 추가
-        //             console.log("한 놈 추가")
-        //         });
-        //     }
-        // })
-        // .catch(error => console.error('Error loading more flights:', error));
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-            return response.text();  // 텍스트로 응답을 먼저 확인
-        })
-        .then(text => {
-            console.log("Received response text:", text);  // 응답 텍스트 출력
-            try {
-                const data = JSON.parse(text);  // JSON 파싱 시도
-                console.log("Received data:", data);
-                console.log("Received flights array:", data.flights);
-                if (data && data.flights && data.flights.length > 0) {
-                    const tableBody = document.querySelector('#flights-table tbody');  // 기존 테이블의 tbody 선택
-                    data.forEach(flight => {
-                        const newRow = document.createElement('tr');  // 새로운 행 생성
-                        const priceCell = document.createElement('td');
-                        priceCell.textContent = flight.price;  // 가격 데이터 추가
-                        const departureCell = document.createElement('td');
-                        departureCell.textContent = flight.departure;  // 출발지 데이터 추가
+    // 서버에서 incomplete의 추가 데이터를 요청
 
-                        newRow.appendChild(priceCell);  // 새 행에 가격 셀 추가
-                        newRow.appendChild(departureCell);  // 새 행에 출발 셀 추가
-                        tableBody.appendChild(newRow);  // 새 행을 테이블에 추가
-                        console.log("한 놈 추가")
-                    });
-                } else {
-                    console.log("No data received.");
-                }
-            } catch (error) {
-                console.error("Error parsing JSON:", error);
+    //complete일 경우 더 이상 쿼리를 진행하디 않음
+
+    $.ajax({
+        url: 'http://localhost:8082/flight/result/incomplete', // API 엔드포인트
+        method: 'POST', // HTTP 요청 방식
+        contentType: 'application/json', // Content-Type 설정
+        data: JSON.stringify({
+            sessionId: sessionId // 필요한 데이터 전달
+            // 추가 데이터가 있다면 여기에 포함
+        }),
+        success: function(data) {
+            console.log("Received data:", data);
+            if (data && data.flights && data.flights.length > 0) {
+
+                const $tableBody = $('#apiResult #incompleteResult'); // 테이블의 tbody 선택
+
+                $.each(data.flights, function(index, flight) { // flights 배열 순회
+
+                    const $newRow = $('<tr>'); // 새로운 행 생성
+                    const $priceCell = $('<td>').text(flight.price); // 가격 셀 생성 및 값 추가
+                    const $departureCell = $('<td>').text(flight.departure); // 출발 셀 생성 및 값 추가
+
+                    $newRow.append($priceCell, $departureCell); // 행에 셀 추가
+                    $tableBody.append($newRow); // 테이블에 새 행 추가
+
+                });
+            } else {
+                console.log("추가 데이타가 읍스요.");
             }
-        })
-        .catch(error => {
-            console.error('Error loading data:', error);
-        });
+        },
+        error: function(xhr, status, error) {
+            console.error('비사아아앙:', status, error);
+        }
+    });
+
 }
