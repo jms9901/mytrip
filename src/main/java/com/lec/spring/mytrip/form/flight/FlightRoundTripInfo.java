@@ -11,6 +11,7 @@ public class FlightRoundTripInfo {
 
     String token;       // 디테일 검색에 필요한 토큰 값
     String sessionId;   // 인컴플 호출에 필요한 세션id
+    String callStatus ; // 추가 호출 여부
 
     @Override
     public String toString() {
@@ -21,6 +22,7 @@ public class FlightRoundTripInfo {
 
                 ", token='" + token + '\'' +
                 ", sessionId='" + sessionId + '\'' +
+                ", callStatus ='" + callStatus  + '\'' +
                 '}';
     }
 
