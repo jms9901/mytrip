@@ -188,11 +188,54 @@ private String apiKey = "6400a15222msh8627a40b3bd3531p1bdef5jsnaa784d38dcf3";
             // itinerary별 값 설정
             String id = flightNode.path("id").asText();
             String price = flightNode.path("price").path("formatted").asText();
-            String departure = flightNode.path("legs").get(0).path("departure").asText();
+
+            String outDeparture = flightNode.path("legs").get(0).path("departure").asText()
+                    .split("T")[1];  // 가는 편 출발일시
+            String returnDeparture = flightNode.path("legs").get(1).path("departure")
+                    .asText().split("T")[1];;  // 오는 편 출발일시
+            String outArrival = flightNode.path("legs").get(0).path("arrival").asText()
+                    .split("T")[1];;; // 가는 편 도착일시
+            String returnArrival = flightNode.path("legs").get(1).path("arrival").asText()
+                    .split("T")[1];;; // 오는 편 도착일시
+
+            String outDurationInMinutes = minToHourAndMin(flightNode.path("legs").get(0).path("durationInMinutes").asText()); // 가는 편 걸리는 시간(분)
+            String returnDurationInMinutes = minToHourAndMin(flightNode.path("legs").get(1).path("durationInMinutes").asText()); // 오는 편 걸리는 시간(분)
+
+            // 출발 도착의 경우, 가는 편만 기재. 오는 편에선 둘이 순서 바꾸기요 어차피 직항로만 구하는데 우리
+            String originDisplayCode = flightNode.path("legs").get(0).path("origin").path("displayCode").asText(); // 출발공항코드 ex) ICN
+            String originName = flightNode.path("legs").get(0).path("origin").path("name").asText(); // 출발 공항 이름
+            String destinationDisplayCode = flightNode.path("legs").get(0).path("destination").path("displayCode").asText(); // 도착공항코드 ex) ICN
+            String destinationName = flightNode.path("legs").get(0).path("destination").path("name").asText(); // 도착 공항 이름
+
+            String outAirportName = flightNode.path("legs").get(0).path("carriers").path("marketing").get(0).path("name").asText(); // 출발 항공사이름
+            String returnAirportName = flightNode.path("legs").get(1).path("carriers").path("marketing").get(0).path("name").asText(); // 도착 항공사이름
+            String outLogoUrl = flightNode.path("legs").get(0).path("carriers").path("marketing").get(0).path("logoUrl").asText();  // 출발 항공사 로고
+            String returnLogoUrl = flightNode.path("legs").get(1).path("carriers").path("marketing").get(0).path("logoUrl").asText();  // 도착 항공사 로고
+
+            String outCity = flightNode.path("legs").get(0).path("origin").path("city").asText(); // 출발 도시
+            String outCountry = flightNode.path("legs").get(0).path("origin").path("country").asText(); // 출발 국가
+            String returnCity = flightNode.path("legs").get(1).path("origin").path("city").asText(); // 도착 도시
+            String returnCountry = flightNode.path("legs").get(1).path("origin").path("country").asText(); // 도착 국가
 
             flight.setId(id);
             flight.setPrice(price);
-            flight.setOutDeparture(departure);
+            flight.setOutDeparture(outDeparture);
+            flight.setReturnDeparture(returnDeparture);
+            flight.setOutArrival(outArrival);
+            flight.setOutDurationInMinutes(outDurationInMinutes);
+            flight.setReturnDurationInMinutes(returnDurationInMinutes);
+            flight.setOriginDisplayCode(originDisplayCode);
+            flight.setOriginName(originName);
+            flight.setDestinationDisplayCode(destinationDisplayCode);
+            flight.setDestinationName(destinationName);
+            flight.setOutAirportName(outAirportName);
+            flight.setReturnAirportName(returnAirportName);
+            flight.setOutLogoUrl(outLogoUrl);
+            flight.setReturnLogoUrl(returnLogoUrl);
+            flight.setOutCity(outCity);
+            flight.setOutCountry(outCountry);
+            flight.setReturnCity(returnCity);
+            flight.setReturnCountry(returnCountry);
 
             System.out.println("여기, 유틸: " + flight.toString());
 
@@ -204,6 +247,12 @@ private String apiKey = "6400a15222msh8627a40b3bd3531p1bdef5jsnaa784d38dcf3";
         }
 
         return flights;
+    }
+
+    private String minToHourAndMin(String min){
+        int minmin = Integer.parseInt(min);
+
+        return minmin / 60 + "시간 " + minmin % 60 + "분";
     }
 
     public List<Map<String, String>> fetchFlightDetail(String itineraryId, String token) {

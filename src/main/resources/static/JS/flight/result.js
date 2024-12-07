@@ -50,16 +50,69 @@ function loadMoreData(sessionId) {
                 $.each(data.flights, function(index, flight) { // flights 배열 순회
 
                     const newRowHtml = `
-                    <tr>
-                        <form id="form-flight-${flight.id}" class="flight-form" action="/flight/detail" method="post">
-                            <input type="hidden" class="flight-form" name="flightId" value="${flight.id}">
-                            <td class="departure-cell" >${flight.outDeparture}</td>
-                            <td class="button-cell">
-                                <button class="detailApiBtn" type="submit">${flight.price}</button>
-                            </td>
-                        </form>
-                    </tr>
-                    `;
+<tr>
+    <form class="detailApiCall" action="/flight/detail" method="post">
+        <!-- 기타 필요 정보들을 hidden으로 전송 -->
+        <input type="hidden" name="itineraryId" value="${flight.id}">
+        <input type="hidden" name="token" class="tokenInput">
+        
+        <!-- 항공사 정보 -->
+        <td>
+            <div>
+                <img src="${flight.outLogoUrl}" alt="가는편 항공사 로고">
+            </div>
+            <div>${flight.outAirportName}</div>
+            <div>
+                <img src="${flight.returnLogoUrl}" alt="오는편 항공사 로고">
+            </div>
+            <div>${flight.returnAirportName}</div>
+        </td>
+        
+        <!-- 출발 공항 2개 -->
+        <td>
+            <div>
+                <span>${flight.originDisplayCode}</span>
+                <span>${flight.originName}</span>
+                <span>${flight.outDeparture}</span>
+            </div>
+            <div>
+                <span>${flight.destinationDisplayCode}</span>
+                <span>${flight.destinationName}</span>
+                <span>${flight.returnDeparture}</span>
+            </div>
+        </td>
+        
+        <!-- 가는 시간 2개 -->
+        <td>
+            <div>
+                <span>${flight.outDurationInMinutes}</span>
+            </div>
+            <div>
+                <span>${flight.returnDurationInMinutes}</span>
+            </div>
+        </td>
+        
+        <!-- 도착 공항 2개 -->
+        <td>
+            <div>
+                <span>${flight.destinationDisplayCode}</span>
+                <span>${flight.destinationName}</span>
+                <span>${flight.outArrival}</span>
+            </div>
+            <div>
+                <span>${flight.originDisplayCode}</span>
+                <span>${flight.originName}</span>
+                <span>${flight.returnArrival}</span>
+            </div>
+        </td>
+        
+        <!-- 가격 버튼 -->
+        <td>
+            <button type="submit" name="submit_${flight.id}">${flight.price}</button>
+        </td>
+    </form>
+</tr>
+`;
 
                     // 테이블 본문에 추가
                     $('#incompleteResult').append(newRowHtml);

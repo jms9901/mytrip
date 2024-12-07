@@ -113,12 +113,57 @@
         <!-- 기타 필요 정보들을 hidden으로 전송 -->
         <input type="hidden" th:name="itineraryId" th:value="${flight.id}">
         <input type="hidden" name="token" class="tokenInput">
-        <!--항공사 정보-->
+        <!-- 항공사 정보 -->
+        <td>
+          <div>
+            <img th:src="${flight.outLogoUrl}" alt="가는편 항공사 로고">
+          </div>
+          <div th:text="${flight.outAirportName}">가는편 공항</div>
+          <div>
+            <img th:src="${flight.returnLogoUrl}" alt="오는편 항공사 로고">
+          </div>
+          <div th:text="${flight.returnAirportName}">오는편 공항</div>
+        </td>
+
+        <!-- 출발 공항 2개 -->
+        <td>
+          <div>
+            <span th:text="${flight.originDisplayCode}">출발 코드</span>
+            <span th:text="${flight.originName}">출발 공항명</span>
+            <span th:text="${flight.outDeparture}">출발 시간</span>
+          </div>
+          <div>
+            <span th:text="${flight.destinationDisplayCode}">도착 코드</span>
+            <span th:text="${flight.destinationName}">도착 공항명</span>
+            <span th:text="${flight.returnDeparture}">귀국 출발 시간</span>
+          </div>
+        </td>
+
+        <!-- 가는 시간 2개 -->
+        <td>
+          <div>
+            <span th:text="${flight.outDurationInMinutes}">가는편 소요 시간</span>
+          </div>
+          <div>
+            <span th:text="${flight.returnDurationInMinutes}">오는편 소요 시간</span>
+          </div>
+        </td>
+
+        <!-- 도착 공항 2개 -->
+        <td>
+          <div>
+            <span th:text="${flight.destinationDisplayCode}">도착 코드</span>
+            <span th:text="${flight.destinationName}">도착 공항명</span>
+            <span th:text="${flight.outArrival}">도착 시간</span>
+          </div>
+          <div>
+            <span th:text="${flight.originDisplayCode}">출발 코드</span>
+            <span th:text="${flight.originName}">출발 공항명</span>
+            <span th:text="${flight.returnArrival}">귀국 도착 시간</span>
+          </div>
+        </td>
+
         <!--가격 버튼-->
-        <!--출발공항 2개-->
-        <!--가는 시간 2개-->
-        <!--도착공항 2개-->
-        <td th:text="${flight.outDeparture}"></td>
         <td>
           <button type="submit" th:name="'submit_' + ${flight.id}" th:text="${flight.price}"></button>
         </td>
