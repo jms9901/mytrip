@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8" xmlns:th="http://www.thymeleaf.org">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -25,7 +25,7 @@
           <div id="image-preview" class="slider"></div>
           <button class="next-btn hidden">&gt;</button>
           <label for="file-input" class="camera-label">
-            <img src="/static/img/camera.png" alt="Camera Icon" id="camera-icon">
+            <img th:src="@{/static/img/carmera.png}" alt="Camera Icon" id="camera-icon">
           </label>
           <input type="file" id="file-input" multiple accept="image/*" class="hidden">
         </div>
@@ -51,11 +51,11 @@
       <textarea placeholder="피드 내용" class="feed-content" id="feed-content"></textarea>
     </label>
 
-    <img src="/static/img/checkIcon.png" alt="submit-button" type="button" id="submit-button" class="submit-button">
+    <img th:src="@{/static/img/checkIcon.png}" th:href="@{/mypage/feedUpdateOk.html}" alt="submit-button" type="button" id="submit-button" class="submit-button">
 
   </div>
 </div>
 
-  <script src="/static/JS/feedWrite.js"></script>
+<script th:src="@{/static/JS/feedWrite.js}"></script>
 </body>
 </html>

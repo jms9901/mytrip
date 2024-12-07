@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href='https://fonts.googleapis.com/css?family=Kaushan Script' rel='stylesheet'>
-    <link rel="stylesheet" href="/static/CSS/businessMain.css">
+    <link rel="stylesheet" th:href="@{/static/CSS/businessMain.css}">
     <title>Business Main Mypage</title>
 </head>
 <body style="background-image: url(/static/img/mypageBackground.jpg)">
 
 <!-- 홈 버튼 -->
-<img src="/static/img/logo.png" alt="homeLogo-Button" type="button" class="homeLogo-Button">
+<img th:src="@{/static/img/logo.png}" th:href="@{/user/home.html}" alt="homeLogo-Button" type="button" class="homeLogo-Button">
 <div class="main-container">
     <div class="camera">
         <div class="camera-lens"></div>
@@ -18,7 +18,8 @@
     </div>
     <div class="container">
         <div class="profile-section">
-            <img src="/static/img/basicProfile.png" class="profile-icon-Button" type="button" id="profile-icon-Button"></img>
+            <!-- 비즈니스 개인정보 수정 링크 연결  -->
+            <img th:src="@{/static/img/basicProfile.png}" class="profile-icon-Button" type="button" id="profile-icon-Button"></img>
             <div class="business-name">기업명</div>
         </div>
 
@@ -26,71 +27,30 @@
         <div class="package-section">
             <div class="package-header">패키지 목록</div>
             <!-- 패키지 결제 내역 리스트 버튼 -->
-            <img src="/static/img/paymentListIcon.png" alt="package-payment-button" id="package-payment-button" type="button"></img>
+            <img th:src="@{/static/img/paymentListIcon.png}" th:href="@{/templates/mypage/businessPayment.html}" alt="package-payment-button" id="package-payment-button" type="button"></img>
 
             <!-- 등록한 패키지 목록 -->
             <div class="package-list">
-                <div class="package-item">
-                    <div class="package-name">패키지명</div>
-                    <div class="package-content">패키지 내용</div>
-                    <div class="package-status">승인</div>
+                <div class="package-item" th:each="package : ${packageList}">
+                    <div class="package-header">
+                        <div class="package-name" th:text="${package.package_title}"></div>
+                        <img th:src="@{/static/img/paymentListIcon.png}" th:href="@{/mypage/businessPayment.html}" alt="결제 아이콘" class="payment-icon">
+                    </div>
+                    <div class="package-content" th:text="${package.package_content}"></div>
+                    <div class="package-status" th:text="${package.package_status}"></div>
                     <div class="liked">
-                        <img src="/static/img/heart-icon-fill.png" alt="heart-icon-fill" class="liked-heart-icon" type="button">
-                        <span class="likedCnt">count</span>
+                        <img src="/static/img/heart-icon-fill.png" alt="heart-icon-fill" id="liked-heart-icon" type="button">
+                        <span class="likedCnt" th:text="${package.likedCount}"></span>
                     </div>
                     <!-- 패키지 수정 버튼 -->
                     <div class="package-update">
-                        <img src="/static/img/myPageUpdate.png" alt="package-update-button" class="package-update-button" type="button">
-                    </div>
-                </div>
-            </div>
-            <div class="package-list">
-                <div class="package-item">
-                    <div class="package-name">패키지명</div>
-                    <div class="package-content">패키지 내용</div>
-                    <div class="package-status">승인</div>
-                    <div class="liked">
-                        <img src="/static/img/heart-icon-fill.png" alt="heart-icon-fill" class="liked-heart-icon" type="button">
-                        <span class="likedCnt">count</span>
-                    </div>
-                    <!-- 패키지 수정 버튼 -->
-                    <div class="package-update">
-                        <img src="/static/img/myPageUpdate.png" alt="package-update-button" class="package-update-button" type="button">
-                    </div>
-                </div>
-            </div>
-            <div class="package-list">
-                <div class="package-item">
-                    <div class="package-name">패키지명</div>
-                    <div class="package-content">패키지 내용</div>
-                    <div class="package-status">승인</div>
-                    <div class="liked">
-                        <img src="/static/img/heart-icon-fill.png" alt="heart-icon-fill" class="liked-heart-icon" type="button">
-                        <span class="likedCnt">count</span>
-                    </div>
-                    <!-- 패키지 수정 버튼 -->
-                    <div class="package-update">
-                        <img src="/static/img/myPageUpdate.png" alt="package-update-button" class="package-update-button" type="button">
-                    </div>
-                </div>
-            </div>
-            <div class="package-list">
-                <div class="package-item">
-                    <div class="package-name">패키지명</div>
-                    <div class="package-content">패키지 내용</div>
-                    <div class="package-status">승인</div>
-                    <div class="liked">
-                        <img src="/static/img/heart-icon-fill.png" alt="heart-icon-fill" class="liked-heart-icon" type="button">
-                        <span class="likedCnt">count</span>
-                    </div>
-                    <!-- 패키지 수정 버튼 -->
-                    <div class="package-update">
-                        <img src="/static/img/myPageUpdate.png" alt="package-update-button" class="package-update-button" type="button">
+                        <img src="/static/img/myPageUpdate.png" alt="package-update-button" id="package-update-button" type="button">
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 </body>
 </html>
