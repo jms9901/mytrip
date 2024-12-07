@@ -87,24 +87,29 @@ public class FlightController {
                 .body(incomplete);
     }
 
-    @GetMapping("/detail")
-    public ResponseEntity<?> getFlightDetail(
-//            @RequestParam String itineraryId,
-//            @RequestParam String token
+    @PostMapping("/detail")
+    public void getFlightDetail(
+            @RequestParam String itineraryId,
+            @RequestParam String token,
+            Model model
     ) {
         try {
-            System.out.println("getFlightDetail 호출됨");
+            System.out.println("getFlightDetail 호출됨: itineraryId=" + itineraryId + ", token=" + token);
 
             // 서비스 호출
-            FlightDetailResponse response = flightService.fetchFlightDetail("12409-2412161930--32179-0-9970-2412162345|9970-2412280100--32179-0-12409-2412280825", "eyJhIjoxLCJjIjowLCJpIjowLCJjYyI6ImVjb25vbXkiLCJvIjoiSUNOIiwiZCI6IkJLSyIsImQxIjoiMjAyNC0xMi0xNiIsImQyIjoiMjAyNC0xMi0yOCJ9");
+            FlightDetailResponse response = flightService.fetchFlightDetail(itineraryId, token);
 
-            // 응답 반환
-            System.out.println("response Controller : " + response);
-            return ResponseEntity.ok(response);
+            // 데이터를 Model에 추가
+            model.addAttribute("details", response.getDetails());
+
+            // detail.html 렌더링
+
         } catch (Exception e) {
             System.out.println("API 호출 중 오류: " + e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("오류 발생: " + e.getMessage());
+
+            // 에러 메시지 추가
+            model.addAttribute("error", "오류 발생: " + e.getMessage());
+
         }
     }
 
