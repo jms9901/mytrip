@@ -143,34 +143,8 @@ public class UserController {
         return "user/editUser"; // 사용자 정보 수정 페이지 반환
     }
 
-    // 사용자 정보 수정 처리
-    @PostMapping("/edit")
-    public String updateUser(@Valid User user,
-                             BindingResult result,
-                             Model model,
-                             RedirectAttributes redirectAttributes,
-                             Authentication authentication) {
-        if (result.hasErrors()) {
-            model.addAttribute("errors", result.getAllErrors());
-            return "user/editUser"; // 유효성 검사 실패 시 수정 페이지로 다시 렌더링
-        }
 
-        // 로그인한 사용자와 동일한 사용자만 업데이트 가능
-        String currentUsername = authentication.getName();
-        if (!currentUsername.equals(user.getUsername())) {
-            redirectAttributes.addFlashAttribute("error", "본인만 자신의 정보를 수정할 수 있습니다.");
-            return "redirect:/mypage/bookMain";
-        }
-
-        int cnt = userService.updateUser(user);
-        if (cnt > 0) {
-            redirectAttributes.addFlashAttribute("success", "사용자 정보가 성공적으로 업데이트되었습니다.");
-            return "redirect:/mypage/bookMain"; // 업데이트 성공 시 홈으로 리다이렉트
-        } else {
-            model.addAttribute("error", "사용자 정보 업데이트에 실패했습니다.");
-            return "user/editUser"; // 업데이트 실패 시 수정 페이지로 다시 렌더링
-        }
-    }}
+    }
 
 
 

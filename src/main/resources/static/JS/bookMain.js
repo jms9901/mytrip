@@ -43,6 +43,8 @@ function loadApp() {
 		hoverChat();
 	});
 
+
+
 	function hoverChat() {
 		let angle = 0;
 		clearInterval(shakeInterval);

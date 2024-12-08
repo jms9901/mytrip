@@ -76,12 +76,30 @@ public class UserServiceImpl implements UserService {
         return 1;
     }
 
-
-    // 유저 정보 업데이트
     @Override
-    public int updateUser(User user) {
+    public int updateUser(Long userId, String newPassword, String introduction, String profile) {
+        User user = userRepository.findById(userId).orElse(null);
+        if (user == null) {
+            return 0;  // 사용자 없음
+        }
 
-        return userRepository.updateUser(user);
+        // 비밀번호 업데이트
+        if (newPassword != null && !newPassword.isEmpty()) {
+            user.setPassword(passwordEncoder.encode(newPassword));  // 비밀번호 해싱
+        }
+
+        // 자기소개 업데이트
+        if (introduction != null) {
+            user.setIntroduction(introduction);
+        }
+
+        // 프로필 이미지 업데이트
+        if (profile != null) {
+            user.setProfile(profile);
+        }
+
+        // 업데이트된 사용자 정보 저장
+        return userRepository.updateUser(userId, user.getPassword(), user.getIntroduction(), user.getProfile());
     }
 
 //    @Override

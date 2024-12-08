@@ -10,6 +10,7 @@
             user_email as "email",
             user_password as "password",
             user_username as "username",
+            user_name as "name",
             user_phonenumber as "phoneNumber",
             user_regdate as "regDate",
             user_profile as "profile",
@@ -48,13 +49,19 @@
         and user_email = #{email}
     </select>
 
-    <update id="updateUser">
-            update user
-            set user_password = #{userPassword},
-                user_profile =#{userProfile},
-                user_introdution=#{userIntroduction}
-            where user_id = #{userId}
+    <update id="updateIntroduction">
+        UPDATE user
+        SET user_introdution = #{introduction}
+        WHERE user_id = #{userid}
+    </update>
 
+    <!-- 사용자 업데이트 -->
+    <update id="updateUser">
+        UPDATE user
+        SET user_password = #{password},
+            user_introdution = #{introduction},
+            user_profile=#{profile}
+        WHERE user_id = #{userId}
     </update>
 
 </mapper>

@@ -8,7 +8,7 @@ values ('fullstackK08@naver.com',
         '2000-04-24',
         '',
         '',
-        '',
+        '나는 이경원이다',
         'admin'
         ),
         (
