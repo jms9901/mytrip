@@ -1,0 +1,46 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden; /* 수평 스크롤 방지 */
+}
+
+.slider {
+    width: 100%;
+    overflow: visible; /* 슬라이더 영역 외부는 보이지 않도록 설정 */
+    height: 400px;
+}
+
+.slide-track {
+    display: flex;
+    width: calc(200%); /* 슬라이더 길이를 길게 설정하여 무한 스크롤 효과 구현 */
+    animation: scroll 10s linear infinite;
+}
+
+.slider.paused .slide-track {
+    animation-play-state: paused; /* 슬라이더 멈춤 */
+}
+
+.slide {
+    width: 10%; /* 각 슬라이드가 전체 너비의 10%를 차지하도록 설정 */
+    flex: 0 0 auto;
+    margin: 0 40px;
+    transition: transform 0.3s ease; /* 애니메이션 효과 추가 */
+}
+
+.slide img {
+    width: 400px;
+    height: 300px; /* 이미지 높이 200px로 설정 */
+    position: relative;
+    top: 100px;
+    object-fit: cover; /* 이미지가 컨테이너에 맞게 비율을 유지하며 잘리도록 설정 */
+    display: block;
+}
+
+.slide:hover {
+    transform: scale(1.1); /* 마우스 오버 시 확대 */
+}
+
+@keyframes scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}

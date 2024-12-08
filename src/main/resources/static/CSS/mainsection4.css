@@ -1,0 +1,23 @@
+.container4{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.row1, .row2{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    width: 100%; /* 이 부분을 추가하여 행이 전체 너비를 차지하도록 */
+    margin: 10px 0; /* 위아래에 일정 간격을 추가 */
+    margin-bottom: 100px;
+    position: relative;
+    top: -100px
+}
+.row1 a, .row2 a{
+    display: flex;
+    justify-content: center;
+}
+.row1 img, .row2 img{
+    width: 300px;
+    height: auto;
+}
