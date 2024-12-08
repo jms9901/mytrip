@@ -30,12 +30,10 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
     }
 
     // 소셜 회원가입
-    // TODO: 소셜 회원가입 구현
-     public PrincipalDetails(User user, Map<String, Object> attributes) {
-         this.user = user;
-         this.attributes = attributes;
-     }
-
+    public PrincipalDetails(User user, Map<String, Object> attributes) {
+        this.user = user;
+        this.attributes = attributes;
+    }
 
     // 해당 user의 권한들을 리턴
     @Override
@@ -86,7 +84,7 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
 
     @Override
     public String getName() {
-        return null;
+        return user.getName();
     }
 
     private Map<String, Object> attributes;

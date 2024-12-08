@@ -10,6 +10,12 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class User {
+
+    public User(String email, String name){
+        this.email = email;
+        this.name = name;
+    }
+
     private Long id;  // 사용자 ID
 
     private String email;  // 사용자 이메일

@@ -10,6 +10,7 @@
             user_email as "email",
             user_password as "password",
             user_username as "username",
+            user_name as "name",
             user_regdate as "regDate",
             user_profile as "profile",
             user_provider as "provider",

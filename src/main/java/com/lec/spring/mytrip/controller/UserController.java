@@ -3,6 +3,8 @@ package com.lec.spring.mytrip.controller;
 import com.lec.spring.mytrip.domain.User;
 import com.lec.spring.mytrip.service.UserService;
 import com.lec.spring.mytrip.domain.UserValidator;
+import com.lec.spring.mytrip.util.U;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -41,10 +43,18 @@ public class UserController {
     public void initBinder(WebDataBinder binder) {
         binder.setValidator(userValidator);
     }
+
     @GetMapping("/home")
-    public String home(Model model) {
+    public String home(Model model, HttpSession session) {
+        User loggedUser = U.getLoggedUser();
+        model.addAttribute("user", loggedUser);
+
+        System.out.println("Session ID : " + session.getId());
+        System.out.println("Logged User: " + loggedUser);
         return "user/home";
     }
+
+
     // 로그인 페이지
     @GetMapping("/login")
     public String login(Model model) {

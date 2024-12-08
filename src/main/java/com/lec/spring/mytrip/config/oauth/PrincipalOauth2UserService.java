@@ -7,12 +7,16 @@ import com.lec.spring.mytrip.domain.User;
 import com.lec.spring.mytrip.repository.UserRepository;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
-import org.springframework.security.oauth2.core.user.OAuth2UserAuthority;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -41,7 +45,6 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         String name = oAuth2UserInfo.getName();
         String username = provider + "_" + email.replace("@", "_").replace(".", "_");
         String profile = oAuth2UserInfo.getProfile();
-        // 이메일에서 username 생성 ('_'를 기준으로)
 
         User user = userRepository.findByEmail(email);
         if (user == null) {
@@ -77,20 +80,34 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         }
 
         Map<String, Object> attributes = new HashMap<>(oAuth2User.getAttributes());
+        System.out.println(attributes.toString());
         attributes.put("email", email);
 
+        DefaultOAuth2User defaultOAuth2User = new DefaultOAuth2User(
+                Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")),
+                attributes,
+                "email");
 
-        return new DefaultOAuth2User(
-                Collections.singleton(new OAuth2UserAuthority(attributes)),attributes,"email");
+        // OAuth2AuthenticationToken 사용
+        OAuth2AuthenticationToken authentication = new OAuth2AuthenticationToken(
+                defaultOAuth2User,
+                defaultOAuth2User.getAuthorities(),
+                userRequest.getClientRegistration().getRegistrationId());
+
+        // SecurityContext에 인증 정보 설정
+        SecurityContext context = SecurityContextHolder.createEmptyContext();
+        context.setAuthentication(authentication);
+        SecurityContextHolder.setContext(context);
+
+        return defaultOAuth2User;
     }
 
     private OAuth2UserInfo getOAuth2UserInfo(OAuth2UserRequest userRequest, Map<String, Object> attributes) {
         String provider = userRequest.getClientRegistration().getRegistrationId().toLowerCase();
         return switch(provider) {
-            case "google" ->new GoogleUserInfo(attributes);
-            case "kakao" ->new KakaoUserInfo(attributes);
+            case "google" -> new GoogleUserInfo(attributes);
+            case "kakao" -> new KakaoUserInfo(attributes);
             default -> throw new OAuth2AuthenticationException("로그인 provider를 지원하지 않습니다.");
         };
-
     }
 }
