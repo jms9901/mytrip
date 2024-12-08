@@ -15,10 +15,10 @@ public class FlightDetailTicketInfo {
     String returnCountry;  // 도착 국가
 
     String outDate;// 가는 편 날짜
-    String outTime;// 가는 편 일자
+    String outTime;// 가는 편 시간
     String outCarrier;// 가는 편 항공사
 
     String returnDate;// 오는 편 날짜
-    String returnTime;// 오는 편 일자
+    String returnTime;// 오는 편 시간
     String returnCarrier;// 오는 편 항공사
 }
