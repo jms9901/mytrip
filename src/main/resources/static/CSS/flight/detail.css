@@ -1,35 +1,38 @@
-@charset "UTF-8";
-
-/* 공통 스타일 */
-body {
-    font-family: Arial, sans-serif;
+html, body {
     margin: 0;
     padding: 0;
-    background-image: url('/static/img/OkinawaImg.jpg'); /* 배경 이미지 URL */
-    background-size: cover;
-    background-position: center;
-    color: #333;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-}
-
-h1 {
-    color: white;
-    margin-bottom: 20px;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-}
-
-.container {
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    height: 100%;
     width: 100%;
+    overflow-x: hidden; /* 가로 스크롤 방지 */
 }
 
+/* .container 설정 */
+.container {
+    background-image: url('/static/img/flight/cloud.png.jpg'); /* 배경 이미지 URL */
+    background-size: cover; /* 이미지를 컨테이너 크기에 맞게 조정 */
+    background-position: center; /* 이미지를 가운데 정렬 */
+    background-repeat: no-repeat; /* 배경 이미지 반복 방지 */
+    display: flex; /* 컨텐츠 정렬 */
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* 세로 정렬: 위로 올림 */
+    height: 120%; /* 부모 요소의 전체 높이 사용 */
+    width: 100%; /* 부모 요소의 전체 너비 사용 */
+    padding-top: 20px; /* 컨텐츠 위 여백 */
+}
+
+/* 제목 스타일 */
+h1 {
+    position: relative;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    font-size: 36px; /* 제목 크기 */
+    margin-bottom: 40px; /* 티켓과의 간격 */
+}
+
+/* 티켓 스타일 (정적인 위치로 복원) */
 .ticket {
+    position: relative;
     display: flex;
     flex-direction: row;
     align-items: stretch;
@@ -40,6 +43,7 @@ h1 {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     margin-bottom: 20px;
+    transition: none; /* 부드러운 전환 효과 제거 */
 }
 
 /* 왼쪽 이미지 섹션 */
@@ -53,12 +57,6 @@ h1 {
 /* 오른쪽 텍스트 섹션 */
 .ticket-details {
     flex: 2;
-    background: linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.07)), /* 투명도 줄임 */
-    url('/static/img/flight/airport.png'); /* 배경 이미지 URL */
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
-
     padding: 20px;
     display: flex;
     flex-direction: column;
@@ -127,6 +125,46 @@ h1 {
     margin-right: 8px; /* 이미지와 텍스트 사이 간격 추가 */
 }
 
+/* 스크롤 인디케이터 */
+.scroll-indicator {
+    position: fixed;
+    bottom: 30px; /* 화면 하단에서 30px 위 */
+    left: 50%; /* 화면 중앙 정렬 */
+    transform: translateX(-50%); /* 가로 중앙으로 조정 */
+    text-align: center;
+    z-index: 10; /* 다른 요소 위에 표시 */
+    opacity: 1; /* 초기 상태에서 보임 */
+    transition: opacity 0.3s ease, pointer-events 0.3s ease; /* 스크롤 시 부드럽게 숨기기 */
+}
+
+.scroll-indicator .arrow {
+    font-size: 40px; /* 화살표 크기 */
+    color: white; /* 화살표 색상 */
+    animation: bounce 1.5s infinite; /* 위아래로 움직이는 애니메이션 */
+}
+
+.scroll-indicator p {
+    margin: 5px 0 0;
+    font-size: 16px; /* 텍스트 크기 */
+    font-weight: bold; /* 텍스트 강조 */
+    color: white; /* 텍스트 색상 */
+}
+
+/* 화살표의 위아래 움직이는 애니메이션 */
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0); /* 기본 위치 */
+    }
+    50% {
+        transform: translateY(-10px); /* 살짝 위로 이동 */
+    }
+}
+
+
+
+
+
+/*사이트 가격*/
 .Price {
     font-size: 16px;
     font-weight: bold;
