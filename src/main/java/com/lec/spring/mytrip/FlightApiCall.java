@@ -10,10 +10,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.NumberFormat;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -349,8 +347,13 @@ private String apiKey = "6400a15222msh8627a40b3bd3531p1bdef5jsnaa784d38dcf3";
         for (JsonNode optionNode : pricingOptionsNode) {
             for (JsonNode agentNode : optionNode.path("agents")) {
                 Map<String, String> option = new HashMap<>();
+                NumberFormat formatter = NumberFormat.getInstance(Locale.KOREA);
                 option.put("siteName", agentNode.path("name").asText());
-                option.put("price", "₩" + agentNode.path("price").asText());
+                // 가격을 정수로 변환 후 쉼표 추가
+                double rawPrice = agentNode.path("price").asDouble();
+                int roundedPrice = (int) Math.round(rawPrice); // 반올림 후 정수화
+                String formattedPrice = formatter.format(roundedPrice); // 쉼표 추가 포맷
+                option.put("price", "₩" + formattedPrice); // 포맷된 가격에 '₩' 추가
                 option.put("url", agentNode.path("url").asText());
                 pricingOptions.add(option);
             }
