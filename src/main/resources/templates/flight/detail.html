@@ -38,7 +38,7 @@
                     <div>
                         <p><span>NAME:</span> John Doe</p> <!-- 사용자가 제공한 이름 -->
                         <p><span>DESTINATION:</span>
-                            <span th:text="${detailTicket.returnCity + ', ' + detailTicket.returnCountry} + ' 공항'"></span> <!-- 도착 도시, 국가 -->
+                            <span th:text="${detailTicket.returnCity}"></span> <!-- 도착 도시, 국가 -->
                         </p>
                     </div>
                     <div>
@@ -80,7 +80,7 @@
                     <div>
                         <p><span>NAME:</span> John Doe</p> <!-- 사용자가 제공한 이름 -->
                         <p><span>DESTINATION:</span>
-                            <span th:text="${detailTicket.outCity + ', ' + detailTicket.outCountry} + ' 공항'"></span> <!-- 출발 도시, 국가 -->
+                            <span th:text="${detailTicket.outCity}"></span> <!-- 출발 도시, 국가 -->
                         </p>
                     </div>
                     <div>

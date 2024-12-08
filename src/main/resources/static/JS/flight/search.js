@@ -50,10 +50,9 @@ $(document).ready(function () {
     };
 
     // 인원 및 좌석 선택 화면 열기/닫기
-    $("#open-selection-btn").on("click", function () {
-        const container = $("#selection-container");
-        container.toggle();
-    }).attr("type", "button");
+    $('#open-selection-btn').click(function() {
+        $('#selection-container').toggle();
+    });
 
     // 각 그룹의 카운트를 추적하는 객체
     let counts = {

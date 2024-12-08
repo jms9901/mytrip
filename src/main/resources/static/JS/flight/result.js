@@ -17,6 +17,11 @@ $(document).ready(function () {
         loadMoreData(sessionId);
     });
 
+    // 버튼 클릭 시 상단으로 스크롤 이동
+    $('#scrollTopBtn').click(function() {
+        $('html, body').animate({ scrollTop: 0 }, 'smooth'); // 부드럽게 상단으로 이동
+    });
+
     $('.detailApiCall').on('submit', function(event) {
         event.preventDefault(); // 폼 제출을 잠시 멈춤
         var token = $('div[data-token]').attr('data-token'); // div에서 token 값 가져오기
