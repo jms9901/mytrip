@@ -50,7 +50,7 @@ $(document).ready(function () {
     };
 
     // 인원 및 좌석 선택 화면 열기/닫기
-    $("#open-selection-btn").on("click", function () {
+    $("#openSelectionBtn").on("click", function () {
         const container = $("#selection-container");
         container.toggle();
     }).attr("type", "button");
@@ -124,7 +124,6 @@ $(document).ready(function () {
 
             $input.val(selectedValue);
 
-
             // 버튼 텍스트를 선택된 공항 이름으로 업데이트
             $button.text(airportName);
 
@@ -145,4 +144,24 @@ $(document).ready(function () {
             $(".dropdown-content").removeClass("show");
         }
     });
+    // 좌석 및 인원 드롭다운
+    $('#openSelectionBtn').on('click', function () {
+        const $selectionContainer = $('#selectionContainer');
+
+        if ($selectionContainer.is(':visible')) {
+            $selectionContainer.hide();
+        } else {
+            // 버튼의 위치를 기준으로 컨테이너 위치 설정
+            const buttonOffset = $(this).offset();
+            const buttonHeight = $(this).outerHeight();
+
+            $selectionContainer.css({
+                top: buttonOffset.top + buttonHeight,
+                left: buttonOffset.left,
+                display: 'block',
+            });
+        }
+    });
+
+
 });
