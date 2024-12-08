@@ -6,4 +6,5 @@ import java.util.List;
 @Data
 public class FlightDetailResponse {
     private List<FlightDetailInfo> details;
+    private FlightDetailTicketInfo ticket;
 }

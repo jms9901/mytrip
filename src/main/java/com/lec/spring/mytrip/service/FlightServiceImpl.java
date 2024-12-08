@@ -1,7 +1,5 @@
 package com.lec.spring.mytrip.service;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lec.spring.mytrip.FlightApiCall;
 import com.lec.spring.mytrip.domain.Flight;
 import com.lec.spring.mytrip.form.flight.*;
@@ -9,14 +7,7 @@ import com.lec.spring.mytrip.repository.FlightRepository;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Service;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 public class FlightServiceImpl implements FlightService {
@@ -53,7 +44,7 @@ public class FlightServiceImpl implements FlightService {
     }
 
     @Override
-    public FlightRoundTripResponse Flightincomplete(String sessionId) {
+    public FlightRoundTripResponse incompleteCall(String sessionId) {
         System.out.println("안냐쎄요 월리 너의 수의지롱");
 
         FlightRoundTripResponse f = flightApiCall.fetchincompleteData(sessionId);
@@ -64,25 +55,9 @@ public class FlightServiceImpl implements FlightService {
     }
 
     @Override
-    public FlightDetailResponse fetchFlightDetail(String itineraryId, String token) {
+    public FlightDetailResponse detailCall(String itineraryId, String token) {
         // API 호출로 사이트별 정보 가져오기
-        List<Map<String, String>> pricingOptions = flightApiCall.fetchFlightDetail(itineraryId, token);
-
-        // FlightDetailResponse 생성
-        FlightDetailResponse response = new FlightDetailResponse();
-        response.setDetails(
-                pricingOptions.stream()
-                        .map(option -> {
-                            FlightDetailInfo info = new FlightDetailInfo();
-                            info.setSiteName(option.get("siteName"));
-                            info.setPrice(option.get("price"));
-                            info.setBookingUrl(option.get("url"));
-                            return info;
-                        })
-                        .collect(Collectors.toList())
-        );
-        System.out.println("ServiceImpl Detail :  " + response);
-        return response;
+        return flightApiCall.fetchFlightDetail(itineraryId, token);
     }
 
 

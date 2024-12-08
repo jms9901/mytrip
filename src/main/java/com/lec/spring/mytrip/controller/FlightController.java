@@ -9,14 +9,12 @@ import com.lec.spring.mytrip.service.FlightService;
 import com.lec.spring.mytrip.service.FlightServiceImpl;
 import com.lec.spring.mytrip.service.HistoryService;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -80,7 +78,7 @@ public class FlightController {
         System.out.println("힘세고 강한 컨트롤러");
         System.out.println(sessionId.get("sessionId"));
 
-        FlightRoundTripResponse incomplete = flightService.Flightincomplete(sessionId.get("sessionId"));
+        FlightRoundTripResponse incomplete = flightService.incompleteCall(sessionId.get("sessionId"));
         // api_2 데이터 반환
         System.out.println("오늘도 평화로운 컨트롤러, " + incomplete);
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
@@ -97,10 +95,11 @@ public class FlightController {
             System.out.println("getFlightDetail 호출됨: itineraryId=" + itineraryId + ", token=" + token);
 
             // 서비스 호출
-            FlightDetailResponse response = flightService.fetchFlightDetail(itineraryId, token);
+            FlightDetailResponse response = flightService.detailCall(itineraryId, token);
 
             // 데이터를 Model에 추가
             model.addAttribute("details", response.getDetails());
+            model.addAttribute("detailTicket", response.getTicket());
 
             // detail.html 렌더링
 
