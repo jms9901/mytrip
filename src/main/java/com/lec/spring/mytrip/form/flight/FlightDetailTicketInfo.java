@@ -17,8 +17,10 @@ public class FlightDetailTicketInfo {
     String outDate;// 가는 편 날짜
     String outTime;// 가는 편 시간
     String outCarrier;// 가는 편 항공사
+    String outCarrierLog;// 가는 편 항공사 로고
 
     String returnDate;// 오는 편 날짜
     String returnTime;// 오는 편 시간
     String returnCarrier;// 오는 편 항공사
+    String returnCarrierLog;// 오는 편 항공사 로고
 }

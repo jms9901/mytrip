@@ -13,9 +13,9 @@ public interface FlightService {
 
     FlightRoundTripResponse roundTripApiCall(FlightRoundTrip flightRoundTrip);
 
-    FlightRoundTripResponse Flightincomplete(String sessionId);
+    FlightRoundTripResponse incompleteCall(String sessionId);
 
-    FlightDetailResponse fetchFlightDetail(String itineraryId, String token);
+    FlightDetailResponse detailCall(String itineraryId, String token);
 
 
 

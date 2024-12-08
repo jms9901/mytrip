@@ -2,9 +2,7 @@ package com.lec.spring.mytrip;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lec.spring.mytrip.form.flight.FlightRoundTrip;
-import com.lec.spring.mytrip.form.flight.FlightRoundTripInfo;
-import com.lec.spring.mytrip.form.flight.FlightRoundTripResponse;
+import com.lec.spring.mytrip.form.flight.*;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
@@ -16,6 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Component
 public class FlightApiCall {
@@ -255,7 +254,7 @@ private String apiKey = "6400a15222msh8627a40b3bd3531p1bdef5jsnaa784d38dcf3";
         return minmin / 60 + "시간 " + minmin % 60 + "분";
     }
 
-    public List<Map<String, String>> fetchFlightDetail(String itineraryId, String token) {
+    public FlightDetailResponse fetchFlightDetail(String itineraryId, String token) {
         try {
             String detailUrl = buildDetailUrl(itineraryId, token);
 
@@ -272,21 +271,76 @@ private String apiKey = "6400a15222msh8627a40b3bd3531p1bdef5jsnaa784d38dcf3";
             }
 
             BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            StringBuilder response = new StringBuilder();
+            StringBuilder responseStringBuilder = new StringBuilder();
             String inputLine;
             while ((inputLine = in.readLine()) != null) {
-                response.append(inputLine);
+                responseStringBuilder.append(inputLine);
             }
             in.close();
 
             ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode rootNode = objectMapper.readTree(response.toString());
+            JsonNode rootNode = objectMapper.readTree(responseStringBuilder.toString());
 
-            return parsePricingOptions(rootNode.path("data").path("itinerary").path("pricingOptions"));
+            List<Map<String, String>> pricingOptions = parsePricingOptions(
+                    rootNode.path("data").path("itinerary").path("pricingOptions")
+            );
+
+            // FlightDetailResponse 생성
+            FlightDetailResponse response = new FlightDetailResponse();
+            response.setDetails(
+                    pricingOptions.stream()
+                            .map(option -> {
+                                FlightDetailInfo info = new FlightDetailInfo();
+                                info.setSiteName(option.get("siteName"));
+                                info.setPrice(option.get("price"));
+                                info.setBookingUrl(option.get("url"));
+                                return info;
+                            })
+                            .collect(Collectors.toList())
+            );
+
+            FlightDetailTicketInfo detailTicket = parseDetailTicket(
+                    rootNode.path("data").path("itinerary").path("legs")
+            );
+
+            response.setTicket(detailTicket);
+
+            System.out.println("ServiceImpl Detail : " + response);
+            return response;
 
         } catch (Exception e) {
             throw new RuntimeException("API 호출 중 오류 발생", e);
         }
+    }
+
+    private FlightDetailTicketInfo parseDetailTicket(JsonNode path) {
+        FlightDetailTicketInfo ticketInfo = new FlightDetailTicketInfo();
+
+        // 출발 관련 정보 설정
+        JsonNode outLeg = path.get(0); // 가는 편 데이터
+        JsonNode outSegment = outLeg.path("segments").get(0);
+        ticketInfo.setOutAirport(outSegment.path("origin").path("displayCode").asText());
+        ticketInfo.setOutCity(outSegment.path("origin").path("city").asText());
+        ticketInfo.setOutCountry(outSegment.path("origin").path("name").asText());
+
+        ticketInfo.setOutDate(outSegment.path("departure").asText().split("T")[0]);
+        ticketInfo.setOutTime(outSegment.path("departure").asText().split("T")[1].substring(0, 5));
+        ticketInfo.setOutCarrier(outSegment.path("marketingCarrier").path("name").asText());
+        ticketInfo.setOutCarrierLog(outSegment.path("marketingCarrier").path("logo").asText());
+
+        // 도착 관련 정보 설정
+        JsonNode returnLeg = path.get(1); // 오는 편 데이터
+        JsonNode returnSegment = returnLeg.path("segments").get(0);
+        ticketInfo.setReturnAirport(returnSegment.path("origin").path("displayCode").asText());
+        ticketInfo.setReturnCity(returnSegment.path("origin").path("city").asText());
+        ticketInfo.setReturnCountry(returnSegment.path("origin").path("name").asText());
+
+        ticketInfo.setReturnDate(returnSegment.path("departure").asText().split("T")[0]);
+        ticketInfo.setReturnTime(returnSegment.path("departure").asText().split("T")[1].substring(0, 5));
+        ticketInfo.setReturnCarrier(returnSegment.path("marketingCarrier").path("name").asText());
+        ticketInfo.setReturnCarrierLog(returnSegment.path("marketingCarrier").path("logo").asText());
+
+        return ticketInfo;
     }
 
     private List<Map<String, String>> parsePricingOptions(JsonNode pricingOptionsNode) {

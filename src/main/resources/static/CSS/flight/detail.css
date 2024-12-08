@@ -93,6 +93,10 @@ h1 {
     margin-bottom: 20px;
 }
 
+.airportId {
+    display: inline;
+}
+
 .details div {
     text-align: left;
 }
@@ -112,6 +116,15 @@ h1 {
     color: #666;
     text-align: center;
     margin-top: 10px;
+    display: flex; /* 가로로 정렬하기 위한 flexbox */
+    align-items: center; /* 이미지와 텍스트의 수직 정렬 */
+    justify-content: center; /* 수평 가운데 정렬 */
+}
+
+.airline img {
+    width: 50px; /* 적절한 너비 설정 */
+    height: auto; /* 비율 유지 */
+    margin-right: 8px; /* 이미지와 텍스트 사이 간격 추가 */
 }
 
 .Price {

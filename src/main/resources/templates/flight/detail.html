@@ -25,27 +25,32 @@
                 <div class="ticket-header">Boarding Pass</div>
                 <div class="route">
                     <div>
-                        ICN <span>Incheon</span>
+                        <div class="airportId" th:text="${detailTicket.outAirport}"></div> <!-- 출발 공항 id -->
+                        <span th:text="${detailTicket.outCity}"></span> <!-- 출발 도시 -->
                     </div>
                     <div>✈</div>
                     <div>
-                        OKA <span>Okinawa</span>
+                        <div class="airportId" th:text="${detailTicket.returnAirport}"></div> <!-- 도착 공항 id -->
+                        <span th:text="${detailTicket.returnCity}"></span> <!-- 도착 도시 -->
                     </div>
                 </div>
                 <div class="details">
                     <div>
-                        <p><span>NAME:</span> John Doe</p>
-                        <p><span>DESTINATION:</span> Okinawa, Japan</p>
+                        <p><span>NAME:</span> John Doe</p> <!-- 사용자가 제공한 이름 -->
+                        <p><span>DESTINATION:</span>
+                            <span th:text="${detailTicket.returnCity + ', ' + detailTicket.returnCountry} + ' 공항'"></span> <!-- 도착 도시, 국가 -->
+                        </p>
                     </div>
                     <div>
-                        <p><span>DATE:</span> 2024-12-05</p>
-                        <p><span>TIME:</span> 10:00AM</p>
+                        <p><span>DATE:</span> <span th:text="${detailTicket.outDate}"></span></p> <!-- 가는 편 날짜 -->
+                        <p><span>TIME:</span> <span th:text="${detailTicket.outTime}"></span></p> <!-- 가는 편 시간 -->
                     </div>
                 </div>
             </div>
             <div>
                 <div class="airline">
-                    Korean Air
+                    <img class="Log" th:src="${detailTicket.outCarrierLog}" alt="Airline Logo" /> <!-- 항공사 로고 -->
+                    <span th:text="${detailTicket.outCarrier}"></span> <!-- 항공사 이름 -->
                 </div>
             </div>
         </div>
@@ -62,28 +67,32 @@
                 <div class="ticket-header">Boarding Pass</div>
                 <div class="route">
                     <div>
-                        OKA <span>Okinawa</span>
+                        <div class="airportId" th:text="${detailTicket.returnAirport}"></div> <!-- 출발 공항 id -->
+                        <span th:text="${detailTicket.returnCity}"></span> <!-- 출발 도시 -->
                     </div>
                     <div>✈</div>
                     <div>
-                        ICN <span>Incheon</span>
+                        <div class="airportId" th:text="${detailTicket.outAirport}"></div> <!-- 도착 공항 id -->
+                        <span th:text="${detailTicket.outCity}"></span> <!-- 도착 도시 -->
                     </div>
                 </div>
                 <div class="details">
                     <div>
-                        <p><span>NAME:</span> John Doe</p>
-                        <p><span>DESTINATION:</span> Incheon, South Korea</p>
+                        <p><span>NAME:</span> John Doe</p> <!-- 사용자가 제공한 이름 -->
+                        <p><span>DESTINATION:</span>
+                            <span th:text="${detailTicket.outCity + ', ' + detailTicket.outCountry} + ' 공항'"></span> <!-- 출발 도시, 국가 -->
+                        </p>
                     </div>
                     <div>
-                        <p><span>DATE:</span> 2024-12-25</p>
-                        <p><span>TIME:</span> 6:00PM</p>
+                        <p><span>DATE:</span> <span th:text="${detailTicket.returnDate}"></span></p> <!-- 오는 편 날짜 -->
+                        <p><span>TIME:</span> <span th:text="${detailTicket.returnTime}"></span></p> <!-- 오는 편 시간 -->
                     </div>
                 </div>
-
             </div>
             <div>
                 <div class="airline">
-                    Korean Air
+                    <img class="Log" th:src="${detailTicket.returnCarrierLog}" alt="Airline Logo" /> <!-- 항공사 로고 -->
+                    <span th:text="${detailTicket.returnCarrier}"></span> <!-- 항공사 이름 -->
                 </div>
             </div>
         </div>
