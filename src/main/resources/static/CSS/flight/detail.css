@@ -1,4 +1,8 @@
-html, body {
+body {
+    background-image: url('/static/img/flight/cloud.png.jpg');
+    background-size: cover; /* 이미지를 컨테이너 크기에 맞게 조정 */
+    background-position: center; /* 이미지를 가운데 정렬 */
+    background-repeat: no-repeat; /* 배경 이미지 반복 방지 */
     margin: 0;
     padding: 0;
     height: 100%;
@@ -8,12 +12,7 @@ html, body {
 
 /* .container 설정 */
 .container {
-    background-image:
-            linear-gradient(to bottom, rgba(255, 255, 255, 0) 40%, rgba(255, 255, 255, 0.7) 70%, rgba(255, 255, 255, 1) 100%),
-            url('/static/img/flight/cloud.png.jpg');
-    background-size: cover; /* 이미지를 컨테이너 크기에 맞게 조정 */
-    background-position: center; /* 이미지를 가운데 정렬 */
-    background-repeat: no-repeat; /* 배경 이미지 반복 방지 */
+
     display: flex; /* 컨텐츠 정렬 */
     flex-direction: column;
     align-items: center;
@@ -128,15 +127,19 @@ h1 {
 }
 
 /* 스크롤 인디케이터 */
+/* 스크롤 인디케이터 */
 #scroll-indicator {
-    position: fixed;
-    bottom: 30px; /* 화면 하단에서 30px 위 */
-    left: 50%; /* 화면 중앙 정렬 */
-    transform: translateX(-50%); /* 가로 중앙으로 조정 */
+    margin: 40px 0; /* 티켓과 가격 사이 간격 */
     text-align: center;
-    z-index: 10; /* 다른 요소 위에 표시 */
-    opacity: 1; /* 초기 상태에서 보임 */
-    transition: opacity 0.3s ease, pointer-events 0.3s ease; /* 스크롤 시 부드럽게 숨기기 */
+    opacity: 1;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* 숨겨진 상태 */
+/* 숨겨진 상태 */
+#scroll-indicator.hidden {
+    opacity: 0;
+    transform: translateY(20px); /* Y축만 이동 */
 }
 
 #scroll-indicator .arrow {
@@ -164,32 +167,18 @@ h1 {
 
 
 
-
-/* 가격 컨테이너 */
+/* 가격 섹션 */
 .price-container {
-    margin-top: 30px;
-    padding: 25px;
-    background: linear-gradient(to bottom, #ffffff, #f8f8f8); /* 부드러운 그라데이션 */
-    border: 1px solid rgba(0, 0, 0, 0.1); /* 연한 테두리 */
-    border-radius: 12px; /* 부드러운 모서리 */
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* 깊은 그림자 효과 */
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    max-width: 800px; /* 최대 너비 제한 */
-    margin-left: auto;
-    margin-right: auto; /* 화면 중앙 배치 */
-}
-
-/* 제목 스타일 */
-.price-container h2 {
-    font-size: 22px;
-    font-weight: bold;
-    color: #333;
-    margin: 0 0 20px 0;
-    text-align: center;
-    border-bottom: 2px solid rgba(0, 0, 0, 0.1); /* 제목 아래 구분선 */
-    padding-bottom: 10px;
+    gap: 15px; /* 항목 간격 */
+    margin-top: 50px;
+    width: 700px; /* 고정된 너비 */
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* 부드러운 그림자 */
+    font-family: Arial, sans-serif;
 }
 
 /* 개별 가격 항목 */
@@ -198,16 +187,18 @@ h1 {
     align-items: center;
     justify-content: space-between;
     padding: 15px 20px;
-    background-color: #ffffff;
-    border: 1px solid rgba(0, 0, 0, 0.1); /* 연한 테두리 */
-    border-radius: 8px;
+    background-color: white;
+    border-radius: 8px; /* 모서리 둥글게 */
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid rgba(0, 0, 0, 0.1); /* 연한 테두리 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05); /* 살짝 떠 있는 느낌 */
+    gap: 20px; /* 내부 요소 간의 간격 */
 }
 
 /* 가격 항목 호버 효과 */
 .price-item:hover {
-    transform: translateY(-2px); /* 약간 위로 이동 */
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* 강조 그림자 */
+    transform: translateY(-4px); /* 약간 위로 이동 */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* 강조된 그림자 */
 }
 
 /* 사이트 정보 */
@@ -215,8 +206,9 @@ h1 {
     flex: 2;
     font-size: 16px;
     font-weight: bold;
-    color: #555;
-    margin-right: 10px;
+    color: #333;
+    display: flex;
+    align-items: center;
 }
 
 /* 가격 정보 */
@@ -226,27 +218,32 @@ h1 {
     font-weight: bold;
     color: #007bff;
     text-align: right;
+    margin-right: 10px; /* 버튼과 간격 추가 */
 }
 
-/* 선택 버튼 */
-.select-button {
-    flex: 1;
-    text-align: right;
-}
-
-.select-button button {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 16px;
+/* 버튼 스타일 */
+.select-button .btn {
+    display: inline-block; /* 버튼처럼 동작 */
+    text-decoration: none; /* 밑줄 제거 */
+    background-color: #007bff; /* 기본 배경색 */
+    color: white; /* 텍스트 색상 */
+    padding: 10px 25px; /* 버튼 내부 여백 */
+    border-radius: 8px; /* 둥근 모서리 */
+    font-size: 14px;
     font-weight: bold;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 버튼 그림자 추가 */
-    transition: box-shadow 0.2s ease;
+    text-align: center;
+    transition: background-color 0.3s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 버튼 그림자 */
+    cursor: pointer; /* 클릭 가능한 상태로 변경 */
 }
 
-.select-button button:active {
+/* 버튼 호버 효과 */
+.select-button .btn:hover {
+    background-color: #0056b3; /* 호버 시 배경색 */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* 강조된 그림자 */
+}
+
+.select-button .btn:active {
+    background-color: #003f88; /* 클릭 시 배경색 */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 클릭 시 그림자 축소 */
 }

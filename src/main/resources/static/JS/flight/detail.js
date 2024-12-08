@@ -1,20 +1,20 @@
-document.addEventListener('scroll', () => {
-    console.log('Scroll event triggered'); // 스크롤 이벤트 확인
-    const scrollIndicator = document.getElementById('scroll-indicator');
-    const scrollPosition = window.scrollY;
+const scrollIndicator = document.getElementById('scroll-indicator');
 
-    if (scrollIndicator) {
-        console.log('Scroll indicator found'); // 요소가 선택되었는지 확인
-        if (scrollPosition > 20) {
-            console.log('Hiding indicator'); // 숨김 상태로 전환
-            scrollIndicator.style.display = 'none'; // 스크롤 시 숨김
-            scrollIndicator.style.pointerEvents = 'none'; // 클릭 불가능 처리
-        } else {
-            console.log('Showing indicator'); // 보임 상태로 전환
-            scrollIndicator.style.opacity = '1'; // 맨 위로 스크롤 시 보이기
-            scrollIndicator.style.pointerEvents = 'auto'; // 클릭 가능 복원
-        }
+// 페이지 높이를 계산
+const pageHeight = document.body.scrollHeight - window.innerHeight;
+
+window.addEventListener('scroll', () => {
+    const currentScrollY = window.scrollY;
+
+    // 스크롤 위치가 페이지 높이의 10%를 넘으면 숨김
+    if (currentScrollY > pageHeight * 0.1) {
+        scrollIndicator.classList.add('hidden');
     } else {
-        console.error('Scroll indicator not found'); // 요소 선택 실패 시 메시지
+        scrollIndicator.classList.remove('hidden');
+    }
+
+    // 최상단으로 돌아오면 다시 표시
+    if (currentScrollY === 0) {
+        scrollIndicator.classList.remove('hidden');
     }
 });
