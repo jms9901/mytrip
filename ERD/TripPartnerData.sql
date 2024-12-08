@@ -25,7 +25,7 @@ values ('fullstackK08@naver.com',
         );
 
 # business 데이터
-insert into user (user_email, user_password,user_username,user_name,user_phonenumber,user_authorization,business_companynumber)
+insert into user (user_email, user_password,user_username,user_name,user_authorization,business_companynumber)
  values       (
         'business@naver.com',
          '1234',
