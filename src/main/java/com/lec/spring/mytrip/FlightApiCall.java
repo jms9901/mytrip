@@ -17,9 +17,9 @@ import java.util.stream.Collectors;
 @Component
 public class FlightApiCall {
 
-//    @Value("${api.flight.key}") 실 서비스 단에서 바꾸죠
+    //    @Value("${api.flight.key}") 실 서비스 단에서 바꾸죠
 //    private String apiKey;
-private String apiKey = "6400a15222msh8627a40b3bd3531p1bdef5jsnaa784d38dcf3";
+    private String apiKey = "6400a15222msh8627a40b3bd3531p1bdef5jsnaa784d38dcf3";
 
     // api 최초 호출
     public FlightRoundTripResponse fetchFlightData(FlightRoundTrip flightRoundTrip) {
