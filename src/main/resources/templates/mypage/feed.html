@@ -6,8 +6,8 @@
 <!--[if !IE]><!--> <html lang="en" xmlns:th="http://www.thymeleaf.org"> <!--<![endif]-->
 <head>
     <meta name="viewport" content="width = 1050, user-scalable = no" />	<!--전체 섹션 규격 & 유저 크기 조정 가능여부-->
-    <script type="text/javascript" src="/static/lib/JQuery/jquery.min.1.7.js"></script>	<!--경로 & 실제 파일 존재여부 반드시 확인-->
-    <script type="text/javascript" src="/static/lib/JQuery/modernizr.2.5.3.min.js"></script>	<!--경로 & 실제 파일 존재여부 반드시 확인-->
+    <script type="text/javascript" th:src ="@{/static/lib/JQuery/jquery.min.1.7.js}"></script>	<!--경로 & 실제 파일 존재여부 반드시 확인-->
+    <script type="text/javascript" th:src="@{/static/lib/JQuery/modernizr.2.5.3.min.js}"></script>	<!--경로 & 실제 파일 존재여부 반드시 확인-->
     <!--	<script type="text/javascript" src="../lib/JQuery/yepnope.js"></script>-->
     <!--	<script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/3.11.2/modernizr.min.js"></script>-->
     <link rel="stylesheet" th:href="@{/static/CSS/bookMain.css}">
@@ -16,7 +16,7 @@
 </head>
 <body style="background-image: url(/static/img/mypageBackground.jpg); background-repeat: no-repeat ; background-size: cover;">
 <div class="logo">
-    <div class="logo" style="background-image: url(/static/img/mypageLogo.png);"></div>
+    <div class="logo" style="background-image: url(/static/img/mypageLogo.png);" th:href="@{/user/home.html}"></div>
 </div>
 <div class="addGuestBookModal"></div>
 <div class="myPageGoHome" style="background-image: url(/static/img/myPageGoHome.png)"></div>
@@ -28,7 +28,7 @@
             <div style="background-image:url(/static/img/mypageTitle.png)"></div>	<!--배경이미지 설정 부분 (여권사진 홀수번 우측, 짝수번 좌측 화면 표시 예정)-->
             <div style="background-image:url(/static/img/sample_left.png)">
                 <div style="background-image:url(/static/img/sample_left.png)"></div>
-                <img src="/static/img/addbutton.png" alt="feedAdd-Button" id="feedAdd-Button" class="feedAdd-Button">
+                <img src="/static/img/addbutton.png" alt="feedAdd-Button" id="feedAdd-Button" class="feedAdd-Button" th:href="@{/mypage/feedWrite.html}">
 
 
                 <div class="feed-List hidden" id="feed-List">
@@ -133,12 +133,12 @@
 
     }
 
-    $('.myPageUpdate').click(function (){
-        $('.updateUserModal').show();
-    });
-    $('.closeUpdateModal').click(function(){
-        $('.updateUserModal').hide();
-    });
+    // $('.myPageUpdate').click(function (){
+    //     $('.updateUserModal').show();
+    // });
+    // $('.closeUpdateModal').click(function(){
+    //     $('.updateUserModal').hide();
+    // });
 
     // Load the HTML4 version if there's not CSS transform
 
@@ -157,12 +157,12 @@
 
     if (isCSSTransformSupported()) {
         // transform 지원 시
-        $.getScript('../../lib/animationjs/turn.js', function() {
+        $.getScript('../static/lib/animationjs/turn.js', function() {
             loadApp();
         });
     } else {
         // transform 미지원 시
-        $.getScript('../../lib/JQuery/turn.html4.min.js', function() {
+        $.getScript('../static/lib/JQuery/turn.html4.min.js', function() {
             loadApp();
         });
     }

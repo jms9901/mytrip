@@ -1,6 +1,8 @@
 package com.lec.spring.mytrip.repository;
 
+import com.lec.spring.mytrip.domain.City;
 import com.lec.spring.mytrip.domain.Feed;
+import com.lec.spring.mytrip.domain.PostAttachment;
 
 import java.util.List;
 
@@ -24,10 +26,25 @@ public interface FeedRepository {
     int update(Feed feed);
 
     // 특정 피드 id 피드 삭제 -> 모달에서 처리
-    int delete(Feed feed);
-
+    int delete(Long id);
 
     // 전체 피드 개수
     int feedCountAll();
 
+    // 첨부파일 저장
+    int saveAttachment(PostAttachment attachment);
+
+    // 특정 피드 ID로 첨부파일 찾기
+    List<PostAttachment> findAttachmentByBoardId(Long boardId);
+
+    // 첨부파일 삭제
+    int deleteAttachment(Long boardAttachmentId);
+
+    // 특정 피드 ID의 첨부파일 삭제
+    int deleteAttachmentByBoardId(Long boardId);
+
+    // 도시
+    List<City> findAllCities();
+
+    City findCityById(Long id);
 }

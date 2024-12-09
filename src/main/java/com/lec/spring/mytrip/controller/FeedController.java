@@ -1,9 +1,9 @@
 package com.lec.spring.mytrip.controller;
 
+import com.lec.spring.mytrip.domain.City;
 import com.lec.spring.mytrip.domain.Feed;
-import com.lec.spring.mytrip.domain.FeedValidaor;
+import com.lec.spring.mytrip.domain.FeedValidator;
 import com.lec.spring.mytrip.service.FeedService;
-import com.lec.spring.mytrip.service.PostAttachmentService;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,11 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -25,24 +21,19 @@ import java.util.Map;
 public class FeedController {
 
     private final FeedService feedService;
-    private final PostAttachmentService postAttachmentService;
 
-    private static final String UPLOAD_DIR = "uploads";
 
-    public FeedController(FeedService feedService, PostAttachmentService postAttachmentService) {
+    public FeedController(FeedService feedService) {
+        System.out.println("FeedController() 생성");
         this.feedService = feedService;
-        this.postAttachmentService = postAttachmentService;
-
-        // 업로드 디렉토리 생성
-        File uploadDir = new File(UPLOAD_DIR);
-        if (!uploadDir.exists()) {
-            uploadDir.mkdirs();
-        }
     }
 
     // 피드 작성 폼
     @GetMapping("/feedWrite")
-    public String write() {
+    public String write(Model model) {
+        List<City> cities = feedService.getAllCities();
+        model.addAttribute("cities", cities);
+        model.addAttribute("feed", new Feed());
         return "mypage/feedWrite";
     }
 
@@ -56,8 +47,8 @@ public class FeedController {
             RedirectAttributes redirectAttributes
     ) {
         if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("subject", feed.getSubject());
-            redirectAttributes.addFlashAttribute("content", feed.getContent());
+            redirectAttributes.addFlashAttribute("subject", feed.getBoardSubject());
+            redirectAttributes.addFlashAttribute("content", feed.getBoardContent());
 
             bindingResult.getFieldErrors().forEach(error ->
                     redirectAttributes.addFlashAttribute("error_" + error.getField(), error.getDefaultMessage()));
@@ -65,32 +56,21 @@ public class FeedController {
             return "redirect:/mypage/feedWrite";
         }
 
-        try {
-            for (MultipartFile file : files.values()) {
-                if (!file.isEmpty()) {
-                    String fileName = feed.getCategory() + feed.getUser().getUsername() + "_" + file.getOriginalFilename();
-                    String folderName = UPLOAD_DIR + File.separator + feed.getCategory();
+        boolean result = feedService.write(feed, files);
 
-                    File folder = new File(folderName);
-                    if (!folder.exists()) folder.mkdirs();
-
-                    Path filePath = Paths.get(folderName, fileName);
-                    Files.copy(file.getInputStream(), filePath);
-                }
-            }
-        } catch (IOException e) {
-            model.addAttribute("message", "파일 업로드 실패: " + e.getMessage());
+        if(result) {
+            return "mypage/feedWriteOk";
+        } else {
+            model.addAttribute("message", "피드 작성 실패");
             return "mypage/feedWrite";
         }
-
-        model.addAttribute("result", feedService.write(feed, files));
-        return "mypage/feedWriteOk";
     }
 
     // 피드 상세 보기
     @GetMapping("/feedDetail/{id}")
     public String feedDetail(@PathVariable Long id, Model model) {
-        model.addAttribute("feed", feedService.detail(id));
+        Feed feed = feedService.detail(id);
+        model.addAttribute("feed", feed);
         return "mypage/feedDetail";
     }
 
@@ -104,7 +84,11 @@ public class FeedController {
     // 피드 수정 폼
     @GetMapping("/feedUpdate/{id}")
     public String feedUpdate(@PathVariable Long id, Model model) {
-        model.addAttribute("feed", feedService.findById(id));
+        Feed feed = feedService.detail(id);
+        List<City> cities = feedService.getAllCities();
+
+        model.addAttribute("feed", feed);
+        model.addAttribute("cities", cities);
         return "mypage/feedUpdate";
     }
 
@@ -119,46 +103,35 @@ public class FeedController {
             RedirectAttributes redirectAttributes
     ) {
         if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("subject", feed.getSubject());
-            redirectAttributes.addFlashAttribute("content", feed.getContent());
+            redirectAttributes.addFlashAttribute("subject", feed.getBoardSubject());
+            redirectAttributes.addFlashAttribute("content", feed.getBoardContent());
 
             bindingResult.getFieldErrors().forEach(error ->
                     redirectAttributes.addFlashAttribute("error_" + error.getField(), error.getDefaultMessage()));
 
-            return "redirect:/mypage/feedUpdate/" + feed.getId();
+            return "redirect:/mypage/feedUpdate/" + feed.getBoardId();
         }
 
-        try {
-            for (MultipartFile file : files.values()) {
-                if (!file.isEmpty()) {
-                    String fileName = "feed" + feed.getUser().getUsername() + "_" + file.getOriginalFilename();
-                    String folderName = UPLOAD_DIR + File.separator + feed.getCategory();
+        boolean result = feedService.update(feed, files, delfile);
 
-                    File folder = new File(folderName);
-                    if (!folder.exists()) folder.mkdirs();
-
-                    Path filePath = Paths.get(folderName, fileName);
-                    Files.copy(file.getInputStream(), filePath);
-                }
-            }
-        } catch (IOException e) {
-            model.addAttribute("message", "파일 처리 중 오류 발생: " + e.getMessage());
+        if (result) {
+            return "mypage/feedUpdateOk";
+        } else {
+            model.addAttribute("message", "피드 수정 실패");
             return "mypage/feedUpdate";
         }
-
-        model.addAttribute("result", feedService.update(feed, files, delfile));
-        return "mypage/feedUpdateOk";
     }
 
     // 피드 삭제 처리
     @PostMapping("/feedDelete")
     public String feedDeleteOk(Long id, Model model) {
-        model.addAttribute("result", feedService.deleteById(id));
+        boolean result = feedService.deleteById(id);
+        model.addAttribute("result", result);
         return "mypage/feedDeleteOk";
     }
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
-        binder.setValidator(new FeedValidaor());
+        binder.setValidator(new FeedValidator());
     }
 }

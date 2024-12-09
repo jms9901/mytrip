@@ -13,7 +13,7 @@
 
 <!-- Modal Container -->
 <div class="modal-container hidden" id="feed-modal">
-    <div class="modal-content" style="background-image: url(/static/img/feedDetailFrame.png);">
+    <img class="modal-content" alt="modal-frame" th:src="@{/static/img/feedDetailFrame.png}">
         <div class="modal-title">Write Feed Modal</div>
 
         <!-- Left Side: Image Upload Section -->
@@ -73,7 +73,6 @@
         <!-- 신고하기 버튼 클릭 시 신고하기 모달 나옴. 신고하기 모달 페이지 넣기 -->
         <img th:src="@{/static/img/DeclarationIcon.png}" alt="feedDeclaration-button" type="button" class="goDeclaration">
 
-    </div>
 </div>
 
 <script th:src="@{/static/JS/feedWrite.js}"></script>

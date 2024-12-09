@@ -13,7 +13,7 @@
 
 <!-- Modal Container -->
 <div class="modal-container hidden" id="feed-modal">
-    <div class="modal-content" style="background-image: url(/static/img/feedDetailFrame.png);">
+    <img class="modal-content" alt="modal-frame" th:src="@{/static/img/feedDetailFrame.png}">
         <div class="modal-title">Write Feed Modal</div>
 
         <!-- Left Side: Image Upload Section -->
@@ -53,7 +53,7 @@
 
         <img th:src="@{/static/img/checkIcon.png}" th:href="@{/mypage/feedUpdateOk.html}" alt="submit-button" type="button" id="submit-button" class="submit-button">
 
-    </div>
+    </img>
 </div>
 
 <script th:src="@{/static/JS/feedWrite.js}"></script>

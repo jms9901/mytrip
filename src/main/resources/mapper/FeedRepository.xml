@@ -25,7 +25,7 @@
         INSERT INTO board
             (user_id, city_id, board_subject, board_content, board_view_count, board_date, board_category)
         VALUES
-            (#{user_id}, #{city_id}, #{board_subject}, #{board_content}, #{board_view_count}, #{board_date}, #{board_category})
+            (#{userId}, #{cityId}, #{boardSubject}, #{boardContent}, #{boardViewCount}, #{boardDate}, #{boardCategory})
     </insert>
 
     <!-- 특정 피드 id로 글 찾기 -->
@@ -58,17 +58,17 @@
     <!-- 특정 피드 id로 피드 수정 -->
     <update id="update" flushCache="true" parameterType="com.lec.spring.mytrip.domain.Feed">
         UPDATE board
-        SET board_subject = #{board_subject},
-            board_content = #{board_content},
-            board_category = #{board_category},
-            city_id = #{city_id}
-        WHERE board_id = #{board_id}
+        SET board_subject = #{boardSubject},
+            board_content = #{boardContent},
+            board_category = #{boardCategory},
+            city_id = #{cityId}
+        WHERE board_id = #{boardId}
     </update>
 
     <!-- 특정 피드 id로 피드 삭제  -->
     <delete id="delete" parameterType="long">
         DELETE FROM board
-        WHERE board_id = #{board_id}
+        WHERE board_id = #{id}
     </delete>
 
     <!-- 전체 피드 개수 -->
@@ -76,5 +76,36 @@
         SELECT COUNT(*) FROM board
     </select>
 
+    <!-- 첨부파일 -->
+    <insert id="saveAttachment" parameterType="com.lec.spring.mytrip.domain.PostAttachment">
+        INSERT INTO board_attachment (
+            board_id,
+            board_attachment_file
+        ) VALUES (
+                     #{boardId},
+                     #{boardAttachmentFile}
+                 )
+    </insert>
 
+    <select id="findAttachmentByBoardId" resultType="com.lec.spring.mytrip.domain.PostAttachment">
+        SELECT * FROM board_attachment
+                 WHERE board_id = #{boardId}
+    </select>
+
+    <delete id="deleteAttachment" parameterType="long">
+        DELETE FROM board_attachment
+               WHERE board_attachment_id = #{boardAttachmentId}
+    </delete>
+
+    <delete id="deleteAttachmentByBoardId" parameterType="long">
+        DELETE FROM board_attachment WHERE board_id = #{boardId}
+    </delete>
+
+    <select id="findAllCities">
+        SELECT * FROM city
+    </select>
+
+    <select id="findCityById" resultType="com.lec.spring.mytrip.domain.City">
+        SELECT * FROM city WHERE city_id = #{id}
+    </select>
 </mapper>
