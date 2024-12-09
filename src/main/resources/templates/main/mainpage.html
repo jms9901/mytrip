@@ -16,7 +16,7 @@
     <link rel="stylesheet" th:href="@{/css/mainsection4.css}">
     <link rel="stylesheet" th:href="@{/css/mainsection5.css}">
     <link rel="stylesheet" th:href="@{/css/footer.css}">
-    <title>Document</title>
+    <title>Main Page</title>
 </head>
 <body>
 <!-- 헤더 부분 -->
@@ -39,14 +39,20 @@
 <section id="section2">
     <div class="slider">
         <div class="slide-track">
-            <a th:each="pkg : ${latestPackages}" th:href="@{|/package/${pkg.package_id}|}">
-                <div class="slide">
-                    <img th:src="@{|/img/${pkg.package_attachment_file}|}" th:alt="${pkg.package_title}">
-                </div>
-            </a>
+            <div th:each="pkg : ${latestPackages}">
+                <a th:href="@{|/package/${pkg.packageId}|}">
+                    <div class="slide">
+                        <img th:src="@{|${pkg.packageAttachmentFile}|}" th:alt="${pkg.title}">
+                        <p th:text="${pkg.title}"></p> <!-- 이미지 아래에 p 태그 추가 -->
+                    </div>
+                </a>
+            </div>
         </div>
     </div>
 </section>
+
+
+
 
 <!-- 추천여행지 및 항공권 예약 페이지 -->
 <section id="section3">
@@ -55,9 +61,18 @@
             <button class="btn btn-primary" th:href="@{/aipage/start}">여행지 추천</button>
             <button class="btn btn-primary" th:href="@{/flight/search}">항공권 예약</button>
         </div>
-        <div class="images">
-            <a th:href="@{/aipage/start}"><img th:src="@{/img/section2img8.jpg}" alt="Tokyo" class="s3image"></a>
-            <a th:href="@{/aipage/start}"><img th:src="@{/img/section2img4.jpg}" alt="Bangkok & Pattaya" class="s3image top150"></a>
+
+        <div th:each="city : ${mostRecommendedCities}">
+            <a th:href="@{|/post/${city.cityId}|}">
+                <div class="images">
+                    <img th:src="@{|img/${city.cityImg}|}" th:alt="${city.cityName}" class="s3image">
+                    <p th:text="${city.cityName}"></p> <!-- 이미지 아래에 p 태그 추가 -->
+                    <p th:text="${city.cityContinent}"></p> <!-- 이미지 아래에 p 태그 추가 -->
+                    <p th:text="${city.cityLanguage}"></p> <!-- 이미지 아래에 p 태그 추가 -->
+                    <p th:text="${city.cityCurrency}"></p> <!-- 이미지 아래에 p 태그 추가 -->
+                    <p th:text="${city.cityNation}"></p> <!-- 이미지 아래에 p 태그 추가 -->
+                </div>
+            </a>
         </div>
     </div>
 </section>

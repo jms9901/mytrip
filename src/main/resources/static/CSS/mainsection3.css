@@ -1,7 +1,8 @@
-#section3{
+#section3 {
     background-color: #142055;
     margin-top: 100px;
 }
+
 .btn-primary {
     background-color: #2c3e50;
     border: none;
@@ -11,14 +12,14 @@
     cursor: pointer;
 }
 
-.container3{
+.container3 {
     display: flex;
     align-items: center;
     vertical-align: center;
     height: 1200px;
 }
 
-.buttons{
+.buttons {
     display: flex;
     flex-direction: column;
     width: 200px;
@@ -26,22 +27,24 @@
     margin-left: 100px;
 }
 
-.btn{
+.btn {
     margin: 20px 0;
 }
 
-.images{
+.images {
     display: flex;
     align-items: center;
     width: 300px;
 }
 
-.s3image{
+.s3image {
     width: 400px;
     margin-right: 150px;
     overflow: visible;
 }
 
-.top150{
+.s3image:nth-last-child(2) {
     margin-top: 150px;
 }
+
+

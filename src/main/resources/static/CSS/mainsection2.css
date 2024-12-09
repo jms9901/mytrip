@@ -44,3 +44,19 @@ body, html {
     0% { transform: translateX(0); }
     100% { transform: translateX(-50%); }
 }
+
+.slide{
+    text-align: center;
+}
+
+/* slide 안에 있는 p 태그 스타일 */
+.slide p {
+    margin-top: 100px;
+    text-align: center;
+    color: #333;
+    font-size: 20px;
+    text-decoration: none;
+    text-align: center;
+    width: 400px;
+    z-index: 10;
+}
