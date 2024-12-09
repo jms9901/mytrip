@@ -147,13 +147,13 @@ public class FeedServiceImpl implements FeedService {
     // 파일 삭제
     // postAttachment 다 만들고 수정
     @Override
-    public boolean deleteById(Long id) {
+    public boolean deleteById(Long boardId) {
         Feed feed = new Feed();
         // 첨부파일 삭제
-        feedRepository.deleteAttachmentByBoardId(id);
+        feedRepository.deleteAttachmentByBoardId(boardId);
 
         // 피드 삭제
-        return feedRepository.delete(id) > 0;
+        return feedRepository.delete(boardId) > 0;
     }
 
     // 도시 불러오기

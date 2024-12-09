@@ -8,13 +8,10 @@
     <link rel="stylesheet" th:href="@{/static/CSS/feedWrite.css}">
 </head>
 <body>
-<!-- 피드 작성 버튼과 연결 -->
-<button id="open-modal">Open Modal</button>
-
 <!-- Modal Container -->
 <div class="modal-container hidden" id="feed-modal">
     <img class="modal-content" alt="modal-frame" th:src="@{/static/img/feedDetailFrame.png}">
-        <div class="modal-title">Write Feed Modal</div>
+        <div class="modal-title" th:value="${board_subject}"></div>
 
         <!-- Left Side: Image Upload Section -->
         <div class="section">
@@ -32,11 +29,11 @@
             </div>
 
             <label for="feed-title">
-                <input type="text" placeholder="피드 제목" class="feed-title" id="feed-title">
+                <input type="text" placeholder="피드 제목" class="feed-title" id="feed-title" th:value="${board.boardSubject}">
             </label>
 
             <div class="feed-regdate">
-                <span class="feed-regdate">2024-10-10</span>
+                <span class="feed-regdate" th:value="${#temporals.format(board.boardDate)}"></span>
             </div>
 
         </div>
@@ -44,9 +41,9 @@
         <!-- 도시 선택 옵션 : 도시 추가 및 변경.-->
         <div class="city-select">
             <a>At</a>
-            <select name="city-name" id="city-name">
-                <option value="" disabled selected>도시 이름을 선택하세요.</option>
-                <option value="Paris">파리</option>
+            <select name="city-name" id="city-name" th:value="${board_cityId}">
+                <option value="" disabled >도시 이름을 선택하세요.</option>
+                <option value="Paris" th:selected="${board.cityId == 'Paris'}">파리</option>
                 <option value="Osaka">오사카</option>
                 <option value="Zilln">지린</option>
                 <option value="Danang">다낭</option>
@@ -54,23 +51,25 @@
         </div>
 
         <label for="feed-content">
-            <textarea placeholder="피드 내용" class="feed-content" id="feed-content"></textarea>
+            <textarea placeholder="피드 내용" class="feed-content" id="feed-content" th:value="${board.boardContent}"></textarea>
         </label>
 
         <div class="feed-liked-container">
             <img th:src="@{/static/img/heart-icon-fill.png}" alt="liked-heart" class="feed-liked">
-            <span class="feed-liked-count">23</span>
+            <!--   좋아요 완료 후 DB연결    -->
+            <span class="feed-liked-count"></span>
         </div>
 
         <!-- 본인이 상세보기에 들어갔을 때 누를 수 있는 버튼 -->
         <!-- 삭제 버튼 -->
-        <img th:src="@{/static/img/mypageDeleteIcon.png}" th:href="@{/mypage/feedDeleteOk.html}"  alt="delete-button" type="button" id="delete-button" class="delete-button">
+        <img th:src="@{/static/img/mypageDeleteIcon.png}" th:if="${logged_user.userId == board.userId}" th:href="@{/mypage/feedDeleteOk.html}"
+             alt="delete-button" type="button" id="delete-button" class="delete-button">
         <!-- 수정 버튼 -->
-        <img th:src="@{/static/img/mypageUpdate.png}" th:href="@{/mypage/feedUpdate.html}" alt="update-button" type="button" id="update-button" class="update-button">
+        <img th:src="@{/static/img/mypageUpdate.png}" th:action="@{/mypage/feedUpdate.html}" alt="update-button" type="button" id="update-button" class="update-button" th:if="${logged_user.userId == board.userId}">
 
         <!-- 타인이 상세보기 들어갔을 때 누를 수 있는 버튼 -->
         <!-- 피드 페이지로 이동 버튼 이동 페이지 넣기 -->
-        <img th:src="@{/static/img/mypageFeedList.png}" alt="feedList-button" type="button" class="goFeedList">
+        <img th:src="@{/static/img/mypageFeedList.png}" th:action="@{/board/}" alt="feedList-button" type="button" class="goFeedList" th:if="${logged_user.userId != board.userId}">
         <!-- 타인의 마이페이지 피드에 들어갈 경우 좋아요를 누를 수 있음. -->
 
 </div>

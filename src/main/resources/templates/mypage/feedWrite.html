@@ -5,15 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Feed Write</title>
   <link href='https://fonts.googleapis.com/css?family=Kaushan Script' rel='stylesheet'>
-  <link rel="stylesheet" href="/static/CSS/feedWrite.css">
+  <link rel="stylesheet" th:href="@{/static/CSS/feedWrite.css}">
 </head>
 <body>
-<!-- 피드 작성 버튼과 연결 -->
-<button id="open-modal">Open Modal</button>
-
 <!-- Modal Container -->
 <div class="modal-container hidden" id="feed-modal">
-  <div class="modal-content" style="background-image: url(/static/img/feedDetailFrame.png);">
+  <form th:action="@{/mypage/feedWrite
+  }" method="post" enctype="multipart/form-data" class="modal-content" style="background-image: url(/static/img/feedDetailFrame.png);">
     <div class="modal-title">Write Feed Modal</div>
 
     <!-- Left Side: Image Upload Section -->
@@ -32,9 +30,9 @@
       </div>
 
       <input type="text" placeholder="피드 제목" class="feed-title" id="feed-title">
-
     </div>
     <div class="image-message">이미지 최대 규격은 242px X 242px 입니다.</div>
+
     <!-- 도시 선택 옵션 : 도시 추가 및 변경.-->
     <div class="city-select">
       <a>At</a>
@@ -51,9 +49,11 @@
       <textarea placeholder="피드 내용" class="feed-content" id="feed-content"></textarea>
     </label>
 
-    <img th:src="@{/static/img/checkIcon.png}" th:href="@{/mypage/feedUpdateOk.html}" alt="submit-button" type="button" id="submit-button" class="submit-button">
+    <button type="submit"  id="submit-button" class="submit-button" th:href="@{/mypage/feedUpdateOk.html}" >
+      <img th:src="@{/static/img/checkIcon.png}" alt="submit-button">
+    </button>
 
-  </div>
+  </form>
 </div>
 
 <script th:src="@{/static/JS/feedWrite.js}"></script>

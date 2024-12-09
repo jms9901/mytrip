@@ -29,18 +29,18 @@
             <div style="background-image:url(/static/img/mypageTitle.png)"></div>	<!--배경이미지 설정 부분 (여권사진 홀수번 우측, 짝수번 좌측 화면 표시 예정)-->
             <div style="background-image:url(/static/img/sample_left.png)">
                 <div style="background-image:url(/static/img/sample_left.png)"></div>
-                <img src="/static/img/addbutton.png" alt="feedAdd-Button" id="feedAdd-Button" class="feedAdd-Button" th:href="@{/mypage/feedWrite.html}" th:type="button">
+                <img th:src="@{/static/img/addbutton.png}" alt="feedAdd-Button" id="feedAdd-Button" class="feedAdd-Button" th:href="@{/mypage/feedWrite.html}" th:type="button">
 
 
                 <div class="feed-List hidden" id="feed-List">
 <!--                    동적으로 생성되는 카드(피드 리스트)가 들어갈 영역-->
 <!--                    피드 예시 -->
-                    <div class="feed-card">
-                        <div class="photo-container">
-                            <img th:src="@{/static/img/postEx3.jpg}" alt="postThumbnail" class="post-thumbnail">
+                    <div class="feed-card" th:href="@{/mypage/feedDetail.html}">
+                        <div class="photo-container" th:if="${board_attachment.board_attachment_file}">
+                            <img th:src="@{'/upload/' + ${board_attachment_file}}" alt="postThumbnail" class="post-thumbnail">
                         </div>
                         <div class="feed-title">
-                            <h4><b>In. Paris</b></h4>
+                            <h4><b>[[${board.board_subject}]]</b></h4>
                         </div>
                     </div>
                 </div>
@@ -59,10 +59,10 @@
 
     <!-- 메뉴바 -->
     <div class="menu1" id="1" style="background-image: url(/static/img/mypageMenu.png);"><h4 id="Invoice">&nbsp;Invoice</h4></div>
-    <div class="menu2" id="2" style="background-image: url(/static/img/mypageMenu.png);"><h4 id="post">&nbsp;Post</h4></div>
+    <div class="menu2" id="2" style="background-image: url(/static/img/mypageMenu.png);"><h4 id="post" th:href="@{/mypage/feed.html}">&nbsp;Post</h4></div>
     <div class="menu3" id="3" style="background-image: url(/static/img/mypageMenu.png);"><h4 id="PostLiked">&nbsp;Post♥</h4></div>
     <div class="menu4" id="4" style="background-image: url(/static/img/mypageMenu.png);"><h4 id="PackageLiked">&nbsp;Package♥</h4></div>
-    <div class="menu5" id="5" style="background-image: url(/static/img/mypageMenu.png);" ><h4 id="GuestBook" onclick="window.location.href='/templates/mypage/bookGuestBook';">&nbsp;GuestBook</h4></div>
+    <div class="menu5" id="5" style="background-image: url(/static/img/mypageMenu.png);" ><h4 id="GuestBook" th:href="@{/mypage/bookGuestBook.html}">&nbsp;GuestBook</h4></div>
     <div class="goChat" style="background-image: url(/static/img/mypageChat.png);"></div>
 
 

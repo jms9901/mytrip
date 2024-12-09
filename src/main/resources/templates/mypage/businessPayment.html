@@ -34,17 +34,11 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>OOOOO</td>
-                <td>XXXXXX</td>
-                <td>12345$</td>
-                <td class="pay-status">결제 완료</td>
-            </tr>
-            <tr>
-                <td>OOOOO</td>
-                <td>XXXXXX</td>
-                <td>12345$</td>
-                <td>결제 취소</td>
+            <tr th:each="payment_info : ${list}">
+                <td>[[${user.user_username}]]</td>
+                <td>[[${package.package_title}]]</td>
+                <td>[[${package.package_cost * package_info.user_count}]]</td>
+                <td class="pay-status">[[${package_info.package_status}]]</td>
             </tr>
             </tbody>
         </table>

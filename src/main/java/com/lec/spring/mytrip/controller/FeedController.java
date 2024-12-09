@@ -67,10 +67,11 @@ public class FeedController {
     }
 
     // 피드 상세 보기
-    @GetMapping("/feedDetail/{id}")
-    public String feedDetail(@PathVariable Long id, Model model) {
-        Feed feed = feedService.detail(id);
+    @GetMapping("/feedDetail/{boardId}")
+    public String feedDetail(@PathVariable Long boardId, Model model) {
+        Feed feed = feedService.detail(boardId);
         model.addAttribute("feed", feed);
+        // 로그인된 사용자 정보 추가
         return "mypage/feedDetail";
     }
 

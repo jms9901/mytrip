@@ -5,7 +5,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const deleteButton = document.getElementById("delete-button");
     const updateButton = document.getElementById("update-button");
     const goFeedListButton = document.querySelector(".goFeedList");
-    const goDeclarationButton = document.querySelector(".goDeclaration");
 
     // 본인 권한인 경우: 삭제/수정 버튼 보이기
     if (isCurrentUser) {
@@ -20,6 +19,5 @@ document.addEventListener("DOMContentLoaded", () => {
         updateButton.style.display = "none";
 
         goFeedListButton.style.display = "inline";
-        goDeclarationButton.style.display = "inline";
     }
 });
