@@ -10,12 +10,16 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class User {
+
+    public User(String email, String name){
+        this.email = email;
+        this.name = name;
+    }
+
     private Long id;  // 사용자 ID
 
-    @JsonIgnore
     private String email;  // 사용자 이메일
 
-    @JsonIgnore
     private String password;  // 사용자 비밀번호
 
     @ToString.Exclude
@@ -24,18 +28,13 @@ public class User {
 
     private String username;  // 사용자 아이디
 
-
     private String name;  // 사용자 이름
 
-
-    @JsonIgnore
     private LocalDateTime regDate;  // 회원 가입일
 
     private String provider;  // 소셜 로그인 제공자 (예: Google, Facebook)
 
     private String providerId;  // 소셜 로그인 제공자 ID
-
-    private String phoneNumber;  // 핸드폰 번호
 
     private String profile;  // 사용자 프로필 이미지 경로
 
@@ -46,5 +45,7 @@ public class User {
     private String authorization;  // 사용자 권한
 
     private String companyNumber;  // 기업 사업자 번호
+
+    private String status;
 
 }

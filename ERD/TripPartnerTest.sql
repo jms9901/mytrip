@@ -39,3 +39,5 @@ delete from friendship;
 delete from guest_book;
 delete from messageroom;
 delete from message;
+
+

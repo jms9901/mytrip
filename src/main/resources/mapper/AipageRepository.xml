@@ -15,15 +15,6 @@
           AND q5_id = #{q5Id};
     </select>
 
-<!--    //도시별 정보 조회, 그런데 질문값을 빠트린-->
-    <select id="findCityById" parameterType="map" resultType="com.example.domain.City">
-        SELECT *
-        FROM city
-        WHERE q1_id = #{q1Id}
-          AND q2_id = #{q2Id}
-          AND q3_id = #{q3Id}
-          AND q4_id = #{q4Id}
-          AND q5_id = #{q5Id};
-    </select>
+
 
 </mapper>
