@@ -22,6 +22,7 @@ public class MainpageServiceTest {
         List<Package> latestPackages = mainpageService.getLatestPackages();
         assertThat(latestPackages).isNotNull();
         assertThat(latestPackages.size()).isLessThanOrEqualTo(10);
-        latestPackages.forEach(pkg -> System.out.println(pkg.getPackageId() + " / " + pkg.getCityId() + " / " + pkg.getUserId() + " / " + pkg.getStatus() + " / " + pkg.getContent() + " / " + pkg.getRegDate() + " / " + pkg.getTitle() + " / " + pkg.getCost() + " / " + pkg.getMaxPeople() + " / " + pkg.getStartDay() + " / " + pkg.getEndDay()));
+//        latestPackages.forEach(pkg -> System.out.println(pkg.getPackageId() + " / " + pkg.getCityId() + " / " + pkg.getUserId() + " / " + pkg.getStatus() + " / " + pkg.getContent() + " / " + pkg.getRegDate() + " / " + pkg.getTitle() + " / " + pkg.getCost() + " / " + pkg.getMaxPeople() + " / " + pkg.getStartDay() + " / " + pkg.getEndDay()));
+        latestPackages.forEach(System.out::println);
     }
 }

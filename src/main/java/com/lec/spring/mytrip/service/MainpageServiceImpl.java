@@ -22,7 +22,7 @@ public class MainpageServiceImpl implements MainpageService {
 
     @Override
     public List<Package> getLatestPackages() {
-        return mainRepository.findTop10IOrderByDateDesc();
+        return mainRepository.findTop10OrderByDateDesc();
     }
 
     @Override

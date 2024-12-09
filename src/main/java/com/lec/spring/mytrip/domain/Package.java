@@ -23,4 +23,5 @@ public class Package {
     private int maxPeople;          // 최대 참여 가능 인원
     private LocalDateTime startDay; // 패키지 시작 날짜
     private LocalDateTime endDay;   // 패키지 종료 날짜
+    private String packageAttachmentFile;
 }

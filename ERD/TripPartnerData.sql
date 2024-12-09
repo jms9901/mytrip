@@ -484,3 +484,16 @@ VALUES
      (3, 18, '대기', 'Eighteenth sample package content.', NOW(), 'Sample Package 18', 9500, 95, '2024-10-01 00:00:00', '2024-10-10 00:00:00'),
      (4, 16, '승인', 'Nineteenth sample package content.', NOW(), 'Sample Package 19', 10000, 100, '2024-11-01 00:00:00', '2024-11-10 00:00:00'),
      (5, 17, '승인', 'Twentieth sample package content.', NOW(), 'Sample Package 20', 10500, 105, '2024-12-01 00:00:00', '2024-12-10 00:00:00');
+
+INSERT INTO package_attachment (package_id, package_attachment_file)
+VALUES
+     (31, '/img/BailImg.jpg'),
+     (32, '/img/BangkokImg.jpg'),
+     (33, '/img/BarcelonaImg.jpg'),
+     (34, '/img/CebuImg.jpg'),
+     (35, '/img/DanangImg.jpg'),
+     (36, '/img/DelhiImg.jpg'),
+     (37, '/img/DubaiImg.jpg'),
+     (38, '/img/FranceImg.jpg'),
+     (39, '/img/FukuokaImg.jpg'),
+     (40, '/img/GuamImg.jpg');
