@@ -1,21 +1,23 @@
 $(document).ready(function () {
-    // $(window).on('scroll', function() {
-    //     var triggerElement = $('#incomplete');
-    //     var windowHeight = $(window).height();
-    //     var elementTop = triggerElement.offset().top;
-    //     var scrollPosition = $(window).scrollTop();
-    //
-    //     // #load-more-trigger가 화면에 100% 보일 때 loadMoreData 호출
-    //     if (scrollPosition + windowHeight >= elementTop) {
-    //         loadMoreData();  // 데이터를 더 로드하는 함수 호출
-    //     }
-    // });
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) { // div가 화면에 보이면
+                const sessionId = $('#incomplete').data('session-id');
+                console.log(sessionId);
+                loadMoreData(sessionId);  // 자동으로 데이터 로드
+                observer.unobserve(entry.target);  // 한 번만 실행하도록 감시 중지
+            }
+        });
+    }, { threshold: 1.0 });  // 100% 보일 때 트리거
 
-    $('#loadMoreButton').on('click', function () {
-        const sessionId = $('#incomplete').data('session-id');
-        console.log(sessionId);
-        loadMoreData(sessionId);
-    });
+// #incomplete 요소가 화면에 보이는지 감지
+    observer.observe(document.getElementById('incomplete'));
+
+    // $('#loadMoreButton').on('click', function () {
+    //     const sessionId = $('#incomplete').data('session-id');
+    //     console.log(sessionId);
+    //     loadMoreData(sessionId);
+    // });
 
     // 버튼 클릭 시 상단으로 스크롤 이동
     $('#scrollTopBtn').click(function() {
@@ -46,6 +48,10 @@ function loadMoreData(sessionId) {
             sessionId: sessionId // 필요한 데이터 전달
             // 추가 데이터가 있다면 여기에 포함
         }),
+        beforeSend: function() {
+            // 요청 시작 전에 로딩 메시지 표시
+            $('#loadingMessage').show();
+        },
         success: function(data) {
             console.log("Received data:", data);
             if (data && data.flights && data.flights.length > 0) {
@@ -55,69 +61,73 @@ function loadMoreData(sessionId) {
                 $.each(data.flights, function(index, flight) { // flights 배열 순회
 
                     const newRowHtml = `
-<tr>
-    <form class="detailApiCall" action="/flight/detail" method="post">
+    <tr>
+      <form class="detailApiCall" action="/flight/detail" method="post">
         <!-- 기타 필요 정보들을 hidden으로 전송 -->
         <input type="hidden" name="itineraryId" value="${flight.id}">
         <input type="hidden" name="token" class="tokenInput">
-        
+
         <!-- 항공사 정보 -->
         <td>
-            <div>
-                <img src="${flight.outLogoUrl}" alt="가는편 항공사 로고">
+          <div class="div_1">
+            <div class="log">
+              <img src="${flight.outLogoUrl}" alt="가는편 항공사 로고">
             </div>
             <div>${flight.outAirportName}</div>
-            <div>
-                <img src="${flight.returnLogoUrl}" alt="오는편 항공사 로고">
+          </div>
+          <div class="div_2">
+            <div class="log">
+              <img src="${flight.returnLogoUrl}" alt="오는편 항공사 로고">
             </div>
             <div>${flight.returnAirportName}</div>
+          </div>
         </td>
-        
+
         <!-- 출발 공항 2개 -->
         <td>
-            <div>
-                <span>${flight.originDisplayCode}</span>
-                <span>${flight.originName}</span>
-                <span>${flight.outDeparture}</span>
-            </div>
-            <div>
-                <span>${flight.destinationDisplayCode}</span>
-                <span>${flight.destinationName}</span>
-                <span>${flight.returnDeparture}</span>
-            </div>
+          <div class="div_1">
+            <span>${flight.originDisplayCode}</span>
+            <span>${flight.originName}</span>
+            <span>${flight.outDeparture}</span>
+          </div>
+          <div class="div_2">
+            <span>${flight.destinationDisplayCode}</span>
+            <span>${flight.destinationName}</span>
+            <span>${flight.returnDeparture}</span>
+          </div>
         </td>
-        
+
         <!-- 가는 시간 2개 -->
         <td>
-            <div>
-                <span>${flight.outDurationInMinutes}</span>
-            </div>
-            <div>
-                <span>${flight.returnDurationInMinutes}</span>
-            </div>
+          <div class="div_1">
+            <span>${flight.outDurationInMinutes}</span>
+          </div>
+          <div class="div_2">
+            <span>${flight.returnDurationInMinutes}</span>
+          </div>
         </td>
-        
+
         <!-- 도착 공항 2개 -->
         <td>
-            <div>
-                <span>${flight.destinationDisplayCode}</span>
-                <span>${flight.destinationName}</span>
-                <span>${flight.outArrival}</span>
-            </div>
-            <div>
-                <span>${flight.originDisplayCode}</span>
-                <span>${flight.originName}</span>
-                <span>${flight.returnArrival}</span>
-            </div>
+          <div class="div_1">
+            <span>${flight.destinationDisplayCode}</span>
+            <span>${flight.destinationName}</span>
+            <span>${flight.outArrival}</span>
+          </div>
+          <div class="div_2">
+            <span>${flight.originDisplayCode}</span>
+            <span>${flight.originName}</span>
+            <span>${flight.returnArrival}</span>
+          </div>
         </td>
-        
-        <!-- 가격 버튼 -->
+
+        <!-- 가격 버튼-->
         <td>
-            <button type="submit" name="submit_${flight.id}">${flight.price}</button>
+          <button type="submit" name="submit_${flight.id}" class="btn btn-primary detailBtn">${flight.price}</button>
         </td>
-    </form>
-</tr>
-`;
+      </form>
+    </tr>
+  `;
 
                     // 테이블 본문에 추가
                     $('#incompleteResult').append(newRowHtml);
@@ -128,6 +138,10 @@ function loadMoreData(sessionId) {
         },
         error: function(xhr, status, error) {
             console.error('비사아아앙:', status, error);
+        },
+        complete: function() {
+            // 요청 완료 후 로딩 메시지 숨기기
+            $('#loadingMessage').hide();
         }
     });
 

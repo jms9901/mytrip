@@ -89,6 +89,8 @@ public class FlightApiCall {
                 "&returnDate=" + URLEncoder.encode(flightRoundTrip.getReturnDate(), "UTF-8") +
                 "&stops=direct" +
                 "&currency=KRW" +
+                "&market=KR" +
+                "&locale=ko-KR" +
                 "&adults=" + flightRoundTrip.getAdultsHeadCnt() +
                 "&children=" + flightRoundTrip.getChildrenHeadCnt() +
                 "&infants=" + flightRoundTrip.getInfantsHeadCnt() +
@@ -237,7 +239,7 @@ public class FlightApiCall {
             System.out.println("여기, 유틸: " + flight.toString());
 
             // 리스트에 추가
-            flights.add(flight);
+            if(!roundTripInfoNull(flight)) flights.add(flight);
 
             // 객체 참조 제거 (더 이상 사용되지 않도록 설정)
             flight = null;
@@ -285,6 +287,8 @@ public class FlightApiCall {
 
             // FlightDetailResponse 생성
             FlightDetailResponse response = new FlightDetailResponse();
+
+
             response.setDetails(
                     pricingOptions.stream()
                             .map(option -> {
@@ -355,12 +359,15 @@ public class FlightApiCall {
                 String formattedPrice = formatter.format(roundedPrice); // 쉼표 추가 포맷
                 option.put("price", "₩" + formattedPrice); // 포맷된 가격에 '₩' 추가
                 option.put("url", agentNode.path("url").asText());
-                pricingOptions.add(option);
+
+                if(!pricingOptionsNull(option)) pricingOptions.add(option);
             }
         }
         System.out.println("pricingOptions: ApiCall" + pricingOptions);
         return pricingOptions;
     }
+
+
 
     private String buildDetailUrl(String itineraryId, String token) {
         try {
@@ -374,6 +381,38 @@ public class FlightApiCall {
         } catch (Exception e) {
             throw new RuntimeException("URL 구성 중 오류 발생: " + e.getMessage(), e);
         }
+    }
+
+
+
+    //NULL 확인 단
+
+    public boolean roundTripInfoNull(FlightRoundTripInfo flight) {
+        return Objects.isNull(flight.getId()) ||
+                Objects.isNull(flight.getPrice()) ||
+                Objects.isNull(flight.getOutDeparture()) ||
+                Objects.isNull(flight.getReturnDeparture()) ||
+                Objects.isNull(flight.getOutArrival()) ||
+                Objects.isNull(flight.getOutDurationInMinutes()) ||
+                Objects.isNull(flight.getReturnDurationInMinutes()) ||
+                Objects.isNull(flight.getOriginDisplayCode()) ||
+                Objects.isNull(flight.getOriginName()) ||
+                Objects.isNull(flight.getDestinationDisplayCode()) ||
+                Objects.isNull(flight.getDestinationName()) ||
+                Objects.isNull(flight.getOutAirportName()) ||
+                Objects.isNull(flight.getReturnAirportName()) ||
+                Objects.isNull(flight.getOutLogoUrl()) ||
+                Objects.isNull(flight.getReturnLogoUrl()) ||
+                Objects.isNull(flight.getOutCity()) ||
+                Objects.isNull(flight.getOutCountry()) ||
+                Objects.isNull(flight.getReturnCity()) ||
+                Objects.isNull(flight.getReturnCountry());
+    }
+
+    private boolean pricingOptionsNull(Map<String, String> option) {
+        return Objects.isNull(option.get("siteName")) ||
+                Objects.isNull(option.get("price")) ||
+                Objects.isNull(option.get("url"));
     }
 
 

@@ -100,6 +100,14 @@ $(document).ready(function () {
     $(".btn-increase").attr("type", "button");
     $(".btn-decrease").attr("type", "button");
 
+    $('.passenger-item').addClass('col-12 d-flex');
+    $('.sungekAge').addClass('col-5');
+    $('.sungekCnt').addClass('col-2');
+    $('.btn-group').addClass('w-100 d-flex');
+    $('.btn-decrease').addClass('flex-fill');
+    $('.btn-increase').addClass('flex-fill');
+
+
     // 공통 드롭다운 처리 함수
     function setupDropdown(dropdownClass, inputId) {
         const $dropdown = $(`.${dropdownClass}`);
@@ -147,19 +155,28 @@ $(document).ready(function () {
     // 좌석 및 인원 드롭다운
     $('#openSelectionBtn').on('click', function () {
         const $selectionContainer = $('#selectionContainer');
+        const $age = $('.sungekAge');
 
         if ($selectionContainer.is(':visible')) {
-            $selectionContainer.hide();
+            $selectionContainer.addClass('d-none');
         } else {
-            // 버튼의 위치를 기준으로 컨테이너 위치 설정
+            // 요소가 보이지 않으면 위치 설정 후 표시
             const buttonOffset = $(this).offset();
             const buttonHeight = $(this).outerHeight();
 
             $selectionContainer.css({
                 top: buttonOffset.top + buttonHeight,
                 left: buttonOffset.left,
-                display: 'block',
+                display: 'block',  // 표시하도록 설정
             });
+
+            // 부트스트랩 클래스 추가
+            $selectionContainer.removeClass('d-none'); // 숨겨진 상태가 아닌지 확인
+            $selectionContainer.addClass('d-block');    // 보이도록 설정
+            $selectionContainer.addClass('position-absolute'); // 절대 위치
+            $selectionContainer.addClass('border');    // 테두리 추가
+            $selectionContainer.addClass('p-3');       // 패딩 추가
+            $selectionContainer.addClass('bg-light');  // 배경색 추가
         }
     });
 

@@ -457,8 +457,7 @@ values(
 # 공항 정보 테이블
 INSERT INTO airport (airport_code, airport_name, airport_city, airport_country)
 VALUES
-    ('ICN', '인천 국제 공항', '인천', '한국'),
-    ('GMP', '김포 국제 공항', '서울', '한국'),
+    ('ICN', '인천 국제 공항', '서울', '한국'),
     ('HND', '도교 국제 공항', '도쿄', '일본'),
     ('KIX', '간사이 국제 공항', '오사카', '일본'),
     ('FUK', '후쿠오카 국제 공항', '후쿠오카', '일본'),

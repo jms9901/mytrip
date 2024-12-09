@@ -8,9 +8,9 @@
     <link rel="stylesheet" href="/CSS/flight/search.css">
 </head>
 <body>
-<div id="pageContainer" class="d-flex justify-content-center align-items-center min-vh-100">
+<div id="pageContainer" class="container d-flex justify-content-center align-items-center min-vh-100">
     <form id="roundTrip" name="frm" th:action="@{/flight/result}" method="post" enctype="multipart/form-data" class="w-100 w-md-75 w-lg-50">
-        <div id="formContainer" class="row gy-3">
+        <div id="formContainer" class="row gy-3 d-flex align-items-center">
             <!-- 출발지 -->
             <div class="col-12 col-md-3">
                 <div class="custom-dropdown selectTag">
@@ -19,26 +19,23 @@
                         <div class="dropdown-item fromAirport" value="ICN">
                             <span class="airport-name">인천 국제 공항</span>
                             <span class="airport-code">ICN</span>
-                            <span class="airport-city">인천</span>
-                            <span class="airport-country">꼬-레아</span>
-                        </div>
-                        <div class="dropdown-item fromAirport" value="GMP">
-                            <span class="airport-name">김포 국제 공항</span>
-                            <span class="airport-code">GMP</span>
                             <span class="airport-city">서울</span>
                             <span class="airport-country">한국</span>
                         </div>
                     </div>
                 </div>
-                <input type="hidden" id="fromEntityId" name="fromAirportId">
+                <input type="hidden" id="fromEntityId" name="fromAirportId" value="ICN">
             </div>
 
             <!-- 도착지 -->
-            <div class="col-12 col-md-3 d-flex">
+            <div class="col-12 col-md-3">
                 <div class="custom-dropdown selectTag">
                     <div class="dropdown-button">Select Airport</div>
                     <div class="dropdown-content">
-                        <div class="dropdown-item toAirport" th:each="port : ${airports}" th:value="${port.airportCode}">
+                        <div class="dropdown-item toAirport"
+                             th:each="port : ${airports}"
+                             th:if="${port.airportCode} != 'ICN'"
+                             th:value="${port.airportCode}">
                             <span class="airport-name" th:utext="${port.airportName}"></span>
                             <span class="airport-code" th:utext="${port.airportCode}"></span>
                             <span class="airport-city" th:utext="${port.airportCity}"></span>
@@ -50,10 +47,10 @@
             </div>
 
             <!-- 날짜선택 -->
-            <div class="col-12 col-md-3">
-                <button id="start-date-btn" class="btn btn-outline-primary">가는 날</button>
+            <div class="col-12 col-md-3 d-flex">
+                <button id="start-date-btn" class="btn btn-outline-primary flex-fill">가는 날</button>
                 <input type="hidden" name="departDate" id="start-date-value">
-                <button id="end-date-btn" class="btn btn-outline-primary">오는 날</button>
+                <button id="end-date-btn" class="btn btn-outline-primary flex-fill">오는 날</button>
                 <input type="hidden" name="returnDate" id="end-date-value">
             </div>
 
@@ -65,8 +62,8 @@
                     <div class="section" id="passenger-selection">
                         <h3>인원 선택</h3>
                         <div class="passenger-item">
-                            <span>성인</span>
-                            <span id="adult-count">1</span>
+                            <span class="sungekAge">성인</span>
+                            <span id="adult-count" class="sungekCnt">1</span>
                             <input type="hidden" name="adultsHeadCnt" id="adult-count-input" value="1">
                             <div class="btn-group" id="adult-group">
                                 <button class="btn-decrease">-</button>
@@ -74,8 +71,8 @@
                             </div>
                         </div>
                         <div class="passenger-item">
-                            <span>어린이</span>
-                            <span id="child-count">0</span>
+                            <span class="sungekAge">어린이</span>
+                            <span id="child-count" class="sungekCnt">0</span>
                             <input type="hidden" name="childrenHeadCnt" id="child-count-input" value="0">
                             <div class="btn-group" id="child-group">
                                 <button class="btn-decrease">-</button>
@@ -83,8 +80,8 @@
                             </div>
                         </div>
                         <div class="passenger-item">
-                            <span>아기</span>
-                            <span id="infant-count">0</span>
+                            <span class="sungekAge">아기</span>
+                            <span id="infant-count" class="sungekCnt">0</span>
                             <input type="hidden" name="infantsHeadCnt" id="infant-count-input" value="0">
                             <div class="btn-group" id="infant-group">
                                 <button class="btn-decrease">-</button>
@@ -108,7 +105,7 @@
             </div>
 
             <!-- 조회 버튼 -->
-            <div class="col-12 col-md-3 d-flex">
+            <div class="col-12 col-md-3 d-flex ms-auto">
                 <button id="api-query" class="btn btn-primary w-100">조회</button>
             </div>
         </div> <!-- #formContainer -->
