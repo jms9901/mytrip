@@ -1,6 +1,7 @@
 package com.lec.spring.mytrip.config;
 
 import com.lec.spring.mytrip.config.oauth.PrincipalOauth2UserService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -42,7 +43,7 @@ public class SecurityConfig {
         return http
                 .csrf(csrf -> csrf.disable()) // CSRF 비활성화
                 .authorizeRequests(auth -> auth
-                        .requestMatchers("/", "/user/login", "/oauth2/**" ,"/css/**", "/js/**", "/img/**" ).permitAll() // 해당 URL에 대해 모두 접근 허용
+                        .requestMatchers("/", "/user/login", "/oauth2/**" ,"/css/**", "/js/**", "/img/**", "/admin/**" ).permitAll() // 해당 URL에 대해 모두 접근 허용
                         .anyRequest().authenticated()) // 그 밖의 모든 요청은 인증 필요
                 .formLogin(form -> form
                         .loginPage("/user/login") // 로그인 페이지 설정
@@ -57,6 +58,10 @@ public class SecurityConfig {
                         .defaultSuccessUrl("/user/home", true)
                         .userInfoEndpoint(userInfo -> userInfo
                                 .userService(principalOauth2UserService))) // OAuth2 UserService 설정
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint((request, response, authException) -> {
+                            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+                        }))
                 .build();
     }
 

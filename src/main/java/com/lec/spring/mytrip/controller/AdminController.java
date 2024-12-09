@@ -8,8 +8,33 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/admin")
 public class AdminController {
 
-    @GetMapping("/login")
+    @GetMapping("/adminLogin")
     public String login() {
-        return "admin/login";
+        return "admin/adminLogin";
     }
+
+    @GetMapping("/userTables")
+    public String userTables() {return "admin/userTables";}
+
+    @GetMapping("/businessTables")
+    public String businessTables() {return "admin/businessTables";}
+
+    @GetMapping("/boardTables")
+    public String boardTables() {return "admin/boardTables";}
+
+    @GetMapping("/feedTables")
+    public String feedTables() {return "admin/feedTables";}
+
+    @GetMapping("/packageAccessTables")
+    public String packageAccessTables() {return "admin/packageAccessTables";}
+
+    @GetMapping("/packageStandbyTables")
+    public String packageStandbyTables() {return "admin/packageStandbyTables";}
+
+    @GetMapping("/paymentTables")
+    public String paymentTables() {return "admin/paymentTables";}
+
+    @GetMapping("/charts")
+    public String charts() {return "admin/charts";}
+
 }

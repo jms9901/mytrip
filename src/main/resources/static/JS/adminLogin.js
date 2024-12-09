@@ -32,5 +32,5 @@ document.querySelector('#password').addEventListener('focus', function(e) {
   });
 });
 document.querySelector('#submit').addEventListener('click', function(e) {
-  location.href="user-tables.html"
+  location.href = "/admin/userTables";
 });
