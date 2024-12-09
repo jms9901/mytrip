@@ -1,5 +1,5 @@
 server:
-  port: 8081
+  port: 8082
   tomcat:
     max-http-form-post-size: 10GB
 
@@ -7,9 +7,10 @@ spring:
   application:
     name: mytrip
 
+  # Thymeleaf 설정
   thymeleaf:
     cache: false
-    prefix: classpath:templates/
+    prefix: classpath:templates/views/
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -17,36 +18,12 @@ spring:
     username: mytrip
     password: fullstack2409
 
-  security:
-    user:
-      name: user
-      password: 1234
-    oauth2:
-      client:
-        registration:
-          google:
-            client-id: 1011811384229-hkj4eg0vptm9vfelengesndr9bqb1489.apps.googleusercontent.com
-            client-secret: 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
-            scope:
-              - email
-              - profile
-  servlet:
-    # Multipart request 의 업로드 파일 크기 제한 설정
-    multipart:
-      max-file-size: 10GB   # 요청 파일 하나의 최대 크기
-      max-request-size: 10GB  # 요청 파일 전체의 최대 크기
-
+# MyBatis 매퍼(mapper) 파일 위치 설정
 mybatis:
   mapper-locations: classpath:mapper/**/*.xml
+  type-aliases-package: com.lec.spring.mytrip.domain
 
-app:
-  upload:
-    path: upload
-
-  oauth2:
-    password: 1234
-  kakao:
-    client-id: f1d0b6ed76ac6d19f66db3f94de52ad1   # 앱 키
-    redirect-uri: http://localhost:8080/oauth2/kakao/callback  # Redirect URI
-    token-uri: https://kauth.kakao.com/oauth/token   # Access Token 요청 URI
-    user-info-uri: https://kapi.kakao.com/v2/user/me  # 사용자 profile 요청
+logging:
+  level:
+    root: INFO
+    org.mybatis: DEBUG

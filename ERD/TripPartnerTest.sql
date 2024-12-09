@@ -19,6 +19,10 @@ select * from guest_book;
 select * from messageroom;
 select * from message;
 
+SHOW TABLES;
+DESCRIBE user_city;
+
+
 delete from user;
 delete from package;
 delete from package_attachment;
@@ -39,12 +43,4 @@ delete from friendship;
 delete from guest_book;
 delete from messageroom;
 delete from message;
-
-alter table user
-add column user_status varchar(20);
-
-ALTER TABLE user MODIFY COLUMN user_authorization VARCHAR(255) DEFAULT 'ROLE_USER';
-
-
-
 
