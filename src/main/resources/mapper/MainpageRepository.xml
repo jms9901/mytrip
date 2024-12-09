@@ -5,26 +5,39 @@
 
 <mapper namespace="com.lec.spring.mytrip.repository.MainRepository">
 
-    <!-- 전날 기준으로 추천받은 도시 중 가장 많이 선택된 도시 조회 -->
-    <select id="findMostRecommendedCity" resultType="map">
+    <!-- City 도메인과 쿼리 결과 매핑 -->
+    <resultMap id="CityResultMap" type="com.lec.spring.mytrip.domain.City">
+        <id property="cityId" column="city_id" />
+        <result property="cityName" column="city_name" />
+        <result property="cityContinent" column="city_continent" />
+        <result property="cityLanguage" column="city_language" />
+        <result property="cityCurrency" column="city_currency" />
+        <result property="cityImg" column="city_img" />
+        <result property="cityNation" column="city_nation" />
+    </resultMap>
+
+    <!-- user_city와 city를 JOIN하여 추천 횟수 상위 2개 도시 조회 -->
+    <select id="findMostRecommendedCities" resultMap="CityResultMap">
         SELECT
             c.city_id,
             c.city_name,
-            c.city_img,
+            c.city_continent,
             c.city_language,
             c.city_currency,
-            COUNT(uc.city_id) AS count
+            c.city_img,
+            c.city_nation
         FROM
             user_city uc
                 JOIN
             city c ON uc.city_id = c.city_id
         WHERE
-            DATE(uc.created_date) = DATE(NOW() - INTERVAL 1 DAY) -- 전날 데이터
+            DATE(uc.created_date) = DATE(NOW() - INTERVAL 1 DAY)
         GROUP BY
-            c.city_id, c.city_name, c.city_img, c.city_language, c.city_currency
+            c.city_id, c.city_name, c.city_continent, c.city_language,
+            c.city_currency, c.city_img, c.city_nation
         ORDER BY
-            count DESC
-        LIMIT 1;
+            COUNT(uc.city_id) DESC
+        LIMIT 2;
     </select>
 
 

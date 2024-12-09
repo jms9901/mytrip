@@ -1,5 +1,8 @@
 package com.lec.spring.mytrip.service;
 
+import com.lec.spring.mytrip.domain.City;
+
+import java.util.List;
 import java.util.Map;
 
 public interface MainpageService {
@@ -8,7 +11,7 @@ public interface MainpageService {
     // 투어패키지 이름과 이미지 URL을 Repository에게 요청한다.
 
     // 도시 이름, 이미지 URL, 언어, 통화를 Repository에게 요청한다.
-    Map<String, Object> getMostRecommendedCity();
+    List<City> getMostRecommendedCities();
 
 
 
