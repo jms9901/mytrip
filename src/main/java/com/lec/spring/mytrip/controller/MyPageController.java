@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.Principal;
@@ -42,9 +43,9 @@ public class MyPageController {
     private UserServiceImpl userService;
 
     @Autowired
-    public MyPageController(MyPageService myPageService, UserService userService) {
+    public MyPageController(MyPageService myPageService, UserServiceImpl userService) {
         this.myPageService = myPageService;
-
+        this.userService=userService;
     }
 
     // 사용자 페이지를 보여주는 메소드
@@ -64,11 +65,12 @@ public class MyPageController {
     }
     @PostMapping("/update/{userId}")
     public ResponseEntity<Map<String, String>> updateUser(
-            @PathVariable Long userId,
+            @PathVariable("userId") Long userId,
             @RequestBody Map<String, String> updateRequest,  // 모든 데이터를 Map으로 받습니다.
             @RequestParam(required = false) MultipartFile profileImage)  {
 
         Map<String, String> response = new HashMap<>();
+
 
         // 전달받은 정보 출력
         log.info("Received request to update user {}", userId);
@@ -82,24 +84,31 @@ public class MyPageController {
         String introduction = updateRequest.get("introduction");
         String currentPassword = updateRequest.get("currentPassword");
         String newPassword = updateRequest.get("newPassword");
-        String profileImageBase64 = null;  // base64로 받은 프로필 이미지
+        String profileImageBase64 = updateRequest.get("profileImage");  // base64로 받은 프로필 이미지
 
-
-
-        // MultipartFile이 있을 경우, base64로 변환
-        if (profileImage != null && !profileImage.isEmpty()) {
+        String uploadDirectory = "uploads/profiles/";
+        String savedFileName = null;
+        System.out.println(uploadDirectory.toString());
+        // base64로 받은 프로필 이미지가 있을 경우, 디코딩해서 저장
+        if (profileImageBase64 != null && !profileImageBase64.isEmpty()) {
             try {
-                profileImageBase64 = encodeToBase64(profileImage);  // MultipartFile을 base64로 변환
-                log.info("Base64 profileImage: {}", profileImageBase64); // Base64 로그 출력
+                byte[] decodedBytes = Base64.getDecoder().decode(profileImageBase64);
+                String fileName = userId + "_profileImage.jpg";
+                Path filePath = Paths.get(uploadDirectory, fileName);
+                Files.write(filePath, decodedBytes); // 이미지 파일 저장
+                savedFileName = fileName;
+                log.info("Profile image saved as: {}", savedFileName);
             } catch (IOException e) {
-                log.error("프로필 이미지 처리 중 오류 발생", e);
-                response.put("error", "프로필 이미지 처리 중 오류가 발생했습니다.");
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+                log.error("프로필 이미지 저장 오류", e);
+                response.put("error", "프로필 이미지 저장 중 오류가 발생했습니다.");
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
             }
+        } else {
+            log.info("No profile image received.");
         }
 
         // 사용자 업데이트 호출
-        boolean success = myPageService.updateUser(userId, introduction, currentPassword, newPassword, profileImage);
+        boolean success = myPageService.updateUser(userId, introduction, currentPassword, newPassword, profileImage, savedFileName);
 
         if (success) {
             response.put("message", "정보가 성공적으로 업데이트되었습니다.");
@@ -121,21 +130,22 @@ public class MyPageController {
     @ResponseBody
     public ResponseEntity<Resource> getProfileImage(@PathVariable("userId") Long userId) {
         User user = myPageService.getUserById(userId);
-        if (user != null && user.getProfile() != null) {
-            Path imagePath = Paths.get("/static/uploads/profiles", user.getProfile()); // 프로필 이미지 경로 설정
-            Resource resource = new FileSystemResource(imagePath);
-            if (resource.exists()) {
-                return ResponseEntity.ok()
-                        .contentType(MediaType.IMAGE_JPEG) // 이미지 타입 설정
-                        .body(new FileSystemResource(Paths.get("img","defaultProfile.jpg")));
-            }
-        }
-        // 프로필 이미지가 없으면 기본 이미지로 반환
-        return ResponseEntity.ok()
-                .contentType(MediaType.IMAGE_JPEG)
-                .body(new FileSystemResource(Paths.get("/img/defaultProfile.jpg", "defaultProfile.jpg")));
-    }
+        Path imagePath;
 
+        if (user != null && user.getProfile() != null) {
+            imagePath = Paths.get("uploads/profiles/", user.getProfile());
+        } else {
+            imagePath = Paths.get("img", "defaultProfile.jpg"); // 기본 프로필 이미지 경로
+        }
+
+        Resource resource = new FileSystemResource(imagePath);
+        if (resource.exists()) {
+            return ResponseEntity.ok()
+                    .contentType(MediaType.IMAGE_JPEG)
+                    .body(resource);
+        }
+        return ResponseEntity.notFound().build();
+    }
     @GetMapping("/bookMain")
     public String myPage() {
         return "mypage/bookMain";

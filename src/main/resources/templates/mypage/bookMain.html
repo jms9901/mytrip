@@ -30,8 +30,8 @@
 			<div style="background-image:url(/img/sample_left.png)">
 				<div class="mypageUserInfo">
 					<div class="circle">
-						<img th:src="${user.profile != null && !user.profile.isEmpty() ? '/img/profiles/' + user.profile : '/img/defaultProfile.jpg'}"
-							 alt="Profile Image">
+						<img th:src="@{'/uploads/profiles/' + ${user.profile}}">
+
 					</div>
 					<div class="InfoArea">
 						<div>
@@ -88,24 +88,45 @@
 <div class="menu4" id="4" style="background-image: url(/img/mypageMenu.png);"><h4 id="PackageLiked">&nbsp;Package♥</h4></div>
 <div class="menu5" id="5" style="background-image: url(/img/mypageMenu.png);" ><h4 id="GuestBook" onclick="window.location.href='/mypage/bookMain/bookGuestBook';">&nbsp;GuestBook</h4></div>
 	<div class="goChat" style="background-image: url(/img/mypageChat.png);"></div>
-<div class="updateUserModal" >
+<div class="updateUserModal">
 	<div class="NameAndImg">
-	<div class="Updatecircle">
+		<div class="Updatecircle">
 			<img th:src="${user.profile != null && !user.profile.isEmpty() ? '/img/profiles/' + user.profile : '/img/defaultProfile.jpg'}"
 				 alt="Profile Image">
-	</div>
-		<div class="UserNameArea" th:text="${user.name}">userName</div>
+		</div>
+		<div class="UserNameArea" id="userName" th:text="${user.name}" onclick="editUserName()">userName</div>
 		<button class="closeUpdateModal">X</button>
 	</div>
+
+	<!-- 소개글 수정 -->
 	<div class="IntroduceMyself">
-		<div>introduce</div><input type="text" class="UserIntroduction">
+		<div>Introduce yourself:</div>
+		<span id="userIntroduction" onclick="updateIntroduction()">${user.introduction}</span>
+		<input type="text" id="editIntroduction" class="UserIntroduction" style="display: none;">
 	</div>
+
+	<!-- 비밀번호 수정 -->
 	<div class="UpdatePassword">
-		<div id="passwordArea"><div>password</div><input type="text" class="UserPassword"></div>
-		<div id="newpasswordArea"><div>new password</div><input type="text" class="NewUserPassword"></div>
-		<div class="submitUpdate" style="background-image: url(/img/checkIcon.png)"></div>
+		<div id="passwordArea">
+			<div>Current password</div>
+			<span id="currentPasswordText" onclick="updatePassword('currentPassword')">password</span>
+			<input type="password" id="currentPassword" style="display: none;">
+		</div>
+		<div id="newpasswordArea">
+			<div>New password</div>
+			<span id="newPasswordText" onclick="updatePassword('newPassword')">new password</span>
+			<input type="password" id="newPassword" style="display: none;">
+		</div>
+		<div class="submitUpdate" style="background-image: url('/img/checkIcon.png')" id="submitUpdateBtn" onclick="submitUserChanges()"></div>
 	</div>
-	<div></div>
+
+	<!-- 프로필 이미지 수정 -->
+	<div class="UpdateProfileImage">
+		<input type="file" id="profileImageInput" class="ProfileImageInput" onchange="previewProfileImage()" style="display: none;">
+		<button onclick="document.getElementById('profileImageInput').click()">Change Profile Image</button>
+		<img id="profilePreview" src="" alt="Profile Image" style="display: none;">
+	</div>
+</div>
 </div>
 
 

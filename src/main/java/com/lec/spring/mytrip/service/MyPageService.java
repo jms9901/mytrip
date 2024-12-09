@@ -36,7 +36,7 @@ public class MyPageService {
     }
 
     @Transactional
-    public boolean updateUser(Long userId, String introduction, String currentPassword, String newPassword, MultipartFile profileImage) {
+    public boolean updateUser(Long userId, String introduction, String currentPassword, String newPassword, MultipartFile profileImage, String profileImageFileName) {
 
 
         // 사용자 정보를 가져옴
@@ -62,6 +62,11 @@ public class MyPageService {
         if (introduction != null && !introduction.isEmpty()) {
             user.setIntroduction(introduction);  // 자기소개 업데이트
         }
+        // **수정 위치: 프로필 이미지 업데이트 로직 삽입**
+        if (profileImageFileName != null && !profileImageFileName.isEmpty()) {
+            user.setProfile(profileImageFileName);  // 프로필 이미지 파일 이름 업데이트
+        }
+
 
         // 프로필 이미지 수정
         if (profileImage != null && !profileImage.isEmpty()) {
