@@ -16,4 +16,6 @@
         VALUES (#{userId}, #{cityId}, NOW());
     </insert>
 
+
+
 </mapper>
