@@ -1,11 +1,11 @@
 package com.lec.spring.mytrip.controller;
 
+import com.lec.spring.mytrip.domain.City;
 import com.lec.spring.mytrip.service.MainpageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import com.lec.spring.mytrip.domain.Package;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -45,11 +45,11 @@ public class MainpageController {
     public void flightSearch() {}
 
     // TODO : AI 추천여행지   --> aipage
-    @PostMapping("/ai-recommendations")
-    public String showRecommendedCity(Model model) {
-        // 서비스 계층에서 가장 추천받은 도시 데이터 가져오기
-        Map<String, Object> mostRecommendedCity = mainpageService.getMostRecommendedCity();
-        model.addAttribute("mostRecommendedCity", mostRecommendedCity);
+    @GetMapping("/ai-recommendations")
+    public String showRecommendedCities(Model model) {
+        // 서비스 계층에서 상위 2개의 추천 도시 데이터를 가져오기
+        List<City> mostRecommendedCities = mainpageService.getMostRecommendedCities();
+        model.addAttribute("mostRecommendedCities", mostRecommendedCities);
         return "ai-recommendations"; // View 이름
     }
 
@@ -62,4 +62,5 @@ public class MainpageController {
         model.addAttribute("latestPackages", latestPackages);
         return "package-lastest";
     }
+
 }

@@ -25,8 +25,7 @@ public class MainpageServiceImpl implements MainpageService {
     }
 
     @Override
-    public Map<String, Object> getMostRecommendedCity() {
-        // Repository 호출하여 데이터베이스에서 가장 추천받은 도시 조회
-        return mainRepository.findMostRecommendedCity();
+    public List<City> getMostRecommendedCities() {
+        return mainRepository.findMostRecommendedCities();
     }
 }
