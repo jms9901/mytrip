@@ -21,8 +21,5 @@ public interface UserRepository {
     Optional<User> findById(Long userId);
 
     // user 정보를 업데이트 (비밀번호, 자기소개, 프로필 이미지)
-    int updateUser(@Param("userId") Long userId,
-                   @Param("password") String password,
-                   @Param("introduction") String introduction,
-                   @Param("profile") String profile);  // 프로필 추가
+    public int updateUser(Long userId, String password, String introduction, String profile);
 }

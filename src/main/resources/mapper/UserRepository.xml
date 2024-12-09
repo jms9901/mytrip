@@ -56,12 +56,14 @@
     </update>
 
     <!-- 사용자 업데이트 -->
-    <update id="updateUser">
+    <update id="updateUser" parameterType="map">
         UPDATE user
         SET user_password = #{password},
             user_introdution = #{introduction},
-            user_profile=#{profile}
+            user_profile = #{profile}
         WHERE user_id = #{userId}
     </update>
+
+
 
 </mapper>

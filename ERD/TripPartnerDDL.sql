@@ -394,3 +394,5 @@ ALTER TABLE package
     ADD CONSTRAINT FK_user_TO_package
         FOREIGN KEY (user_id)
             REFERENCES user (user_id);
+
+ALTER TABLE user MODIFY user_profile BLOB;
