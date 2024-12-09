@@ -8,14 +8,20 @@
     <!-- 전날 기준으로 추천받은 도시 중 가장 많이 선택된 도시 조회 -->
     <select id="findMostRecommendedCity" resultType="map">
         SELECT
-            city_id,
-            COUNT(*) AS count
+            c.city_id,
+            c.city_name,
+            c.city_img,
+            c.city_language,
+            c.city_currency,
+            COUNT(uc.city_id) AS count
         FROM
-            user_city
+            user_city uc
+                JOIN
+            city c ON uc.city_id = c.city_id
         WHERE
-            DATE(created_date) = DATE(NOW() - INTERVAL 1 DAY) -- 전날 데이터
+            DATE(uc.created_date) = DATE(NOW() - INTERVAL 1 DAY) -- 전날 데이터
         GROUP BY
-            city_id
+            c.city_id, c.city_name, c.city_image_url, c.city_language, c.city_currency
         ORDER BY
             count DESC
         LIMIT 1;
