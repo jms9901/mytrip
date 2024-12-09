@@ -24,9 +24,21 @@ public class MainpageController {
 
     // 사용자가 클릭한 값(사진/X)에 따라 다른 Controller에게 요청하거나 팝업을 닫는 동작을 처리한다.
 
-    // TODO : 투어패키지     --> boardpage
-    // 사용자가 투어패키지 정보를 볼 수 있게 Service에게 요청한다.
-    // 사용자가 투어패키지를 클릭하면, BoardController에게 해당 투어 페이지로 이동하도록 요청을 전달한다.
+    // ai page로 이동
+    @GetMapping("/aipage/start")
+    public void aipageStart() {}
+
+    // login page로 이동
+    @GetMapping("/user/login")
+    public void userLogin() {}
+
+    //post page로 이동
+    @GetMapping("/post")
+    public void post() {}
+
+    // flight page로 이동
+    @GetMapping("/flight/search")
+    public void flightSearch() {}
 
     // TODO : AI 추천여행지   --> aipage
     @PostMapping("/ai-recommendations")
@@ -37,5 +49,13 @@ public class MainpageController {
         return "ai-recommendations"; // View 이름
     }
 
+    // TODO : 투어패키지     --> boardpage
+    // 사용자가 투어패키지 정보를 볼 수 있게 Service에게 요청한다.
+    // 사용자가 투어패키지를 클릭하면, BoardController에게 해당 투어 페이지로 이동하도록 요청을 전달한다.
+    @PostMapping("/package-lastest")
+    public String showPackageLastest(Model model) {
+
+        return "package-lastest";
+    }
 
 }
