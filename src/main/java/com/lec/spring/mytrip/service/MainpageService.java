@@ -10,7 +10,7 @@ public interface MainpageService {
     // 도시 이름, 이미지 URL, 언어, 통화를 Repository에게 요청한다.
     Map<String, Object> getMostRecommendedCity();
 
-    // 대륙 이름을 Repository에 전달하고 대륙별 도시 목록을 요청한다.
+
 
 
 }
