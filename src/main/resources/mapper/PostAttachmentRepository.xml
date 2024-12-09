@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lec.spring.mytrip.repository.PostAttachmentRepository">
+
+    <!-- 첨부파일 등록 -->
+    <insert id="save" parameterType="com.lec.spring.mytrip.domain.PostAttachment">
+        INSERT INTO board_attachment (
+            board_id,
+            board_attachment_file
+        ) VALUES (
+                     #{boardId},
+                     #{boardAttachmentFile}
+                 )
+    </insert>
+
+    <!-- 첨부파일 ID로 조회 -->
+    <select id="findById" resultType="com.lec.spring.mytrip.domain.PostAttachment">
+        SELECT
+            board_attachment_id AS id,
+            board_id,
+            board_attachment_file AS filePath
+        FROM board_attachment
+        WHERE board_attachment_id = #{id}
+    </select>
+
+    <!-- 특정 피드의 첨부파일 목록 조회 -->
+    <select id="findAttachmentsByBoardId" parameterType="long" resultType="com.lec.spring.mytrip.domain.PostAttachment">
+        SELECT
+            board_attachment_id,
+            board_id,
+            board_attachment_file
+        FROM
+            board_attachment
+        WHERE
+            board_id = #{boardId}
+    </select>
+
+    <!-- 특정 피드의 모든 첨부파일 삭제 -->
+    <delete id="deleteAttachmentsByBoardId" parameterType="long">
+        DELETE FROM board_attachment
+        WHERE board_id = #{boardId}
+    </delete>
+
+    <!-- 첨부파일 개별 삭제 -->
+    <delete id="deleteAttachmentById" parameterType="long">
+        DELETE FROM board_attachment
+        WHERE board_attachment_id = #{attachmentId}
+    </delete>
+
+    <!-- 게시글 종류에 따른 첨부파일 조회 -->
+    <select id="findAttachmentsByCategory" resultType="com.lec.spring.mytrip.domain.PostAttachment">
+        SELECT
+            ba.board_attachment_id AS id,
+            ba.board_id,
+            ba.board_attachment_file AS filePath
+        FROM board_attachment ba
+                 JOIN board b ON ba.board_id = b.board_id
+        WHERE b.board_category = #{boardCategory}
+    </select>
+
+
+</mapper>
