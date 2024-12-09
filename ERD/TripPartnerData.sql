@@ -452,4 +452,10 @@ values(
         'B',
         'B',
         'B'
-        )
+        );
+INSERT INTO user_city (user_id, city_id, created_date)
+VALUES
+    (1, 1, DATE_SUB(NOW(), INTERVAL 1 DAY)),
+    (2, 1, DATE_SUB(NOW(), INTERVAL 1 DAY)),
+    (2, 2, DATE_SUB(NOW(), INTERVAL 1 DAY)),
+    (1, 1, DATE_SUB(NOW(), INTERVAL 1 DAY));

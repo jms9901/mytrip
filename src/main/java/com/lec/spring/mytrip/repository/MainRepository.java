@@ -11,8 +11,5 @@ public interface MainRepository {
     // 전날 기준으로 가장많이 추천받은 도시와 관련 데이터를 데이터베이스에서 조회하여 응답한다.
     Map<String, Object> findMostRecommendedCity();
 
-    // 대륙 이름과 관련된 도시 목록 데이터를 데이터베이스에서 조회하여 응답한다.
-
-
 
 }
