@@ -12,15 +12,15 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class Package {
-    private Long packageId;          // 패키지 ID
-    private Long cityId;             // 도시 ID
-    private Long userId;             // 작성자 ID
-    private String status;           // 패키지 상태 (예: "승인", "대기", "미승인")
-    private String content;          // 패키지 내용
-    private LocalDateTime regDate;   // 패키지 등록일
-    private String title;            // 패키지 제목
-    private int cost;                // 패키지 비용
-    private int maxPeople;           // 최대 인원
-    private LocalDateTime startDay;  // 시작 일자
-    private LocalDateTime endDay;    // 종료 일자
+    private int packageId;         // 패키지 ID
+    private int cityId;            // 도시 ID
+    private int userId;            // 작성자 ID
+    private String status;          // 패키지 상태 (승인, 대기, 미승인 등)
+    private String content;         // 패키지 내용
+    private LocalDateTime regDate;  // 패키지 등록 날짜
+    private String title;           // 패키지 제목
+    private int cost;               // 패키지 비용
+    private int maxPeople;          // 최대 참여 가능 인원
+    private LocalDateTime startDay; // 패키지 시작 날짜
+    private LocalDateTime endDay;   // 패키지 종료 날짜
 }
