@@ -66,8 +66,6 @@
         UPDATE package
         SET
             city_id = #{cityId},
-            user_id = #{userId},
-            package_status = #{packageStatus},
             package_content = #{packageContent},
             package_title = #{packageTitle},
             package_cost = #{packageCost},
