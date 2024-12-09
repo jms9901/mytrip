@@ -1,5 +1,6 @@
 package com.lec.spring.mytrip.service;
 
+import com.lec.spring.mytrip.domain.City;
 import com.lec.spring.mytrip.repository.MainRepository;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -16,6 +16,21 @@
         <result property="cityNation" column="city_nation" />
     </resultMap>
 
+    <resultMap id="PackageResultMap" type="com.lec.spring.mytrip.domain.Package">
+        <id property="packageId" column="package_id" />
+        <result property="cityId" column="city_id" />
+        <result property="userId" column="user_id" />
+        <result property="status" column="package_status" />
+        <result property="content" column="package_content" />
+        <result property="regDate" column="package_regdate" />
+        <result property="title" column="package_title" />
+        <result property="cost" column="package_cost" />
+        <result property="maxPeople" column="package_maxpeople" />
+        <result property="startDay" column="package_start_day" />
+        <result property="startDay" column="package_start_day" />
+        <result property="endDay" column="package_end_day" />
+    </resultMap>
+
     <!-- user_city와 city를 JOIN하여 추천 횟수 상위 2개 도시 조회 -->
     <select id="findMostRecommendedCities" resultMap="CityResultMap">
         SELECT
@@ -40,7 +55,7 @@
         LIMIT 2;
     </select>
 
-    <select id="findTop10IOrderByDateDesc" resultType="com.lec.spring.mytrip.domain.Package">
+    <select id="findTop10IOrderByDateDesc" resultMap="PackageResultMap">
         SELECT * FROM package ORDER BY package_regdate DESC LIMIT 10
     </select>
 

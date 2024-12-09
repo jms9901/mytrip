@@ -6,7 +6,6 @@ import com.lec.spring.mytrip.service.MainpageService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.List;
 
@@ -23,6 +22,6 @@ public class MainpageServiceTest {
         List<Package> latestPackages = mainpageService.getLatestPackages();
         assertThat(latestPackages).isNotNull();
         assertThat(latestPackages.size()).isLessThanOrEqualTo(10);
-        latestPackages.forEach(pkg -> System.out.println(pkg.getPackageId()));
+        latestPackages.forEach(pkg -> System.out.println(pkg.getPackageId() + " / " + pkg.getCityId() + " / " + pkg.getUserId() + " / " + pkg.getStatus() + " / " + pkg.getContent() + " / " + pkg.getRegDate() + " / " + pkg.getTitle() + " / " + pkg.getCost() + " / " + pkg.getMaxPeople() + " / " + pkg.getStartDay() + " / " + pkg.getEndDay()));
     }
 }
