@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Package {
+public class PackagePost {
     private int packageId;         // 패키지 ID
     private int cityId;            // 도시 ID
     private int userId;            // 작성자 ID
