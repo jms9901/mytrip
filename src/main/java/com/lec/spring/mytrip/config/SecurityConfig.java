@@ -35,7 +35,6 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        String redirectUri = env.getProperty("spring.security.oauth2.client.registration.kakao.redirect-uri");
         return http
                 .csrf(csrf -> csrf.disable()) // CSRF 비활성화
                 .authorizeRequests(auth -> auth
@@ -44,17 +43,18 @@ public class SecurityConfig {
                 .formLogin(form -> form
                         .loginPage("/user/login") // 로그인 페이지 설정
                         .loginProcessingUrl("/user/login") // 로그인 처리 URL
-                        .defaultSuccessUrl("/user/home", true)) // 로그인 성공 시 이동할 URL
+                        .defaultSuccessUrl("/main/mainpage", true)) // 로그인 성공 시 이동할 URL
                 .logout(logout -> logout
                         .logoutUrl("/user/logout") // 로그아웃 처리 URL
                         .invalidateHttpSession(true)) // 세션 무효화
                 .oauth2Login(oauth2 -> oauth2
                         .loginPage("/user/login") // OAuth2 로그인 페이지 설정
-                        .defaultSuccessUrl("/user/home", true)
+                        .defaultSuccessUrl("/main/mainpage", true)
                         .userInfoEndpoint(userInfo -> userInfo
                                 .userService(principalOauth2UserService))) // OAuth2 UserService 설정
                 .build();
     }
+
 
     // 권한 관련 주석
     /*

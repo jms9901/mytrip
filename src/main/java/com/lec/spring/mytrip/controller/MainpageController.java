@@ -27,6 +27,10 @@ public class MainpageController {
     // 좋아요가 가장 많은 여행지 정보를 Service에게 요청한다.
 
     // 사용자가 클릭한 값(사진/X)에 따라 다른 Controller에게 요청하거나 팝업을 닫는 동작을 처리한다.
+    @GetMapping("/mainpage")
+    public String mainpage() {
+        return "main/mainpage";
+    }
 
     // ai page로 이동
     @GetMapping("/aipage/start")

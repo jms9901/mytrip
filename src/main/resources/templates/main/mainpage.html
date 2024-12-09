@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,111 +8,106 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- jquery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
-    <link rel="stylesheet" href="../css/header.css">
-    <link rel="stylesheet" href="../css/mainsection1.css">
-    <link rel="stylesheet" href="../css/mainsection2.css">
-    <link rel="stylesheet" href="../css/dropdown.css">
-    <link rel="stylesheet" href="../css/mainsection3.css">
-    <link rel="stylesheet" href="../css/mainsection4.css">
-    <link rel="stylesheet" href="../css/mainsection5.css">
-    <link rel="stylesheet" href="../css/footer.css">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/mainsection1.css}">
+    <link rel="stylesheet" th:href="@{/css/mainsection2.css}">
+    <link rel="stylesheet" th:href="@{/css/dropdown.css}">
+    <link rel="stylesheet" th:href="@{/css/mainsection3.css}">
+    <link rel="stylesheet" th:href="@{/css/mainsection4.css}">
+    <link rel="stylesheet" th:href="@{/css/mainsection5.css}">
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
     <title>Document</title>
 </head>
 <body>
-    <!-- 헤더 부분 -->
-    <header id="header">
-        <div class="topnav">
-            <img src="../img/logo.png" alt="" class="logo">
-            <a href="#">여행지 추천</a>
-            <a href="#">여행지 게시판</a>
-            <a href="#">항공권 예약</a>
-            <a href="#">login</a>
-        </div>
-    </header>
+<!-- 헤더 부분 -->
+<header id="header">
+    <div class="topnav">
+        <img th:src="@{/img/logo.png}" alt="" class="logo">
+        <a th:href="@{/aipage/start}">여행지 추천</a>
+        <a th:href="@{/post}">여행지 게시판</a>
+        <a th:href="@{/flight/search}">항공권 예약</a>
+        <a th:href="@{/user/login}">login</a>
+    </div>
+</header>
 
-    <!-- 메인 이미지 위에 팝업이 들어갈 세션 -->
-    <section id="section1" class="col-12">
-        <div id="mainimg" class="parallax col-10"></div>
-    </section>
+<!-- 메인 이미지 위에 팝업이 들어갈 세션 -->
+<section id="section1" class="col-12">
+    <div id="mainimg" class="parallax col-10"></div>
+</section>
 
-    <!-- 투어패키지들이 보여질 세션 -->
-    <section id="section2">
-        <div class="slider">
-            <div class="slide-track">
-                <a href="#"><div class="slide"><img src="../img/section2img1.jpg" alt="Image 1"></div></a>
-                <a href="#"><div class="slide"><img src="../img/section2img2.jpg" alt="Image 2"></div></a>
-                <a href="#"><div class="slide"><img src="../img/section2img3.jpg" alt="Image 3"></div></a>
-                <a href="#"><div class="slide"><img src="../img/section2img4.jpg" alt="Image 4"></div></a>
-                <a href="#"><div class="slide"><img src="../img/section2img5.jpg" alt="Image 5"></div></a>
-                <a href="#"><div class="slide"><img src="../img/section2img6.jpg" alt="Image 6"></div></a>
-                <a href="#"><div class="slide"><img src="../img/section2img7.jpg" alt="Image 7"></div></a>
-                <a href="#"><div class="slide"><img src="../img/section2img8.jpg" alt="Image 8"></div></a>
-                <a href="#"><div class="slide"><img src="../img/section2img9.jpg" alt="Image 9"></div></a>
-                <a href="#"><div class="slide"><img src="../img/section2img10.jpg" alt="Image 10"></div></a>
-            </div>
-        </div>    
-    </section>
+<!-- 투어패키지들이 보여질 세션 -->
+<section id="section2">
+    <div class="slider">
+        <div class="slide-track">
+            <a th:each="pkg : ${latestPackages}" th:href="@{|/package/${pkg.package_id}|}">
+                <div class="slide">
+                    <img th:src="@{|/img/${pkg.package_attachment_file}|}" th:alt="${pkg.package_title}">
+                </div>
+            </a>
+        </div>
+    </div>
+</section>
 
-    <!-- 추천여행지 및 항공권 예약 페이지 -->
-    <section id="section3">
-        <div class="container3">
-            <div class="buttons">
-                <button class="btn btn-primary">여행지 추천</button>
-                <button class="btn btn-primary">항공권 예약</button>
-            </div>
-            <div class="images">
-                <a href="#"><img src="../img/section2img8.jpg" alt="Tokyo" class="s3image"></a>
-                <a href="#"><img src="../img/section2img4.jpg" alt="Bangkok & Pattaya" class="s3image top150"></a>
-            </div>
+<!-- 추천여행지 및 항공권 예약 페이지 -->
+<section id="section3">
+    <div class="container3">
+        <div class="buttons">
+            <button class="btn btn-primary" th:href="@{/aipage/start}">여행지 추천</button>
+            <button class="btn btn-primary" th:href="@{/flight/search}">항공권 예약</button>
         </div>
-    </section>
+        <div class="images">
+            <a th:href="@{/aipage/start}"><img th:src="@{/img/section2img8.jpg}" alt="Tokyo" class="s3image"></a>
+            <a th:href="@{/aipage/start}"><img th:src="@{/img/section2img4.jpg}" alt="Bangkok & Pattaya" class="s3image top150"></a>
+        </div>
+    </div>
+</section>
 
-    <!-- 대륙 이미지 페이지 -->
-    <section id="section4">
-        <div class="container4">
-            <div class="row1">
-                <a href="#"><img src="../img/section2img10.jpg" alt=""></a>
-                <a href="#"><img src="../img/section2img10.jpg" alt=""></a>
-                <a href="#"><img src="../img/section2img10.jpg" alt=""></a>
-            </div>
-            <div class="row2">
-                <a href="#"><img src="../img/section2img10.jpg" alt=""></a>
-                <a href="#"><img src="../img/section2img10.jpg" alt=""></a>
-                <a href="#"><img src="../img/section2img10.jpg" alt=""></a>
-            </div>
+<!-- 대륙 이미지 페이지 -->
+<section id="section4">
+    <div class="container4">
+        <div class="row1">
+            <a th:href="@{/aipage/start}"><img th:src="@{/img/section2img10.jpg}" alt=""></a>
+            <a th:href="@{/aipage/start}"><img th:src="@{/img/section2img10.jpg}" alt=""></a>
+            <a th:href="@{/aipage/start}"><img th:src="@{/img/section2img10.jpg}" alt=""></a>
         </div>
-    </section>
+        <div class="row2">
+            <a th:href="@{/aipage/start}"><img th:src="@{/img/section2img10.jpg}" alt=""></a>
+            <a th:href="@{/aipage/start}"><img th:src="@{/img/section2img10.jpg}" alt=""></a>
+            <a th:href="@{/aipage/start}"><img th:src="@{/img/section2img10.jpg}" alt=""></a>
+        </div>
+    </div>
+</section>
 
-    <!-- 하단 -->
-    <section id="section5">
-        <div class="parallax-container">
-            <div class="blank"></div>
+<!-- 하단 -->
+<section id="section5">
+    <div class="parallax-container">
+        <div class="blank"></div>
+    </div>
+</section>
+<footer id="footer">
+    <div class="footercontainer">
+        <div class="column1">
+            <a th:href="@{/aipage/start}"><img th:src="@{/img/logo.png}" alt=""></a>
         </div>
-    </section>  
-    <footer id="footer">
-        <div class="footercontainer">
-            <div class="column1">
-                <a href="#"><img src="../img/logo.png" alt=""></a>
-            </div>
-            <div class="column2">
-                <a href="#">여행지 추천</a>
-                <a href="#">여행지 게시판</a>
-                <a href="#">항공권 예약</a>
-            </div>
-            <div class="column3">
-                <div>이경원</div>
-                <div>이경원</div>
-                <div>이경원</div>
-            </div>
-            <div class="column4">
-                <a href="#"><img src="../img/Instagram_logo.png" alt=""></a>
-                <a href="#"><img src="../img/facebook-logo.png" alt=""></a>
-                <a href="#"><img src="../img/youtube_logo.png" alt=""></a>
-                <a href="#"><img src="../img/naver_logo.png" alt=""></a>
-            </div>
+        <div class="column2">
+            <a th:href="@{/aipage/start}">여행지 추천</a>
+            <a th:href="@{/post}">여행지 게시판</a>
+            <a th:href="@{/flight/search}">항공권 예약</a>
         </div>
-    </footer>  
-    <script src="../js/mainsection2.js"></script>
-    <script src="../js/dropdown.js"></script>
+        <div class="column3">
+            <div>이경원</div>
+            <div>이경원</div>
+            <div>이경원</div>
+        </div>
+        <div class="column4">
+            <a th:href="@{/aipage/start}"><img th:src="@{/img/Instagram_logo.png}" alt=""></a>
+            <a th:href="@{/aipage/start}"><img th:src="@{/img/facebook-logo.png}" alt=""></a>
+            <a th:href="@{/aipage/start}"><img th:src="@{/img/youtube_logo.png}" alt=""></a>
+            <a th:href="@{/aipage/start}"><img th:src="@{/img/naver_logo.png}" alt=""></a>
+        </div>
+    </div>
+</footer>
+<script th:src="@{/js/mainsection2.js}"></script>
+<script th:src="@{/js/dropdown.js}"></script>
 </body>
 </html>
