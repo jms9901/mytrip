@@ -8,20 +8,32 @@
     <link rel="stylesheet" href="/CSS/flight/search.css">
 </head>
 <body>
+<!--로딩-->
+<div id="loading-overlay" class="loading-overlay d-none">
+    <div class="loading-spinner"></div>
+</div>
+
 <div id="pageContainer" class="container d-flex justify-content-center align-items-center min-vh-100">
     <form id="roundTrip" name="frm" th:action="@{/flight/result}" method="post" enctype="multipart/form-data" class="w-100 w-md-75 w-lg-50">
         <div id="formContainer" class="row gy-3 d-flex align-items-center">
             <!-- 출발지 -->
             <div class="col-12 col-md-3">
                 <div class="custom-dropdown selectTag">
-                    <div class="dropdown-button">Select Airport</div>
-                    <div class="dropdown-content">
-                        <div class="dropdown-item fromAirport" value="ICN">
-                            <span class="airport-name">인천 국제 공항</span>
-                            <span class="airport-code">ICN</span>
-                            <span class="airport-city">서울</span>
-                            <span class="airport-country">한국</span>
+                    <div class="dropdown-button">
+                        <div class="airport-name text-center d-flex justify-content-center align-items-center">
+                            출발지
                         </div>
+                    </div>
+                    <div class="dropdown-content w-100">
+                        <!-- 드롭다운 항목 -->
+                        <div class="dropdown-item fromAirport" value="ICN">
+                            <!-- 선택 시 표시할 전체 정보 -->
+                            <div class="airport-name">인천 국제 공항</div>
+                            <div class="airport-code">ICN</div>
+                            <div class="airport-city">서울</div>
+                            <div class="airport-country">한국</div>
+                        </div>
+                        <!-- 다른 항목도 동일한 구조 -->
                     </div>
                 </div>
                 <input type="hidden" id="fromEntityId" name="fromAirportId" value="ICN">
@@ -30,8 +42,12 @@
             <!-- 도착지 -->
             <div class="col-12 col-md-3">
                 <div class="custom-dropdown selectTag">
-                    <div class="dropdown-button">Select Airport</div>
-                    <div class="dropdown-content">
+                    <div class="dropdown-button">
+                        <div class="airport-name text-center d-flex justify-content-center align-items-center">
+                            목적지
+                        </div>
+                    </div>
+                    <div class="dropdown-content w-100">
                         <div class="dropdown-item toAirport"
                              th:each="port : ${airports}"
                              th:if="${port.airportCode} != 'ICN'"
@@ -39,7 +55,7 @@
                             <span class="airport-name" th:utext="${port.airportName}"></span>
                             <span class="airport-code" th:utext="${port.airportCode}"></span>
                             <span class="airport-city" th:utext="${port.airportCity}"></span>
-                            <span class="airport-country" th:utext="${port.airportCity}"></span>
+                            <span class="airport-country" th:utext="${port.airportCountry}"></span>
                         </div>
                     </div>
                 </div>

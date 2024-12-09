@@ -188,14 +188,14 @@ public class FlightApiCall {
             String id = flightNode.path("id").asText();
             String price = flightNode.path("price").path("formatted").asText();
 
-            String outDeparture = flightNode.path("legs").get(0).path("departure").asText()
-                    .split("T")[1];  // 가는 편 출발일시
+            String outDeparture = flightNode.path("legs").get(0).path("departure")
+                    .asText().split("T")[1].substring(0, 5);  // 가는 편 출발일시
             String returnDeparture = flightNode.path("legs").get(1).path("departure")
-                    .asText().split("T")[1];;  // 오는 편 출발일시
-            String outArrival = flightNode.path("legs").get(0).path("arrival").asText()
-                    .split("T")[1];;; // 가는 편 도착일시
-            String returnArrival = flightNode.path("legs").get(1).path("arrival").asText()
-                    .split("T")[1];;; // 오는 편 도착일시
+                    .asText().split("T")[1].substring(0, 5); // 오는 편 출발일시
+            String outArrival = flightNode.path("legs").get(0).path("arrival")
+                    .asText().split("T")[1].substring(0, 5); // 가는 편 도착일시
+            String returnArrival = flightNode.path("legs").get(1).path("arrival")
+                    .asText().split("T")[1].substring(0, 5); // 오는 편 도착일시
 
             String outDurationInMinutes = minToHourAndMin(flightNode.path("legs").get(0).path("durationInMinutes").asText()); // 가는 편 걸리는 시간(분)
             String returnDurationInMinutes = minToHourAndMin(flightNode.path("legs").get(1).path("durationInMinutes").asText()); // 오는 편 걸리는 시간(분)
@@ -221,6 +221,7 @@ public class FlightApiCall {
             flight.setOutDeparture(outDeparture);
             flight.setReturnDeparture(returnDeparture);
             flight.setOutArrival(outArrival);
+            flight.setReturnArrival(returnArrival);
             flight.setOutDurationInMinutes(outDurationInMinutes);
             flight.setReturnDurationInMinutes(returnDurationInMinutes);
             flight.setOriginDisplayCode(originDisplayCode);

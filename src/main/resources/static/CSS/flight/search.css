@@ -34,6 +34,26 @@
 .custom-dropdown:hover .dropdown-content {
     display: block;
 }
+
+/* 드롭다운 항목에서 전체 내용 숨기기 */
+.dropdown-content .dropdown-item .airport-name,
+.dropdown-content .dropdown-item .airport-code,
+.dropdown-content .dropdown-item .airport-country {
+    display: none;
+}
+
+/* 드롭다운 버튼에서 전체 내용 표시 */
+.dropdown-button .airport-name,
+.dropdown-button .airport-code,
+.dropdown-button .airport-city,
+.dropdown-button .airport-country {
+    display: block;
+}
+
+/* 드롭다운 항목에서는 도시 이름만 보이도록 설정 */
+.dropdown-content .dropdown-item .dropdown-display {
+    display: block;
+}
 /*커스텀 드롭다운*/
 
 /*인원 선택*/
@@ -69,4 +89,51 @@
 
 .sungekCnt {
     display: block;
+}
+
+/*로딩처리*/
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1050; /* 다른 요소 위에 표시 */
+    background-image: url("../../img/BailImg.jpg");
+    background-size: cover; /* 이미지를 화면에 꽉 채우기 */
+    background-repeat: no-repeat; /* 반복 방지 */
+    background-position: center; /* 중앙 정렬 */
+}
+
+.loading-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 이미지 비율을 유지하면서 화면에 꽉 채움 */
+    position: absolute; /* 오버레이를 덮는 위치로 설정 */
+    top: 0;
+    left: 0;
+}
+
+.loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid rgba(0, 0, 0, 0.1);
+    border-top: 5px solid #000;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    position: relative;
+    z-index: 1051; /* 이미지 위에 표시 */
+}
+
+/* 로딩 스피너 애니메이션 */
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }

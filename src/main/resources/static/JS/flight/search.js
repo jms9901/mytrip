@@ -1,6 +1,13 @@
 $(document).ready(function () {
     console.log("search js 로드")
 
+    //로딩 처리
+    $("#roundTrip").on("submit", function (e) {
+        // 로딩 오버레이 표시
+        console.log("왜 안대")
+        $("#loading-overlay").removeClass("d-none");
+    });
+
     // flatpickr 초기화
     const today = new Date();
 
@@ -108,7 +115,7 @@ $(document).ready(function () {
     $('.btn-increase').addClass('flex-fill');
 
 
-    // 공통 드롭다운 처리 함수
+    // 공항 드롭다운 처리 함수
     function setupDropdown(dropdownClass, inputId) {
         const $dropdown = $(`.${dropdownClass}`);
         const $button = $dropdown.closest(".custom-dropdown").find(".dropdown-button");
@@ -123,17 +130,22 @@ $(document).ready(function () {
 
         // 항목 클릭 시 선택 처리
         $content.on("click", ".dropdown-item", function () {
-
-            const selectedValue = $(this).attr("value"); // data-value로 설정된 값
-
-            console.log("data-value: ", selectedValue);
-
+            const selectedValue = $(this).attr("value"); // 공항 코드
             const airportName = $(this).find(".airport-name").text();
+            const airportCode = $(this).find(".airport-code").text();
+            const airportCity = $(this).find(".airport-city").text();
+            const airportCountry = $(this).find(".airport-country").text();
 
+            // 입력 필드에 값 설정
             $input.val(selectedValue);
 
-            // 버튼 텍스트를 선택된 공항 이름으로 업데이트
-            $button.text(airportName);
+            // 버튼 텍스트를 공항 이름, 코드, 도시, 국가로 설정
+            $button.html(`
+            <div class="airport-name">${airportName}</div>
+            <div class="airport-code">${airportCode}</div>
+            <div class="airport-city">${airportCity}</div>
+            <div class="airport-country">${airportCountry}</div>
+        `);
 
             // 드롭다운 메뉴 닫기
             $content.removeClass("show");
@@ -178,6 +190,40 @@ $(document).ready(function () {
             $selectionContainer.addClass('p-3');       // 패딩 추가
             $selectionContainer.addClass('bg-light');  // 배경색 추가
         }
+    });
+
+    //폼 검증
+    $('#roundTrip').on('submit', function(event) {
+        event.preventDefault();  // 폼 제출 방지
+
+        // 1. 공항 선택 필드 검증
+        const fromAirportId = $('#fromEntityId').val();
+        const toAirportId = $('#toEntityId').val();
+        if (!fromAirportId || !toAirportId) {
+            alert("출발지와 도착지를 선택해주세요.");
+            return;  // 검증 실패시 폼 제출 안됨
+        }
+
+        // 2. 날짜 선택 필드 검증
+        const departDate = $('#start-date-value').val();
+        const returnDate = $('#end-date-value').val();
+        if (!departDate || !returnDate) {
+            alert("가는 날과 오는 날을 선택해주세요.");
+            return;
+        }
+
+        // 3. 인원 수가 0 이상이어야 함
+        const adultCount = parseInt($('#adult-count').text());
+        const childCount = parseInt($('#child-count').text());
+        const infantCount = parseInt($('#infant-count').text());
+        const totalPassengers = adultCount + childCount + infantCount;
+        if (totalPassengers <= 0) {
+            alert("인원 수는 최소 1명 이상이어야 합니다.");
+            return;
+        }
+
+        // 4. 폼 제출 (검증이 모두 통과되었을 경우)
+        this.submit();
     });
 
 

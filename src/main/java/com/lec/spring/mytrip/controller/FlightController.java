@@ -69,6 +69,8 @@ public class FlightController {
             System.out.println("flights 모달 보냄");
         } catch (Exception e) {
             model.addAttribute("error", "항공편 조회 중 오류가 발생했습니다.");
+        } finally {
+            model.addAttribute("flightRoundTrip", flightRoundTrip);
         }
     }
 
@@ -100,8 +102,6 @@ public class FlightController {
             // 데이터를 Model에 추가
             model.addAttribute("details", response.getDetails());
             model.addAttribute("detailTicket", response.getTicket());
-
-            // detail.html 렌더링
 
         } catch (Exception e) {
             System.out.println("API 호출 중 오류: " + e.getMessage());
