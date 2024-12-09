@@ -15,6 +15,7 @@ public class PackagePostController {
     private final PackagePostService packagePostService;
 
     public PackagePostController(PackagePostService packagePostService) {
+        System.out.println("PackagePostController() 시작");
         this.packagePostService = packagePostService;
     }
 
