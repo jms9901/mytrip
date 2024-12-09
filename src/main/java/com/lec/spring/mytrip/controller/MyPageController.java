@@ -151,8 +151,13 @@ public class MyPageController {
         return "mypage/bookMain";
     }
 
-    @GetMapping("/bookMain/bookGuestBook")
-    public String myPageGuestBook() {
+    @GetMapping("/bookMain/bookGuestBook/{userId}")
+    public String myPageGuestBook(@PathVariable("userId") Long userId, Model model) {
+        // userId에 해당하는 사용자 정보를 모델에 추가
+        User user = myPageService.getUserById(userId);
+        model.addAttribute("user", user);
+
+        // GuestBook 페이지로 이동
         return "mypage/bookGuestBook";
     }
 

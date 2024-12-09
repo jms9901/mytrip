@@ -73,6 +73,7 @@
 </div>
 <script type="text/javascript">
     $(document).ready(function () {
+
         const apiUrl = "/bookMain/bookGuestBook"; // API URL 설정
 
         // 앱 로드 및 초기화
@@ -100,7 +101,7 @@
         // Flipbook 초기화
         function checkAndLoadFlipbook() {
             if (isCSSTransformSupported()) {
-                $.getScript('../../lib/animationjs/turn.js', () => loadApp());
+                $.getScript('/lib/animationjs/turn.js', () => loadApp());
             } else {
                 $.getScript('../../lib/JQuery/turn.html4.min.js', () => loadApp());
             }
@@ -126,11 +127,18 @@
             return transformProperties.some(prop => testElement.style[prop] !== undefined);
         }
 
+        // URL에서 toUserId 값 추출하는 함수
+        function getToUserIdFromUrl() {
+            const pathParts = window.location.pathname.split('/');
+            const toUserId = pathParts[pathParts.length - 1]; // 마지막 부분이 toUserId
+            return toUserId;
+        }
+
         // 방명록 불러오기
         function loadGuestBooks() {
             console.log("loadGuestBooks 작동");
 
-            const toUserId = 1; // 사용자 ID (하드코딩)
+            const toUserId = getToUserIdFromUrl();
 
             $.get(`${apiUrl}/list/${toUserId}`, function (data) {
                 console.log("Loaded guestbooks:", data);
@@ -168,7 +176,7 @@
 
             if (name && message) {
                 const guestBookData = {
-                    toUserId: 1,
+                    toUserId: getToUserIdFromUrl(),
                     fromUserId: 2,
                     guestBookContent: message
                 };
