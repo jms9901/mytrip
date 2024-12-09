@@ -95,7 +95,7 @@ CREATE TABLE friendship
     request_friend_id INT         NOT NULL AUTO_INCREMENT COMMENT '친구 관계 테이블 ID',
     to_user_id        INT         NOT NULL COMMENT '친구 요청된 사용자 ID',
     from_user_id      INT         NOT NULL COMMENT '친구 요청한 사용자 ID',
-    friend_status     VARCHAR(20) NOT NULL COMMENT '친구 상태',
+    friend_status     ENUM('수락','대기','거절') NOT NULL default '대기' COMMENT '친구 상태',
     friendship_date   DATETIME    NULL     DEFAULT NOW() COMMENT '친구 수락 일자',
     PRIMARY KEY (request_friend_id)
 ) COMMENT '친구 관계';
