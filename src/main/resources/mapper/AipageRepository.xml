@@ -3,9 +3,9 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.lec.spring.repository.AipageRepository">
+<mapper namespace="com.lec.spring.mytrip.repository.AipageRepository">
 
-    <select id="findCityByAnswers" parameterType="map" resultType="com.example.domain.City">
+    <select id="findCityByAnswers" parameterType="map" resultType="com.lec.spring.mytrip.domain.City">
         SELECT *
         FROM city
         WHERE q1_id = #{q1Id}
@@ -16,16 +16,17 @@
     </select>
 
 <!--    //도시별 정보 조회, 그런데 질문값을 빠트린-->
-    <select id="findCityById" parameterType="id" resultType="com.lec.spring.mytrip.domain.City">
-        SELECT (city_id,
-                city_name,
-                city_continent,
-                city_language,
-                city_currency,
-                city_img,
-                city_nation)
+    <select id="findCityById" resultType="com.lec.spring.mytrip.domain.City">
+        SELECT city_id,
+               city_name,
+               city_continent,
+               city_language,
+               city_currency,
+               city_img,
+               city_nation
         FROM city
-        WHERE city_id = #{id};
+        WHERE city_id = #{id}
     </select>
+
 
 </mapper>
