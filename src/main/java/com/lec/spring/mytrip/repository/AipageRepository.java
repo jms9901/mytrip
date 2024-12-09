@@ -17,4 +17,7 @@ public interface AipageRepository {
             @Param("q5Id") String q5Id
     );
 
+    //도시별 정보 조회, 그런데 질문값을 빠트린
+    City findCityById(int cityId);
+
 }
