@@ -129,7 +129,7 @@ h1 {
 /* 스크롤 인디케이터 */
 /* 스크롤 인디케이터 */
 #scroll-indicator {
-    margin: 40px 0; /* 티켓과 가격 사이 간격 */
+    margin: 60px 0; /* 티켓과 가격 사이 간격 */
     text-align: center;
     opacity: 1;
     transition: opacity 0.3s ease, transform 0.3s ease;
