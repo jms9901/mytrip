@@ -11,10 +11,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class PostAttachment {
-    private Long id;
-    private Long board_id; // 어느 글의 첨부파일? (FK)
-
-    private String fileName;    // 저장된 파일명
-
-    private boolean isImage;
+    private Long boardAttachmentId;        // 첨부파일 ID
+    private Feed feed;                     // 피드
+    private String boardAttachmentFile;    // 저장된 파일명
+    private String filepath;               // 파일 경로
+//    private Board board;                   // 소모임
 }

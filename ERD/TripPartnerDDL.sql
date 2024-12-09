@@ -55,7 +55,7 @@ CREATE TABLE board_liked
 CREATE TABLE city
 (
     city_id       INT           NOT NULL AUTO_INCREMENT COMMENT '도시 ID',
-    city_name     VARCHAR(20)   NOT NULL COMMENT '도시 이름',
+    city_name     VARCHAR(20)   NOT NULL UNIQUE COMMENT '도시 이름',
     city_continent VARCHAR(50)   NOT NULL COMMENT '도시의 대륙',
     city_language VARCHAR(20)   NOT NULL COMMENT '도시의 언어',
     city_currency VARCHAR(20)   NOT NULL COMMENT '도시의 통화',
@@ -71,6 +71,7 @@ CREATE TABLE city
 
 ALTER TABLE city
     ADD CONSTRAINT UQ_city_name UNIQUE (city_name);
+
 
 CREATE TABLE city_liked
 (
@@ -223,6 +224,7 @@ CREATE TABLE user
     user_introdution       VARCHAR(100)  NULL     COMMENT '사용자 프로필 자기소개 ',
     user_authorization     VARCHAR(20)   NOT NULL COMMENT '사용자 권한',
     business_companynumber VARCHAR(100)  NULL     COMMENT '기업 사업자 번호',
+    user_status            VARCHAR(100)  NULL     COMMENT '사용자 승인 상태',
     PRIMARY KEY (user_id)
 ) COMMENT '사용자 계정';
 

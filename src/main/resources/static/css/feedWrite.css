@@ -95,7 +95,7 @@ body {
     display: block;
 }
 
-.prev-btn, .next-btn {
+#prev-btn, #next-btn {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
@@ -107,17 +107,14 @@ body {
     z-index: 10;
 }
 
-.prev-btn {
+#prev-btn {
     left: 10px;
 }
 
-.next-btn {
+#next-btn {
     right: 10px;
 }
 
-.hidden {
-    display: none;
-}
 
 /* Post Title */
 .feed-title {
@@ -145,13 +142,17 @@ body {
     display: none;
 }
 
+#hidden {
+    display: none;
+}
+
 /* Post Content */
 #feed-content {
     display: flex;
     margin-left: 50px;
     margin-top: 15px;
     width: 710px;
-    height: 180px;
+    height: 160px;
     padding: 8px;
     font-size: 30px;
     border: 1px solid black;
@@ -181,4 +182,92 @@ body {
     margin-left: 50px;
     display: flex;
     margin-top: -14px;
+}
+
+/* Detail CSS */
+/* Update Button */
+.update-button {
+    position: absolute;
+    top: 57px;
+    right: 40px;
+    color: black;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 35px;
+    height: auto;
+}
+
+/* Delete Button */
+.delete-button {
+    position: absolute;
+    top: 57px;
+    right: 78px;
+    color: black;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 30px;
+    height: auto;
+}
+
+/* 게시일 */
+.feed-regdate {
+    position: absolute;
+    top: 165px;
+    right: -34px;
+    font-size: 13px;
+    width: 200px;
+    height: auto;
+}
+
+/* 좋아요 */
+.feed-liked-container {
+    float: right;
+    width: 60px;
+    height: auto;
+}
+
+.feed-liked {
+    position: absolute;
+    width: 35px;
+    height: auto;
+    right: 85px;
+}
+
+.feed-liked-count {
+    position: absolute;
+    float: right;
+    right: 63px;
+    bottom: 54px;
+    font-size: 16px;
+}
+
+.goFeedList {
+    position: absolute;
+    top: 57px;
+    right: 40px;
+    color: black;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 35px;
+    height: auto;
+}
+
+/* Delete Button */
+.goDeclaration {
+    position: absolute;
+    top: 57px;
+    right: 78px;
+    color: black;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 30px;
+    height: auto;
 }

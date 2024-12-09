@@ -1,6 +1,7 @@
 package com.lec.spring.mytrip.domain;
 
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -11,19 +12,18 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class Feed {
-    private Long id;
-    private String subject;
-    private String content;
-    private Long viewCount;
-    private LocalDateTime regDate;
-    private String category;
+    private Long boardId;                       // 게시물 ID
+    private String boardSubject;                // 게시물 제목
+    private String boardContent;                // 게시물 내용
+    private Long boardViewCount;                // 게시물 조회수
+    private LocalDateTime boardDate;            // 게시물 작성일
+    private String boardCategory;               // 게시물 카테고리 ("소모임" / "피드")
+    private User user;                          // 사용자
+    private City city;                          // 도시
+    private List<PostAttachment> attachments;   // 첨부파일
 
-    private User user;
-    private City city;
-
-    // 피드 : 첨부파일 1 : N
-    @ToString.Exclude
-    @Builder.Default
-    private List<PostAttachment> fileList = new ArrayList<>();
+    // 파일 업로드를 위한 임시 필드
+    private transient List<MultipartFile> uploadFiles;
+    private transient Long[] deleteFileIds;
 
 }
