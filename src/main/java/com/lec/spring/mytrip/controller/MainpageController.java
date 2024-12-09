@@ -6,10 +6,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import com.lec.spring.mytrip.domain.Package;
+import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.List;
 import java.util.Map;
 
 @Controller
+@RequestMapping("/main")
 public class MainpageController {
 
     private final MainpageService mainpageService;
@@ -52,10 +56,10 @@ public class MainpageController {
     // TODO : 투어패키지     --> boardpage
     // 사용자가 투어패키지 정보를 볼 수 있게 Service에게 요청한다.
     // 사용자가 투어패키지를 클릭하면, BoardController에게 해당 투어 페이지로 이동하도록 요청을 전달한다.
-    @PostMapping("/package-lastest")
+    @GetMapping("/package-lastest")
     public String showPackageLastest(Model model) {
-
+        List<Package> latestPackages = mainpageService.getLatestPackages();
+        model.addAttribute("latestPackages", latestPackages);
         return "package-lastest";
     }
-
 }

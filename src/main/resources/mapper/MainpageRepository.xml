@@ -27,5 +27,8 @@
         LIMIT 1;
     </select>
 
+    <select id="findTop10IOrderByDateDesc" resultType="com.lec.spring.mytrip.domain.Package">
+        SELECT * FROM package ORDER BY package_regdate DESC LIMIT 10
+    </select>
 
 </mapper>
