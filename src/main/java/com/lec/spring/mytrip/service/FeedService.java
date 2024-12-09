@@ -34,4 +34,13 @@ public interface FeedService {
     // 도시 가져오기
     List<City> getAllCities();
 
+    // 피드 좋아요 처리
+//    void likeFeed(Long feedId, String username);
+
+    // 피드 좋아요 취소
+//    void unlikeFeed(Long feedId, String username);
+
+    // 특정 사용자가 좋아요한 피드인지 확인
+//    boolean isLikedByUser(Long feedId, String username);
+
 }

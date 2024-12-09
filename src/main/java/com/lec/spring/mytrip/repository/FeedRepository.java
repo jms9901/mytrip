@@ -47,4 +47,5 @@ public interface FeedRepository {
     List<City> findAllCities();
 
     City findCityById(Long id);
+
 }

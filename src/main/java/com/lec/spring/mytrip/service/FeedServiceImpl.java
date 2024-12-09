@@ -161,4 +161,5 @@ public class FeedServiceImpl implements FeedService {
     public List<City> getAllCities() {
         return feedRepository.findAllCities();
     }
+
 }

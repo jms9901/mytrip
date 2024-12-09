@@ -11,6 +11,7 @@
     <!--	<script type="text/javascript" src="../lib/JQuery/yepnope.js"></script>-->
     <!--	<script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/3.11.2/modernizr.min.js"></script>-->
     <link rel="stylesheet" th:href="@{/static/CSS/bookMain.css}">
+    <link rel="stylesheet" th:href="@{/static/CSS/feedList.css}">
     <link href='https://fonts.googleapis.com/css?family=Kaushan Script' rel='stylesheet'>
 
 </head>
@@ -28,23 +29,22 @@
             <div style="background-image:url(/static/img/mypageTitle.png)"></div>	<!--배경이미지 설정 부분 (여권사진 홀수번 우측, 짝수번 좌측 화면 표시 예정)-->
             <div style="background-image:url(/static/img/sample_left.png)">
                 <div style="background-image:url(/static/img/sample_left.png)"></div>
-                <img src="/static/img/addbutton.png" alt="feedAdd-Button" id="feedAdd-Button" class="feedAdd-Button" th:href="@{/mypage/feedWrite.html}">
+                <img src="/static/img/addbutton.png" alt="feedAdd-Button" id="feedAdd-Button" class="feedAdd-Button" th:href="@{/mypage/feedWrite.html}" th:type="button">
 
 
                 <div class="feed-List hidden" id="feed-List">
 <!--                    동적으로 생성되는 카드(피드 리스트)가 들어갈 영역-->
-<!--                    <div class="feed-cards">-->
-<!--                        <div class="feed-card" style="background-image: url(/static/img/postFrame.png)"></div>-->
-<!--                        <div class="feed-card" style="background-image: url(/static/img/postFrame.png)"></div>-->
-<!--                        <div class="feed-card" style="background-image: url(/static/img/postFrame.png)"></div>-->
-<!--                        <div class="feed-card" style="background-image: url(/static/img/postFrame.png)"></div>-->
-<!--                        <div class="feed-card" style="background-image: url(/static/img/postFrame.png)"></div>-->
-<!--                        <div class="feed-card" style="background-image: url(/static/img/postFrame.png)"></div>-->
-<!--                        <div class="feed-card" style="background-image: url(/static/img/postFrame.png)"></div>-->
-<!--                        <div class="feed-card" style="background-image: url(/static/img/postFrame.png)"></div>-->
-<!--                        <div class="feed-card" style="background-image: url(/static/img/postFrame.png)"></div>-->
-<!--                    </div>-->
+<!--                    피드 예시 -->
+                    <div class="feed-card">
+                        <div class="photo-container">
+                            <img th:src="@{/static/img/postEx3.jpg}" alt="postThumbnail" class="post-thumbnail">
+                        </div>
+                        <div class="feed-title">
+                            <h4><b>In. Paris</b></h4>
+                        </div>
+                    </div>
                 </div>
+
 
                 <div style="background-image:url(/static/img/sample_right.png)"></div>
                 <div style="background-image:url(/static/img/sample_left.png)"></div>
