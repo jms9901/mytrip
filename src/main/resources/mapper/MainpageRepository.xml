@@ -5,5 +5,21 @@
 
 <mapper namespace="com.lec.spring.mytrip.repository.MainRepository">
 
+    <!-- 전날 기준으로 추천받은 도시 중 가장 많이 선택된 도시 조회 -->
+    <select id="findMostRecommendedCity" resultType="map">
+        SELECT
+            city_id,
+            COUNT(*) AS count
+        FROM
+            user_city
+        WHERE
+            DATE(created_date) = DATE(NOW() - INTERVAL 1 DAY) -- 전날 데이터
+        GROUP BY
+            city_id
+        ORDER BY
+            count DESC
+        LIMIT 1;
+    </select>
+
 
 </mapper>
