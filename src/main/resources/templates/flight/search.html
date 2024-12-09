@@ -12,6 +12,15 @@
 <div id="loading-overlay" class="loading-overlay d-none">
     <div class="loading-spinner"></div>
 </div>
+<header id="header">
+    <div class="topnav">
+        <img th:src="@{/img/logo.png}" alt="" class="logo">
+        <a th:href="@{#}">여행지 추천</a>
+        <a th:href="@{#}">여행지 게시판</a>
+        <a th:href="@{#}">항공권 예약</a>
+        <a th:href="@{/user/login}">login</a>
+    </div>
+</header>
 
 <div id="pageContainer" class="container d-flex justify-content-center align-items-center min-vh-100">
     <form id="roundTrip" name="frm" th:action="@{/flight/result}" method="post" enctype="multipart/form-data" class="w-100 w-md-75 w-lg-50">
