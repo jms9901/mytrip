@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lec.spring.mytrip.repository.PackagePostRepository">
+
+    <!-- ResultMap 정의 -->
+    <resultMap id="PackagePostResultMap" type="com.lec.spring.mytrip.domain.PackagePost">
+        <id property="packageId" column="package_id"/>
+        <result property="cityId" column="city_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="packageStatus" column="package_status"/>
+        <result property="packageContent" column="package_content"/>
+        <result property="packageRegdate" column="package_regdate"/>
+        <result property="packageTitle" column="package_title"/>
+        <result property="packageCost" column="package_cost"/>
+        <result property="packageMaxpeople" column="package_maxpeople"/>
+        <result property="packageStartDay" column="package_start_day"/>
+        <result property="packageEndDay" column="package_end_day"/>
+    </resultMap>
+
+    <!-- 패키지 상세 조회 -->
+    <select id="findById" parameterType="int" resultMap="PackagePostResultMap">
+        SELECT * FROM package
+        WHERE package_id = #{packageId}
+    </select>
+
+    <!-- 도시별 패키지 조회 -->
+    <select id="findByCityId" parameterType="int" resultMap="PackagePostResultMap">
+        SELECT * FROM package
+        WHERE city_id = #{cityId}
+    </select>
+
+    <!-- 사용자별 패키지 조회 -->
+    <select id="findByUserId" parameterType="int" resultMap="PackagePostResultMap">
+        SELECT * FROM package
+        WHERE user_id = #{userId}
+    </select>
+
+    <!-- 패키지 상태별 조회 -->
+    <select id="findByStatus" parameterType="string" resultMap="PackagePostResultMap">
+        SELECT * FROM package
+        WHERE package_status = #{status}
+    </select>
+
+    <!-- 패키지 제목 검색 -->
+    <select id="searchByTitle" parameterType="string" resultMap="PackagePostResultMap">
+        SELECT * FROM package
+        WHERE package_title LIKE CONCAT('%', #{title}, '%')
+    </select>
+
+    <!-- 패키지 저장 -->
+    <insert id="save" parameterType="com.lec.spring.mytrip.domain.PackagePost" useGeneratedKeys="true" keyProperty="packageId">
+        INSERT INTO package (
+            city_id, user_id, package_status, package_content,
+            package_regdate, package_title, package_cost, package_maxpeople,
+            package_start_day, package_end_day
+        ) VALUES (
+                     #{cityId}, #{userId}, #{packageStatus}, #{packageContent},
+                     NOW(), #{packageTitle}, #{packageCost}, #{packageMaxpeople},
+                     #{packageStartDay}, #{packageEndDay}
+                 )
+    </insert>
+
+    <!-- 패키지 수정 -->
+    <update id="update" parameterType="com.lec.spring.mytrip.domain.PackagePost">
+        UPDATE package
+        SET
+            city_id = #{cityId},
+            user_id = #{userId},
+            package_status = #{packageStatus},
+            package_content = #{packageContent},
+            package_title = #{packageTitle},
+            package_cost = #{packageCost},
+            package_maxpeople = #{packageMaxpeople},
+            package_start_day = #{packageStartDay},
+            package_end_day = #{packageEndDay}
+        WHERE package_id = #{packageId}
+    </update>
+
+    <!-- 패키지 삭제 -->
+    <delete id="deleteById" parameterType="int">
+        DELETE FROM package
+        WHERE package_id = #{packageId}
+    </delete>
+
+</mapper>

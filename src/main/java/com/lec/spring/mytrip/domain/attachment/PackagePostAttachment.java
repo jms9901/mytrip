@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PackageAttachment {
+public class PackagePostAttachment {
     private Long packageAttachmentId; // 첨부파일 ID
     private Long packageId;           // 패키지 ID
     private String fileName;          // 첨부파일 이름'
