@@ -21,7 +21,7 @@
         WHERE
             DATE(uc.created_date) = DATE(NOW() - INTERVAL 1 DAY) -- 전날 데이터
         GROUP BY
-            c.city_id, c.city_name, c.city_image_url, c.city_language, c.city_currency
+            c.city_id, c.city_name, c.city_img, c.city_language, c.city_currency
         ORDER BY
             count DESC
         LIMIT 1;
