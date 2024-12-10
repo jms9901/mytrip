@@ -16,7 +16,7 @@
         <result property="cityNation" column="city_nation" />
     </resultMap>
 
-    <resultMap id="PackageResultMap" type="com.lec.spring.mytrip.domain.Package">
+    <resultMap id="PackageResultMap" type="com.lec.spring.mytrip.domain.PackagePost">
         <id property="packageId" column="package_id" />
         <result property="cityId" column="city_id" />
         <result property="userId" column="user_id" />

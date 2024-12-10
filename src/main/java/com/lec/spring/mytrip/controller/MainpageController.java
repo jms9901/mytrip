@@ -6,11 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import com.lec.spring.mytrip.domain.Package;
+import com.lec.spring.mytrip.domain.PackagePost;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequestMapping("/main")
@@ -32,7 +31,7 @@ public class MainpageController {
         model.addAttribute("mostRecommendedCities", mostRecommendedCities);
 
         // 가장 최신에 등록된 10개의 패키지 게시물 가져오기
-        List<Package> latestPackages = mainpageService.getLatestPackages();
+        List<PackagePost> latestPackages = mainpageService.getLatestPackages();
         model.addAttribute("latestPackages", latestPackages);
 
         return "main/mainpage";

@@ -1,7 +1,6 @@
 package com.lec.spring.mytrip;
 
-import com.lec.spring.mytrip.config.oauth.PrincipalOauth2UserService;
-import com.lec.spring.mytrip.domain.Package;
+import com.lec.spring.mytrip.domain.PackagePost;
 import com.lec.spring.mytrip.service.MainpageService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,7 @@ public class MainpageServiceTest {
 
     @Test
     public void testGetLatestPackages() {
-        List<Package> latestPackages = mainpageService.getLatestPackages();
+        List<PackagePost> latestPackages = mainpageService.getLatestPackages();
         assertThat(latestPackages).isNotNull();
         assertThat(latestPackages.size()).isLessThanOrEqualTo(10);
 //        latestPackages.forEach(pkg -> System.out.println(pkg.getPackageId() + " / " + pkg.getCityId() + " / " + pkg.getUserId() + " / " + pkg.getStatus() + " / " + pkg.getContent() + " / " + pkg.getRegDate() + " / " + pkg.getTitle() + " / " + pkg.getCost() + " / " + pkg.getMaxPeople() + " / " + pkg.getStartDay() + " / " + pkg.getEndDay()));
