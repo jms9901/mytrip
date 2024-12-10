@@ -9,13 +9,13 @@
   <title>Document</title>
 </head>
 
+
 <script th:inline="javascript">
   const error = [[${error}]];
   if (error) {
     showErrorPopup(error);
   }
 </script>
-
 <body>
 <header id="header">
   <div class="topnav">
@@ -89,10 +89,6 @@
             <input type="text" name="name" required th:value="${user?.name}"/>
           </label>
           <label>
-            <span>Phone Number</span>
-            <input type="tel" name="phoneNumber" required th:value="${user?.phoneNumber}"/>
-          </label>
-          <label>
             <span>Birthday</span>
             <input type="date" name="birthday" required th:value="${user?.birthday}"/>
           </label>
@@ -121,10 +117,6 @@
           <label>
             <span>Name (Company Name)</span>
             <input type="text" name="name" required th:value="${user?.name}"/>
-          </label>
-          <label>
-            <span>Phone Number</span>
-            <input type="tel" name="phoneNumber" required th:value="${user?.phoneNumber}"/>
           </label>
           <label>
             <span>Company Number</span>

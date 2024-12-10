@@ -37,10 +37,10 @@
             useGeneratedKeys="true" keyProperty="id" keyColumn="user_id">
         insert into user (
             user_email, user_password, user_username, user_name,
-            user_phonenumber, user_birthday, user_provider, business_companynumber, user_authorization, user_status
+            user_birthday, user_provider, business_companynumber, user_authorization, user_status
         ) values (
                      #{email}, #{password}, #{username}, #{name},
-                     #{phoneNumber}, #{birthday}, #{provider}, #{companyNumber}, #{authorization}, #{status}
+                     #{birthday}, #{provider}, #{companyNumber}, #{authorization}, #{status}
                  )
     </insert>
 

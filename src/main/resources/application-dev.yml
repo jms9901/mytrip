@@ -10,6 +10,7 @@ spring:
   thymeleaf:
     cache: false
     prefix: classpath:templates/
+    suffix: .html
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -30,6 +31,25 @@ spring:
             scope:
               - email
               - profile
+          kakao:
+            client-id: c4823220fb99328c1a65a5f60b0fd38a
+            client-secret: zfWp7ldaCwvC6XMdlnhHz3BVd6KeC5TC
+            redirect-uri: http://localhost:8081/login/oauth2/code/kakao
+            authorization-grant-type: authorization_code
+            client-authentication-method: client_secret_post
+            scope:
+              - profile_nickname
+              - profile_image
+              - account_email
+            client-name: kakao
+            provider: kakao
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token   # Access Token 요청 URI
+            user-info-uri: https://kapi.kakao.com/v2/user/me  # 사용자 profile 요청
+            user-name-attribute: id
+
   servlet:
     # Multipart request 의 업로드 파일 크기 제한 설정
     multipart:
@@ -47,8 +67,3 @@ app:
 
   oauth2:
     password: 1234
-  kakao:
-    client-id: f1d0b6ed76ac6d19f66db3f94de52ad1   # 앱 키
-    redirect-uri: http://localhost:8080/oauth2/kakao/callback  # Redirect URI
-    token-uri: https://kauth.kakao.com/oauth/token   # Access Token 요청 URI
-    user-info-uri: https://kapi.kakao.com/v2/user/me  # 사용자 profile 요청
