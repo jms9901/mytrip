@@ -28,11 +28,16 @@
         WHERE city_id = #{id}
     </select>
 
-<!--    대륙별 도시 조회-->
-    <select id="findContinentByCity" resultType="com.lec.spring.mytrip.domain.City">
-        SELECT city_id
-        FROM city
-        WHERE city_id = #{id}
+<!--    선택된 도시와 같은 대륙별 도시 조회-->
+    <select id="findContinentByCityId" resultType="com.lec.spring.mytrip.domain.City">
+        SELECT c1.city_id,
+               c1.city_name,
+               c1.city_continent,
+               c1.city_img
+        FROM city c1
+                 JOIN city c2
+                      ON c1.city_continent = c2.city_continent
+        WHERE c2.city_id = #{id}
     </select>
 
 

@@ -11,12 +11,12 @@ import java.time.LocalDateTime;
 @Builder
 public class User {
 
-    public User(String email, String name){
+    public User(String email, String name, Long id){
         this.email = email;
         this.name = name;
     }
 
-    private Long id;  // 사용자 ID
+    private int id;  // 사용자 ID
 
     private String email;  // 사용자 이메일
 

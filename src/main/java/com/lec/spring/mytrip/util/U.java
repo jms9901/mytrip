@@ -41,6 +41,7 @@ public class U {
             // 필요한 속성을 가져와 User 객체를 생성합니다.
             String email = (String) attributes.get("email");
             String name = (String) attributes.get("name");
+            Long id = (Long) attributes.get("id");
 
             // kakao로 로그인한 유저는 properties안에 nickname 이 있기 때문에 name을 재정의 해야 함
             Map<String, Object> properties = (Map<String, Object>) attributes.get("properties");
@@ -48,7 +49,7 @@ public class U {
                 name = (String) properties.get("nickname");
             }
 
-            return new User(email, name); // 적절한 User 생성자를 호출하여 반환
+            return new User(email, name, id); // 적절한 User 생성자를 호출하여 반환
         } else {
             return null;
         }
