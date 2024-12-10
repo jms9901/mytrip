@@ -2,6 +2,7 @@ package com.lec.spring.mytrip.repository;
 
 import com.lec.spring.mytrip.domain.Board;
 import com.lec.spring.mytrip.domain.PackagePost;
+import com.lec.spring.mytrip.domain.Payment;
 import com.lec.spring.mytrip.domain.User;
 
 import java.util.List;
@@ -26,5 +27,17 @@ public interface AdminRepository {
     List<PackagePost> findByStandByPackage(String packageStatus);
 
     // payment 리스트 가져오기
+    List<Payment> findByPayment(int PaymentId);
 
+    // 유저 삭제
+    void deleteUser(int userId);
+
+    // business 유저 승인 상태로 변경
+    void updateBusinessUserStatus(int userId, String status);
+
+    // 소모임/피드 삭제
+    void deleteBoard(int boardId);
+
+    // 패키지 승인 상태 변경
+    void updatePackageStatus(int packageId, String status);
 }

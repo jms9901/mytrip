@@ -1,5 +1,6 @@
 package com.lec.spring.mytrip.controller;
 
+import com.lec.spring.mytrip.service.AdminService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -7,6 +8,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
+    private final AdminService adminService;
+
+    public AdminController(AdminService adminService) {
+        this.adminService = adminService;
+    }
 
     @GetMapping("/adminLogin")
     public String login() {
@@ -14,7 +20,10 @@ public class AdminController {
     }
 
     @GetMapping("/userTables")
-    public String userTables() {return "admin/userTables";}
+    public String userTables() {
+
+        return "admin/userTables";
+    }
 
     @GetMapping("/businessTables")
     public String businessTables() {return "admin/businessTables";}
