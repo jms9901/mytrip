@@ -568,3 +568,68 @@ body{
 	height: 100%;    /* 이미지 높이를 100%로 설정 */
 	object-fit: cover;  /* 컨테이너에 맞게 이미지를 크롭 */
 }
+
+
+.mypageCityLiked {
+	position: relative;
+	width: 90%;
+	height: 170px; /* 슬라이드 컨테이너의 고정 높이 */
+	overflow: hidden;
+}
+
+.slider {
+	display: flex;
+	transition: transform 0.3s ease;
+	width: 100%;
+	height: 100%; /* 슬라이드 영역 전체 높이를 채우도록 설정 */
+	margin-bottom: 15px;
+}
+
+.cityLikedItem {
+	min-width: 100%; /* 한 항목이 화면을 가득 채우도록 */
+	height: 100%; /* 항목의 높이를 슬라이드 컨테이너 높이에 맞춤 */
+	display: flex;
+	flex-direction: column; /* 이미지와 텍스트 세로로 배치 */
+	justify-content: center; /* 항목 내용이 세로로 중앙에 위치하도록 */
+	align-items: center; /* 이미지와 텍스트를 수평으로 중앙 정렬 */
+	text-align: center; /* 텍스트를 중앙 정렬 */
+}
+
+.CityLikedImg {
+	width: 80%; /* 이미지를 컨테이너 너비의 80%로 설정 (원하는 크기로 조정) */
+	height: auto;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.CityLikedImg img {
+	width: 70%;
+	height: auto;
+	object-fit: contain; /* 이미지 비율을 유지하면서 화면에 맞게 조정 */
+}
+
+.CityLikedTitle {
+	margin-top: 10px; /* 이미지와 텍스트 사이에 여백 추가 */
+	font-size: 16px; /* 텍스트 크기 조정 */
+}
+
+button {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	background-color: rgba(0, 0, 0, 0.5);
+	color: white;
+	border: none;
+	padding: 10px;
+	cursor: pointer;
+	z-index: 10;
+}
+
+button.prev {
+	left: 10px;
+}
+
+button.next {
+	right: 10px;
+}

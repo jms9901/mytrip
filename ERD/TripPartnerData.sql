@@ -550,3 +550,7 @@ VALUES
 
 insert into city_liked (user_id,city_id)
 values(1,1);
+insert into city_liked (user_id,city_id)
+values(1,2);
+insert into city_liked (user_id,city_id)
+values(1,3);
