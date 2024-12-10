@@ -57,22 +57,45 @@
 <!-- 추천여행지 및 항공권 예약 페이지 -->
 <section id="section3">
     <div class="container3">
-        <div class="buttons">
-            <button class="btn btn-primary" th:href="@{/aipage/start}">여행지 추천</button>
-            <button class="btn btn-primary" th:href="@{/flight/search}">항공권 예약</button>
+        <!-- 버튼 섹션 -->
+        <div class="buttons d-flex justify-content-center mb-4">
+            <a class="btn btn-primary mx-2" th:href="@{/aipage/start}">여행지 추천</a>
+            <a class="btn btn-primary mx-2" th:href="@{/flight/search}">항공권 예약</a>
         </div>
 
-        <div th:each="city : ${mostRecommendedCities}">
-            <a th:href="@{|/post/${city.cityId}|}">
-                <div class="images">
-                    <img th:src="@{|img/${city.cityImg}|}" th:alt="${city.cityName}" class="s3image">
-                    <p th:text="${city.cityName}"></p> <!-- 이미지 아래에 p 태그 추가 -->
-                    <p th:text="${city.cityContinent}"></p> <!-- 이미지 아래에 p 태그 추가 -->
-                    <p th:text="${city.cityLanguage}"></p> <!-- 이미지 아래에 p 태그 추가 -->
-                    <p th:text="${city.cityCurrency}"></p> <!-- 이미지 아래에 p 태그 추가 -->
-                    <p th:text="${city.cityNation}"></p> <!-- 이미지 아래에 p 태그 추가 -->
-                </div>
-            </a>
+        <!-- 추천 여행지 섹션 -->
+        <div class="row d-flex justify-content-center align-items-start">
+            <!-- 왼쪽 카드 -->
+            <div class="col-md-4 mb-5" style="margin-top: -30px;" th:each="city, iterStat : ${mostRecommendedCities}" th:if="${iterStat.index == 0}">
+                <a th:href="@{|/post/${city.cityId}|}">
+                    <div class="card">
+                        <img th:src="@{|/img/${city.cityImg}|}" th:alt="${city.cityName}" class="card-img-top">
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${city.cityName}"></h5>
+                            <p class="card-text" th:text="'대륙: ' + ${city.cityContinent}"></p>
+                            <p class="card-text" th:text="'언어: ' + ${city.cityLanguage}"></p>
+                            <p class="card-text" th:text="'화폐: ' + ${city.cityCurrency}"></p>
+                            <p class="card-text" th:text="'국가: ' + ${city.cityNation}"></p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <!-- 오른쪽 카드 -->
+            <div class="col-md-4 mb-5" th:each="city, iterStat : ${mostRecommendedCities}" th:if="${iterStat.index == 1}">
+                <a th:href="@{|/post/${city.cityId}|}">
+                    <div class="card">
+                        <img th:src="@{|/img/${city.cityImg}|}" th:alt="${city.cityName}" class="card-img-top">
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${city.cityName}"></h5>
+                            <p class="card-text" th:text="'대륙: ' + ${city.cityContinent}"></p>
+                            <p class="card-text" th:text="'언어: ' + ${city.cityLanguage}"></p>
+                            <p class="card-text" th:text="'화폐: ' + ${city.cityCurrency}"></p>
+                            <p class="card-text" th:text="'국가: ' + ${city.cityNation}"></p>
+                        </div>
+                    </div>
+                </a>
+            </div>
         </div>
     </div>
 </section>

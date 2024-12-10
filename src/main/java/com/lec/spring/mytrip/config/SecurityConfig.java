@@ -1,6 +1,7 @@
 package com.lec.spring.mytrip.config;
 
 import com.lec.spring.mytrip.config.oauth.PrincipalOauth2UserService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -52,6 +53,10 @@ public class SecurityConfig {
                         .defaultSuccessUrl("/main/mainpage", true)
                         .userInfoEndpoint(userInfo -> userInfo
                                 .userService(principalOauth2UserService))) // OAuth2 UserService 설정
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint((request, response, authException) -> {
+                            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+                        }))
                 .build();
     }
 

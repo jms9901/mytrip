@@ -1,6 +1,7 @@
 #section3 {
     background-color: #142055;
     margin-top: 100px;
+    padding: 40px 20px;
 }
 
 .btn-primary {
@@ -12,11 +13,16 @@
     cursor: pointer;
 }
 
+.row {
+    gap: 80px; /* 카드 사이 간격을 조정 */
+}
+
 .container3 {
     display: flex;
     align-items: center;
     vertical-align: center;
-    height: 1200px;
+    height: 850px;
+
 }
 
 .buttons {
@@ -34,7 +40,7 @@
 .images {
     display: flex;
     align-items: center;
-    width: 300px;
+    width: 200px;
 }
 
 .s3image {
@@ -47,4 +53,23 @@
     margin-top: 150px;
 }
 
+.card {
+    border: none; /* 카드 테두리 제거 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);  /*그림자 추가 */
+    text-align: center; /* 텍스트 중앙 정렬 */
+    background-color: #1e2d7a;
+    color: #ffffff;
+}
+.card-img-top {
+    width: 100%; /* 이미지가 카드 너비에 맞도록 조정 */
+    height: auto;
+    max-height: 320px;
+    object-fit: cover;
+}
 
+.card-body {
+    margin-top: 20px; /* 이미지와 텍스트 간격 */
+}
+.col-md-4:nth-child(1) {
+    margin-top: -50px; /* 첫 번째 카드 살짝 위로 이동 */
+}

@@ -1,7 +1,9 @@
 .container4{
+
     display: flex;
     flex-direction: column;
     align-items: center;
+
 }
 .row1, .row2{
     display: flex;
