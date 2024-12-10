@@ -11,6 +11,12 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class User {
+
+    public User(String email, String name){
+        this.email = email;
+        this.name = name;
+    }
+
     private Long id;  // 사용자 ID
 
     private String email;  // 사용자 이메일
@@ -31,8 +37,6 @@ public class User {
     private String provider;  // 소셜 로그인 제공자 (예: Google, Facebook)
 
     private String providerId;  // 소셜 로그인 제공자 ID
-
-    private String phoneNumber;  // 핸드폰 번호
 
     private String profile;  // 사용자 프로필 이미지 경로
 
