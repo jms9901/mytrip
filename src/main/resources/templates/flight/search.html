@@ -8,70 +8,65 @@
     <link rel="stylesheet" href="/CSS/flight/search.css">
 </head>
 <body>
-<!--로딩-->
+<!-- 로딩 화면 -->
 <div id="loading-overlay" class="loading-overlay d-none">
     <div class="loading-spinner"></div>
 </div>
 <header id="header">
     <div class="topnav">
-        <img th:src="@{/img/logo.png}" alt="" class="logo">
+        <img th:src="@{/img/logo.png}" alt="Logo" class="logo">
         <a th:href="@{#}">여행지 추천</a>
         <a th:href="@{#}">여행지 게시판</a>
         <a th:href="@{#}">항공권 예약</a>
-        <a th:href="@{/user/login}">login</a>
+        <a th:href="@{/user/login}">로그인</a>
     </div>
 </header>
 
 <div id="pageContainer" class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div id="background-slider">
+        <div class="slider-image" style="background-image: url('/img/flight/spring.jpg');"></div>
+        <div class="slider-image" style="background-image: url('/img/flight/spiring2.jpg');"></div>
+        <div class="slider-image" style="background-image: url('/img/flight/summer.jpg');"></div>
+        <div class="slider-image" style="background-image: url('/img/flight/summer2.jpg');"></div>
+        <div class="slider-image" style="background-image: url('/img/flight/autumn2.jpg');"></div>
+        <div class="slider-image" style="background-image: url('/img/flight/winter.jpg');"></div>
+    </div>
+
+    <!-- 검색 폼 -->
     <form id="roundTrip" name="frm" th:action="@{/flight/result}" method="post" enctype="multipart/form-data" class="w-100 w-md-75 w-lg-50">
         <div id="formContainer" class="row gy-3 d-flex align-items-center">
             <!-- 출발지 -->
             <div class="col-12 col-md-3">
-                <div class="custom-dropdown selectTag">
-                    <div class="dropdown-button">
-                        <div class="airport-name text-center d-flex justify-content-center align-items-center">
-                            출발지
-                        </div>
-                    </div>
-                    <div class="dropdown-content w-100">
-                        <!-- 드롭다운 항목 -->
-                        <div class="dropdown-item fromAirport" value="ICN">
-                            <!-- 선택 시 표시할 전체 정보 -->
-                            <div class="airport-name">인천 국제 공항</div>
-                            <div class="airport-code">ICN</div>
-                            <div class="airport-city">서울</div>
-                            <div class="airport-country">한국</div>
-                        </div>
-                        <!-- 다른 항목도 동일한 구조 -->
-                    </div>
+                <div class="text-center">
+                    <div class="airport-code fw-bold">ICN</div>
+                    <div class="airport-city text-muted">서울</div>
                 </div>
                 <input type="hidden" id="fromEntityId" name="fromAirportId" value="ICN">
             </div>
 
             <!-- 도착지 -->
             <div class="col-12 col-md-3">
-                <div class="custom-dropdown selectTag">
-                    <div class="dropdown-button">
-                        <div class="airport-name text-center d-flex justify-content-center align-items-center">
-                            목적지
-                        </div>
-                    </div>
-                    <div class="dropdown-content w-100">
-                        <div class="dropdown-item toAirport"
-                             th:each="port : ${airports}"
-                             th:if="${port.airportCode} != 'ICN'"
-                             th:value="${port.airportCode}">
-                            <span class="airport-name" th:utext="${port.airportName}"></span>
-                            <span class="airport-code" th:utext="${port.airportCode}"></span>
-                            <span class="airport-city" th:utext="${port.airportCity}"></span>
-                            <span class="airport-country" th:utext="${port.airportCountry}"></span>
+                <div class="custom-dropdown">
+                    <button class="dropdown-button btn btn-outline-secondary w-100 text-start">
+                        도착
+                    </button>
+                    <div class="dropdown-content p-2 border bg-white shadow" style="max-height: 300px; overflow-y: auto;">
+                        <div class="d-flex flex-wrap gap-2">
+                            <button class="btn btn-outline-primary dropdown-item-btn"
+                                    th:each="port : ${airports}"
+                                    th:if="${port.airportCode} != 'ICN'"
+                                    th:value="${port.airportCode}">
+                                <span th:utext="${port.airportCode}"></span>
+                                <br>
+                                <small th:utext="${port.airportCity}" class="text-muted"></small>
+                            </button>
                         </div>
                     </div>
                 </div>
                 <input type="hidden" id="toEntityId" name="toAirportId">
             </div>
 
-            <!-- 날짜선택 -->
+            <!-- 날짜 선택 -->
             <div class="col-12 col-md-3 d-flex">
                 <button id="start-date-btn" class="btn btn-outline-primary flex-fill">가는 날</button>
                 <input type="hidden" name="departDate" id="start-date-value">
@@ -80,62 +75,62 @@
             </div>
 
             <!-- 인원 및 좌석 선택 -->
-            <div class="col-12 col-md-3 d-flex">
+            <div class="col-12 col-md-3">
                 <button id="openSelectionBtn" class="btn btn-outline-secondary w-100">인원 및 좌석 선택</button>
-                <div id="selectionContainer" class="mt-3">
+                <div id="selectionContainer" class="mt-3 d-none p-3 border bg-white rounded shadow">
                     <!-- 인원 선택 -->
-                    <div class="section" id="passenger-selection">
-                        <h3>인원 선택</h3>
-                        <div class="passenger-item">
-                            <span class="sungekAge">성인</span>
-                            <span id="adult-count" class="sungekCnt">1</span>
-                            <input type="hidden" name="adultsHeadCnt" id="adult-count-input" value="1">
-                            <div class="btn-group" id="adult-group">
-                                <button class="btn-decrease">-</button>
-                                <button class="btn-increase">+</button>
+                    <div class="mb-3">
+                        <h5>인원 선택</h5>
+                        <div class="row mb-2">
+                            <div class="col">성인</div>
+                            <div class="col-auto">
+                                <button class="btn btn-sm btn-outline-secondary" id="adult-decrease">-</button>
+                                <span id="adult-count">1</span>
+                                <button class="btn btn-sm btn-outline-secondary" id="adult-increase">+</button>
+                                <input type="hidden" id="adult-input" name="adultsHeadCnt" value="1"> <!-- 숨겨진 input 추가 -->
                             </div>
                         </div>
-                        <div class="passenger-item">
-                            <span class="sungekAge">어린이</span>
-                            <span id="child-count" class="sungekCnt">0</span>
-                            <input type="hidden" name="childrenHeadCnt" id="child-count-input" value="0">
-                            <div class="btn-group" id="child-group">
-                                <button class="btn-decrease">-</button>
-                                <button class="btn-increase">+</button>
+                        <div class="row mb-2">
+                            <div class="col">어린이</div>
+                            <div class="col-auto">
+                                <button class="btn btn-sm btn-outline-secondary" id="child-decrease">-</button>
+                                <span id="child-count">0</span>
+                                <button class="btn btn-sm btn-outline-secondary" id="child-increase">+</button>
+                                <input type="hidden" id="child-input" name="childrenHeadCnt" value="0"> <!-- 숨겨진 input 추가 -->
                             </div>
                         </div>
-                        <div class="passenger-item">
-                            <span class="sungekAge">아기</span>
-                            <span id="infant-count" class="sungekCnt">0</span>
-                            <input type="hidden" name="infantsHeadCnt" id="infant-count-input" value="0">
-                            <div class="btn-group" id="infant-group">
-                                <button class="btn-decrease">-</button>
-                                <button class="btn-increase">+</button>
+                        <div class="row">
+                            <div class="col">아기</div>
+                            <div class="col-auto">
+                                <button class="btn btn-sm btn-outline-secondary" id="infant-decrease">-</button>
+                                <span id="infant-count">0</span>
+                                <button class="btn btn-sm btn-outline-secondary" id="infant-increase">+</button>
+                                <input type="hidden" id="infant-input" name="infantsHeadCnt" value="0"> <!-- 숨겨진 input 추가 -->
                             </div>
                         </div>
                     </div>
-                    <!-- /인원 선택 -->
 
                     <!-- 좌석 선택 -->
-                    <div class="section" id="seat-selection">
-                        <h3>좌석 선택</h3>
-                        <select name="cabinClass" class="form-select">
-                            <option value="economy">이코노미</option>
-                            <option value="premium_economy">비즈니스</option>
-                            <option value="business">프리미엄</option>
-                            <option value="first">퍼스트</option>
+                    <!-- 좌석 선택 -->
+                    <div>
+                        <h5>좌석 선택</h5>
+                        <select name="cabinClass" class="form-select" id="cabin-class-select">
+                            <option value="economy" selected>이코노미</option>
+                            <option value="premium_economy">프리미엄 이코노미</option>
+                            <option value="business">비즈니스</option>
+                            <option value="first">퍼스트 클래스</option>
                         </select>
                     </div>
                 </div>
             </div>
 
             <!-- 조회 버튼 -->
-            <div class="col-12 col-md-3 d-flex ms-auto">
-                <button id="api-query" class="btn btn-primary w-100">조회</button>
+            <div class="col-12 text-center">
+                <button id="api-query" class="btn btn-primary btn-lg px-5">조회</button>
             </div>
-        </div> <!-- #formContainer -->
+        </div>
     </form>
-</div><!-- #pageContainer -->
+</div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>

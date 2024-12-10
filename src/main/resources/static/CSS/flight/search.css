@@ -1,3 +1,66 @@
+/* 전체 컨테이너 */
+#pageContainer {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: visible;
+}
+
+/* 배경 슬라이더 */
+#background-slider {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50%; /* 검색창 중간까지만 표시 */
+    z-index: -1; /* 검색창 뒤에 배치 */
+}
+
+.slider-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0; /* 기본적으로 보이지 않도록 */
+    transition: opacity 1.5s ease-in-out;
+}
+
+.slider-image.active {
+    opacity: 1; /* 활성화된 이미지만 보이도록 */
+}
+
+
+
+
+
+#image-slider {
+    position: relative;
+    width: 100%;
+    height: 40vh; /* 이미지 높이 설정 */
+    overflow: hidden;
+}
+
+.slider-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    transition: opacity 2s ease-in-out;
+}
+
+.slider-image.active {
+    opacity: 1;
+}
+
+
 /* header */
 .topnav {
     background-color: #142055;
@@ -52,55 +115,25 @@
 #selection-container {
     display: none;
 }
-
-
-/*커스텀 드롭다운*/
-.custom-dropdown {
-    position: relative;
-    display: inline-block;
-    border: 1px solid black;
-}
-
-.dropdown-button {
-    cursor: pointer;
-}
-
-.dropdown-content {
-    display: none;
-    position: absolute;
-    z-index: 1;
-}
-
-.dropdown-item {
-    cursor: pointer;
-}
-
-.dropdown-item:hover {
-    background-color: #ddd;
-}
-
-.custom-dropdown:hover .dropdown-content {
+/* 드롭박스 활성화 */
+#selectionContainer.d-block {
     display: block;
 }
 
-/* 드롭다운 항목에서 전체 내용 숨기기 */
-.dropdown-content .dropdown-item .airport-name,
-.dropdown-content .dropdown-item .airport-code,
-.dropdown-content .dropdown-item .airport-country {
+#selectionContainer.d-none {
     display: none;
 }
 
-/* 드롭다운 버튼에서 전체 내용 표시 */
-.dropdown-button .airport-name,
-.dropdown-button .airport-code,
-.dropdown-button .airport-city,
-.dropdown-button .airport-country {
-    display: block;
+/* 버튼 스타일 */
+.btn-decrease, .btn-increase {
+    cursor: pointer;
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    background-color: #f8f9fa;
+    border-radius: 5px;
 }
-
-/* 드롭다운 항목에서는 도시 이름만 보이도록 설정 */
-.dropdown-content .dropdown-item .dropdown-display {
-    display: block;
+.btn-decrease:hover, .btn-increase:hover {
+    background-color: #e9ecef;
 }
 /*커스텀 드롭다운*/
 
@@ -116,6 +149,7 @@
     padding: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 그림자 */
     width: 300px; /* 원하는 크기 */
+
 }
 
 #openSelectionBtn {
@@ -127,8 +161,12 @@
 }
 
 #roundTrip {
-    border: 1px solid  black;
-    padding: 10vh;
+    position: relative;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    z-index: 10; /* 검색창을 최상위로 배치 */
 }
 
 .sungekAge {
@@ -185,3 +223,95 @@
         transform: rotate(360deg);
     }
 }
+
+
+
+
+
+
+.text-center {
+    text-align: center;
+}
+
+.airport-code {
+    font-size: 24px;
+    font-weight: bold;
+    color: #000;
+}
+
+.airport-city {
+    font-size: 14px;
+    color: #6c757d; /* 회색 텍스트 */
+}
+
+.custom-dropdown {
+    position: relative;
+}
+
+.dropdown-button {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.dropdown-content {
+    position: absolute;
+    top: 100%; /* 버튼 바로 아래 */
+    left: 0;
+    width: 100%; /* 부모 너비에 맞춤 */
+    max-height: 300px; /* 스크롤 가능한 최대 높이 */
+    overflow-y: auto; /* 스크롤 활성화 */
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1050; /* 다른 요소 위로 표시 */
+    display: none; /* 기본적으로 숨김 */
+}
+
+.dropdown-content.show {
+    display: block; /* 열릴 때 표시 */
+}
+
+/* 도착지 드롭다운 버튼 스타일 */
+.custom-dropdown .dropdown-item-btn {
+    width: calc(33.333% - 10px); /* 한 줄에 3개씩 배치 */
+    text-align: center;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 14px;
+    white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+    background-color: #fff;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    box-sizing: border-box; /* 패딩과 테두리 포함 크기 설정 */
+}
+
+.custom-dropdown .dropdown-item-btn:hover {
+    background-color: #f0f8ff; /* 선택 시 효과 */
+    border-color: #007bff; /* 선택 시 테두리 색 변경 */
+}
+
+.dropdown-content::-webkit-scrollbar {
+    width: 8px; /* 스크롤바 너비 */
+}
+
+.dropdown-content::-webkit-scrollbar-thumb {
+    background-color: #ccc; /* 스크롤바 색상 */
+    border-radius: 4px; /* 스크롤바 모서리 둥글게 */
+}
+
+.dropdown-content::-webkit-scrollbar-thumb:hover {
+    background-color: #aaa; /* 스크롤바 hover 색상 */
+}
+
+
+
+
+
+
+
