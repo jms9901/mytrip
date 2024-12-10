@@ -48,10 +48,15 @@
 					<span th:text="${countAcceptedFriends}">0</span>
 				</div>
 			</div>
-			<div class="mypageCityLiked">
-				<div class="CityLikedTitle">Travel Destination ♥</div>
-				<div class="CityLikedImg"></div>
-			</div>
+				<div class="mypageCityLiked">
+					<!-- 도시 정보는 반복문을 통해 추가됩니다 -->
+					<div class="cityLikedItem">
+						<div class="CityLikedTitle"></div>  <!-- 도시 이름 -->
+						<div class="CityLikedImg">
+							<img src="" alt="City Image">  <!-- 도시 이미지 -->
+						</div>
+					</div>
+				</div>
 		</div>
 			<div style="background-image:url(/img/sample_right.png)"><div class="recentPost">
 				<div class="firstSection">

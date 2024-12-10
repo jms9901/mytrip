@@ -1,13 +1,11 @@
 package com.lec.spring.mytrip.controller;
 
 import ch.qos.logback.classic.Logger;
+import com.lec.spring.mytrip.domain.City;
 import com.lec.spring.mytrip.domain.FriendshipUserResultMap;
 import com.lec.spring.mytrip.domain.User;
 import com.lec.spring.mytrip.repository.UserRepository;
-import com.lec.spring.mytrip.service.FriendshipService;
-import com.lec.spring.mytrip.service.MyPageService;
-import com.lec.spring.mytrip.service.UserService;
-import com.lec.spring.mytrip.service.UserServiceImpl;
+import com.lec.spring.mytrip.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +35,7 @@ import java.util.*;
 public class MyPageController {
 
     private final MyPageService myPageService;
+    private final LikedService likeService;
 
     @Autowired
     private FriendshipService friendshipService;
@@ -45,10 +44,16 @@ public class MyPageController {
     private UserServiceImpl userService;
 
     @Autowired
-    public MyPageController(MyPageService myPageService, FriendshipService friendshipService, UserServiceImpl userService) {
+    public MyPageController(MyPageService myPageService, LikedService likeService, FriendshipService friendshipService, UserServiceImpl userService) {
         this.myPageService = myPageService;
+        this.likeService = likeService;
         this.userService=userService;
         this.friendshipService=friendshipService;
+    }
+
+    @GetMapping("/{userId}/likedCity")
+    public List<City> getLikedCity(@PathVariable("userId") Long userId) {
+        return likeService.getLikedCityByUserId(userId);
     }
 
     // 사용자 페이지를 보여주는 메소드
@@ -65,6 +70,10 @@ public class MyPageController {
         }
         int countAcceptedFriends=friendshipService.countAcceptedFriends(userId.intValue());
         model.addAttribute("countAcceptedFriends", countAcceptedFriends);
+
+        // 좋아요한 도시 목록 가져오기
+        List<City> likedCities = likeService.getLikedCityByUserId(userId);
+        model.addAttribute("likedCities", likedCities);  // 모델에 추가
 
         model.addAttribute("user", user);  // user 객체를 모델에 추가
         return "mypage/bookMain"; // 템플릿 이름

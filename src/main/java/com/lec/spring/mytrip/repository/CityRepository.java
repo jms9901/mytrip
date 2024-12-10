@@ -4,6 +4,8 @@ import com.lec.spring.mytrip.domain.City;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 @Mapper
 public interface CityRepository {
     City findCityByAnswers(
@@ -13,4 +15,5 @@ public interface CityRepository {
             @Param("q4Id") String q4Id,
             @Param("q5Id") String q5Id
     );
+    List<City> findLikedCitiesByUserId(Long userId);
 }

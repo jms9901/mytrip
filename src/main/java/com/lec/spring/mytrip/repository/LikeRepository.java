@@ -1,5 +1,10 @@
 package com.lec.spring.mytrip.repository;
 
+import com.lec.spring.mytrip.domain.City;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
+
 public interface LikeRepository {
     //도시
     //내가 좋아요를 했는가?
@@ -10,6 +15,9 @@ public interface LikeRepository {
     int decrementCityLike(int userId, int cityId);
 
     int findAllCityLike(int userId);
+
+    // 특정 사용자의 좋아요 도시
+    List<City> getLikedCityByUserId(@Param("userId")Long userId);
 
     //피드
     //내가 좋아요를 했는가?

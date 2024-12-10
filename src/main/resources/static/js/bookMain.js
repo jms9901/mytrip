@@ -1,6 +1,56 @@
 const currentUrl = window.location.pathname;  // 예시: "/mypage/1"
 const userId = parseInt(currentUrl.substring(currentUrl.lastIndexOf('/') + 1)); // 문자열을 숫자로 변환
 
+document.addEventListener('DOMContentLoaded', function () {
+    const currentUrl = window.location.pathname;
+    const userId = parseInt(currentUrl.substring(currentUrl.lastIndexOf('/') + 1));
+
+    // 도시 좋아요 목록을 가져오는 API 호출
+    fetch(`/likey/likedCity?userId=${userId}`)  // 현재 코드에 맞는 URL
+        .then(response => response.json())
+        .then(data => {
+
+
+            // 좋아요한 도시가 있을 경우
+            if (data.length > 0) {
+                // 각 도시 데이터를 반복하면서 표시
+                data.forEach(city => {
+                    const cityName = city.cityName || 'Unknown City';  // 도시명
+                    const cityImg = city.cityImg ? `/uploads/city_images/${city.cityImg}` : '/img/defaultCity.jpg'; // 기본 이미지 설정
+
+                    // 새로운 도시 항목 생성
+                    const cityItem = document.createElement('div');
+                    cityItem.classList.add('cityLikedItem');  // 클래스 추가
+
+                    // 도시 이름 표시
+                    const cityTitle = document.createElement('div');
+                    cityTitle.classList.add('CityLikedTitle');
+                    cityTitle.textContent = cityName;  // 도시 이름 업데이트
+                    cityItem.appendChild(cityTitle);
+
+                    // 도시 이미지 표시
+                    const cityImgContainer = document.createElement('div');
+                    cityImgContainer.classList.add('CityLikedImg');
+                    const cityImage = document.createElement('img');
+                    cityImage.src = cityImg;  // 도시 이미지 업데이트
+                    cityImage.alt = cityName; // 이미지 alt 텍스트 설정
+                    cityImgContainer.appendChild(cityImage);
+                    cityItem.appendChild(cityImgContainer);
+
+                    // cityLikedContainer에 추가
+                    cityLikedContainer.appendChild(cityItem);
+                });
+            } else {
+                // 좋아요한 도시가 없을 경우
+                const noCityMsg = document.createElement('div');
+                noCityMsg.textContent = "No cities liked yet.";
+                cityLikedContainer.appendChild(noCityMsg);
+            }
+        })
+        .catch(error => console.error('Error fetching liked cities:', error));
+});
+
+
 document.getElementById('ConnectionsCnt').addEventListener('click', function () {
     fetch(`/mypage/friendList/${userId}`)
         .then(response => response.json())

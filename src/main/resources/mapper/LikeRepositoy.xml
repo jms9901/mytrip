@@ -27,6 +27,14 @@
         FROM city_liked
     </select>
 
+    <!-- 특정 사용자의 좋아요한 도시 조회 -->
+    <select id="getLikedCityByUserId" resultType="com.lec.spring.mytrip.domain.City">
+        SELECT c.city_img, c.city_name
+        FROM city c
+                 JOIN city_liked cl ON c.city_id = cl.city_id
+        WHERE cl.user_id = #{userId}
+    </select>
+
 <!--    //피드-->
 <!--    //내가 좋아요를 했는가?-->
     <select id="checkIfPeedLiked" resultType="boolean">
