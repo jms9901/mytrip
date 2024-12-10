@@ -161,4 +161,6 @@ public class PackagePostController {
                               Model model) {
         // 도시별 피드 모음 페이지로 이동
     }
+
+    //상대방 마이페이지로 이동
 }
