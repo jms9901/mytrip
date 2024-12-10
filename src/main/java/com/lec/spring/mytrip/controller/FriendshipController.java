@@ -1,11 +1,13 @@
 package com.lec.spring.mytrip.controller;
 
+import com.lec.spring.mytrip.domain.Friendship;
+import com.lec.spring.mytrip.domain.FriendshipUserResultMap;
 import com.lec.spring.mytrip.service.FriendshipService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/friendship")
@@ -31,4 +33,13 @@ public class FriendshipController {
     public String rejectFriendRequest(@RequestParam int fromUserId, @RequestParam int toUserId) {
         return friendshipService.rejectFriendRequest(fromUserId, toUserId);
     }
+
+    // 친구 목록 조회 API
+    @GetMapping("/list/{userId}")
+    @ResponseBody
+    public ResponseEntity<List<FriendshipUserResultMap>> AcceptedFriends(@PathVariable("userId") Long userId) {
+        List<FriendshipUserResultMap> friends = friendshipService.AcceptedFriends(userId);
+        return ResponseEntity.ok(friends);
+    }
+
 }

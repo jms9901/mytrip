@@ -512,3 +512,47 @@ body{
 	height: 100%;
 	object-fit: cover;
 }
+
+#friendModal{
+	width: 400px;
+	height: 500px;
+	margin-left: 52%;
+	margin-top:8%;
+	z-index: 9999;
+	/*border: solid blue 1px;*/
+	background-color: white;
+	background-color: rgba(0, 0, 0, 0.5);
+	/*opacity: 50%;*/
+	border-radius: 10px;
+	display: none;
+	position: fixed;
+	align-content: center;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+
+}
+
+/* 친구 프로필 이미지 스타일 */
+.friend-profile-img {
+	width: 50px;  /* 이미지 크기 */
+	height: 50px; /* 이미지 크기 */
+	border-radius: 50%;  /* 원형으로 만들기 */
+	margin-right: 10px;  /* 이미지와 텍스트 간격 */
+}
+
+/* 친구 이름 텍스트 스타일 */
+.friend-name {
+	font-size: 16px;  /* 텍스트 크기 */
+	font-weight: bold; /* 텍스트 굵게 */
+	color: #333;  /* 텍스트 색상 */
+	vertical-align: middle;  /* 이미지와 텍스트 수직 정렬 */
+}
+
+/* 친구 목록 항목 스타일 */
+#friendList li {
+	display: flex;  /* 이미지와 텍스트가 가로로 정렬되도록 설정 */
+	align-items: center;  /* 세로 가운데 정렬 */
+	padding: 10px;  /* 항목의 패딩 */
+	border-bottom: 1px solid #ddd;  /* 항목 간 구분선 */
+}

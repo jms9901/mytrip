@@ -1,6 +1,7 @@
 package com.lec.spring.mytrip.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Column;
 import lombok.*;
 
@@ -30,6 +31,7 @@ public class User {
     private String username;  // 사용자 아이디
 
     @Column(name = "user_name")
+    @JsonProperty("user_name")
     private String name;  // 사용자 이름
 
     private LocalDateTime regDate;  // 회원 가입일

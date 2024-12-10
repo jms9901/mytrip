@@ -1,8 +1,6 @@
 package com.lec.spring.mytrip.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -10,6 +8,11 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Friendship {
+
+    @Setter
+    @Getter
+    private User user;
+
     private int requestFriendId;   // PK
     private int toUserId;          // 수신자 ID
     private int fromUserId;        // 발신자 ID

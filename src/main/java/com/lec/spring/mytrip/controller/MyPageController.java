@@ -1,12 +1,15 @@
 package com.lec.spring.mytrip.controller;
 
 import ch.qos.logback.classic.Logger;
+import com.lec.spring.mytrip.domain.FriendshipUserResultMap;
 import com.lec.spring.mytrip.domain.User;
 import com.lec.spring.mytrip.repository.UserRepository;
+import com.lec.spring.mytrip.service.FriendshipService;
 import com.lec.spring.mytrip.service.MyPageService;
 import com.lec.spring.mytrip.service.UserService;
 import com.lec.spring.mytrip.service.UserServiceImpl;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -26,10 +29,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.Principal;
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Slf4j
 @Controller
@@ -38,14 +38,17 @@ public class MyPageController {
 
     private final MyPageService myPageService;
 
+    @Autowired
+    private FriendshipService friendshipService;
 
     @Autowired
     private UserServiceImpl userService;
 
     @Autowired
-    public MyPageController(MyPageService myPageService, UserServiceImpl userService) {
+    public MyPageController(MyPageService myPageService, FriendshipService friendshipService, UserServiceImpl userService) {
         this.myPageService = myPageService;
         this.userService=userService;
+        this.friendshipService=friendshipService;
     }
 
     // 사용자 페이지를 보여주는 메소드
@@ -60,9 +63,21 @@ public class MyPageController {
             user = new User(); // 빈 User 객체를 생성
             user.setProfile("/img/defaultProfile.jpg"); // 기본 프로필 이미지 경로 설정
         }
+        int countAcceptedFriends=friendshipService.countAcceptedFriends(userId.intValue());
+        model.addAttribute("countAcceptedFriends", countAcceptedFriends);
+
         model.addAttribute("user", user);  // user 객체를 모델에 추가
         return "mypage/bookMain"; // 템플릿 이름
     }
+
+    // 친구 목록조회
+    @GetMapping("/friendList/{userId}")
+    @ResponseBody
+    public ResponseEntity<List<FriendshipUserResultMap>> getFriendList(@PathVariable("userId") Long userId) {
+        List<FriendshipUserResultMap> friendList = friendshipService.AcceptedFriends(userId);
+        return ResponseEntity.ok(friendList);
+    }
+
     @PostMapping("/update/{userId}")
     public ResponseEntity<Map<String, String>> updateUser(
             @PathVariable("userId") Long userId,
@@ -186,5 +201,7 @@ public class MyPageController {
         redirectAttributes.addFlashAttribute("success", "프로필 이미지가 성공적으로 업데이트되었습니다.");
         return "redirect:/mypage/" + userId;
     }
+
+
 
 }

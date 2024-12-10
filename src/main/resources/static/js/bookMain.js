@@ -1,3 +1,48 @@
+const currentUrl = window.location.pathname;  // 예시: "/mypage/1"
+const userId = parseInt(currentUrl.substring(currentUrl.lastIndexOf('/') + 1)); // 문자열을 숫자로 변환
+
+document.getElementById('ConnectionsCnt').addEventListener('click', function () {
+    fetch(`/mypage/friendList/${userId}`)
+        .then(response => response.json())
+        .then(data => {
+            const friendListElement = document.getElementById('friendList');
+            friendListElement.innerHTML = ''; // 기존 목록 초기화
+
+            if (data.length > 0) {
+                data.forEach(friendshipUserResultMap => {
+                    const li = document.createElement('li');
+
+                    // 프로필 이미지 경로 설정 (profile이 없으면 defaultProfile.jpg 사용)
+                    const profileImage = friendshipUserResultMap.user.profile ? `/uploads/profiles/${friendshipUserResultMap.user.profile}` : '/img/defaultProfile.jpg';
+
+                    // name이 null일 경우 "Unknown"으로 처리
+                    const userName = friendshipUserResultMap.user.user_name || 'Unknown';
+
+                    // 프로필 이미지와 유저 이름 표시
+                    li.innerHTML = `
+                        <img src="${profileImage}" alt="Profile" class="friend-profile-img">
+                        <span class="friend-name">${userName}</span>
+                    `;
+                    friendListElement.appendChild(li);
+                });
+            } else {
+                const noFriendsMsg = document.createElement('li');
+                noFriendsMsg.textContent = "No friends found.";
+                friendListElement.appendChild(noFriendsMsg);
+            }
+
+            // 모달 열기
+            document.getElementById('friendModal').style.display = 'block';
+        })
+        .catch(error => console.error('Error fetching friend list:', error));
+});
+
+
+
+
+function closeModal() {
+    document.getElementById('friendModal').style.display = 'none'; // 모달 닫기
+}
 
 // 소개글 수정
 function updateIntroduction() {
@@ -14,8 +59,9 @@ function updateIntroduction() {
         }
         editInput.style.display = "none";
         introElement.style.display = "inline";
-    }, { once: true });
+    }, {once: true});
 }
+
 // 비밀번호 수정
 function updatePassword(type) {
     const passwordText = document.getElementById(type + "Text");
@@ -31,7 +77,7 @@ function updatePassword(type) {
         }
         passwordText.style.display = "inline";
         passwordInput.style.display = "none";
-    }, { once: true });
+    }, {once: true});
 }
 
 // 프로필 이미지 미리보기
@@ -48,6 +94,7 @@ function previewProfileImage() {
         reader.readAsDataURL(fileInput.files[0]);
     }
 }
+
 // 변경 사항 제출
 function submitUserChanges() {
     const introduction = document.getElementById("userIntroduction").textContent.trim();
@@ -115,11 +162,11 @@ function loadApp() {
     $('.flipbook').turn({
         // Width
 
-        width:922,
+        width: 922,
 
         // Height
 
-        height:600,
+        height: 600,
 
         // Elevation
 
@@ -134,14 +181,14 @@ function loadApp() {
         autoCenter: true
 
     });
-    $('.flipbook').bind('turning', function(event, page) {
+    $('.flipbook').bind('turning', function (event, page) {
         if (page === 2) {
             $('.menu1').show(); // Show menu after the first page turn
             $('.menu2').show();
             $('.menu3').show();
             $('.menu4').show();
             $('.menu5').show();
-        }else if (page ===1){
+        } else if (page === 1) {
             $('.menu1').hide();
             $('.menu2').hide();
             $('.menu3').hide();
@@ -149,17 +196,16 @@ function loadApp() {
             $('.menu5').hide();
         }
     });
-    $('.goChat').hover(function(){
+    $('.goChat').hover(function () {
         hoverChat();
     });
-
 
 
     function hoverChat() {
         let angle = 0;
         clearInterval(shakeInterval);
         $('.goChat').css('transform', 'rotateY(0deg)');  // 초기 상태 설정
-        let shakeInterval = setInterval(function() {
+        let shakeInterval = setInterval(function () {
             angle += 10;  // 한 번에 10도씩 증가
             $('.goChat').css('transform', `rotateY(${angle}deg)`);  // Y축을 중심으로 회전
             if (angle >= 35) {  // 35도까지 회전
@@ -171,13 +217,12 @@ function loadApp() {
 
 }
 
-$('.myPageUpdate').click(function (){
+$('.myPageUpdate').click(function () {
     $('.updateUserModal').show();
 });
-$('.closeUpdateModal').click(function(){
+$('.closeUpdateModal').click(function () {
     $('.updateUserModal').hide();
 });
-
 
 
 // Load the HTML4 version if there's not CSS transform
@@ -197,16 +242,15 @@ function isCSSTransformSupported() {
 
 if (isCSSTransformSupported()) {
     // transform 지원 시
-    $.getScript('../../lib/animationjs/turn.js', function() {
+    $.getScript('../../lib/animationjs/turn.js', function () {
         loadApp();
     });
 } else {
     // transform 미지원 시
-    $.getScript('../../lib/JQuery/turn.html4.min.js', function() {
+    $.getScript('../../lib/JQuery/turn.html4.min.js', function () {
         loadApp();
     });
 }
-
 
 
 function addPage(page, book) {
@@ -235,11 +279,11 @@ function loadPage(page, pageElement) {
 
     var img = $('<img />');
 
-    img.mousedown(function(e) {
+    img.mousedown(function (e) {
         e.preventDefault();
     });
 
-    img.load(function() {
+    img.load(function () {
 
         // Set the size
         $(this).css({width: '100%', height: '100%'});
@@ -255,7 +299,7 @@ function loadPage(page, pageElement) {
 
     // Load the page
 
-    img.attr('src', 'pages/' +  page + '.jpg');
+    img.attr('src', 'pages/' + page + '.jpg');
 
 }
 
@@ -264,7 +308,7 @@ function loadLargePage(page, pageElement) {
 
     var img = $('<img />');
 
-    img.load(function() {
+    img.load(function () {
 
         var prevImg = pageElement.find('img');
         $(this).css({width: '100%', height: '100%'});
@@ -275,7 +319,7 @@ function loadLargePage(page, pageElement) {
 
     // Loadnew page
 
-    img.attr('src', 'pages/' +  page + '-large.jpg');
+    img.attr('src', 'pages/' + page + '-large.jpg');
 }
 
 
@@ -288,15 +332,14 @@ function loadSmallPage(page, pageElement) {
     img.unbind('load');
     // Loadnew page
 
-    img.attr('src', 'pages/' +  page + '.jpg');
+    img.attr('src', 'pages/' + page + '.jpg');
 }
-
 
 
 // http://code.google.com/p/chromium/issues/detail?id=128488
 function isChrome() {
 
-    return navigator.userAgent.indexOf('Chrome')!=-1;
+    return navigator.userAgent.indexOf('Chrome') != -1;
 
 }
 

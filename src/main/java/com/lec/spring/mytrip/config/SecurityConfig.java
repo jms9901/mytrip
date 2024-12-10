@@ -43,7 +43,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable()) // CSRF 비활성화
                 .authorizeRequests(auth -> auth
                         .requestMatchers("/", "/user/login", "/oauth2/**" ,"/css/**", "/js/**", "/img/**" ).permitAll() // 해당 URL에 대해 모두 접근 허용
-                        .anyRequest().authenticated()) // 그 밖의 모든 요청은 인증 필요
+                        .anyRequest().permitAll()) // 그 밖의 모든 요청은 인증 필요
                 .formLogin(form -> form
                         .loginPage("/user/login") // 로그인 페이지 설정
                         .loginProcessingUrl("/user/login") // 로그인 처리 URL

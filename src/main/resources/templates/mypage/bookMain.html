@@ -44,7 +44,9 @@
 			<div class="mypageUserIntroduce" th:text="${user.introduction}">자기소개</div>
 			<div class="mypageFreind">
 				<div class="Connections" >Connections.</div>
-				<div class="ConnectionsCnt">207</div>
+				<div class="ConnectionsCnt" id="ConnectionsCnt">
+					<span th:text="${countAcceptedFriends}">0</span>
+				</div>
 			</div>
 			<div class="mypageCityLiked">
 				<div class="CityLikedTitle">Travel Destination ♥</div>
@@ -82,6 +84,9 @@
 		</div>
 	</div>
 </div>
+
+
+
 <div class="menu1" id="1" style="background-image: url(/img/mypageMenu.png);"><h4 id="Invoice">&nbsp;Invoice</h4></div>
 <div class="menu2" id="2" style="background-image: url(/img/mypageMenu.png);"><h4 id="post">&nbsp;Post</h4></div>
 <div class="menu3" id="3" style="background-image: url(/img/mypageMenu.png);"><h4 id="PostLiked">&nbsp;Post♥</h4></div>
@@ -95,6 +100,15 @@
 
 
 <div class="goChat" style="background-image: url(/img/mypageChat.png);"></div>
+<div id="friendModal" style="display:none;">
+	<div class="modal-content">
+		<h2>Friend List</h2>
+		<ul id="friendList">
+			<!-- 친구 목록은 여기에 동적으로 추가됩니다 -->
+		</ul>
+		<button onclick="closeModal()">Close</button>
+	</div>
+</div>
 <div class="updateUserModal">
 	<div class="NameAndImg">
 		<div class="Updatecircle">
