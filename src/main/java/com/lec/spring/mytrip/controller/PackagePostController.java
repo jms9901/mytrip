@@ -26,6 +26,8 @@ public class PackagePostController {
                                     Model model) {
         List<PackagePost> packages = packagePostService.getPackagesByCityId(cityId);
         model.addAttribute("packages", packages);
+
+        // 소모임 목록도 가져와야함
     }
 
     // 검색 결과 페이지 이동
@@ -52,7 +54,8 @@ public class PackagePostController {
     // 패키지 글쓰기 페이지 이동
     // board.package.write.html
     @GetMapping("{cityId}/package/write")
-    public void writePackagePage() {
+    public void writePackagePage(@PathVariable int cityId,
+                                 Model model) {
         // 패키지 글쓰기 페이지로 이동
     }
 
