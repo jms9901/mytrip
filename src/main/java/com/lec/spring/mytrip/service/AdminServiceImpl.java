@@ -52,8 +52,8 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public List<Payment> findByPayment(int paymentId) {
-        return adminRepository.findByPayment(paymentId);
+    public List<Payment> findByPayment() {
+        return adminRepository.findByPayment();
     }
 
     @Override

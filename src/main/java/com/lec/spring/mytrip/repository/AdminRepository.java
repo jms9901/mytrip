@@ -27,7 +27,7 @@ public interface AdminRepository {
     List<PackagePost> findByStandByPackage(String packageStatus);
 
     // payment 리스트 가져오기
-    List<Payment> findByPayment(int PaymentId);
+    List<Payment> findByPayment();
 
     // 유저 삭제
     void deleteUser(int userId);

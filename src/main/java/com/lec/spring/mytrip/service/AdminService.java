@@ -14,7 +14,7 @@ public interface AdminService {
     List<Board> findByFeedCategory(String feedCategory);
     List<PackagePost> findByAccessPackage(String packageStatus);
     List<PackagePost> findByStandByPackage(String packageStatus);
-    List<Payment> findByPayment(int paymentId);
+    List<Payment> findByPayment();
 
     void deleteUser(int userId);
     void updateBusinessUserStatus(int userId, String status);

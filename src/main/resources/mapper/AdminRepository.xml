@@ -86,7 +86,7 @@
 
     <!-- payment 리스트 가져오기 -->
     <select id="findByPayment" resultMap="PaymentResultMap">
-        SELECT * FROM payment_info WHERE payment_id = #{PaymentId}
+        SELECT * FROM payment_info
     </select>
 
     <!-- 유저 삭제 -->
