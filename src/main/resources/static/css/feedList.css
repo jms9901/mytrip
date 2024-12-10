@@ -54,3 +54,7 @@
     color: #333;
     margin-top: 7px; /* 제목과 사진 간격 */
 }
+
+#feedAdd-Button {
+    cursor: pointer;
+}
