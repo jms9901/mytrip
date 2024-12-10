@@ -2,6 +2,8 @@ package com.lec.spring.mytrip.controller;
 
 import com.lec.spring.mytrip.domain.PackagePost;
 import com.lec.spring.mytrip.service.PackagePostService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -150,5 +152,14 @@ public class PackagePostController {
     public String deletePackage(@PathVariable int packageId, @RequestParam int userId) {
         packagePostService.deletePackage(packageId, userId);
         return "redirect:/packages";
+    }
+
+    @Autowired
+    PasswordEncoder encoder;
+
+    @RequestMapping("/password")
+    @ResponseBody
+    public String password() {
+        return  encoder.encode("1234");
     }
 }

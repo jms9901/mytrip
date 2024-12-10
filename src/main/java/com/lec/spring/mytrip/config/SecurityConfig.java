@@ -1,8 +1,8 @@
 package com.lec.spring.mytrip.config;
 
-import com.lec.spring.mytrip.config.oauth.PrincipalOauth2UserService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
@@ -10,22 +10,15 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-
-    @Autowired
-    private PrincipalOauth2UserService principalOauth2UserService;
-
-    @Autowired
-    private Environment env;
-
-    @Autowired
-    private CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -37,61 +30,54 @@ public class SecurityConfig {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
+//    @Bean
+//    @Qualifier("userSecurityFilterChain")
+//    public SecurityFilterChain userSecurityFilterChain(HttpSecurity http) throws Exception {
+//        http
+//                .csrf(csrf -> csrf.disable())
+//                .authorizeRequests(auth -> auth
+//                        .requestMatchers("/", "/user/login", "/oauth2/**", "/css/**", "/js/**", "/img/**", "admin/adminLogin").permitAll()
+//                        .requestMatchers("/user/**").authenticated())
+//                .formLogin(form -> form
+//                        .loginPage("/user/login")
+//                        .loginProcessingUrl("/user/login")
+//                        .defaultSuccessUrl("/user/home", true))
+//                .logout(logout -> logout
+//                        .logoutUrl("/user/logout")
+//                        .invalidateHttpSession(true))
+//                .oauth2Login(oauth2 -> oauth2
+//                        .loginPage("/user/login")
+//                        .defaultSuccessUrl("/user/home", true))
+//                .exceptionHandling(exception -> exception
+//                        .authenticationEntryPoint((request, response, authException) -> {
+//                            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+//                        }));
+//        return http.build();
+//    }
+
+
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-//        String redirectUri = env.getProperty("spring.security.oauth2.client.registration.kakao.redirect-uri");
-        return http
-                .csrf(csrf -> csrf.disable()) // CSRF 비활성화
+    @Qualifier("adminSecurityFilterChain")
+    public SecurityFilterChain adminSecurityFilterChain(HttpSecurity http, PrincipalDetailService principalDetailService) throws Exception {
+        http
+                .csrf(csrf -> csrf.disable())
                 .authorizeRequests(auth -> auth
-                        .requestMatchers("/", "/user/login", "/oauth2/**" ,"/css/**", "/js/**", "/img/**", "/admin/**" ).permitAll() // 해당 URL에 대해 모두 접근 허용
-                        .anyRequest().authenticated()) // 그 밖의 모든 요청은 인증 필요
+                        .requestMatchers("/", "/user/login", "/oauth2/**","/admin/adminLogin", "/css/**", "/js/**", "/img/**", "/admin/auth").permitAll()
+//                        .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
+                        .anyRequest().permitAll())
                 .formLogin(form -> form
-                        .loginPage("/user/login") // 로그인 페이지 설정
-                        .loginProcessingUrl("/user/login") // 로그인 처리 URL
-                        .successHandler(customAuthenticationSuccessHandler)
-                        .defaultSuccessUrl("/user/home", true)) // 로그인 성공 시 이동할 URL
+                        .loginPage("/admin/adminLogin")
+                        .loginProcessingUrl("/admin/login")
+                        .defaultSuccessUrl("/admin/userTables", true)
+                        .failureUrl("/user/login?error=true"))
                 .logout(logout -> logout
-                        .logoutUrl("/user/logout") // 로그아웃 처리 URL
-                        .invalidateHttpSession(true)) // 세션 무효화
-                .oauth2Login(oauth2 -> oauth2
-                        .loginPage("/user/login") // OAuth2 로그인 페이지 설정
-                        .defaultSuccessUrl("/user/home", true)
-                        .userInfoEndpoint(userInfo -> userInfo
-                                .userService(principalOauth2UserService))) // OAuth2 UserService 설정
+                        .logoutUrl("/admin/logout")
+                        .invalidateHttpSession(true))
+                .userDetailsService(principalDetailService)
                 .exceptionHandling(exception -> exception
                         .authenticationEntryPoint((request, response, authException) -> {
                             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
-                        }))
-                .build();
+                        }));
+        return http.build();
     }
-
-    // 권한 관련 주석
-    /*
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, PrincipalDetailService principalDetailService) throws Exception {
-        return http
-                .csrf(csrf -> csrf.disable())
-                .authorizeRequests(auth -> auth
-                        .requestMatchers("/", "/user/login", "/oauth2/**").permitAll()
-                        // 해당 url로 들어오는 요청은 인증만 필요
-                        // .requestMatchers("").authenticated()
-                        // 해당 url로 들어오는 요청은 인증 뿐아니라 권한도 필요
-                        // .requestMatchers("").hasAnyRole("ROLE_USER")
-                        // .requestMatchers().hasAnyRole("ROLE_BUSINESS")
-                        // .requestMatchers().hasAnyRole("ROLE_ADMIN")
-                        .anyRequest().permitAll())
-                .formLogin(form -> form
-                        .loginPage("/user/login")
-                        .loginProcessingUrl("/user/login")
-                        .defaultSuccessUrl("/user/home", true))
-                .logout(logout -> logout
-                        .logoutUrl("/user/logout")
-                        .invalidateHttpSession(false))
-                .oauth2Login(oauth2 -> oauth2
-                        .loginPage("/user/login")
-                        .userInfoEndpoint(userInfo -> userInfo
-                                .userService(principalOauth2UserService)))
-                .build();
-    }
-    */
 }

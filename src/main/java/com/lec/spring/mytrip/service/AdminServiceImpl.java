@@ -5,8 +5,10 @@ import com.lec.spring.mytrip.domain.PackagePost;
 import com.lec.spring.mytrip.domain.Payment;
 import com.lec.spring.mytrip.domain.User;
 import com.lec.spring.mytrip.repository.AdminRepository;
+import com.lec.spring.mytrip.repository.UserRepository;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,10 +17,14 @@ import java.util.List;
 public class AdminServiceImpl implements AdminService {
 
     private final AdminRepository adminRepository;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public AdminServiceImpl(SqlSession sqlSession) {
+    public AdminServiceImpl(SqlSession sqlSession, PasswordEncoder passwordEncoder) {
         this.adminRepository = sqlSession.getMapper(AdminRepository.class);
+        this.userRepository = sqlSession.getMapper(UserRepository.class);
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -55,6 +61,12 @@ public class AdminServiceImpl implements AdminService {
     public List<Payment> findByPayment() {
         return adminRepository.findByPayment();
     }
+
+    @Override
+    public boolean checkPassword(User user, String password) {
+        return passwordEncoder.matches(password, user.getPassword());
+    }
+
 
     @Override
     public void deleteUser(int userId) {

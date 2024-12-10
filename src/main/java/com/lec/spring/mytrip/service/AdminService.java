@@ -16,6 +16,8 @@ public interface AdminService {
     List<PackagePost> findByStandByPackage(String packageStatus);
     List<Payment> findByPayment();
 
+    boolean checkPassword(User user, String password);
+
     void deleteUser(int userId);
     void updateBusinessUserStatus(int userId, String status);
     void deleteBoard(int boardId);

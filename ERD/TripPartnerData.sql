@@ -1,28 +1,71 @@
 #  user admin 데이터
-insert into user (user_email, user_password, user_username, user_name, user_phonenumber, user_birthday, user_profile, user_provider, user_introdution, user_authorization)
+insert into user (user_email, user_password, user_username, user_name, user_birthday, user_profile, user_provider, user_introdution, user_authorization)
 values ('fullstackK08@naver.com',
         '1234',
         'admin1234',
         '이경원',
-        '010-8297-0195',
+
         '2000-04-24',
         '',
         '',
         '',
-        'admin'
+        'ROLE_ADMIN'
         ),
         (
          'wonwon123123@naver.com',
          '1234',
          'user1234',
          '이경원',
-        '010-1234-1234',
          '2000-02-11',
          '',
          '',
          '',
-         'user'
-        );
+         'ROLE_USER'
+        ),
+        (
+         'business1@naver.com',
+         '1234',
+         'business1',
+         'business1',
+         '2000-11-11',
+         '',
+         '',
+         '',
+         'ROLE_BUSINESS'
+       ),
+       (
+           'business2@naver.com',
+           '1234',
+           'business2',
+           'business2',
+           '2000-11-11',
+           '',
+           '',
+           '',
+           'ROLE_BUSINESS'
+       ),
+       (
+           'business3@naver.com',
+           '1234',
+           'business3',
+           'business3',
+           '2000-11-11',
+           '',
+           '',
+           '',
+           'ROLE_BUSINESS'
+       ),
+       (
+           'business4@naver.com',
+           '1234',
+           'business4',
+           'business4',
+           '2000-11-11',
+           '',
+           '',
+           '',
+           'ROLE_BUSINESS'
+       );
 
 # business 데이터
 insert into user (user_email, user_password,user_username,user_name,user_phonenumber,user_authorization,business_companynumber)

@@ -1,14 +1,23 @@
 package com.lec.spring.mytrip.controller;
 
-import com.lec.spring.mytrip.domain.Board;
-import com.lec.spring.mytrip.domain.PackagePost;
-import com.lec.spring.mytrip.domain.Payment;
 import com.lec.spring.mytrip.domain.User;
 import com.lec.spring.mytrip.service.AdminService;
+import com.lec.spring.mytrip.service.UserService;
+import com.lec.spring.mytrip.domain.UserValidator;
+import com.lec.spring.mytrip.util.U;
+import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -16,97 +25,92 @@ import java.util.List;
 @RequestMapping("/admin")
 public class AdminController {
 
+    private final UserService userService;
     private final AdminService adminService;
+    private UserValidator userValidator;
 
     @Autowired
-    public AdminController(AdminService adminService) {
+    public AdminController(AdminService adminService, UserService userService) {
         this.adminService = adminService;
+        this.userService = userService;
     }
 
-    @GetMapping("/adminLogin")
-    public String login() {
-        return "admin/adminLogin";
+    @Autowired
+    public void setUserValidator(UserValidator userValidator) {
+        this.userValidator = userValidator;
+    }
+
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        binder.setValidator(userValidator);
     }
 
     @GetMapping("/userTables")
-    public String userTables(Model model) {
-        List<User> users = adminService.findByAuthorityRoleUser("ROLE_USER");
-        model.addAttribute("users", users);
+    public String userTables(Model model, HttpSession session) {
+        User loggedUser = U.getLoggedUser();
+        model.addAttribute("user", loggedUser);
+
+        System.out.println("Session ID : " + session.getId());
+        System.out.println("Logged User: " + loggedUser);
         return "admin/userTables";
     }
 
     @GetMapping("/businessTables")
-    public String businessTables(Model model) {
-        List<User> businessUsers = adminService.findByAuthorityRoleBusiness("ROLE_BUSINESS");
-        model.addAttribute("businessUsers", businessUsers);
+    public String businessTables(Model model, HttpSession session) {
         return "admin/businessTables";
     }
 
     @GetMapping("/boardTables")
-    public String boardTables(Model model) {
-        List<Board> boards = adminService.findByBoardCategory("소모임");
-        model.addAttribute("boards", boards);
+    public String boardTables(Model model, HttpSession session) {
         return "admin/boardTables";
     }
 
     @GetMapping("/feedTables")
-    public String feedTables(Model model) {
-        List<Board> feeds = adminService.findByFeedCategory("피드");
-        model.addAttribute("feeds", feeds);
+    public String feedTables(Model model, HttpSession session) {
         return "admin/feedTables";
     }
 
     @GetMapping("/packageAccessTables")
-    public String packageAccessTables(Model model) {
-        List<PackagePost> approvedPackages = adminService.findByAccessPackage("승인");
-        model.addAttribute("approvedPackages", approvedPackages);
+    public String packageAccessTables(Model model, HttpSession session) {
         return "admin/packageAccessTables";
     }
 
     @GetMapping("/packageStandbyTables")
-    public String packageStandbyTables(Model model) {
-        List<PackagePost> standbyPackages = adminService.findByStandByPackage("대기");
-        model.addAttribute("standbyPackages", standbyPackages);
+    public String packageStandbyTables(Model model, HttpSession session) {
         return "admin/packageStandbyTables";
     }
 
     @GetMapping("/paymentTables")
-    public String paymentTables(Model model) {
-        List<Payment> payments = adminService.findByPayment(); // 0은 예시 값으로, 실제로는 조건에 맞게 수정해야 합니다.
-        model.addAttribute("payments", payments);
+    public String paymentTables(Model model, HttpSession session) {
         return "admin/paymentTables";
     }
 
-    @GetMapping("/charts")
-    public String charts() {
-        return "admin/charts";
+    // 로그인 페이지
+    @GetMapping("/adminLogin")
+    public String login(Model model) {
+        model.addAttribute("user", new User()); // 로그인과 회원가입에서 사용할 빈 유저 객체 추가
+        return "admin/adminLogin";
     }
 
-    // 유저 삭제 (사용 예시)
-    @PostMapping("/userTables/delete")
-    public String deleteUser(@RequestParam int userId) {
-        adminService.deleteUser(userId);
-        return "redirect:/admin/userTables";
+    @RequestMapping("/auth")
+    @ResponseBody
+    public Authentication auth(){
+        return SecurityContextHolder.getContext().getAuthentication();
     }
 
-    // business 유저 승인 상태로 변경 (사용 예시)
-    @PostMapping("/businessTables/approve")
-    public String updateBusinessUserStatus(@RequestParam int userId, @RequestParam String status) {
-        adminService.updateBusinessUserStatus(userId, status);
-        return "redirect:/admin/businessTables";
+    // 로그인 오류 처리
+    @PostMapping("/loginError")
+    public String loginError() {
+        System.out.println("로그인 error");
+        return "admin/adminLogin";
     }
 
-    // 소모임/피드 삭제 (사용 예시)
-    @PostMapping("/boardTables/delete")
-    public String deleteBoard(@RequestParam int boardId) {
-        adminService.deleteBoard(boardId);
-        return "redirect:/admin/boardTables";
+    // 인증 거부 처리
+    @RequestMapping("/rejectAuth")
+    public String rejectAuth() {
+        return "common/rejectAuth";
     }
 
-    // 패키지 승인 상태 변경 (사용 예시)
-    @PostMapping("/packageAccessTables/updateStatus")
-    public String updatePackageStatus(@RequestParam int packageId, @RequestParam String status) {
-        adminService.updatePackageStatus(packageId, status);
-        return "redirect:/admin/packageAccessTables";
-    }
+
+
 }
