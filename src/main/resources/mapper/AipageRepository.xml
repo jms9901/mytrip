@@ -28,5 +28,8 @@
         WHERE city_id = #{id}
     </select>
 
+<!--    대륙별 도시 조회-->
+    <resultMap id="" type=""
+
 
 </mapper>
