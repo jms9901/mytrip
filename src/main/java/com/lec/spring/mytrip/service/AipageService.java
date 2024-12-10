@@ -16,4 +16,6 @@ public interface AipageService {
     // 사용자 답변 저장
     void saveUserCityRecord(String userName, int cityId);
 
+    // git push를 위한 주석
+
 }
