@@ -20,7 +20,8 @@ public class PackagePostController {
     }
 
     // 도시 별 페이지 이동
-    @GetMapping("/{cityId}")
+    // board.city.html
+    @GetMapping("/city/{cityId}")
     public void getPackagesByCityId(@PathVariable int cityId,
                                     Model model) {
         List<PackagePost> packages = packagePostService.getPackagesByCityId(cityId);
@@ -28,17 +29,19 @@ public class PackagePostController {
     }
 
     // 검색 결과 페이지 이동
+    // board.search.html
     @GetMapping("{cityId}/search")
     public void searchPackagesByTitle(@PathVariable int cityId,
                                       @RequestParam String keyword,
                                       Model model) {
-        List<PackagePost> packages = packagePostService.searchPackagesByTitle(keyword);
+        List<PackagePost> packages = packagePostService.searchPackages(keyword);
         model.addAttribute("packages", packages);
         model.addAttribute("keyword", keyword);
     }
 
-    // 패키지 상세 조회
-    @GetMapping("{cityId}/package/{packageId}")
+    // 패키지 상세 이동
+    // board.package.detail.html
+    @GetMapping("{cityId}/package/detail/{packageId}")
     public void getPackageDetails(@PathVariable int cityId,
                                   @PathVariable int packageId,
                                   Model model) {
@@ -47,6 +50,7 @@ public class PackagePostController {
     }
 
     // 패키지 글쓰기 페이지 이동
+    // board.package.write.html
     @GetMapping("{cityId}/package/write")
     public void writePackagePage() {
         // 패키지 글쓰기 페이지로 이동
@@ -65,6 +69,7 @@ public class PackagePostController {
     }
 
     // 패키지 수정 페이지 이동
+    // board.package.edit
     @GetMapping("{cityId}/package/edit/{packageId}")
     public String editPackagePage(@PathVariable int cityId,
                                   @PathVariable int packageId,
@@ -94,8 +99,11 @@ public class PackagePostController {
         return "redirect:/board/city/" + id;
     }
 
-    // 소모임 상세 조회
-    @GetMapping("{cityId}/group/{groupId}")
+
+    // 서비스 단 이하는 차후
+    // 소모임 상세 이동
+    // board.group.detail.html
+    @GetMapping("{cityId}/group/detail/{groupId}")
     public void getGroupDetails(@PathVariable int cityId,
                                 @PathVariable int groupId,
                                 Model model) {
@@ -103,6 +111,7 @@ public class PackagePostController {
     }
 
     // 소모임 글쓰기 페이지 이동
+    // board.group.write.html
     @GetMapping("{cityId}/group/write")
     public void writeGroupPage(@PathVariable int cityId) {
         // 소모임 글쓰기 페이지로 이동
@@ -117,6 +126,7 @@ public class PackagePostController {
     }
 
     // 소모임 수정 페이지 이동
+    // board.group.edit.html
     @GetMapping("{cityId}/group/edit/{groupId}")
     public String editGroupPage(@PathVariable int cityId,
                                 @PathVariable int groupId,
@@ -142,6 +152,7 @@ public class PackagePostController {
     }
 
     // 도시별 피드 모음 페이지 이동
+    // board.feeds.html
     @GetMapping("{cityId}/feeds")
     public void cityFeedsPage(@PathVariable int cityId,
                               Model model) {
