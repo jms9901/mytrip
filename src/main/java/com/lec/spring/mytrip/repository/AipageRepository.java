@@ -4,6 +4,8 @@ import com.lec.spring.mytrip.domain.City;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 @Mapper
 public interface AipageRepository {
 
@@ -20,4 +22,6 @@ public interface AipageRepository {
     // 도시 정보 리턴, 그런데 q-Id를 제외한
     City findCityById(int id);
 
+//    대륙별 도시목록 조회
+    List<City> findContinentByCity(int id);
 }
