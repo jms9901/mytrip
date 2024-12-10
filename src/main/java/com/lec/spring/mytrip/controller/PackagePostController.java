@@ -1,6 +1,8 @@
 package com.lec.spring.mytrip.controller;
 
+import com.lec.spring.mytrip.domain.City;
 import com.lec.spring.mytrip.domain.PackagePost;
+import com.lec.spring.mytrip.service.CityService;
 import com.lec.spring.mytrip.service.PackagePostService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,24 +15,34 @@ import java.util.List;
 public class PackagePostController {
 
     private final PackagePostService packagePostService;
+    private final CityService cityService;
 
-    public PackagePostController(PackagePostService packagePostService) {
+    public PackagePostController(PackagePostService packagePostService, CityService cityService) {
         System.out.println("PackagePostController() 시작");
+        this.cityService = cityService;
         this.packagePostService = packagePostService;
     }
+
+//    @ModelAttribute id 전체 입력
 
     // 도시 별 페이지 이동
     // board.city.html
     @GetMapping("/city/{cityId}")
     public void getPackagesByCityId(@PathVariable int cityId,
                                     Model model) {
+
+        //메인 페이지 사이드 도시 목록 출력용
+        List<City> sideCities = cityService.findCitiesByContinentOfThisCity(cityId);
+        model.addAttribute("cities", sideCities);
+
+        // 이 도시의 패키지 목록
         List<PackagePost> packages = packagePostService.getPackagesByCityId(cityId);
         model.addAttribute("packages", packages);
 
         // 소모임 목록도 가져와야함
     }
 
-    // 검색 결과 페이지 이동
+    // 검색 결과 페이지 이동 -> 당장 안쓸듯?
     // board.search.html
     @GetMapping("{cityId}/search")
     public void searchPackagesByTitle(@PathVariable int cityId,

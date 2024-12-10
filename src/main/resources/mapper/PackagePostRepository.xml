@@ -26,8 +26,18 @@
 
     <!-- 도시별 패키지 조회 -->
     <select id="findByCityId" parameterType="int" resultMap="PackagePostResultMap">
-        SELECT * FROM package
+        SELECT user_id,
+               package_status,
+               package_content,
+               package_regdate,
+               package_title,
+               package_cost,
+               package_maxpeople,
+               package_start_day,
+               package_end_day
+        FROM package
         WHERE city_id = #{cityId}
+        ORDER BY package_id DESC
     </select>
 
     <!-- 사용자별 패키지 조회 -->
