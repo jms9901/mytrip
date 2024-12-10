@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/")
+@RequestMapping("/board")
 public class PackagePostController {
 
     private final PackagePostService packagePostService;
@@ -19,136 +19,132 @@ public class PackagePostController {
         this.packagePostService = packagePostService;
     }
 
-    /**
-     * 특정 패키지 상세 조회
-     *
-     * @param packageId 패키지 ID
-     * @param model     Model 객체
-     * @return 패키지 상세 보기 페이지
-     */
-    @GetMapping("/{packageId}")
-    public String getPackageDetails(@PathVariable int packageId, Model model) {
-        PackagePost packagePost = packagePostService.getPackageDetails(packageId);
-        model.addAttribute("packagePost", packagePost);
-        return "package/details";
-    }
-
-    /**
-     * 도시별 패키지 목록 조회
-     *
-     * @param cityId 도시 ID
-     * @param model  Model 객체
-     * @return 도시별 패키지 목록 페이지
-     */
-    @GetMapping("/city/{cityId}")
-    public String getPackagesByCityId(@PathVariable int cityId, Model model) {
+    // 도시 별 페이지 이동
+    @GetMapping("/{cityId}")
+    public void getPackagesByCityId(@PathVariable int cityId,
+                                    Model model) {
         List<PackagePost> packages = packagePostService.getPackagesByCityId(cityId);
         model.addAttribute("packages", packages);
-        return "package/cityPackages";
     }
 
-    /**
-     * 사용자별 패키지 목록 조회
-     *
-     * @param userId 사용자 ID
-     * @param model  Model 객체
-     * @return 사용자별 패키지 목록 페이지
-     */
-    @GetMapping("/user/{userId}")
-    public String getPackagesByUserId(@PathVariable int userId, Model model) {
-        List<PackagePost> packages = packagePostService.getPackagesByUserId(userId);
-        model.addAttribute("packages", packages);
-        return "package/userPackages";
-    }
-
-    /**
-     * 패키지 상태별 목록 조회
-     *
-     * @param status 패키지 상태
-     * @param model  Model 객체
-     * @return 상태별 패키지 목록 페이지
-     */
-    @GetMapping("/status/{status}")
-    public String getPackagesByStatus(@PathVariable String status, Model model) {
-        List<PackagePost> packages = packagePostService.getPackagesByStatus(status);
-        model.addAttribute("packages", packages);
-        return "package/statusPackages";
-    }
-
-    /**
-     * 패키지 제목 검색
-     *
-     * @param keyword 검색 키워드
-     * @param model   Model 객체
-     * @return 검색 결과 페이지
-     */
-    @GetMapping("/search")
-    public String searchPackagesByTitle(@RequestParam String keyword, Model model) {
+    // 검색 결과 페이지 이동
+    @GetMapping("{cityId}/search")
+    public void searchPackagesByTitle(@PathVariable int cityId,
+                                      @RequestParam String keyword,
+                                      Model model) {
         List<PackagePost> packages = packagePostService.searchPackagesByTitle(keyword);
         model.addAttribute("packages", packages);
         model.addAttribute("keyword", keyword);
-        return "package/searchResults";
     }
 
-    /**
-     * 패키지 저장 페이지
-     *
-     * @param model Model 객체
-     * @return 패키지 저장 페이지
-     */
-    @GetMapping("/new")
-    public String createPackageForm(Model model) {
-        model.addAttribute("packagePost", new PackagePost());
-        return "package/createPackage";
-    }
-
-    /**
-     * 패키지 저장 처리
-     *
-     * @param packagePost 저장할 패키지 정보
-     * @return 리다이렉트 페이지
-     */
-    @PostMapping
-    public String savePackage(@ModelAttribute PackagePost packagePost) {
-        packagePostService.savePackage(packagePost);
-        return "redirect:/packages";
-    }
-
-    /**
-     * 패키지 수정 페이지
-     *
-     * @param packageId 패키지 ID
-     * @param model     Model 객체
-     * @return 패키지 수정 페이지
-     */
-    @GetMapping("/{packageId}/edit")
-    public String editPackageForm(@PathVariable int packageId, Model model) {
+    // 패키지 상세 조회
+    @GetMapping("{cityId}/package/{packageId}")
+    public void getPackageDetails(@PathVariable int cityId,
+                                  @PathVariable int packageId,
+                                  Model model) {
         PackagePost packagePost = packagePostService.getPackageDetails(packageId);
         model.addAttribute("packagePost", packagePost);
-        return "package/editPackage";
     }
 
-    /**
-     * 패키지 수정 처리
-     *
-     * @param packagePost 수정할 패키지 정보
-     * @return 리다이렉트 페이지
-     */
-    @PostMapping("/{packageId}/edit")
-    public String updatePackage(@ModelAttribute PackagePost packagePost) {
-        packagePostService.updatePackage(packagePost);
-        return "redirect:/packages";
+    // 패키지 글쓰기 페이지 이동
+    @GetMapping("{cityId}/package/write")
+    public void writePackagePage() {
+        // 패키지 글쓰기 페이지로 이동
     }
 
-    /**
-     * 패키지 삭제 처리
-     *
-     * @param packageId 패키지 ID
-     * @return 리다이렉트 페이지
-     */
-    @PostMapping("/{packageId}/delete")
-    public String deletePackage(@PathVariable int packageId, @RequestParam int userId) {
-        packagePostService.deletePackage(packageId, userId);
-        return "redirect:/packages";
+    // 패키지 저장
+    @PostMapping("{cityId}/package/save")
+    public String savePackage(@PathVariable int cityId,
+                              @ModelAttribute PackagePost packagePost) {
+        // 패키지 저장 처리
+        // 패키지 저장 처리 후 저장된 ID 반환
+        int id = packagePostService.savePackage(packagePost);
+
+        // 저장 후 상세 페이지로 리다이렉트
+        return "redirect:/board/package/details/" + id;
+    }
+
+    // 패키지 수정 페이지 이동
+    @GetMapping("{cityId}/package/edit/{packageId}")
+    public String editPackagePage(@PathVariable int cityId,
+                                  @PathVariable int packageId,
+                                  Model model) {
+        // 패키지 수정 페이지로 이동
+        return "package/edit";
+    }
+
+    // 패키지 수정 저장
+    @PostMapping("{cityId}/package/update")
+    public String updatePackage(@PathVariable int cityId,
+                                @ModelAttribute PackagePost packagePost) {
+        // 패키지 수정 저장 처리
+        // 패키지 저장 처리 후 저장된 ID 반환
+        int id = packagePostService.savePackage(packagePost);
+
+        // 저장 후 상세 페이지로 리다이렉트
+        return "redirect:/board/package/details/" + id;
+    }
+
+    // 패키지 삭제
+    @DeleteMapping("{cityId}/package/delete/{packageId}")
+    public String deletePackage(@PathVariable int cityId,
+                                @PathVariable int packageId) {
+        // 패키지 삭제 처리
+        int id = 0; //도시 id
+        return "redirect:/board/city/" + id;
+    }
+
+    // 소모임 상세 조회
+    @GetMapping("{cityId}/group/{groupId}")
+    public void getGroupDetails(@PathVariable int cityId,
+                                @PathVariable int groupId,
+                                Model model) {
+        // 소모임 상세 페이지로 이동
+    }
+
+    // 소모임 글쓰기 페이지 이동
+    @GetMapping("{cityId}/group/write")
+    public void writeGroupPage(@PathVariable int cityId) {
+        // 소모임 글쓰기 페이지로 이동
+    }
+
+    // 소모임 저장
+    @PostMapping("{cityId}/group/save")
+    public String saveGroup(@PathVariable int cityId,
+                            @ModelAttribute PackagePost groupPost) {
+        // 소모임 저장 처리
+        return "redirect:/board"; // 저장 후 리스트 페이지로 이동
+    }
+
+    // 소모임 수정 페이지 이동
+    @GetMapping("{cityId}/group/edit/{groupId}")
+    public String editGroupPage(@PathVariable int cityId,
+                                @PathVariable int groupId,
+                                Model model) {
+        // 소모임 수정 페이지로 이동
+        return "group/edit";
+    }
+
+    // 소모임 수정 저장
+    @PostMapping("{cityId}/group/update")
+    public String updateGroup(@PathVariable int cityId,
+                              @ModelAttribute PackagePost groupPost) {
+        // 소모임 수정 저장 처리
+        return "redirect:/board"; // 수정 후 리스트 페이지로 이동
+    }
+
+    // 소모임 삭제
+    @DeleteMapping("{cityId}/group/delete/{groupId}")
+    public String deleteGroup(@PathVariable int cityId,
+                              @PathVariable int groupId) {
+        // 소모임 삭제 처리
+        return "redirect:/board"; // 삭제 후 리스트 페이지로 이동
+    }
+
+    // 도시별 피드 모음 페이지 이동
+    @GetMapping("{cityId}/feeds")
+    public void cityFeedsPage(@PathVariable int cityId,
+                              Model model) {
+        // 도시별 피드 모음 페이지로 이동
     }
 }
