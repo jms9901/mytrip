@@ -2,12 +2,19 @@
   "$schema": "https://raw.githubusercontent.com/dineug/erd-editor/main/json-schema/schema.json",
   "version": "3.0.0",
   "settings": {
+<<<<<<< HEAD
+    "width": 2000,
+    "height": 2000,
+    "scrollTop": -524,
+    "scrollLeft": -342,
+=======
     "width": 5000,
     "height": 5000,
     "scrollTop": -2147.8562,
     "scrollLeft": -2034.0728,
+>>>>>>> main
     "zoomLevel": 1,
-    "show": 511,
+    "show": 431,
     "database": 4,
     "databaseName": "",
     "canvasType": "ERD",
@@ -30,64 +37,17 @@
     "ignoreSaveSettings": 0
   },
   "doc": {
-    "tableIds": [
-      "cDIHvvshNwIL_2254Nr_O",
-      "4EMajnk27UAngJoAk_9CF",
-      "FC9XIpkCDEDxldITxxbLl",
-      "4rczqo8TPSh0Ov5HG1saJ",
-      "aAdMsXRsoo4CPYy2kp-mJ",
-      "yx_VD6B7RJ805i31CGXh7",
-      "QOiE_7txe7Onx7GcYBy6w",
-      "u_42UXoxi3KqFCZaRGKFT",
-      "8X9b6h7iHe-karZhgemmT",
-      "H_hAKB_RFhZs-oOtizYBq",
-      "YLj0xt74AK1k8gDdfJ0vd",
-      "kDopDvG7G8JKLv2l-vvVn",
-      "ZcBmDtd2KctWE0_NFAxUu",
-      "vFMbDIIIVHH7eo14dLHhY",
-      "PpfYeCKC-YcsK20AZ6uFu",
-      "_vlTTsSvXgw3CzyHgb9aY",
-      "OlsLnFaQFuqQU32yNKSno",
-      "2Ft-kSXFcuTRTsH4QLvIC",
-      "ASSvLyrJfL6tcga6192Ao",
-      "no3pNs-AShgoYrQ2fd8KJ"
-    ],
-    "relationshipIds": [
-      "PM6lM9iLdzvkmZbxZ7eOn",
-      "ge_NJajwamOD5B-EFu0jb",
-      "fpd27RSHT5hG5LlXu2m39",
-      "BoSmBXUU-M7Z9-JOrLg88",
-      "0FP_8SrQWXpgYWvTDeDYH",
-      "Y7b424ZPZV5j_yfR4zh5L",
-      "HUdL5MvjAtkeReTdLZzPr",
-      "e4qZy4R7HQyiEKl7qUlRS",
-      "p_Wy5eWXGnWhYS7kXStyt",
-      "6DL0vi0mvgp3hwXOqPWln",
-      "V1Q3uyIfAy_w8c2CmgUGB",
-      "QP7KB-FN9TjYRNm9IuCd9",
-      "bQ5XyC654TXl0ULPcrPfO",
-      "oUWklqWlbQ6qqzXX2lKzO",
-      "t5OxEh0Mtk3UbbK6FLLZl",
-      "U6NMxol90Y_4vvKwGUorf",
-      "vtmQxNdbQMRiSNi65Gvee",
-      "62gJYGgqVcHPaxtajYl4q",
-      "FwKm3Lw2FTBcS1r2vzcb3",
-      "vSjNj8WA5iFVfyjBiUp2E",
-      "8pAxgR-rs9IbcUvkZ8pLb",
-      "pU-5vKs72qQdQIHfmBAZk",
-      "NdikF8TqpHUe5tnU0MH4p",
-      "PZsKNN4G3npReCnZy8e2O",
-      "Qmu7TDhgvNL0VPHCLqE3S",
-      "ev-rEv04QR7X1A8brwUQG",
-      "UIfyr-VGWIGy8RBeDI0eO",
-      "SlJE8vgbdNrvOCKcaoupp",
-      "e8VSGh_fVU8rmk0uJpYpt",
-      "0FR4AUwXXFdBwDEDJUHMn"
-    ],
+    "tableIds": [],
+    "relationshipIds": [],
     "indexIds": [],
     "memoIds": []
   },
   "collections": {
+<<<<<<< HEAD
+    "tableEntities": {},
+    "tableColumnEntities": {},
+    "relationshipEntities": {},
+=======
     "tableEntities": {
       "cDIHvvshNwIL_2254Nr_O": {
         "id": "cDIHvvshNwIL_2254Nr_O",
@@ -4849,10 +4809,14 @@
         }
       }
     },
+>>>>>>> main
     "indexEntities": {},
     "indexColumnEntities": {},
     "memoEntities": {}
   },
+<<<<<<< HEAD
+  "lww": {}
+=======
   "lww": {
     "cDIHvvshNwIL_2254Nr_O": [
       "tableEntities",
@@ -7036,4 +7000,5 @@
       }
     ]
   }
+>>>>>>> main
 }
