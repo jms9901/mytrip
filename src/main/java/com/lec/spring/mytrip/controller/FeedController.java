@@ -4,7 +4,9 @@ import com.lec.spring.mytrip.domain.City;
 import com.lec.spring.mytrip.domain.Feed;
 import com.lec.spring.mytrip.domain.FeedValidator;
 import com.lec.spring.mytrip.service.FeedService;
+import com.lec.spring.mytrip.service.UserService;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,23 +24,22 @@ public class FeedController {
 
     private final FeedService feedService;
 
-
     public FeedController(FeedService feedService) {
         System.out.println("FeedController() 생성");
         this.feedService = feedService;
     }
 
     // 피드 작성 폼
-    @GetMapping("/feedWrite")
+    @GetMapping("/feed")
     public String write(Model model) {
         List<City> cities = feedService.getAllCities();
         model.addAttribute("cities", cities);
-        model.addAttribute("feed", new Feed());
-        return "mypage/feedWrite";
+        model.addAttribute("feed", new Feed());  // 초기 피드 객체를 생성해서 전달
+        return "mypage/feed";
     }
 
     // 피드 작성 처리
-    @PostMapping("/feedWrite")
+    @PostMapping("/feed/write")
     public String feedWriteOk(
             @RequestParam Map<String, MultipartFile> files,
             @Valid Feed feed,
@@ -53,43 +54,40 @@ public class FeedController {
             bindingResult.getFieldErrors().forEach(error ->
                     redirectAttributes.addFlashAttribute("error_" + error.getField(), error.getDefaultMessage()));
 
-            return "redirect:/mypage/feedWrite";
+            return "redirect:/mypage/feed";
         }
 
-        boolean result = feedService.write(feed, files);
-
-        if(result) {
-            return "mypage/feedWriteOk";
-        } else {
-            model.addAttribute("message", "피드 작성 실패");
-            return "mypage/feedWrite";
-        }
+        model.addAttribute("result", feedService.write(feed, files));
+        return "redirect:/mypage/feed" + feed.getUser().getId();
     }
 
     // 피드 상세 보기
     @GetMapping("/feedDetail/{boardId}")
     public String feedDetail(@PathVariable Long boardId, Model model) {
         Feed feed = feedService.detail(boardId);
+        boolean isOwner = feed.getUser().equals(boardId); // 본인인지 확인
+
         model.addAttribute("feed", feed);
-        // 로그인된 사용자 정보 추가
-        return "mypage/feedDetail";
+        model.addAttribute("isOwner", isOwner); // 본인 여부 추가
+        return "mypage/feedDetail";  // 상세보기 페이지
     }
 
     // 피드 전체 목록 보기
-    @GetMapping("/feedList")
-    public String feedList(Model model) {
-        model.addAttribute("feeds", feedService.list());
-        return "feed";
+    @GetMapping("/feed/{userId}")
+    public String feedList(@PathVariable Long userId, Model model) {
+        List<Feed> feeds = feedService.listByUser(userId);
+        model.addAttribute("feeds", feeds);
+        return "mypage/feed";
     }
 
     // 피드 수정 폼
-    @GetMapping("/feedUpdate/{id}")
+    @GetMapping("/feedUpdate/{boardId}")
     public String feedUpdate(@PathVariable Long id, Model model) {
         Feed feed = feedService.detail(id);
         List<City> cities = feedService.getAllCities();
 
         model.addAttribute("feed", feed);
-        model.addAttribute("cities", cities);
+        model.addAttribute("cityList", cities);
         return "mypage/feedUpdate";
     }
 
@@ -124,11 +122,11 @@ public class FeedController {
     }
 
     // 피드 삭제 처리
-    @PostMapping("/feedDelete")
+    @PostMapping("/feed/delete")
     public String feedDeleteOk(Long id, Model model) {
         boolean result = feedService.deleteById(id);
         model.addAttribute("result", result);
-        return "mypage/feedDeleteOk";
+        return "mypage/feed";
     }
 
     @InitBinder

@@ -47,10 +47,17 @@
         ORDER BY board_date DESC
     </select>
 
+    <!-- 특정 유저 id의 피드 최신순 리스트  -->
+    <select id="listByUser" resultType="com.lec.spring.mytrip.domain.Feed">
+        <include refid="SELECT_BOARD" />
+        AND user_id = #{userId}
+        ORDER BY board_date DESC
+    </select>
+
     <!-- 특정 사용자의 최신 게시물 9개 가져오기 -->
     <select id="findRecentFeedByUser" parameterType="long" resultType="com.lec.spring.mytrip.domain.Feed">
         <include refid="SELECT_BOARD" />
-        WHERE user_id = #{user_id}
+        AND user_id = #{user_id}
         ORDER BY board_date DESC
         LIMIT 9
     </select>

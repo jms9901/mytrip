@@ -10,12 +10,11 @@
 <body>
 <!-- Modal Container -->
 <div class="modal-container hidden" id="feed-modal">
-    <img class="modal-content" alt="modal-frame" th:src="@{/static/img/feedDetailFrame.png}">
-        <div class="modal-title" th:value="${board_subject}"></div>
+    <form class="modal-content" alt="modal-frame" th:src="@{/static/img/feedDetailFrame.png}">
+        <div class="modal-title">피드 작성</div>
 
         <!-- Left Side: Image Upload Section -->
         <div class="section">
-
             <div class="image-upload">
                 <div class="image-frame">
                     <button class="prev-btn hidden">&lt;</button>
@@ -24,7 +23,7 @@
                     <label for="file-input" class="camera-label">
                         <img th:src="@{/static/img/carmera.png}" alt="Camera Icon" id="camera-icon">
                     </label>
-                    <input type="file" id="file-input" multiple accept="image/*" class="hidden">
+                    <input type="file" name="feedImages" id="file-input" multiple accept="image/*" class="hidden">
                 </div>
             </div>
 
@@ -43,10 +42,11 @@
             <a>At</a>
             <select name="city-name" id="city-name" th:value="${board_cityId}">
                 <option value="" disabled >도시 이름을 선택하세요.</option>
-                <option value="Paris" th:selected="${board.cityId == 'Paris'}">파리</option>
-                <option value="Osaka">오사카</option>
-                <option value="Zilln">지린</option>
-                <option value="Danang">다낭</option>
+                <option th:each="city : ${cityList}"
+                        th:value="${city.city_id}"
+                        th:text="${city.city_name}"
+                        th:selected="${board.cityId == city.city_id}">
+                </option>
             </select>
         </div>
 
@@ -71,7 +71,7 @@
         <!-- 피드 페이지로 이동 버튼 이동 페이지 넣기 -->
         <img th:src="@{/static/img/mypageFeedList.png}" th:action="@{/board/}" alt="feedList-button" type="button" class="goFeedList" th:if="${logged_user.userId != board.userId}">
         <!-- 타인의 마이페이지 피드에 들어갈 경우 좋아요를 누를 수 있음. -->
-
+    </form>
 </div>
 
 <script th:src="@{/static/JS/feedWrite.js}"></script>

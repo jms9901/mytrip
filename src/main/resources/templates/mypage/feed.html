@@ -6,64 +6,103 @@
 <!--[if !IE]><!--> <html lang="en" xmlns:th="http://www.thymeleaf.org"> <!--<![endif]-->
 <head>
     <meta name="viewport" content="width = 1050, user-scalable = no" />	<!--전체 섹션 규격 & 유저 크기 조정 가능여부-->
-    <script type="text/javascript" th:src ="@{/static/lib/JQuery/jquery.min.1.7.js}"></script>	<!--경로 & 실제 파일 존재여부 반드시 확인-->
-    <script type="text/javascript" th:src="@{/static/lib/JQuery/modernizr.2.5.3.min.js}"></script>	<!--경로 & 실제 파일 존재여부 반드시 확인-->
+    <script type="text/javascript" src ="/lib/JQuery/jquery.min.1.7.js"></script>	<!--경로 & 실제 파일 존재여부 반드시 확인-->
+    <script type="text/javascript" src="/lib/JQuery/modernizr.2.5.3.min.js"></script>	<!--경로 & 실제 파일 존재여부 반드시 확인-->
     <!--	<script type="text/javascript" src="../lib/JQuery/yepnope.js"></script>-->
     <!--	<script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/3.11.2/modernizr.min.js"></script>-->
-    <link rel="stylesheet" th:href="@{/static/CSS/bookMain.css}">
-    <link rel="stylesheet" th:href="@{/static/CSS/feedList.css}">
+    <link rel="stylesheet" href="/css/bookMain.css">
+    <link rel="stylesheet" href="/css/feedList.css">
+    <link rel="stylesheet" href="/css/feedWrite.css">
+    <script type="text/javascript" src="/js/feed.js"></script>
     <link href='https://fonts.googleapis.com/css?family=Kaushan Script' rel='stylesheet'>
 
 </head>
-<body style="background-image: url(/static/img/mypageBackground.jpg); background-repeat: no-repeat ; background-size: cover;">
+<body style="background-image: url(/img/mypageBackground.jpg); background-repeat: no-repeat ; background-size: cover;">
 <div class="logo">
-    <div class="logo" style="background-image: url(/static/img/mypageLogo.png);" th:href="@{/user/home.html}"></div>
+    <div class="logo" style="background-image: url(/img/mypageLogo.png);" th:href="@{/user/home.html}"></div>
 </div>
-<div class="addGuestBookModal"></div>
-<div class="myPageGoHome" style="background-image: url(/static/img/myPageGoHome.png)"></div>
+<div class="myPageGoHome" style="background-image: url(/img/myPageGoHome.png)"></div>
 
 <div class="flipbook-viewport">
 
     <div class="container">
         <div class="flipbook">
-            <div style="background-image:url(/static/img/mypageTitle.png)"></div>	<!--배경이미지 설정 부분 (여권사진 홀수번 우측, 짝수번 좌측 화면 표시 예정)-->
-            <div style="background-image:url(/static/img/sample_left.png)">
-                <div style="background-image:url(/static/img/sample_left.png)"></div>
-                <img th:src="@{/static/img/addbutton.png}" alt="feedAdd-Button" id="feedAdd-Button" class="feedAdd-Button" th:href="@{/mypage/feedWrite.html}" th:type="button">
+            <div style="background-image:url(/img/mypageTitle.png)"></div>	<!--배경이미지 설정 부분 (여권사진 홀수번 우측, 짝수번 좌측 화면 표시 예정)-->
+            <div style="background-image:url(/img/sample_left.png)">
+                <div style="background-image:url(/img/sample_left.png)"></div>
+                <img src="/img/addbutton.png" alt="feedAdd-Button" id="feedAdd-Button" class="feedAdd-Button" type="button">
 
-
-                <div class="feed-List hidden" id="feed-List">
+                <div id="feed-Entries">
 <!--                    동적으로 생성되는 카드(피드 리스트)가 들어갈 영역-->
-<!--                    피드 예시 -->
-                    <div class="feed-card" th:href="@{/mypage/feedDetail.html}">
-                        <div class="photo-container" th:if="${board_attachment.board_attachment_file}">
-                            <img th:src="@{'/upload/' + ${board_attachment_file}}" alt="postThumbnail" class="post-thumbnail">
+                </div>
+
+                <!--    피드 작성 모달     -->
+                <div class="modal-container hidden" id="feed-modal" th:id="feed-form" th:method="post" th:action="@{mypage/feed/write}" enctype="multipart/form-data">
+                    <form class="modal-content" style="background-image: url(/img/feedDetailFrame.png);">
+                        <div class="modal-title">Write Feed Modal</div>
+
+                        <!-- Left Side: Image Upload Section -->
+                        <div class="section">
+                            <div class="image-upload">
+                                <div class="image-frame">
+                                    <button class="prev-btn hidden">&lt;</button>
+                                    <div id="image-preview" class="slider"></div>
+                                    <button class="next-btn hidden">&gt;</button>
+                                    <label for="file-input" class="camera-label">
+                                        <img src="/img/camera.png" alt="Camera Icon" id="camera-icon">
+                                    </label>
+                                    <input type="file" name="feedImages" id="file-input" multiple accept="image/*" class="hidden" required>
+                                </div>
+                            </div>
+
+                            <input type="text" name="feedTitle" placeholder="피드 제목" class="feed-title" id="feed-title" required>
                         </div>
-                        <div class="feed-title">
-                            <h4><b>[[${board.board_subject}]]</b></h4>
+                        <div class="image-message">이미지 최대 규격은 242px X 242px 입니다.</div>
+
+                        <!-- 도시 선택 옵션 -->
+                        <div class="city-select">
+                            <a>At</a>
+                            <select name="city-name" id="city-name" th:value="${board_cityId}">
+                                <option value="" disabled >도시 이름을 선택하세요.</option>
+                                <option th:each="city : ${cityList}"
+                                        th:value="${city.city_id}"
+                                        th:text="${city.city_name}"
+                                        th:selected="${board.cityId == city.city_id}">
+                                </option>
+                            </select>
                         </div>
-                    </div>
+
+                        <!-- Feed Content -->
+                        <label for="feed-content">
+                            <textarea name="feedContent" placeholder="피드 내용" class="feed-content" id="feed-content" required></textarea>
+                        </label>
+
+                        <button type="submit" id="submit-button" class="submit-button">
+                            <img src="/img/checkIcon.png" alt="submit-button">
+                        </button>
+
+                    </form>
                 </div>
 
 
-                <div style="background-image:url(/static/img/sample_right.png)"></div>
-                <div style="background-image:url(/static/img/sample_left.png)"></div>
-                <div style="background-image:url(/static/img/sample_right.png)"></div>
-                <div style="background-image:url(/static/img/sample_left.png)"></div>
-                <div style="background-image:url(/static/img/sample_right.png)"></div>
-                <div style="background-image:url(/static/img/sample_left.png)"></div>
-                <div style="background-image:url(/static/img/sample_right.png)"></div>
+                <div style="background-image:url(/img/sample_right.png)"></div>
+                <div style="background-image:url(/img/sample_left.png)"></div>
+                <div style="background-image:url(/img/sample_right.png)"></div>
+                <div style="background-image:url(/img/sample_left.png)"></div>
+                <div style="background-image:url(/img/sample_right.png)"></div>
+                <div style="background-image:url(/img/sample_left.png)"></div>
+                <div style="background-image:url(/img/sample_right.png)"></div>
             </div>
         </div>
     </div>
 
     <!-- 메뉴바 -->
-    <div class="menu1" id="1" style="background-image: url(/static/img/mypageMenu.png);"><h4 id="Invoice">&nbsp;Invoice</h4></div>
-    <div class="menu2" id="2" style="background-image: url(/static/img/mypageMenu.png);"><h4 id="post" th:href="@{/mypage/feed.html}">&nbsp;Post</h4></div>
-    <div class="menu3" id="3" style="background-image: url(/static/img/mypageMenu.png);"><h4 id="PostLiked">&nbsp;Post♥</h4></div>
-    <div class="menu4" id="4" style="background-image: url(/static/img/mypageMenu.png);"><h4 id="PackageLiked">&nbsp;Package♥</h4></div>
-    <div class="menu5" id="5" style="background-image: url(/static/img/mypageMenu.png);" ><h4 id="GuestBook" th:href="@{/mypage/bookGuestBook.html}">&nbsp;GuestBook</h4></div>
-    <div class="goChat" style="background-image: url(/static/img/mypageChat.png);"></div>
+    <div class="menu1" id="1" style="background-image: url(/img/mypageMenu.png);"><h4 id="Invoice">&nbsp;Invoice</h4></div>
+    <div class="menu2" id="2" style="background-image: url(/img/mypageMenu.png);"><h4 id="post" th:href="@{/mypage/feed.html}">&nbsp;Post</h4></div>
+    <div class="menu3" id="3" style="background-image: url(/img/mypageMenu.png);"><h4 id="PostLiked">&nbsp;Post♥</h4></div>
+    <div class="menu4" id="4" style="background-image: url(/img/mypageMenu.png);"><h4 id="PackageLiked">&nbsp;Package♥</h4></div>
+    <div class="menu5" id="5" style="background-image: url(/img/mypageMenu.png);" ><h4 id="GuestBook" th:href="@{/mypage/bookGuestBook.html}">&nbsp;GuestBook</h4></div>
+    <div class="goChat" style="background-image: url(/img/mypageChat.png);"></div>
 
 
 
@@ -71,120 +110,236 @@
 
 
 <script type="text/javascript">
+    $(document).ready(function () {
 
-    function loadApp() {
+        const apiUrl = "/mypage/feed"; // API URL 설정
 
-        // Create the flipbook
+        // 앱 로드 및 초기화
+        initializeApp();
 
-        $('.flipbook').turn({
-            // Width
+        function initializeApp() {
+            checkAndLoadFlipbook();
+            loadFeedList();
 
-            width:922,
+            // 피드 작성 모달 처리
+            $('.feed-modal').click(() => $('.feed-modal').show());
+            $('body').css('overflow', 'auto')
 
-            // Height
+            // 방명록 추가 처리
+            $('.submit-button').click(submitGuestBook);
 
-            height:600,
+            // 채팅 hover 효과
+            $('.goChat').hover(() => hoverChat());
+        }
 
-            // Elevation
-
-            elevation: 50,
-
-            // Enable gradients
-
-            gradients: true,
-
-            // Auto center this flipbook
-
-            autoCenter: true
-
-        });
-        $('.flipbook').bind('turning', function(event, page) {
-            if (page === 2) {
-                $('.menu1').show(); // Show menu after the first page turn
-                $('.menu2').show();
-                $('.menu3').show();
-                $('.menu4').show();
-                $('.menu5').show();
-            }else if (page ===1){
-                $('.menu1').hide();
-                $('.menu2').hide();
-                $('.menu3').hide();
-                $('.menu4').hide();
-                $('.menu5').hide();
+        // Flipbook 초기화
+        function checkAndLoadFlipbook() {
+            if (isCSSTransformSupported()) {
+                $.getScript('/lib/animationjs/turn.js', () => loadApp());
+            } else {
+                $.getScript('../../lib/JQuery/turn.html4.min.js', () => loadApp());
             }
-        });
-        $('.goChat').hover(function(){
-            hoverChat();
-        });
+        }
 
+        function loadApp() {
+            $('.flipbook').turn({
+                width: 922,
+                height: 600,
+                elevation: 50,
+                gradients: true,
+                autoCenter: false,
+                display: 'double',
+                // page: 1,
+                first: true
+            });
+        }
+
+        // CSS Transform 지원 여부 확인
+        function isCSSTransformSupported() {
+            const testElement = document.createElement('div');
+            const transformProperties = ['transform', 'WebkitTransform', 'MozTransform', 'OTransform', 'msTransform'];
+            return transformProperties.some(prop => testElement.style[prop] !== undefined);
+        }
+
+        // URL에서 toUserId 값 추출하는 함수
+        function getToUserIdFromUrl() {
+            const pathParts = window.location.pathname.split('/');
+            const toUserId = pathParts[pathParts.length - 1]; // 마지막 부분이 toUserId
+            return toUserId;
+        }
+
+        // 방명록 불러오기
+        function loadGuestBooks() {
+            console.log("loadGuestBooks 작동");
+
+            const toUserId = getToUserIdFromUrl();
+
+            $.get(`${apiUrl}/list/${toUserId}`, function (data) {
+                console.log("Loaded guestbooks:", data);
+
+                // 기존 페이지 삭제 및 초기화
+                resetFlipbook();
+
+                // 데이터를 페이지에 추가
+                data.forEach((guestBook, index) => {
+                    const entryHtml = `
+                        <div class="guestbook-entry">
+                            <h4>From: ${guestBook.fromUserId}</h4>
+                            <p>${guestBook.guestBookContent}</p>
+                        </div>`;
+                    addEntryToPage(entryHtml, index + 1); // index + 1을 이용하여 페이지에 추가
+                    console.log(`Guestbook Entry ${index + 1} added to page ${currentPage}`);
+                });
+            });
+        }
+
+        // 기존 페이지 삭제
+        function resetFlipbook() {
+            console.log("resetFlipbook 작동");
+            $('.flipbook').turn('pages', 0);  // 기존 페이지 초기화
+            $('#guestbookEntries').empty();  // 기존 목록 초기화
+            currentPage = 1;  // 페이지 번호 초기화
+            pages = { 1: 0 }; // 각 페이지 항목 개수 초기화
+        }
+
+        // 방명록 추가
+        function submitGuestBook() {
+            console.log("submit 작동");
+            const name = $('#guestName').val();
+            const message = $('#guestMessage').val();
+
+            if (name && message) {
+                const guestBookData = {
+                    toUserId: getToUserIdFromUrl(),
+                    fromUserId: 2,
+                    guestBookContent: message
+                };
+
+                $.ajax({
+                    url: `${apiUrl}/add`,
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(guestBookData),
+                    success: function () {
+                        console.log("succes 진입")
+                        loadGuestBooks(); // 추가된 방명록 반영
+                        resetGuestBookForm();
+                    },
+                    error: function () {
+                        alert("Failed to add the guest book entry.");
+                    }
+                });
+            } else {
+                alert("Please fill in both fields!");
+            }
+        }
+
+        // 방명록 입력 필드 초기화
+        function resetGuestBookForm() {
+            console.log("폼 초기화 작동");
+
+            $('#guestName').val('');
+            $('#guestMessage').val('');
+            $('.addGuestBookModal').hide();
+        }
+
+        // 항목을 페이지에 추가
+        const entriesPerPage = 3; // 페이지당 항목 개수
+        let currentPage = 1;      // 현재 페이지 번호
+        let pages = { 1: 0 }; // 각 페이지 항목 개수
+
+        function addEntryToPage(entry, index) {
+            console.log("addEntry 작동");
+
+            // 랜덤 배경 이미지 설정
+            const entryWithBackground = setRandomBackgroundImage(entry);
+
+            // 현재 페이지가 없으면 새 페이지 생성
+            if (!$(`#page${currentPage}`).length) {
+                createNewPage(); // 첫 페이지 생성
+            }
+
+
+            // 현재 페이지에 추가 가능한 경우
+            if (pages[currentPage] < entriesPerPage) {
+                $(`#page${currentPage}`).append(entryWithBackground);
+                pages[currentPage]++;
+                console.log(`Entry added to Page ${currentPage}, Position: ${pages[currentPage]}`);
+            } else {
+                // 현재 페이지가 가득 찼으면 새 페이지 생성 후 추가
+                currentPage++; // 새로운 페이지 번호
+                createNewPage();
+                $(`#page${currentPage}`).append(entryWithBackground);
+                pages[currentPage] = 1; // 새 페이지 첫 번째 항목
+                console.log(`Entry added to new Page ${currentPage}, Position: ${pages[currentPage]}`);
+            }
+        }
+
+        // 현재 페이지가 꽉 차지 않았다면 항목 추가
+        //     if (pages[currentPage] < entriesPerPage) {
+        //         $(`#page${currentPage}`).append(entryWithBackground);
+        //         pages[currentPage]++;
+        //         console.log(`Entry added to Page ${currentPage}, Position: ${pages[currentPage]}`);
+        //     } else {
+        //         // 이곳 부터 TODO
+        //         currentPage++; // 새로운 페이지로 이동
+        //         createNewPage(entryWithBackground);
+        //         console.log(`Page ${currentPage} created due to overflow`);
+        //     }
+        // }
+
+        // 새 페이지 생성 및 항목 추가
+        function createNewPage(entry) {
+            console.log("createpage 작동");
+            const totalPages = $('.flipbook').turn('pages');
+            currentPage = totalPages + 1; // 페이지 번호 계산
+
+            console.log(`New page created. Total Pages: ${totalPages}, Current Page: ${currentPage}`);
+
+            // 새 페이지를 flipbook에 추가
+            const newPage = `<div class="page" id="page${currentPage}" style="background-image:url(/img/addBook.png)"></div>`;
+            $('.flipbook').turn('addPage', $(newPage)[0], currentPage);
+
+
+            pages[currentPage] = 0;
+            console.log(`New Page ${currentPage} created`);
+
+            // 새 페이지에 항목 추가
+            // $(`#page${currentPage}`).append(entry);
+            // pages[currentPage] = 1;  // 새 페이지 첫 번째 항목
+            // console.log(`Entry added to new Page ${currentPage}, Position: ${pages[currentPage]}`);
+            // $('.flipbook').turn('resize');  // 페이지 크기 조정
+        }
+
+        // 랜덤 배경 이미지 설정
+        function setRandomBackgroundImage(entry) {
+            const images = [
+                'url(/img/stamp1.png)',
+                'url(/img/stamp2.png)',
+                'url(/img/stamp3.png)',
+                'url(/img/stamp4.png)',
+                'url(/img/stamp5.png)'
+            ];
+            const randomImage = images[Math.floor(Math.random() * images.length)];
+
+            // entry에 배경 이미지 스타일 적용
+            const entryWithBackground = $(entry).css('background-image', randomImage);
+            return entryWithBackground;
+        }
+
+        // 채팅 hover 효과
         function hoverChat() {
             let angle = 0;
-            clearInterval(shakeInterval);
-            $('.goChat').css('transform', 'rotateY(0deg)');  // 초기 상태 설정
-            let shakeInterval = setInterval(function() {
-                angle += 10;  // 한 번에 10도씩 증가
-                $('.goChat').css('transform', `rotateY(${angle}deg)`);  // Y축을 중심으로 회전
-                if (angle >= 35) {  // 35도까지 회전
+            let shakeInterval = setInterval(() => {
+                angle += 10;
+                $('.goChat').css('transform', `rotateY(${angle}deg)`);
+                if (angle >= 35) {
                     clearInterval(shakeInterval);
-                    $('.goChat').css('transform', 'rotateY(0deg)');  // 원래 위치로 돌아가게 설정
+                    $('.goChat').css('transform', 'rotateY(0deg)');
                 }
-            }, 100);  // 0.1초마다 회전
+            }, 100);
         }
-
-    }
-
-    // $('.myPageUpdate').click(function (){
-    //     $('.updateUserModal').show();
-    // });
-    // $('.closeUpdateModal').click(function(){
-    //     $('.updateUserModal').hide();
-    // });
-
-    // Load the HTML4 version if there's not CSS transform
-
-    function isCSSTransformSupported() {
-        var testElement = document.createElement('div');
-        var transformProperties = ['transform', 'WebkitTransform', 'MozTransform', 'OTransform', 'msTransform'];
-
-        for (var i = 0; i < transformProperties.length; i++) {
-            if (testElement.style[transformProperties[i]] !== undefined) {
-                return true; // CSS transform이 지원됩니다.
-            }
-        }
-
-        return false; // CSS transform이 지원되지 않습니다.
-    }
-
-    if (isCSSTransformSupported()) {
-        // transform 지원 시
-        $.getScript('../static/lib/animationjs/turn.js', function() {
-            loadApp();
-        });
-    } else {
-        // transform 미지원 시
-        $.getScript('../static/lib/JQuery/turn.html4.min.js', function() {
-            loadApp();
-        });
-    }
-
-    // if (Modernizr.csstransforms) {
-    // 	$.getScript('../../lib/animationjs/turn.js', function() {
-    // 		loadApp();
-    // 	});
-    // } else {
-    // 	$.getScript('../../lib/JQuery/turn.html4.min.js', function() {
-    // 		loadApp();
-    // 	});
-    // }
-
-    // yepnope({
-    // 	test : Modernizr.csstransforms,
-    // 	yep: ['../../lib/animationjs/turn.js'],				//경로 & 실제 파일 존재여부 반드시 확인
-    // 	nope: ['../../lib/JQuery/turn.html4.min.js'],	//경로 & 실제 파일 존재여부 반드시 확인
-    // 	both: ['css/basic.css'],				//경로 & 실제 파일 존재여부 반드시 확인
-    // 	complete: loadApp
-    // });
-
+    });
 </script>
 </body>
 </html>

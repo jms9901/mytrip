@@ -6,6 +6,7 @@ import com.lec.spring.mytrip.domain.PostAttachment;
 import com.lec.spring.mytrip.domain.User;
 import com.lec.spring.mytrip.repository.FeedRepository;
 import com.lec.spring.mytrip.repository.UserRepository;
+import com.lec.spring.mytrip.util.U;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,15 +37,20 @@ public class FeedServiceImpl implements FeedService {
     // postAttachment 다 만들고 수정
     @Override
     @Transactional
-    public boolean write(Feed feed, Map<String, MultipartFile> files) {
+    public int write(Feed feed, Map<String, MultipartFile> files) {
+        // 현재 로그인한 정보 확인
+        User user = U.getLoggedUser();
+
+        user = userRepository.findByUsername(user.getUsername());
+        feed.setUser(user);
+
         // 새 피드 저장
         int result = feedRepository.save(feed);
 
         // 첨부파일 저장
-        if (result > 0 && files != null) {
-            saveAttachment(feed, files);
-        }
-        return result > 0;
+        saveAttachment(feed, files);
+
+        return result;
     }
 
     public void saveAttachment(Feed feed, Map<String, MultipartFile> files) {
@@ -85,11 +91,6 @@ public class FeedServiceImpl implements FeedService {
     }
 
 
-    // 물리적 서버 파일에 저장
-    // 파일 이름
-    // 소모임 : Board_userId_원본파일명
-    // 피드 : Feed_userId_원본파일명
-
     @Override
     @Transactional
     public Feed detail(Long id) {
@@ -104,19 +105,17 @@ public class FeedServiceImpl implements FeedService {
     }
 
 
-    @Override
-    public List<Feed> list() {
-        List<Feed> feeds = feedRepository.findAll();
-        for(Feed feed : feeds){
-            feed.setAttachments(feedRepository.findAttachmentByBoardId(feed.getBoardId()));
-        }
-        return feeds;
-    }
+//    @Override
+//    public List<Feed> list() {
+//        // 전체 리스트 보여주기
+//        List<Feed> feeds = feedRepository.findAll();
+//        return feeds;
+//    }
 
     @Override
-    public Feed findById(Long id) {
-        Feed feed = feedRepository.findById(id);
-        return feed;
+    public List<Feed> listByUser(Long userId) {
+        // 본인이 작성한 피드 리스트만 보여주기
+        return feedRepository.findByUserId(userId);
     }
 
     // 수정

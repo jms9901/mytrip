@@ -21,3 +21,44 @@ document.addEventListener("DOMContentLoaded", () => {
         goFeedListButton.style.display = "inline";
     }
 });
+
+$(document).ready(function () {
+    const apiUrl = "/mypage/feed";
+    const urlParams = new URLSearchParams(window.location.search);
+    const feedId = urlParams.get('feedId');
+
+    if (!feedId) {
+        alert("Invalid feed ID.");
+        window.location.href = '/mypage/feed.html'; // 목록 페이지로 리다이렉트
+        return;
+    }
+
+    // 피드 상세 데이터 로딩
+    function loadFeedDetail(feedId) {
+        $.ajax({
+            url: `${apiUrl}/detail/${feedId}`,
+            method: 'GET',
+            success: function (feed) {
+                $('#feed-title').text(feed.boardSubject);
+                $('#feed-content').text(feed.boardContent);
+                $('#city-name').text(feed.cityName);
+
+                // 이미지 로딩
+                const imagePreview = $('#image-preview');
+                feed.images.forEach(image => {
+                    imagePreview.append(`<img src="${image}" alt="feed image" class="slider-image">`);
+                });
+
+                // 좋아요 상태 설정
+                $('.feed-liked').toggleClass('liked', feed.isLiked);
+                $('.feed-liked-count').text(feed.likeCount);
+            },
+            error: function () {
+                alert("Failed to load feed details.");
+                window.location.href = '/mypage/feed.html'; // 목록 페이지로 리다이렉트
+            }
+        });
+    }
+
+    loadFeedDetail(feedId);
+});

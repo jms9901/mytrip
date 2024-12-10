@@ -13,11 +13,14 @@ public interface FeedRepository {
     // 특정 피드 id 글 내용 읽기
     Feed findById(Long id);
 
+    // 특정 사용자의 피드 읽기
+    List<Feed> findByUserId(Long userId);
+
     // 특정 id 글 조회수 증가
     int viewCnt(Long id);
 
     // 전체 글 목록 : 최신순
-    List<Feed> findAll();
+//    List<Feed> findAll();
 
     // 가장 최근 게시물 9개 개인정보 오른쪽 페이지에 배치
     int findRecentFeedByUser(Long id);
