@@ -72,7 +72,6 @@ CREATE TABLE city
 ALTER TABLE city
     ADD CONSTRAINT UQ_city_name UNIQUE (city_name);
 
-
 CREATE TABLE city_liked
 (
     user_id         INT      NOT NULL COMMENT '사용자 ID',
@@ -214,9 +213,8 @@ CREATE TABLE user
     user_id                INT           NOT NULL AUTO_INCREMENT COMMENT '사용자 테이블 ID',
     user_email             VARCHAR(100)  NOT NULL COMMENT '사용자 이메일',
     user_password          VARCHAR(100)  NOT NULL COMMENT '사용자 비밀번호',
-    user_username          VARCHAR(20)   NOT NULL COMMENT '사용자 ID',
+    user_username          VARCHAR(200)   NOT NULL COMMENT '사용자 ID',
     user_name              VARCHAR(20)   NOT NULL COMMENT '사용자 실제 이름',
-    user_phonenumber       VARCHAR(20)   NOT NULL COMMENT '사용자 핸드폰 번호',
     user_regdate           DATETIME      NOT NULL DEFAULT NOW() COMMENT '사용자 계정 생성 일자',
     user_birthday          VARCHAR(20)   NULL     COMMENT '사용자 생년월일',
     user_profile           VARCHAR(1000) NULL     COMMENT '사용자 프로필 사진',
@@ -224,7 +222,7 @@ CREATE TABLE user
     user_introdution       VARCHAR(100)  NULL     COMMENT '사용자 프로필 자기소개 ',
     user_authorization     VARCHAR(20)   NOT NULL COMMENT '사용자 권한',
     business_companynumber VARCHAR(100)  NULL     COMMENT '기업 사업자 번호',
-    user_status            VARCHAR(100)  NULL     COMMENT '사용자 승인 상태',
+    user_status             VARCHAR(100)  NULL     COMMENT '사용자 승인 상태',
     PRIMARY KEY (user_id)
 ) COMMENT '사용자 계정';
 
@@ -233,9 +231,6 @@ ALTER TABLE user
 
 ALTER TABLE user
     ADD CONSTRAINT UQ_user_username UNIQUE (user_username);
-
-ALTER TABLE user
-    ADD CONSTRAINT UQ_user_phonenumber UNIQUE (user_phonenumber);
 
 ALTER TABLE user
     ADD CONSTRAINT UQ_business_companynumber UNIQUE (business_companynumber);

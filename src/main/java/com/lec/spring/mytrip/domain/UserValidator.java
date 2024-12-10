@@ -53,6 +53,24 @@ public class UserValidator implements Validator {
         if (!user.getPassword().equals(user.getRe_password())) {
             errors.rejectValue("re_password", "password.mismatch", "비밀번호와 비밀번호 확인 입력값은 같아야 합니다.");
         }
-    }
 
+        // 생일 또는 사업자 번호 검증
+        if ((user.getBirthday() == null || user.getBirthday().trim().isEmpty()) &&
+                (user.getCompanyNumber() == null || user.getCompanyNumber().trim().isEmpty())) {
+            errors.rejectValue("birthday", "birthday.or.companyNumber.required", "생일 또는 사업자 번호 중 하나는 필수입니다.");
+            errors.rejectValue("companyNumber", "birthday.or.companyNumber.required", "생일 또는 사업자 번호 중 하나는 필수입니다.");
+        }
+
+        // 생일이 있을 때 사업자 번호 검증 생략
+        if (user.getBirthday() != null && !user.getBirthday().trim().isEmpty()) {
+            // 생일 형식 검증 로직 추가 가능
+        }
+
+        // 사업자 번호가 있을 때 생일 검증 생략
+        if (user.getCompanyNumber() != null && !user.getCompanyNumber().trim().isEmpty()) {
+            if (!user.getCompanyNumber().matches("^(\\d{3})-?(\\d{2})-?(\\d{5})$")) {
+                errors.rejectValue("companyNumber", "companyNumber.invalid", "유효하지 않는 사업자 번호 형식입니다.");
+            }
+        }
+    }
 }

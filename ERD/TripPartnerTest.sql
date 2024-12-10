@@ -19,10 +19,6 @@ select * from guest_book;
 select * from messageroom;
 select * from message;
 
-SHOW TABLES;
-DESCRIBE user_city;
-
-
 delete from user;
 delete from package;
 delete from package_attachment;
@@ -43,4 +39,5 @@ delete from friendship;
 delete from guest_book;
 delete from messageroom;
 delete from message;
+
 
