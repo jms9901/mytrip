@@ -2,6 +2,7 @@ const currentUrl = window.location.pathname;  // 예시: "/mypage/1"
 const userId = parseInt(currentUrl.substring(currentUrl.lastIndexOf('/') + 1)); // 문자열을 숫자로 변환
 
 document.addEventListener('DOMContentLoaded', function () {
+    // URL에서 userId를 추출하는 코드
     const currentUrl = window.location.pathname;
     const userId = parseInt(currentUrl.substring(currentUrl.lastIndexOf('/') + 1));
 
@@ -9,14 +10,22 @@ document.addEventListener('DOMContentLoaded', function () {
     fetch(`/likey/likedCity?userId=${userId}`)  // 현재 코드에 맞는 URL
         .then(response => response.json())
         .then(data => {
+            const cityLikedContainer = document.querySelector('.mypageCityLiked'); // 여기서 정의된 변수
 
+            // cityLikedContainer가 정상적으로 정의되었는지 확인
+            if (!cityLikedContainer) {
+                console.error("City liked container not found.");
+                return;
+            }
+
+            cityLikedContainer.innerHTML = ''; // 기존 내용 초기화
 
             // 좋아요한 도시가 있을 경우
             if (data.length > 0) {
                 // 각 도시 데이터를 반복하면서 표시
                 data.forEach(city => {
                     const cityName = city.cityName || 'Unknown City';  // 도시명
-                    const cityImg = city.cityImg ? `/uploads/city_images/${city.cityImg}` : '/img/defaultCity.jpg'; // 기본 이미지 설정
+                    const cityImg = city.cityImg ? `/img/${city.cityImg}` : '/img/defaultCity.jpg'; // 기본 이미지 설정
 
                     // 새로운 도시 항목 생성
                     const cityItem = document.createElement('div');

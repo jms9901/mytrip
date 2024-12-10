@@ -556,3 +556,15 @@ body{
 	padding: 10px;  /* 항목의 패딩 */
 	border-bottom: 1px solid #ddd;  /* 항목 간 구분선 */
 }
+
+.CityLikedImg {
+	width: 100%;    /* 이미지 컨테이너가 100% 너비로 크기 조정 */
+	height: 130px;  /* 고정된 높이 설정 */
+	overflow: hidden; /* 넘칠 경우 자르기 */
+}
+
+.CityLikedImg img {
+	width: 100%;     /* 이미지 너비를 100%로 설정 */
+	height: 100%;    /* 이미지 높이를 100%로 설정 */
+	object-fit: cover;  /* 컨테이너에 맞게 이미지를 크롭 */
+}
