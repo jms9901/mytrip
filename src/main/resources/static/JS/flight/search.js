@@ -1,12 +1,7 @@
 $(document).ready(function () {
     console.log("search js 로드")
 
-    //로딩 처리
-    $("#roundTrip").on("submit", function (e) {
-        // 로딩 오버레이 표시
-        console.log("왜 안대")
-        $("#loading-overlay").removeClass("d-none");
-    });
+
 
     // flatpickr 초기화
     const today = new Date();
@@ -221,10 +216,15 @@ $(document).ready(function () {
             alert("인원 수는 최소 1명 이상이어야 합니다.");
             return;
         }
+        $("#loading-overlay").removeClass("d-none");
 
         // 4. 폼 제출 (검증이 모두 통과되었을 경우)
         this.submit();
     });
 
-
+    // 페이지 로드 후 오버레이 숨기기
+    $(window).on("pageshow", function () {
+        console.log("새 페이지가 로드되었습니다.");
+        $("#loading-overlay").addClass("d-none");
+    });
 });
