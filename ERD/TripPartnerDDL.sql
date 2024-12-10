@@ -235,9 +235,6 @@ ALTER TABLE user
     ADD CONSTRAINT UQ_user_username UNIQUE (user_username);
 
 ALTER TABLE user
-    ADD CONSTRAINT UQ_user_phonenumber UNIQUE (user_phonenumber);
-
-ALTER TABLE user
     ADD CONSTRAINT UQ_business_companynumber UNIQUE (business_companynumber);
 
 CREATE TABLE user_city

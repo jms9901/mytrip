@@ -43,6 +43,7 @@ public class UserController {
     public void initBinder(WebDataBinder binder) {
         binder.setValidator(userValidator);
     }
+
     @GetMapping("/home")
     public String home(Model model, HttpSession session) {
         User loggedUser = U.getLoggedUser();
@@ -52,6 +53,7 @@ public class UserController {
         System.out.println("Logged User: " + loggedUser);
         return "user/home";
     }
+
     // 로그인 페이지
     @GetMapping("/login")
     public String login(Model model) {
