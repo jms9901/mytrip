@@ -29,7 +29,11 @@
     </select>
 
 <!--    대륙별 도시 조회-->
-    <resultMap id="" type=""
+    <select id="findContinentByCity" resultType="com.lec.spring.mytrip.domain.City">
+        SELECT city_id
+        FROM city
+        WHERE city_id = #{id}
+    </select>
 
 
 </mapper>
