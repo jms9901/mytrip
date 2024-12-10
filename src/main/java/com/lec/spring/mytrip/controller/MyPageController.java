@@ -45,7 +45,7 @@ public class MyPageController {
     @GetMapping("/mypage/{userId}")
     public String mypageFeed(@PathVariable String userName, Model model) {
         User pageOwner = userService.findByUsername(userName);
-        User currentUser = userService.getCurrentUser();
+        return userName;
     }
 
     @GetMapping("/mypage/bookMain")
