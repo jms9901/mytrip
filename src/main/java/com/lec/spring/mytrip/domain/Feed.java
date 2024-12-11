@@ -16,8 +16,8 @@ public class Feed {
     private String boardSubject;                // 게시물 제목
     private String boardContent;                // 게시물 내용
     private Long boardViewCount;                // 게시물 조회수
-    private LocalDateTime boardDate;            // 게시물 작성일
-    private String boardCategory;               // 게시물 카테고리 ("소모임" / "피드")
+    private LocalDateTime boardDate;            // 게시물 작성일.
+    private BoardCategory boardCategory;        // 게시물 카테고리 (피드, 소모임 => Enum 타입)
     private User user;                          // 사용자
     private City city;                          // 도시
     private List<PostAttachment> attachments;   // 첨부파일
@@ -25,5 +25,4 @@ public class Feed {
     // 파일 업로드를 위한 임시 필드
     private transient List<MultipartFile> uploadFiles;
     private transient Long[] deleteFileIds;
-
 }

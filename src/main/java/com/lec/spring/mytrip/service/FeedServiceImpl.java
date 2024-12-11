@@ -41,7 +41,9 @@ public class FeedServiceImpl implements FeedService {
         // 현재 로그인한 정보 확인
         User user = U.getLoggedUser();
 
-        user = userRepository.findByUsername(user.getUsername());
+        if (user != null) {
+            user = userRepository.findByUsername(user.getUsername());
+        }
         feed.setUser(user);
 
         // 새 피드 저장
@@ -93,13 +95,13 @@ public class FeedServiceImpl implements FeedService {
 
     @Override
     @Transactional
-    public Feed detail(Long id) {
+    public Feed detail(Long boardId) {
         // 본인이 누를 시 조회수 증가 X
         // 조회수 증가
 //        feedRepository.viewCnt(id);
-        Feed feed = feedRepository.findById(id);
+        Feed feed = feedRepository.findById(boardId);
         if (feed != null) {
-            feed.setAttachments(feedRepository.findAttachmentByBoardId(id));
+            feed.setAttachments(feedRepository.findAttachmentByBoardId(boardId));
         }
         return feed;
     }

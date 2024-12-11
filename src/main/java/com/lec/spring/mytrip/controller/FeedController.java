@@ -4,9 +4,7 @@ import com.lec.spring.mytrip.domain.City;
 import com.lec.spring.mytrip.domain.Feed;
 import com.lec.spring.mytrip.domain.FeedValidator;
 import com.lec.spring.mytrip.service.FeedService;
-import com.lec.spring.mytrip.service.UserService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -29,11 +27,27 @@ public class FeedController {
         this.feedService = feedService;
     }
 
+    // 피드 전체 목록 보기
+    @GetMapping("/feedList/{userId}")
+    @ResponseBody
+    public List<Feed> feedList(@PathVariable Long userId) {
+        return feedService.listByUser(userId);
+    }
+
+    @GetMapping("/feed/{userId}")
+    public String feedList(@PathVariable Long userId, Model model) {
+        List<Feed> feeds = feedService.listByUser(userId);
+        model.addAttribute("feeds", feeds);
+        return "mypage/feed";
+    }
+
     // 피드 작성 폼
-    @GetMapping("/feed")
-    public String write(Model model) {
+    @GetMapping("/feed/write/{userId}")
+    public String write(Model model, @PathVariable Long userId) {
         List<City> cities = feedService.getAllCities();
+        List<Feed> feedList = feedService.listByUser(userId);
         model.addAttribute("cities", cities);
+        model.addAttribute("feedList", feedList);
         model.addAttribute("feed", new Feed());  // 초기 피드 객체를 생성해서 전달
         return "mypage/feed";
     }
@@ -58,32 +72,25 @@ public class FeedController {
         }
 
         model.addAttribute("result", feedService.write(feed, files));
-        return "redirect:/mypage/feed" + feed.getUser().getId();
+        return "redirect:/mypage/feed/" + feed.getUser().getId();
     }
 
     // 피드 상세 보기
     @GetMapping("/feedDetail/{boardId}")
     public String feedDetail(@PathVariable Long boardId, Model model) {
         Feed feed = feedService.detail(boardId);
-        boolean isOwner = feed.getUser().equals(boardId); // 본인인지 확인
+        boolean isOwner = feed.getUser().getId().equals(boardId); // 본인인지 확인
 
         model.addAttribute("feed", feed);
         model.addAttribute("isOwner", isOwner); // 본인 여부 추가
         return "mypage/feedDetail";  // 상세보기 페이지
     }
 
-    // 피드 전체 목록 보기
-    @GetMapping("/feed/{userId}")
-    public String feedList(@PathVariable Long userId, Model model) {
-        List<Feed> feeds = feedService.listByUser(userId);
-        model.addAttribute("feeds", feeds);
-        return "mypage/feed";
-    }
 
     // 피드 수정 폼
     @GetMapping("/feedUpdate/{boardId}")
-    public String feedUpdate(@PathVariable Long id, Model model) {
-        Feed feed = feedService.detail(id);
+    public String feedUpdate(@PathVariable Long boardId, Model model) {
+        Feed feed = feedService.detail(boardId);
         List<City> cities = feedService.getAllCities();
 
         model.addAttribute("feed", feed);

@@ -1,11 +1,12 @@
 $(document).ready(function () {
-    const apiUrl = "/mypage/feed"; // API URL 설정
-    const currentUserId = 1; // This should be dynamically set based on the logged-in user
+    const apiUrl = "/mypage"; // API URL 설정
+    const currentUrl = window.location.pathname;  // 예시: "/mypage/1"
+    const userId = parseInt(currentUrl.substring(currentUrl.lastIndexOf('/') + 1)); // 문자열을 숫자로 변환
 
     // 피드 페이지 로드 시 피드 목록 불러오기
     function loadFeedList() {
         $.ajax({
-            url: `${apiUrl}/feedList`,
+            url: `${apiUrl}/{userId}`,
             method: 'GET',
             success: function (feeds) {
                 const feedEntries = $('#feed-Entries');

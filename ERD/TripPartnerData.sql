@@ -453,3 +453,6 @@ values(
         'B',
         'B'
         )
+
+insert into board (user_id, city_id, board_subject, board_content, board_category)
+values (5, 13, 'Hello', '여행와쑤다', '피드');

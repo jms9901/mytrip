@@ -11,9 +11,11 @@ public interface FeedRepository {
     int save(Feed feed);
 
     // 특정 피드 id 글 내용 읽기
-    Feed findById(Long id);
+    // 상세보기
+    Feed findById(Long boardId);
 
     // 특정 사용자의 피드 읽기
+    // 본인이 작성한 피드 리스트 불러오기
     List<Feed> findByUserId(Long userId);
 
     // 특정 id 글 조회수 증가

@@ -33,6 +33,9 @@ CREATE TABLE board
 ) COMMENT '피드, 소모임';
 
 ALTER TABLE board
+    MODIFY COLUMN board_category ENUM('피드', '소모임') NOT NULL COMMENT '피드 카테고리';
+
+ALTER TABLE board
     ADD CONSTRAINT chk_board_category
         CHECK (board_category IN ('피드', '소모임'));
 

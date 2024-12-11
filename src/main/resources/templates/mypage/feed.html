@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="/css/bookMain.css">
     <link rel="stylesheet" href="/css/feedList.css">
     <link rel="stylesheet" href="/css/feedWrite.css">
-    <script type="text/javascript" src="/js/feed.js"></script>
+<!--    <script type="text/javascript" src="/js/feed.js"></script>-->
     <link href='https://fonts.googleapis.com/css?family=Kaushan Script' rel='stylesheet'>
 
 </head>
@@ -112,19 +112,20 @@
 <script type="text/javascript">
     $(document).ready(function () {
         const ENTRIES_PER_PAGE = 9;
-        const apiUrl = "/mypage/feed";
+        const apiUrl = "/mypage";
+        const currentUrl = window.location.pathname;  // 예시: "/mypage/1"
+        const userId = parseInt(currentUrl.substring(currentUrl.lastIndexOf('/') + 1)); // 문자열을 숫자로 변환
+        const pathParts = window.location.pathname.split('/');
 
-        // 현재 사용자 ID 가져오기
-        function getUserIdFromUrl() {
-            const pathParts = window.location.pathname.split('/');
-            return pathParts[pathParts.length - 1];
-        }
+        initializeApp();
+
 
         // 피드 목록 불러오기
         function loadFeedList() {
-            const userId = getUserIdFromUrl();
+            const userId = pathParts[pathParts.length - 1];
 
-            $.get(`${apiUrl}/${userId}`, function (feeds) {
+            $.get(`${apiUrl}/feedList/${userId}`, function (feeds) {
+                console.log('get 요청 받음')
                 // 기존 페이지 초기화
                 resetFlipbook();
 
@@ -132,6 +133,7 @@
                 const pageGroups = chunkArray(feeds, ENTRIES_PER_PAGE);
 
                 pageGroups.forEach((pageFeeds, pageIndex) => {
+                    console.log('Feed Data 불러오기')
                     createNewPage(pageIndex + 1);
                     pageFeeds.forEach(feed => {
                         const feedCard = createFeedCard(feed);
@@ -143,7 +145,10 @@
                 if (pageGroups.length > 0) {
                     $('.flipbook').turn('page', 1);
                 }
-            });
+            })
+                .fail(function (error) {
+                console.error('피드 데이터를 불러오는데 실패했습니다.', error);
+                });
         }
 
         // 배열을 지정된 크기로 나누는 함수
@@ -211,7 +216,7 @@
                 var formData = new FormData(this);
 
                 $.ajax({
-                    url: '/mypage/feed/write',
+                    url: `${apiUrl}/feed/write`,
                     method: 'POST',
                     data: formData,
                     contentType: false,
@@ -247,8 +252,8 @@
             });
 
             // 수정 버튼
-            $('#edit-button').click(function() {
-                window.location.href = `/mypage/feedUpdate.html?feedId=${feed.boardId}`;
+            $('#edit-button').click(function(feed) {
+                window.location.href = `/mypage/feedUpdate.html?feedId=${feed.id}`;
             });
 
             // 삭제 버튼

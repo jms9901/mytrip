@@ -7,21 +7,20 @@
 
     <sql id="SELECT_BOARD">
         select
-            board_id "id",
-            user_id "user_id",
-            city_id "dicy_id",
-            board_subject "board_subject",
-            board_content "board_content",
-            board_view_count "board_view_count",
-            board_date "board_date",
-            board_category "board_category"
+            board_id "boardId",
+            user_id "userId",
+            city_id "cityId",
+            board_subject "boardSubject",
+            board_content "boardContent",
+            board_view_count "boardViewCount",
+            board_date "boardDate",
+            board_category "boardCategory"
         from board
         where 1=1
     </sql>
 
     <!-- 피드 저장 -->
-    <insert id="save" flushCache="true" parameterType="com.lec.spring.mytrip.domain.Feed"
-        useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+    <insert id="save" parameterType="com.lec.spring.mytrip.domain.Feed" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
         INSERT INTO board
             (user_id, city_id, board_subject, board_content, board_view_count, board_date, board_category)
         VALUES
@@ -31,14 +30,14 @@
     <!-- 특정 피드 id로 글 찾기 -->
     <select id="findById" parameterType="long" resultType="com.lec.spring.mytrip.domain.Feed">
         <include refid="SELECT_BOARD"/>
-        WHERE board_id = #{id}
+        AND board_id = #{boardId}
     </select>
 
     <!-- 특정 피드 id 글 조회수 증가 -->
     <update id="viewCnt" parameterType="long">
         UPDATE board
         SET board_view_count = board_view_count + 1
-        WHERE board_id = #{id}
+        AND board_id = #{boardId}
     </update>
 
     <!-- 전체 글 목록 : 최신순 -->
@@ -48,7 +47,7 @@
     </select>
 
     <!-- 특정 유저 id의 피드 최신순 리스트  -->
-    <select id="listByUser" resultType="com.lec.spring.mytrip.domain.Feed">
+    <select id="findByUserId" parameterType="long" resultType="com.lec.spring.mytrip.domain.Feed">
         <include refid="SELECT_BOARD" />
         AND user_id = #{userId}
         ORDER BY board_date DESC
@@ -56,8 +55,8 @@
 
     <!-- 특정 사용자의 최신 게시물 9개 가져오기 -->
     <select id="findRecentFeedByUser" parameterType="long" resultType="com.lec.spring.mytrip.domain.Feed">
-        <include refid="SELECT_BOARD" />
-        AND user_id = #{user_id}
+        <include refid="SELECT_BOARD"/>
+        AND user_id = #{userId}
         ORDER BY board_date DESC
         LIMIT 9
     </select>
@@ -75,7 +74,7 @@
     <!-- 특정 피드 id로 피드 삭제  -->
     <delete id="delete" parameterType="long">
         DELETE FROM board
-        WHERE board_id = #{id}
+        WHERE board_id = #{boardId}
     </delete>
 
     <!-- 전체 피드 개수 -->
@@ -95,8 +94,9 @@
     </insert>
 
     <select id="findAttachmentByBoardId" resultType="com.lec.spring.mytrip.domain.PostAttachment">
-        SELECT * FROM board_attachment
-                 WHERE board_id = #{boardId}
+        SELECT board_attachment_id, board_id, board_attachment_file
+        FROM board_attachment
+        WHERE board_id = #{boardId}
     </select>
 
     <delete id="deleteAttachment" parameterType="long">
@@ -108,11 +108,12 @@
         DELETE FROM board_attachment WHERE board_id = #{boardId}
     </delete>
 
-    <select id="findAllCities">
+    <select id="findAllCities" resultType="com.lec.spring.mytrip.domain.City">
         SELECT * FROM city
     </select>
 
     <select id="findCityById" resultType="com.lec.spring.mytrip.domain.City">
-        SELECT * FROM city WHERE city_id = #{id}
+        SELECT * FROM city WHERE city_id = #{cityId}
     </select>
+
 </mapper>

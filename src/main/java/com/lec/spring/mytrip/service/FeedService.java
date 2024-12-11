@@ -16,7 +16,7 @@ public interface FeedService {
     // 특정 피드 id의  피드 조회 >> SELECT
     // 트랜잭션 처리
     @Transactional
-    Feed detail(Long id);
+    Feed detail(Long boardId);
 
     // 피드 목록 조회 >> SELECT
 //    List<Feed> list();
