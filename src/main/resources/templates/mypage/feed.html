@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="/css/bookMain.css">
     <link rel="stylesheet" href="/css/feedList.css">
     <link rel="stylesheet" href="/css/feedWrite.css">
-<!--    <script type="text/javascript" src="/js/feed.js"></script>-->
+    <script type="text/javascript" src="/js/feed.js"></script>
     <link href='https://fonts.googleapis.com/css?family=Kaushan Script' rel='stylesheet'>
 
 </head>
@@ -23,21 +23,34 @@
 </div>
 <div class="myPageGoHome" style="background-image: url(/img/myPageGoHome.png)"></div>
 
+<div id="feed-Entries">
+    <!--  동적으로 생성되는 카드(피드 리스트)가 들어갈 영역 -->
+</div>
+
 <div class="flipbook-viewport">
 
     <div class="container">
         <div class="flipbook">
-            <div style="background-image:url(/img/mypageTitle.png)"></div>	<!--배경이미지 설정 부분 (여권사진 홀수번 우측, 짝수번 좌측 화면 표시 예정)-->
-            <div style="background-image:url(/img/sample_left.png)">
-                <div style="background-image:url(/img/sample_left.png)"></div>
-                <img src="/img/addbutton.png" alt="feedAdd-Button" id="feedAdd-Button" class="feedAdd-Button" type="button">
+            <div class="titleBook" style="background-image:url(/img/mypageTitle.png)"></div>
+            <!--배경이미지 설정 부분 (여권사진 홀수번 우측, 짝수번 좌측 화면 표시 예정)-->
+            <!--            <div class="leftBook" id="leftBookPage1" style="background-image:url(/img/sample_left.png)"></div>-->
+            <!--            <div class="rightBook" id="leftBookPage2" style="background-image:url(/img/sample_right.png)"></div>-->
 
-                <div id="feed-Entries">
-<!--                    동적으로 생성되는 카드(피드 리스트)가 들어갈 영역-->
-                </div>
+        </div>
+    </div>
+</div>
+<div class="menu1" id="1" style="background-image: url(/img/mypageMenu.png);"><h4 id="Post">&nbsp;Invoice</h4></div>
+<div class="menu2" id="2" style="background-image: url(/img/mypageMenu.png);"><h4 id="PostLiked">&nbsp;Post</h4></div>
+<div class="menu3" id="3" style="background-image: url(/img/mypageMenu.png);"><h4 id="GuestBook">&nbsp;Post♥</h4></div>
+<div class="menu4" id="4" style="background-image: url(/img/mypageMenu.png);"><h4 id="PackageLiked">&nbsp;Package♥</h4>
+</div>
+<div class="menu5" id="5" style="background-image: url(/img/mypageMenu.png);"><h4 id="Invoice">&nbsp;GuestBook</h4>
+</div>
+<div class="goChat" style="background-image: url(/img/mypageChat.png);"></div>
 
                 <!--    피드 작성 모달     -->
-                <div class="modal-container hidden" id="feed-modal" th:id="feed-form" th:method="post" th:action="@{mypage/feed/write}" enctype="multipart/form-data">
+<div class="feedAdd-Button" style="background-image: url(/img/addbutton.png)"></div>
+                <div class="modal-container" id="feed-modal">
                     <form class="modal-content" style="background-image: url(/img/feedDetailFrame.png);">
                         <div class="modal-title">Write Feed Modal</div>
 
@@ -50,19 +63,21 @@
                                     <button class="next-btn hidden">&gt;</button>
                                     <label for="file-input" class="camera-label">
                                         <img src="/img/camera.png" alt="Camera Icon" id="camera-icon">
+                                        <input type="file" name="feedImages" id="file-input" multiple accept="image/*" class="hidden" required>
                                     </label>
-                                    <input type="file" name="feedImages" id="file-input" multiple accept="image/*" class="hidden" required>
                                 </div>
                             </div>
 
-                            <input type="text" name="feedTitle" placeholder="피드 제목" class="feed-title" id="feed-title" required>
+                            <label for="feed-title" class="feed-title">
+                                <input type="text" name="feedTitle" placeholder="피드 제목" class="feed-title" id="feed-title" required>
+                            </label>
                         </div>
                         <div class="image-message">이미지 최대 규격은 242px X 242px 입니다.</div>
 
                         <!-- 도시 선택 옵션 -->
                         <div class="city-select">
                             <a>At</a>
-                            <select name="city-name" id="city-name" th:value="${board_cityId}">
+                            <select name="city-name" id="city-name">
                                 <option value="" disabled >도시 이름을 선택하세요.</option>
                                 <option th:each="city : ${cityList}"
                                         th:value="${city.city_id}"
@@ -77,213 +92,43 @@
                             <textarea name="feedContent" placeholder="피드 내용" class="feed-content" id="feed-content" required></textarea>
                         </label>
 
-                        <button type="submit" id="submit-button" class="submit-button">
-                            <img src="/img/checkIcon.png" alt="submit-button">
-                        </button>
-
+                        <div class="submit-button" type="submit" id="submit-button" style="background-image: url(/img/checkIcon.png)"></div>
+                        <button class="closeModal">Close</button>
                     </form>
                 </div>
 
 
-                <div style="background-image:url(/img/sample_right.png)"></div>
-                <div style="background-image:url(/img/sample_left.png)"></div>
-                <div style="background-image:url(/img/sample_right.png)"></div>
-                <div style="background-image:url(/img/sample_left.png)"></div>
-                <div style="background-image:url(/img/sample_right.png)"></div>
-                <div style="background-image:url(/img/sample_left.png)"></div>
-                <div style="background-image:url(/img/sample_right.png)"></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 메뉴바 -->
-    <div class="menu1" id="1" style="background-image: url(/img/mypageMenu.png);"><h4 id="Invoice">&nbsp;Invoice</h4></div>
-    <div class="menu2" id="2" style="background-image: url(/img/mypageMenu.png);"><h4 id="post" th:href="@{/mypage/feed.html}">&nbsp;Post</h4></div>
-    <div class="menu3" id="3" style="background-image: url(/img/mypageMenu.png);"><h4 id="PostLiked">&nbsp;Post♥</h4></div>
-    <div class="menu4" id="4" style="background-image: url(/img/mypageMenu.png);"><h4 id="PackageLiked">&nbsp;Package♥</h4></div>
-    <div class="menu5" id="5" style="background-image: url(/img/mypageMenu.png);" ><h4 id="GuestBook" th:href="@{/mypage/bookGuestBook.html}">&nbsp;GuestBook</h4></div>
-    <div class="goChat" style="background-image: url(/img/mypageChat.png);"></div>
-
-
-
-</div>
-
 
 <script type="text/javascript">
     $(document).ready(function () {
-        const ENTRIES_PER_PAGE = 9;
         const apiUrl = "/mypage";
         const currentUrl = window.location.pathname;  // 예시: "/mypage/1"
         const userId = parseInt(currentUrl.substring(currentUrl.lastIndexOf('/') + 1)); // 문자열을 숫자로 변환
         const pathParts = window.location.pathname.split('/');
 
+        // 앱 로드 및 초기화
         initializeApp();
 
-
-        // 피드 목록 불러오기
-        function loadFeedList() {
-            const userId = pathParts[pathParts.length - 1];
-
-            $.get(`${apiUrl}/feedList/${userId}`, function (feeds) {
-                console.log('get 요청 받음')
-                // 기존 페이지 초기화
-                resetFlipbook();
-
-                // 피드를 9개씩 페이지로 나누어 추가
-                const pageGroups = chunkArray(feeds, ENTRIES_PER_PAGE);
-
-                pageGroups.forEach((pageFeeds, pageIndex) => {
-                    console.log('Feed Data 불러오기')
-                    createNewPage(pageIndex + 1);
-                    pageFeeds.forEach(feed => {
-                        const feedCard = createFeedCard(feed);
-                        $(`#page${pageIndex + 1}`).append(feedCard);
-                    });
-                });
-
-                // 첫 페이지 활성화
-                if (pageGroups.length > 0) {
-                    $('.flipbook').turn('page', 1);
-                }
-            })
-                .fail(function (error) {
-                console.error('피드 데이터를 불러오는데 실패했습니다.', error);
-                });
-        }
-
-        // 배열을 지정된 크기로 나누는 함수
-        function chunkArray(array, size) {
-            const result = [];
-            for (let i = 0; i < array.length; i += size) {
-                result.push(array.slice(i, i + size));
-            }
-            return result;
-        }
-
-        // 피드 카드 생성 함수
-        function createFeedCard(feed) {
-            return `
-            <div class="feed-card" data-id="${feed.id}">
-                <div class="photo-container">
-                    ${feed.attachments ? `<img src="${feed.attachments}" alt="postThumbnail" class="post-thumbnail">` : ''}
-                </div>
-                <div class="feed-title">
-                    <h4><b>${feed.boardSubject}</b></h4>
-                </div>
-            </div>
-        `;
-        }
-
-        // 피드북 초기화
-        function resetFlipbook() {
-            $('.flipbook').turn('pages', 0);
-            $('.flipbook div.page').remove();
-        }
-
-        // 새 페이지 생성
-        function createNewPage(pageNumber) {
-            const newPage = $(`
-            <div class="page" id="page${pageNumber}"
-                 style="background-image:url(/img/addBook.png)">
-            </div>
-        `);
-            $('.flipbook').turn('addPage', newPage[0], pageNumber);
-        }
-
-        // 피드 카드 클릭 시 상세보기
-        $(document).on('click', '.feed-card', function() {
-            const feedId = $(this).data('id');
-            window.location.href = `/mypage/feedDetail.html?feedId=${feedId}`;
-        });
-
-        // 피드 작성 모달 초기화
-        function initializeFeedModal() {
-            $('#feedAdd-Button').click(function() {
-                $('#feed-modal').removeClass('hidden');
-                $('body').css('overflow', 'hidden');
-            });
-
-            $(document).click(function(event) {
-                if ($(event.target).closest('#feed-modal').length === 0 &&
-                    !$(event.target).is('#feedAdd-Button')) {
-                    $('#feed-modal').addClass('hidden');
-                    $('body').css('overflow', 'auto');
-                }
-            });
-
-            $('#feed-modal form').submit(function(event) {
-                event.preventDefault();
-                var formData = new FormData(this);
-
-                $.ajax({
-                    url: `${apiUrl}/feed/write`,
-                    method: 'POST',
-                    data: formData,
-                    contentType: false,
-                    processData: false,
-                    success: function(response) {
-                        alert("성공적으로 피드를 작성하였습니다!");
-                        $('#feed-modal').addClass('hidden');
-                        $('body').css('overflow', 'auto');
-                        loadFeedList();
-                    },
-                    error: function() {
-                        alert("피드를 작성하는데 실패하였습니다.");
-                    }
-                });
-            });
-        }
-
-        // 앱 초기화
         function initializeApp() {
             checkAndLoadFlipbook();
             loadFeedList();
-            initializeFeedModal();
 
-            // 메뉴 및 기타 버튼 이벤트 설정
-            setupMenuEvents();
-        }
+            // 피드 작성 모달 처리
+            $('.feedAdd-Button').click(() => $('.modal-container').show());
+            $('.closeModal').click(() => $('.modal-container').hide());
 
-        // 메뉴 및 기타 버튼 이벤트 설정
-        function setupMenuEvents() {
-            // 게시판으로 이동
-            $('#view-board-button').click(function() {
-                window.location.href = '/mypage/feed.html';
-            });
-
-            // 수정 버튼
-            $('#edit-button').click(function(feed) {
-                window.location.href = `/mypage/feedUpdate.html?feedId=${feed.id}`;
-            });
-
-            // 삭제 버튼
-            $('#delete-button').click(function() {
-                if (confirm("정말 삭제하시겠습니까?")) {
-                    $.ajax({
-                        url: `${apiUrl}/delete`,
-                        method: 'POST',
-                        success: function () {
-                            alert("피드가 삭제되었습니다.");
-                            $('#feed-detail-modal').addClass('hidden');
-                            loadFeedList();
-                        },
-                        error: function () {
-                            alert("삭제에 실패했습니다.");
-                        }
-                    });
-                }
-            });
+            // 피드 추가 처리
+            $('#submit-button').click(submitFeed);
 
             // 채팅 hover 효과
             $('.goChat').hover(() => hoverChat());
         }
-
         // Flipbook 초기화
         function checkAndLoadFlipbook() {
             if (isCSSTransformSupported()) {
-                $.getScript('/lib/animationjs/turn.js', loadApp);
+                $.getScript('/lib/animationjs/turn.js', () => loadApp());
             } else {
-                $.getScript('../../lib/JQuery/turn.html4.min.js', loadApp);
+                $.getScript('../../lib/JQuery/turn.html4.min.js', () => loadApp());
             }
         }
 
@@ -295,6 +140,7 @@
                 gradients: true,
                 autoCenter: false,
                 display: 'double',
+                // page: 1,
                 first: true
             });
         }
@@ -302,31 +148,175 @@
         // CSS Transform 지원 여부 확인
         function isCSSTransformSupported() {
             const testElement = document.createElement('div');
-            const transformProperties = [
-                'transform', 'WebkitTransform', 'MozTransform',
-                'OTransform', 'msTransform'
-            ];
-            return transformProperties.some(prop =>
-                testElement.style[prop] !== undefined
-            );
+            const transformProperties = ['transform', 'WebkitTransform', 'MozTransform', 'OTransform', 'msTransform'];
+            return transformProperties.some(prop => testElement.style[prop] !== undefined);
         }
 
-        // 앱 초기화 실행
-        initializeApp();
+        // 피드 목록 불러오기
+        function loadFeedList() {
+            console.log("loadFeed 작동")
+            const userId = pathParts[pathParts.length - 1];
 
-        // 채팅 hover 효과
-        function hoverChat() {
-            let angle = 0;
-            let shakeInterval = setInterval(() => {
-                angle += 10;
-                $('.goChat').css('transform', `rotateY(${angle}deg)`);
-                if (angle >= 35) {
-                    clearInterval(shakeInterval);
-                    $('.goChat').css('transform', 'rotateY(0deg)');
+            $.get(`${apiUrl}/feedList/${userId}`, function (feeds) {
+                console.log('get 요청 받음')
+                // 기존 페이지 초기화
+                resetFlipbook();
+
+                // 데이터를 페이지에 추가
+                feeds.forEach((feed, index) => {
+                    const entryHtml = `
+                        <div class="feed-card">
+                            <div class="photo-container">
+                                ${feed.attachments[0] ? `<img src="${feed.attachments[0]}" alt="postThumbnail" class="post-thumbnail">` : ''}
+                            </div>
+                            <div class="feed-title">
+                                <h4><b>${feed.boardSubject}</b></h4>
+                            </div>
+                        </div>`;
+                    addEntryToPage(entryHtml, index + 1);  // index + 1을 이용하여 페이지에 추가
+                    console.log(`Guestbook Entry ${index + 1} added to page ${currentPage}`);
+                });
+            })
+                .fail(function (error) {
+                console.error('피드 데이터를 불러오는데 실패했습니다.', error);
+                });
+        }
+
+        // 기존 페이지 삭제
+        function resetFlipbook() {
+            console.log("resetFlipbook 작동");
+            $('.flipbook').turn('pages', 0);  // 기존 페이지 초기화
+            $('#guestbookEntries').empty();  // 기존 목록 초기화
+            currentPage = 1;  // 페이지 번호 초기화
+            pages = { 1: 0 }; // 각 페이지 항목 개수 초기화
+        }
+
+        function submitFeed() {
+            console.log("submit 작동");
+
+            $.ajax({
+                url: `${apiUrl}/feed/writeOk`,
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(),
+                success: function () {
+                    console.log("success 진입")
+                     loadFeedList();
+                    resetFeedForm();
+                },
+                error: function () {
+                    alert("Failed to add the guest book entry.");
                 }
-            }, 100);
-        }  //hoverChat
-    });
+            });
+        }
+
+        // 피드 입력 필드 초기화
+        function resetFeedForm() {
+            console.log("form 초기화 작동")
+            $('#feed-title').val('');
+            $('#feed-content').val('');
+            $('#file-input').val('');
+            $('#city-name').val('');
+            $('.modal-container').hide();
+        }
+
+        // 항목을 페이지에 추가
+        const entriesPerPage = 9; // 페이지당 항목 개수
+        let currentPage = 1;      // 현재 페이지 번호
+        let pages = { 1: 0 }; // 각 페이지 항목 개수
+
+        function addEntryToPage(entry, index) {
+            console.log("addEntry 작동");
+
+            // 현재 페이지가 없으면 새 페이지 생성
+            if (!$(`#page${currentPage}`).length) {
+                createNewPage(); // 첫 페이지 생성
+            }
+
+            // 현재 페이지에 추가 가능한 경우
+            if (pages[currentPage] < entriesPerPage) {
+                $(`#page${currentPage}`).append(entryWithBackground);
+                pages[currentPage]++;
+                console.log(`Entry added to Page ${currentPage}, Position: ${pages[currentPage]}`);
+            } else {
+                // 현재 페이지가 가득 찼으면 새 페이지 생성 후 추가
+                currentPage++; // 새로운 페이지 번호
+                createNewPage();
+                $(`#page${currentPage}`).append(entryWithBackground);
+                pages[currentPage] = 1; // 새 페이지 첫 번째 항목
+                console.log(`Entry added to new Page ${currentPage}, Position: ${pages[currentPage]}`);
+            }
+
+
+            // 새 페이지 생성
+            function createNewPage(pageNumber) {
+                const newPage = $(`
+            <div class="page" id="page${pageNumber}"
+                 style="background-image:url(/img/addBook.png)">
+            </div>
+        `);
+                $('.flipbook').turn('addPage', newPage[0], pageNumber);
+            }
+
+
+            // 피드 카드 클릭 시 상세보기
+            $(document).on('click', '.feed-card', function () {
+                const feedId = $(this).data('id');
+                window.location.href = `/mypage/feedDetail.html?feedId=${feedId}`;
+            });
+
+            // 피드 작성 모달 초기화
+            function initializeFeedModal() {
+                $('#feedAdd-Button').click(function () {
+                    $('#feed-modal').removeClass('hidden');
+                    $('body').css('overflow', 'hidden');
+                });
+
+                $(document).click(function (event) {
+                    if ($(event.target).closest('#feed-modal').length === 0 &&
+                        !$(event.target).is('#feedAdd-Button')) {
+                        $('#feed-modal').addClass('hidden');
+                        $('body').css('overflow', 'auto');
+                    }
+                });
+
+                $('#feed-modal form').submit(function (event) {
+                    event.preventDefault();
+                    var formData = new FormData(this);
+
+                    $.ajax({
+                        url: `${apiUrl}/feed/write/${userId}`,
+                        method: 'POST',
+                        data: formData,
+                        contentType: false,
+                        processData: false,
+                        success: function (response) {
+                            alert("성공적으로 피드를 작성하였습니다!");
+                            $('#feed-modal').addClass('hidden');
+                            $('body').css('overflow', 'auto');
+                            loadFeedList();
+                        },
+                        error: function () {
+                            alert("피드를 작성하는데 실패하였습니다.");
+                        }
+                    });
+                });
+            }
+
+
+            // 채팅 hover 효과
+            function hoverChat() {
+                let angle = 0;
+                let shakeInterval = setInterval(() => {
+                    angle += 10;
+                    $('.goChat').css('transform', `rotateY(${angle}deg)`);
+                    if (angle >= 35) {
+                        clearInterval(shakeInterval);
+                        $('.goChat').css('transform', 'rotateY(0deg)');
+                    }
+                }, 100);
+            }  //hoverChat
+        }});
 
 
 

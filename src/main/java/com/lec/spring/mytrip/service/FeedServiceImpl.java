@@ -38,14 +38,6 @@ public class FeedServiceImpl implements FeedService {
     @Override
     @Transactional
     public int write(Feed feed, Map<String, MultipartFile> files) {
-        // 현재 로그인한 정보 확인
-        User user = U.getLoggedUser();
-
-        if (user != null) {
-            user = userRepository.findByUsername(user.getUsername());
-        }
-        feed.setUser(user);
-
         // 새 피드 저장
         int result = feedRepository.save(feed);
 
@@ -95,14 +87,11 @@ public class FeedServiceImpl implements FeedService {
 
     @Override
     @Transactional
-    public Feed detail(Long boardId) {
-        // 본인이 누를 시 조회수 증가 X
-        // 조회수 증가
-//        feedRepository.viewCnt(id);
+    public Feed detail(int boardId) {
         Feed feed = feedRepository.findById(boardId);
-        if (feed != null) {
-            feed.setAttachments(feedRepository.findAttachmentByBoardId(boardId));
-        }
+//        if (feed != null) {
+//            feed.setAttachments(feedRepository.findAttachmentByBoardId(boardId));
+//        }
         return feed;
     }
 
@@ -115,7 +104,7 @@ public class FeedServiceImpl implements FeedService {
 //    }
 
     @Override
-    public List<Feed> listByUser(Long userId) {
+    public List<Feed> listByUser(int userId) {
         // 본인이 작성한 피드 리스트만 보여주기
         return feedRepository.findByUserId(userId);
     }
@@ -131,7 +120,7 @@ public class FeedServiceImpl implements FeedService {
         // 지정된 첨부파일 삭제
         if(delFileIds != null) {
             for (Long boardAttachmentId : delFileIds) {
-                feedRepository.deleteAttachment(boardAttachmentId);
+                feedRepository.deleteAttachment(Math.toIntExact(boardAttachmentId));
             }
         }
 
@@ -148,7 +137,7 @@ public class FeedServiceImpl implements FeedService {
     // 파일 삭제
     // postAttachment 다 만들고 수정
     @Override
-    public boolean deleteById(Long boardId) {
+    public boolean deleteById(int boardId) {
         Feed feed = new Feed();
         // 첨부파일 삭제
         feedRepository.deleteAttachmentByBoardId(boardId);

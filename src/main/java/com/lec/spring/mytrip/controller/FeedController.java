@@ -3,6 +3,7 @@ package com.lec.spring.mytrip.controller;
 import com.lec.spring.mytrip.domain.City;
 import com.lec.spring.mytrip.domain.Feed;
 import com.lec.spring.mytrip.domain.FeedValidator;
+import com.lec.spring.mytrip.domain.User;
 import com.lec.spring.mytrip.service.FeedService;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
@@ -30,12 +31,12 @@ public class FeedController {
     // 피드 전체 목록 보기
     @GetMapping("/feedList/{userId}")
     @ResponseBody
-    public List<Feed> feedList(@PathVariable Long userId) {
+    public List<Feed> feedList(@PathVariable int userId) {
         return feedService.listByUser(userId);
     }
 
     @GetMapping("/feed/{userId}")
-    public String feedList(@PathVariable Long userId, Model model) {
+    public String feedList(@PathVariable int userId, Model model) {
         List<Feed> feeds = feedService.listByUser(userId);
         model.addAttribute("feeds", feeds);
         return "mypage/feed";
@@ -43,7 +44,7 @@ public class FeedController {
 
     // 피드 작성 폼
     @GetMapping("/feed/write/{userId}")
-    public String write(Model model, @PathVariable Long userId) {
+    public String write(Model model, @PathVariable int userId) {
         List<City> cities = feedService.getAllCities();
         List<Feed> feedList = feedService.listByUser(userId);
         model.addAttribute("cities", cities);
@@ -77,19 +78,16 @@ public class FeedController {
 
     // 피드 상세 보기
     @GetMapping("/feedDetail/{boardId}")
-    public String feedDetail(@PathVariable Long boardId, Model model) {
+    public String feedDetail(@PathVariable int boardId, Model model) {
         Feed feed = feedService.detail(boardId);
-        boolean isOwner = feed.getUser().getId().equals(boardId); // 본인인지 확인
-
         model.addAttribute("feed", feed);
-        model.addAttribute("isOwner", isOwner); // 본인 여부 추가
         return "mypage/feedDetail";  // 상세보기 페이지
     }
 
 
     // 피드 수정 폼
     @GetMapping("/feedUpdate/{boardId}")
-    public String feedUpdate(@PathVariable Long boardId, Model model) {
+    public String feedUpdate(@PathVariable int boardId, Model model) {
         Feed feed = feedService.detail(boardId);
         List<City> cities = feedService.getAllCities();
 
@@ -130,7 +128,7 @@ public class FeedController {
 
     // 피드 삭제 처리
     @PostMapping("/feed/delete")
-    public String feedDeleteOk(Long id, Model model) {
+    public String feedDeleteOk(int id, Model model) {
         boolean result = feedService.deleteById(id);
         model.addAttribute("result", result);
         return "mypage/feed";

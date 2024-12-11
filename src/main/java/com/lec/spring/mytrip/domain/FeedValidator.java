@@ -31,44 +31,45 @@ public class FeedValidator implements Validator {
 
     @Override
     public void validate(Object target, Errors errors) {
-        Feed feed = (Feed) target;
-
-        // 현재 로그인한 사용자 정보 확인
-        User currentUser = userService.findByUsername(feed.getUser().getUsername());
-        if (currentUser == null) {
-            errors.reject("user.notLoggedIn", "로그인 상태가 아닙니다.");
-            return;
-        }
-
-        // 피드 제목 필수 검증
-        if (feed.getBoardSubject() == null || feed.getBoardSubject().isEmpty()) {
-            errors.rejectValue("title", "title.empty", "제목은 필수 입력 항목입니다.");
-        }
-
-        // 피드 내용 필수 검증
-        if (feed.getBoardContent() == null || feed.getBoardContent().isEmpty()) {
-            errors.rejectValue("content", "content.empty", "내용은 필수 입력 항목입니다.");
-        }
-
-        // 도시 필수 선택 검증
-        if (feed.getCity() == null) {
-            errors.rejectValue("cityId", "city.empty", "도시는 필수 선택 항목입니다.");
-        }
-
-        // 피드 작성자와 현재 로그인 사용자 일치 여부 확인
-        if (!feed.getUser().getUsername().equals(currentUser.getUsername())) {
-            errors.reject("user.notAuthorized", "권한이 없습니다.");
-        }
-
-        // 피드 작성 폼 검증
-        if (feed.getBoardId() != null) { // 수정의 경우
-            Feed existingFeed = (Feed) feedService.listByUser(currentUser.getId());
-            if (existingFeed == null) {
-                errors.reject("feed.notFound", "존재하지 않는 피드입니다.");
-            } else if (!existingFeed.getUser().getUsername().equals(currentUser.getUsername())) {
-                errors.reject("user.notAuthorized", "피드를 수정할 권한이 없습니다.");
-            }
-        }
+//        Feed feed = (Feed) target;
+//
+//        // 현재 로그인한 사용자 정보 확인
+//        User currentUser = userService.findByUsername(feed.getUser().getUsername());
+//        if (currentUser == null) {
+//            errors.reject("user.notLoggedIn", "로그인 상태가 아닙니다.");
+//            return;
+//        }
+//
+//        // 피드 제목 필수 검증
+//        if (feed.getBoardSubject() == null || feed.getBoardSubject().isEmpty()) {
+//            errors.rejectValue("title", "title.empty", "제목은 필수 입력 항목입니다.");
+//        }
+//
+//        // 피드 내용 필수 검증
+//        if (feed.getBoardContent() == null || feed.getBoardContent().isEmpty()) {
+//            errors.rejectValue("content", "content.empty", "내용은 필수 입력 항목입니다.");
+//        }
+//
+//        // 도시 필수 선택 검증
+//        if (feed.getCity() == null) {
+//            errors.rejectValue("cityId", "city.empty", "도시는 필수 선택 항목입니다.");
+//        }
+//
+//        // 피드 작성자와 현재 로그인 사용자 일치 여부 확인
+//        if (!feed.getUser().getUsername().equals(currentUser.getUsername())) {
+//            errors.reject("user.notAuthorized", "권한이 없습니다.");
+//        }
+//
+//        // 피드 작성 폼 검증
+//        if (feed.getBoardId() != null) { // 수정의 경우
+//            Feed existingFeed = (Feed) feedService.listByUser(currentUser.getId());
+//            if (existingFeed == null) {
+//                errors.reject("feed.notFound", "존재하지 않는 피드입니다.");
+//            } else if (!existingFeed.getUser().getUsername().equals(currentUser.getUsername())) {
+//                errors.reject("user.notAuthorized", "피드를 수정할 권한이 없습니다.");
+//            }
+//        }
+//    }
     }
 }
 

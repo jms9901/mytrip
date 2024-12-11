@@ -16,7 +16,7 @@ public class User {
         this.name = name;
     }
 
-    private Long id;  // 사용자 ID
+    private int id;  // 사용자 ID
 
     private String email;  // 사용자 이메일
 

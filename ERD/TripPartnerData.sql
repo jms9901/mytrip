@@ -456,3 +456,6 @@ values(
 
 insert into board (user_id, city_id, board_subject, board_content, board_category)
 values (5, 13, 'Hello', '여행와쑤다', '피드');
+
+SELECT * FROM board WHERE user_id NOT IN (SELECT user_id FROM user);
+SELECT * FROM board WHERE city_id NOT IN (SELECT city_id FROM city);

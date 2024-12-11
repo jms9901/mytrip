@@ -5,22 +5,49 @@
 
 <mapper namespace="com.lec.spring.mytrip.repository.FeedRepository">
 
+    <resultMap id="CityResultMap" type="com.lec.spring.mytrip.domain.City">
+        <id property="cityId" column="city_id"/>
+        <result property="cityName" column="city_name"/>
+        <result property="cityContinent" column="city_continent"/>
+        <result property="cityLanguage" column="city_language"/>
+        <result property="cityCurrency" column="city_currency"/>
+        <result property="cityImg" column="city_img"/>
+        <result property="cityNation" column="city_nation"/>
+        <result property="q1Id" column="q1_id"/>
+        <result property="q2Id" column="q2_id"/>
+        <result property="q3Id" column="q3_id"/>
+        <result property="q4Id" column="q4_id"/>
+        <result property="q5Id" column="q5_id"/>
+    </resultMap>
+
     <sql id="SELECT_BOARD">
-        select
-            board_id "boardId",
-            user_id "userId",
-            city_id "cityId",
-            board_subject "boardSubject",
-            board_content "boardContent",
-            board_view_count "boardViewCount",
-            board_date "boardDate",
-            board_category "boardCategory"
-        from board
-        where 1=1
+        SELECT
+            b.board_id AS "boardId",
+            u.user_id AS "userId",
+            c.city_id AS "cityId",
+            c.city_name AS "cityName",
+            b.board_subject AS "boardSubject",
+            b.board_content AS "boardContent",
+            b.board_view_count AS "boardViewCount",
+            b.board_date AS "boardDate",
+            b.board_category AS "boardCategory"
+        FROM
+            board b
+                JOIN
+            user u
+            ON
+                b.user_id = u.user_id
+                JOIN
+            city c
+            ON
+                b.city_id = c.city_id
+        WHERE
+            b.board_category = '피드'
     </sql>
 
+
     <!-- 피드 저장 -->
-    <insert id="save" parameterType="com.lec.spring.mytrip.domain.Feed" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+    <insert id="save" parameterType="com.lec.spring.mytrip.domain.Feed" useGeneratedKeys="true" keyColumn="boardId" keyProperty="boardId">
         INSERT INTO board
             (user_id, city_id, board_subject, board_content, board_view_count, board_date, board_category)
         VALUES
@@ -28,35 +55,119 @@
     </insert>
 
     <!-- 특정 피드 id로 글 찾기 -->
-    <select id="findById" parameterType="long" resultType="com.lec.spring.mytrip.domain.Feed">
-        <include refid="SELECT_BOARD"/>
+    <select id="findById" parameterType="int" resultType="com.lec.spring.mytrip.domain.Feed">
+        SELECT
+            b.board_id AS "boardId",
+            u.user_id AS "userId",
+            c.city_id AS "cityId",
+            c.city_name AS "cityName",
+            b.board_subject AS "boardSubject",
+            b.board_content AS "boardContent",
+            b.board_view_count AS "boardViewCount",
+            b.board_date AS "boardDate",
+            b.board_category AS "boardCategory"
+        FROM
+            board b
+                JOIN
+            user u
+            ON
+                b.user_id = u.user_id
+                JOIN
+            city c
+            ON
+                b.city_id = c.city_id
+        WHERE
+            b.board_category = '피드'
         AND board_id = #{boardId}
     </select>
 
     <!-- 특정 피드 id 글 조회수 증가 -->
-    <update id="viewCnt" parameterType="long">
+    <update id="viewCnt" parameterType="int">
         UPDATE board
         SET board_view_count = board_view_count + 1
-        AND board_id = #{boardId}
+        WHERE board_id = #{boardId}
     </update>
 
     <!-- 전체 글 목록 : 최신순 -->
     <select id="findAll" resultType="com.lec.spring.mytrip.domain.Feed">
-        <include refid="SELECT_BOARD" />
+        SELECT
+            b.board_id AS "boardId",
+            u.user_id AS "userId",
+            c.city_id AS "cityId",
+            c.city_name AS "cityName",
+            b.board_subject AS "boardSubject",
+            b.board_content AS "boardContent",
+            b.board_view_count AS "boardViewCount",
+            b.board_date AS "boardDate",
+            b.board_category AS "boardCategory"
+        FROM
+            board b
+                JOIN
+            user u
+            ON
+                b.user_id = u.user_id
+                JOIN
+            city c
+            ON
+                b.city_id = c.city_id
+        WHERE
+            b.board_category = '피드'
         ORDER BY board_date DESC
     </select>
 
     <!-- 특정 유저 id의 피드 최신순 리스트  -->
-    <select id="findByUserId" parameterType="long" resultType="com.lec.spring.mytrip.domain.Feed">
-        <include refid="SELECT_BOARD" />
-        AND user_id = #{userId}
-        ORDER BY board_date DESC
+    <select id="findByUserId" parameterType="int" resultType="com.lec.spring.mytrip.domain.Feed">
+        SELECT
+            b.board_id AS "boardId",
+            u.user_id AS "userId",
+            c.city_id AS "cityId",
+            c.city_name AS "cityName",
+            b.board_subject AS "boardSubject",
+            b.board_content AS "boardContent",
+            b.board_view_count AS "boardViewCount",
+            b.board_date AS "boardDate",
+            b.board_category AS "boardCategory"
+        FROM
+            board b
+                JOIN
+            user u
+            ON
+                b.user_id = u.user_id
+                JOIN
+            city c
+            ON
+                b.city_id = c.city_id
+        WHERE
+            b.board_category = '피드'
+        AND b.user_id = #{userId}
+        ORDER BY b.board_date DESC
     </select>
 
     <!-- 특정 사용자의 최신 게시물 9개 가져오기 -->
-    <select id="findRecentFeedByUser" parameterType="long" resultType="com.lec.spring.mytrip.domain.Feed">
-        <include refid="SELECT_BOARD"/>
-        AND user_id = #{userId}
+    <select id="findRecentFeedByUser" parameterType="int" resultType="com.lec.spring.mytrip.domain.Feed">
+        SELECT
+            b.board_id AS "boardId",
+            u.user_id AS "userId",
+            c.city_id AS "cityId",
+            c.city_name AS "cityName",
+            b.board_subject AS "boardSubject",
+            b.board_content AS "boardContent",
+            b.board_view_count AS "boardViewCount",
+            b.board_date AS "boardDate",
+            b.board_category AS "boardCategory"
+        FROM
+            board b
+                JOIN
+            user u
+            ON
+                b.user_id = u.user_id
+                JOIN
+            city c
+            ON
+                b.city_id = c.city_id
+        WHERE
+            b.board_category = '피드'
+        AND b.user_id = #{userId}
         ORDER BY board_date DESC
         LIMIT 9
     </select>
@@ -72,7 +183,7 @@
     </update>
 
     <!-- 특정 피드 id로 피드 삭제  -->
-    <delete id="delete" parameterType="long">
+    <delete id="delete" parameterType="int">
         DELETE FROM board
         WHERE board_id = #{boardId}
     </delete>
@@ -99,21 +210,21 @@
         WHERE board_id = #{boardId}
     </select>
 
-    <delete id="deleteAttachment" parameterType="long">
+    <delete id="deleteAttachment" parameterType="int">
         DELETE FROM board_attachment
                WHERE board_attachment_id = #{boardAttachmentId}
     </delete>
 
-    <delete id="deleteAttachmentByBoardId" parameterType="long">
+    <delete id="deleteAttachmentByBoardId" parameterType="int">
         DELETE FROM board_attachment WHERE board_id = #{boardId}
     </delete>
 
-    <select id="findAllCities" resultType="com.lec.spring.mytrip.domain.City">
+    <select id="findAllCities" resultMap="CityResultMap">
         SELECT * FROM city
     </select>
 
-    <select id="findCityById" resultType="com.lec.spring.mytrip.domain.City">
-        SELECT * FROM city WHERE city_id = #{cityId}
+    <select id="findCityById" resultMap="CityResultMap">
+        SELECT c.* FROM city c JOIN board b ON c.city_id = b.city_id
     </select>
 
 </mapper>

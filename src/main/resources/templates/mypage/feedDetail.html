@@ -1,80 +1,89 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Feed Detail</title>
-    <link href='https://fonts.googleapis.com/css?family=Kaushan Script' rel='stylesheet'>
-    <link rel="stylesheet" th:href="@{/static/CSS/feedWrite.css}">
-</head>
-<body>
-<!-- Modal Container -->
-<div class="modal-container hidden" id="feed-modal">
-    <form class="modal-content" alt="modal-frame" th:src="@{/static/img/feedDetailFrame.png}">
-        <div class="modal-title">피드 작성</div>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+                xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<script th:unless="${boardId}">
+    alert("해당 정보가 삭제되거나 없습니다");
+    history.back();
+</script>
 
-        <!-- Left Side: Image Upload Section -->
-        <div class="section">
-            <div class="image-upload">
-                <div class="image-frame">
-                    <button class="prev-btn hidden">&lt;</button>
-                    <div id="image-preview" class="slider"></div>
-                    <button class="next-btn hidden">&gt;</button>
-                    <label for="file-input" class="camera-label">
-                        <img th:src="@{/static/img/carmera.png}" alt="Camera Icon" id="camera-icon">
-                    </label>
-                    <input type="file" name="feedImages" id="file-input" multiple accept="image/*" class="hidden">
+<th:block th:if="${boardId}">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Feed Detail</title>
+        <link href='https://fonts.googleapis.com/css?family=Kaushan Script' rel='stylesheet'>
+        <link rel="stylesheet" th:href="@{/static/CSS/feedWrite.css}">
+    </head>
+    <body>
+    <!-- Modal Container -->
+    <div class="modal-container hidden" id="feed-modal" th:>
+        <form class="modal-content" alt="modal-frame" th:src="@{/static/img/feedDetailFrame.png}">
+            <div class="modal-title">피드 작성</div>
+
+            <!-- Left Side: Image Upload Section -->
+            <div class="section">
+                <div class="image-upload">
+                    <div class="image-frame">
+                        <button class="prev-btn hidden">&lt;</button>
+                        <div id="image-preview" class="slider"></div>
+                        <button class="next-btn hidden">&gt;</button>
+                        <label for="file-input" class="camera-label">
+                            <img th:src="@{/static/img/carmera.png}" alt="Camera Icon" id="camera-icon">
+                        </label>
+                        <input type="file" name="feedImages" id="file-input" multiple accept="image/*" class="hidden">
+                    </div>
                 </div>
+
+                <label for="feed-title">
+                    <input type="text" placeholder="피드 제목" class="feed-title" id="feed-title">
+                </label>
+
+                <div class="feed-regdate">
+                    <span class="feed-regdate" th:value="${#temporals.format(board.boardDate)}"></span>
+                </div>
+
+            </div>
+            <div class="image-message">이미지 최대 규격은 242px X 242px 입니다.</div>
+            <!-- 도시 선택 옵션 : 도시 추가 및 변경.-->
+            <div class="city-select">
+                <a>At</a>
+                <select name="city-name" id="city-name" th:value="${board_cityId}">
+                    <option value="" disabled >도시 이름을 선택하세요.</option>
+                    <option th:each="city : ${cityList}"
+                            th:value="${city.city_id}"
+                            th:text="${city.city_name}"
+                            th:selected="${board.cityId == city.city_id}">
+                    </option>
+                </select>
             </div>
 
-            <label for="feed-title">
-                <input type="text" placeholder="피드 제목" class="feed-title" id="feed-title" th:value="${board.boardSubject}">
+            <label for="feed-content">
+                <textarea placeholder="피드 내용" class="feed-content" id="feed-content" th:value="${board.boardContent}"></textarea>
             </label>
 
-            <div class="feed-regdate">
-                <span class="feed-regdate" th:value="${#temporals.format(board.boardDate)}"></span>
+            <div class="feed-liked-container">
+                <img th:src="@{/static/img/heart-icon-fill.png}" alt="liked-heart" class="feed-liked">
+                <!--   좋아요 완료 후 DB연결    -->
+                <span class="feed-liked-count"></span>
             </div>
 
-        </div>
-        <div class="image-message">이미지 최대 규격은 242px X 242px 입니다.</div>
-        <!-- 도시 선택 옵션 : 도시 추가 및 변경.-->
-        <div class="city-select">
-            <a>At</a>
-            <select name="city-name" id="city-name" th:value="${board_cityId}">
-                <option value="" disabled >도시 이름을 선택하세요.</option>
-                <option th:each="city : ${cityList}"
-                        th:value="${city.city_id}"
-                        th:text="${city.city_name}"
-                        th:selected="${board.cityId == city.city_id}">
-                </option>
-            </select>
-        </div>
+            <!-- 본인이 상세보기에 들어갔을 때 누를 수 있는 버튼 -->
+            <!-- 삭제 버튼 -->
+            <img th:src="@{/static/img/mypageDeleteIcon.png}" th:if="${logged_user.userId == board.userId}" th:href="@{/mypage/feedDeleteOk.html}"
+                 alt="delete-button" type="button" id="delete-button" class="delete-button">
+            <!-- 수정 버튼 -->
+            <img th:src="@{/static/img/mypageUpdate.png}" th:action="@{/mypage/feedUpdate.html}" alt="update-button" type="button" id="update-button" class="update-button" th:if="${logged_user.userId == board.userId}">
 
-        <label for="feed-content">
-            <textarea placeholder="피드 내용" class="feed-content" id="feed-content" th:value="${board.boardContent}"></textarea>
-        </label>
+            <!-- 타인이 상세보기 들어갔을 때 누를 수 있는 버튼 -->
+            <!-- 피드 페이지로 이동 버튼 이동 페이지 넣기 -->
+            <img th:src="@{/static/img/mypageFeedList.png}" th:action="@{/board/}" alt="feedList-button" type="button" class="goFeedList" th:if="${logged_user.userId != board.userId}">
+            <!-- 타인의 마이페이지 피드에 들어갈 경우 좋아요를 누를 수 있음. -->
+        </form>
+    </div>
 
-        <div class="feed-liked-container">
-            <img th:src="@{/static/img/heart-icon-fill.png}" alt="liked-heart" class="feed-liked">
-            <!--   좋아요 완료 후 DB연결    -->
-            <span class="feed-liked-count"></span>
-        </div>
+    <script th:src="@{/static/JS/feedWrite.js}"></script>
+    <script th:src="@{/static/JS/feedDetail.js}"></script>
+    </body>
+</th:block>
 
-        <!-- 본인이 상세보기에 들어갔을 때 누를 수 있는 버튼 -->
-        <!-- 삭제 버튼 -->
-        <img th:src="@{/static/img/mypageDeleteIcon.png}" th:if="${logged_user.userId == board.userId}" th:href="@{/mypage/feedDeleteOk.html}"
-             alt="delete-button" type="button" id="delete-button" class="delete-button">
-        <!-- 수정 버튼 -->
-        <img th:src="@{/static/img/mypageUpdate.png}" th:action="@{/mypage/feedUpdate.html}" alt="update-button" type="button" id="update-button" class="update-button" th:if="${logged_user.userId == board.userId}">
-
-        <!-- 타인이 상세보기 들어갔을 때 누를 수 있는 버튼 -->
-        <!-- 피드 페이지로 이동 버튼 이동 페이지 넣기 -->
-        <img th:src="@{/static/img/mypageFeedList.png}" th:action="@{/board/}" alt="feedList-button" type="button" class="goFeedList" th:if="${logged_user.userId != board.userId}">
-        <!-- 타인의 마이페이지 피드에 들어갈 경우 좋아요를 누를 수 있음. -->
-    </form>
-</div>
-
-<script th:src="@{/static/JS/feedWrite.js}"></script>
-<script th:src="@{/static/JS/feedDetail.js}"></script>
-</body>
 </html>
