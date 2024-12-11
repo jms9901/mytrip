@@ -17,10 +17,6 @@ openModal.addEventListener("click", () => {
 
 // 버튼 submit
 submitButton.addEventListener("click", () => {
-
-    // 필수 입력값 검증
-    // TODO
-
     alert("피드가 작성되었습니다.");
     modal.classList.add("hidden");
     // uploadedImages 배열 초기화

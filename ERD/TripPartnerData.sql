@@ -25,7 +25,7 @@ values ('fullstackK08@naver.com',
         );
 
 # business 데이터
-insert into user (user_email, user_password,user_username,user_name,user_phonenumber,user_authorization,business_companynumber)
+insert into user (user_email, user_password,user_username,user_name,user_authorization,business_companynumber)
  values       (
         'business@naver.com',
          '1234',
@@ -191,7 +191,7 @@ values(
          'B',
          'A',
          'B',
-         'A'
+         'B'
         ),
         (
          '로스엔젤레스',
@@ -229,8 +229,8 @@ values(
          'A',
          'B',
          'B',
-         'A',
-         'B'
+         'B',
+         'A'
         ),
         (
          '런던',
@@ -295,7 +295,7 @@ values(
          'A',
          'A',
          'B',
-         'A'
+         'B'
         ),
         (
         '뉴욕',
@@ -425,7 +425,7 @@ values(
         'B',
         'B',
         'A',
-        'A'
+        'B'
         ),
         (
         '벤쿠버',
@@ -453,3 +453,9 @@ values(
         'B',
         'B'
         )
+
+insert into board (user_id, city_id, board_subject, board_content, board_category)
+values (5, 13, 'Hello', '여행와쑤다', '피드');
+
+SELECT * FROM board WHERE user_id NOT IN (SELECT user_id FROM user);
+SELECT * FROM board WHERE city_id NOT IN (SELECT city_id FROM city);

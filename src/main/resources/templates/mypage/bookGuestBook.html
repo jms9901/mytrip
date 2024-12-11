@@ -73,366 +73,242 @@
 </div>
 
 
-<script type="text/javascript">
 
-   //여기서부터
-    $(document).ready(function () {
-        const apiUrl = "/bookGuestBook"; // API URL 설정
+    <script type="text/javascript">
+        $(document).ready(function () {
 
+        const apiUrl = "/bookMain/bookGuestBook"; // API URL 설정
 
-        // 페이지 로드 시 방명록 목록을 불러오기
-        function loadGuestBooks() {
-            const toUserId = 1; // 사용자 ID (하드코딩)
+        // 앱 로드 및 초기화
+        initializeApp();
 
-            $.get(`${apiUrl}/list/${toUserId}`, function (data) {
-                console.log(data); //일단 테스트용
-                $('#guestbookEntries').empty(); // 기존 목록 초기화
+        function initializeApp() {
+        checkAndLoadFlipbook();
+        loadGuestBooks();
 
-                // 방명록 항목을 flipbook 형식으로 추가
-                data.forEach(guestBook => {
-                    const entryHtml = `
-                        <div class="guestbook-entry" >
-                            <h4>${guestBook.toUserId}</h4>
-                            <p>${guestBook.message}</p>
-                            <button class="delete-btn" data-id="${guestBook.id}">Delete</button>
-                        </div>
-                    `;
-                    $('#guestbookEntries').append(entryHtml);
-                });
+        // 방명록 작성 모달 처리
+        $('.writeGuestBook').click(() => $('.addGuestBookModal').show());
+        $('.closeModal').click(() => $('.addGuestBookModal').hide());
 
-                // 삭제 버튼 클릭 시 삭제 처리
-                $('.delete-btn').click(function () {
-                    const guestBookId = $(this).data('id');
-                    deleteGuestBook(guestBookId);
-                });
-            });
-        }
+        // 유저 정보 수정 모달 처리
+        $('.myPageUpdate').click(() => $('.updateUserModal').show());
+        $('.closeUpdateModal').click(() => $('.updateUserModal').hide());
 
         // 방명록 추가 처리
-        $('#submitGuestBook').click(function () {
-            const name = $('#guestName').val();
-            const message = $('#guestMessage').val();
+        $('#submitGuestBook').click(submitGuestBook);
 
-            if (name && message) {
-                const guestBookData = {
-                    toUserId: 1,
-                    fromUserId: 2,
-                    // name: name,
-                    guestBookContent: message
-                };
-
-                $.ajax({
-                    url: `${apiUrl}/add`,
-                    method: 'POST',
-                    contentType: 'application/json',  // 요청의 Content-Type을 JSON으로 설정
-                    data: JSON.stringify(guestBookData),  // 데이터를 JSON 형식으로 변환
-                    success: function () {
-                        loadGuestBooks(); // 새로 추가된 방명록을 반영
-                        $('.addGuestBookModal').hide(); // 모달 닫기
-                        $('#guestName').val(''); // 입력 필드 초기화
-                        $('#guestMessage').val('');
-                    },
-                    error: function () {
-                        alert("Failed to add the guest book entry.");
-                    }
-                });
-            } else {
-                alert("Please fill in both fields!");
-            }
-
-
-
-
-            // 방명록 삭제 처리
-            function deleteGuestBook(guestBookId) {
-                $.ajax({
-                    url: `${apiUrl}/delete/${guestBookId}`,
-                    method: 'DELETE',
-                    success: function () {
-                        loadGuestBooks(); // 삭제 후 목록 갱신
-                    },
-                    error: function () {
-                        alert("Failed to delete the guest book entry.");
-                    }
-                });
-            }
-
-            // 페이지 로드 시 방명록 목록 불러오기
-            loadGuestBooks();
-        });
-    })
-    //여기까지
-
-
-    function loadApp() {
-
-        // Create the flipbook
-
-        $('.flipbook').turn({
-            // Width
-
-            width: 922,
-
-            // Height
-
-            height: 600,
-
-            // Elevation
-
-            elevation: 50,
-
-            // Enable gradients
-
-            gradients: true,
-
-            // Auto center this flipbook
-
-            autoCenter: false,
-            display: 'double',
-            page: 1,
-            first:true
-
-        });
-
-        // $('.flipbook').bind('turning', function (event, page) {
-        //     if (page === 3) {
-        //         event.preventDefault();  // 2페이지에서는 flipbook 기능을 비활성화
-        //     }
-        // });
-
-        $('.menu1').show(); // Show menu after the first page turn
-        $('.menu2').show();
-        $('.menu3').show();
-        $('.menu4').show();
-        $('.menu5').show();
-
-        $('.writeGuestBook').click(function () {
-            $('.addGuestBookModal').show();
-            $('.closeModal').click(function () {
-                $('.addGuestBookModal').hide();
-            });
-        });
-
-
-
-
-
-
-
-        function checkAndCreateFirstPage() {
-            if ($('#leftBookPage1').length === 0 || $('#rightBookPage1').length === 0) {
-                var newLeftPage = `<div class="leftBook" id="leftBookPage1" style="background-image:url(/img/sample_left.png)"></div>`;
-                var newRightPage = `<div class="rightBook" id="rightBookPage2" style="background-image:url(/img/sample_right.png)"></div>`;
-                $('#flipbook').append(newLeftPage);
-                $('#flipbook').append(newRightPage);
-            }
-        }
-
-        // 한 페이지당 최대 항목 수 (왼쪽 페이지와 오른쪽 페이지 각각 3개씩)
-        var entriesPerPage = 3;  // 왼쪽 페이지와 오른쪽 페이지에 각각 3개씩 항목
-
-// 현재 페이지와 페이지별 항목 수를 추적
-        var currentPage = 1;  // 첫 페이지는 표지이므로 두 번째 페이지부터 시작 (1번째 페이지는 이미 표지)
-        var pages = {
-            0: 0, // 표지 페이지
-            1: 0, // 첫 번째 오른쪽 페이지
-            2: 0  // 두 번째 왼쪽 페이지
-        };
-
-// 한 페이지당 항목 개수 (왼쪽, 오른쪽 페이지 각각 3개씩)
-        var entriesPerPage = 3;
-        var currentPage = 1; // 첫 번째 페이지는 표지, 1번부터 시작
-        var pages = {
-            0: 0, // 표지 페이지 (0번)
-            1: 0, // 첫 번째 오른쪽 페이지
-            2: 0  // 두 번째 왼쪽 페이지
-        };
-
-// 항목을 페이지에 추가하는 함수
-        function addEntryToPage(entry) {
-            console.log("Adding entry:", entry);
-
-            // 페이지가 아직 없으면 페이지 생성하고 항목 추가
-            if (currentPage === 1) {
-                // 첫 번째 페이지를 표시하는 로직
-                createNewPage(entry);
-                return;
-            }
-
-            // 현재 페이지가 꽉 차지 않았다면 항목 추가
-            if (pages[currentPage] < entriesPerPage) {
-                // 페이지에 항목을 추가
-                $(`#page${currentPage}`).append(entry);
-                pages[currentPage]++;
-            } else {
-                // 페이지가 가득 차면 새 페이지 생성
-                if (currentPage % 2 === 1) {
-                    // 오른쪽 페이지가 가득 차면 왼쪽 페이지로 넘어가야 한다
-                    currentPage++; // 왼쪽 페이지로 넘어가며
-                    createNewPage(entry);
-                } else {
-                    // 왼쪽 페이지가 가득 차면 오른쪽 페이지로 넘어간다
-                    currentPage++; // 오른쪽 페이지로 넘어가며
-                    createNewPage(entry);
-                }
-            }
-
-            console.log("Pages after adding entry:", pages);
-        }
-
-// 새 페이지를 생성하고 항목을 추가하는 함수
-        function createNewPage(entry) {
-            var totalPages = $('.flipbook').turn('pages');
-            currentPage = totalPages + 1; // 페이지 번호 계산
-
-            // 새 페이지 생성 (왼쪽 또는 오른쪽 페이지)
-            var newPage = `<div class="page" id="page${currentPage}" style="background-image:url(/img/addBook.png)"></div>`;
-
-            // 새 페이지를 flipbook에 추가
-            $('.flipbook').turn('addPage', $(newPage)[0], currentPage);
-
-            // 새 페이지에 항목 추가
-            $(`#page${currentPage}`).append(entry);
-            pages[currentPage] = 1; // 새 페이지에 첫 번째 항목 추가
-
-            // 페이지가 생성된 후, 강제로 페이지를 다시 렌더링하여 항목이 표시되도록 합니다.
-            $('.flipbook').turn('resize');
-            console.log("Pages after creating new pages:", pages);
-        }
-
-
-
-        function setRandomBackgroundImage(entryElement) {
-            const images = [
-                'url(/img/stamp1.png)',
-                'url(/img/stamp2.png)',
-                'url(/img/stamp3.png)',
-                'url(/img/stamp4.png)',
-                'url(/img/stamp5.png)'
-            ];
-
-            // 랜덤 이미지 선택
-            const randomImage = images[Math.floor(Math.random() * images.length)];
-
-            // 선택된 이미지로 배경 설정
-            entryElement.css('background-image', randomImage);
-        }
-
-// 방명록 작성 후 항목 추가
-        $('#submitGuestBook').click(function () {
-            var name = $('#guestName').val();
-            var message = $('#guestMessage').val();
-
-            if (name !== "" && message !== "") {
-
-
-
-                const images = [
-                    'url(/img/stamp1.png)',
-                    'url(/img/stamp2.png)',
-                    'url(/img/stamp3.png)',
-                    'url(/img/stamp4.png)',
-                    'url(/img/stamp5.png)'
-                ];
-                const randomImage = images[Math.floor(Math.random() * images.length)];
-
-                // 새 방명록 항목 생성
-                var newEntry = `
-        <div class="guestbook-entry" style="background-image: ${randomImage};">
-            <h4>${name}</h4>
-            <p>${message}</p>
-        </div>`;
-
-
-
-                addEntryToPage(newEntry); // 새 항목을 페이지에 추가
-
-                // 배경 이미지 랜덤 설정 함수 호출
-                var lastEntry = $('#guestbookEntries').children().last();
-                setRandomBackgroundImage(lastEntry);  // 여기서 랜덤 배경 이미지 설정
-
-                // 입력 필드 초기화
-                $('#guestName').val('');
-                $('#guestMessage').val('');
-                $('.addGuestBookModal').hide(); // 모달 닫기
-            } else {
-                alert("Please fill in both fields!");
-            }
-        });
-
-
-        $('.goChat').hover(function () {
-            hoverChat();
-        });
-
-        function hoverChat() {
-            let angle = 0;
-            clearInterval(shakeInterval);
-            $('.goChat').css('transform', 'rotateY(0deg)');  // 초기 상태 설정
-            let shakeInterval = setInterval(function () {
-                angle += 10;  // 한 번에 10도씩 증가
-                $('.goChat').css('transform', `rotateY(${angle}deg)`);  // Y축을 중심으로 회전
-                if (angle >= 35) {  // 35도까지 회전
-                    clearInterval(shakeInterval);
-                    $('.goChat').css('transform', 'rotateY(0deg)');  // 원래 위치로 돌아가게 설정
-                }
-            }, 100);  // 0.1초마다 회전
-        }
-
+        // 채팅 hover 효과
+        $('.goChat').hover(() => hoverChat());
     }
 
-    $('.myPageUpdate').click(function () {
-        $('.updateUserModal').show();
-    });
-    $('.closeUpdateModal').click(function () {
-        $('.updateUserModal').hide();
-    });
-
-    // Load the HTML4 version if there's not CSS transform
-
-    function isCSSTransformSupported() {
-        var testElement = document.createElement('div');
-        var transformProperties = ['transform', 'WebkitTransform', 'MozTransform', 'OTransform', 'msTransform'];
-
-        for (var i = 0; i < transformProperties.length; i++) {
-            if (testElement.style[transformProperties[i]] !== undefined) {
-                return true; // CSS transform이 지원됩니다.
-            }
-        }
-
-        return false; // CSS transform이 지원되지 않습니다.
-    }
-
-    if (isCSSTransformSupported()) {
-        // transform 지원 시
-        $.getScript('../../lib/animationjs/turn.js', function () {
-            loadApp();
-        });
+        // Flipbook 초기화
+        function checkAndLoadFlipbook() {
+        if (isCSSTransformSupported()) {
+        $.getScript('/lib/animationjs/turn.js', () => loadApp());
     } else {
-        // transform 미지원 시
-        $.getScript('../../lib/JQuery/turn.html4.min.js', function () {
-            loadApp();
-        });
+        $.getScript('../../lib/JQuery/turn.html4.min.js', () => loadApp());
+    }
     }
 
-    // if (Modernizr.csstransforms) {
-    // 	$.getScript('../../lib/animationjs/turn.js', function() {
-    // 		loadApp();
-    // 	});
-    // } else {
-    // 	$.getScript('../../lib/JQuery/turn.html4.min.js', function() {
-    // 		loadApp();
-    // 	});
-    // }
+        function loadApp() {
+        $('.flipbook').turn({
+        width: 922,
+        height: 600,
+        elevation: 50,
+        gradients: true,
+        autoCenter: false,
+        display: 'double',
+        // page: 1,
+        first: true
+    });
+    }
 
-    // yepnope({
-    // 	test : Modernizr.csstransforms,
-    // 	yep: ['../../lib/animationjs/turn.js'],				//경로 & 실제 파일 존재여부 반드시 확인
-    // 	nope: ['../../lib/JQuery/turn.html4.min.js'],	//경로 & 실제 파일 존재여부 반드시 확인
-    // 	both: ['css/basic.css'],				//경로 & 실제 파일 존재여부 반드시 확인
-    // 	complete: loadApp
-    // });
+        // CSS Transform 지원 여부 확인
+        function isCSSTransformSupported() {
+        const testElement = document.createElement('div');
+        const transformProperties = ['transform', 'WebkitTransform', 'MozTransform', 'OTransform', 'msTransform'];
+        return transformProperties.some(prop => testElement.style[prop] !== undefined);
+    }
 
+        // URL에서 toUserId 값 추출하는 함수
+        function getToUserIdFromUrl() {
+        const pathParts = window.location.pathname.split('/');
+        const toUserId = pathParts[pathParts.length - 1]; // 마지막 부분이 toUserId
+        return toUserId;
+    }
+
+        // 방명록 불러오기
+        function loadGuestBooks() {
+        console.log("loadGuestBooks 작동");
+
+        const toUserId = getToUserIdFromUrl();
+
+        $.get(`${apiUrl}/list/${toUserId}`, function (data) {
+        console.log("Loaded guestbooks:", data);
+
+        // 기존 페이지 삭제 및 초기화
+        resetFlipbook();
+
+        // 데이터를 페이지에 추가
+        data.forEach((guestBook, index) => {
+        const entryHtml = `
+                        <div class="guestbook-entry">
+                            <h4>From: ${guestBook.fromUserId}</h4>
+                            <p>${guestBook.guestBookContent}</p>
+                        </div>`;
+        addEntryToPage(entryHtml, index + 1); // index + 1을 이용하여 페이지에 추가
+        console.log(`Guestbook Entry ${index + 1} added to page ${currentPage}`);
+    });
+    });
+    }
+
+        // 기존 페이지 삭제
+        function resetFlipbook() {
+        console.log("resetFlipbook 작동");
+        $('.flipbook').turn('pages', 0);  // 기존 페이지 초기화
+        $('#guestbookEntries').empty();  // 기존 목록 초기화
+        currentPage = 1;  // 페이지 번호 초기화
+        pages = { 1: 0 }; // 각 페이지 항목 개수 초기화
+    }
+
+        // 방명록 추가
+        function submitGuestBook() {
+        console.log("submit 작동");
+        const name = $('#guestName').val();
+        const message = $('#guestMessage').val();
+
+        if (name && message) {
+        const guestBookData = {
+        toUserId: getToUserIdFromUrl(),
+        fromUserId: 2,
+        guestBookContent: message
+    };
+
+        $.ajax({
+        url: `${apiUrl}/add`,
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(guestBookData),
+        success: function () {
+        console.log("succes 진입")
+        loadGuestBooks(); // 추가된 방명록 반영
+        resetGuestBookForm();
+    },
+        error: function () {
+        alert("Failed to add the guest book entry.");
+    }
+    });
+    } else {
+        alert("Please fill in both fields!");
+    }
+    }
+
+        // 방명록 입력 필드 초기화
+        function resetGuestBookForm() {
+        console.log("폼 초기화 작동");
+
+        $('#guestName').val('');
+        $('#guestMessage').val('');
+        $('.addGuestBookModal').hide();
+    }
+
+        // 항목을 페이지에 추가
+        const entriesPerPage = 3; // 페이지당 항목 개수
+        let currentPage = 1;      // 현재 페이지 번호
+        let pages = { 1: 0 }; // 각 페이지 항목 개수
+
+        function addEntryToPage(entry, index) {
+        console.log("addEntry 작동");
+
+        // 랜덤 배경 이미지 설정
+        const entryWithBackground = setRandomBackgroundImage(entry);
+
+        // 현재 페이지가 없으면 새 페이지 생성
+        if (!$(`#page${currentPage}`).length) {
+        createNewPage(); // 첫 페이지 생성
+    }
+
+
+        // 현재 페이지에 추가 가능한 경우
+        if (pages[currentPage] < entriesPerPage) {
+        $(`#page${currentPage}`).append(entryWithBackground);
+        pages[currentPage]++;
+        console.log(`Entry added to Page ${currentPage}, Position: ${pages[currentPage]}`);
+    } else {
+        // 현재 페이지가 가득 찼으면 새 페이지 생성 후 추가
+        currentPage++; // 새로운 페이지 번호
+        createNewPage();
+        $(`#page${currentPage}`).append(entryWithBackground);
+        pages[currentPage] = 1; // 새 페이지 첫 번째 항목
+        console.log(`Entry added to new Page ${currentPage}, Position: ${pages[currentPage]}`);
+    }
+    }
+
+        // 현재 페이지가 꽉 차지 않았다면 항목 추가
+        //     if (pages[currentPage] < entriesPerPage) {
+        //         $(`#page${currentPage}`).append(entryWithBackground);
+        //         pages[currentPage]++;
+        //         console.log(`Entry added to Page ${currentPage}, Position: ${pages[currentPage]}`);
+        //     } else {
+        //         // 이곳 부터 TODO
+        //         currentPage++; // 새로운 페이지로 이동
+        //         createNewPage(entryWithBackground);
+        //         console.log(`Page ${currentPage} created due to overflow`);
+        //     }
+        // }
+
+        // 새 페이지 생성 및 항목 추가
+        function createNewPage(entry) {
+        console.log("createpage 작동");
+        const totalPages = $('.flipbook').turn('pages');
+        currentPage = totalPages + 1; // 페이지 번호 계산
+
+        console.log(`New page created. Total Pages: ${totalPages}, Current Page: ${currentPage}`);
+
+        // 새 페이지를 flipbook에 추가
+        const newPage = `<div class="page" id="page${currentPage}" style="background-image:url(/img/addBook.png)"></div>`;
+        $('.flipbook').turn('addPage', $(newPage)[0], currentPage);
+
+
+        pages[currentPage] = 0;
+        console.log(`New Page ${currentPage} created`);
+
+        // 새 페이지에 항목 추가
+        // $(`#page${currentPage}`).append(entry);
+        // pages[currentPage] = 1;  // 새 페이지 첫 번째 항목
+        // console.log(`Entry added to new Page ${currentPage}, Position: ${pages[currentPage]}`);
+        // $('.flipbook').turn('resize');  // 페이지 크기 조정
+    }
+
+        // 랜덤 배경 이미지 설정
+        function setRandomBackgroundImage(entry) {
+        const images = [
+        'url(/img/stamp1.png)',
+        'url(/img/stamp2.png)',
+        'url(/img/stamp3.png)',
+        'url(/img/stamp4.png)',
+        'url(/img/stamp5.png)'
+        ];
+        const randomImage = images[Math.floor(Math.random() * images.length)];
+
+        // entry에 배경 이미지 스타일 적용
+        const entryWithBackground = $(entry).css('background-image', randomImage);
+        return entryWithBackground;
+    }
+
+        // 채팅 hover 효과
+        function hoverChat() {
+        let angle = 0;
+        let shakeInterval = setInterval(() => {
+        angle += 10;
+        $('.goChat').css('transform', `rotateY(${angle}deg)`);
+        if (angle >= 35) {
+        clearInterval(shakeInterval);
+        $('.goChat').css('transform', 'rotateY(0deg)');
+    }
+    }, 100);
+    }
+    });
 </script>
 
 </body>

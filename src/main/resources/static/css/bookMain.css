@@ -139,7 +139,6 @@ body{
 	height: 120px;
     top: 20px;
 	background-size: cover;
-	
 }
 .logo:hover{
 	cursor: pointer;
@@ -426,8 +425,6 @@ body{
 	align-items: center;
 	justify-content: center;
 	align-content: center;
-
-
 }
 .IntroduceMyself{
 	width: 90%;
@@ -448,9 +445,6 @@ body{
 	align-items: center;
 	justify-content: center;
 	align-content: center;
-
-
-
 }
 .UserPassword{
 	width: 200px;

@@ -1,0 +1,187 @@
+<!doctype html>
+<!--[if lt IE 7 ]> <html lang="en" class="ie6"> <![endif]-->
+<!--[if IE 7 ]>    <html lang="en" class="ie7"> <![endif]-->
+<!--[if IE 8 ]>    <html lang="en" class="ie8"> <![endif]-->
+<!--[if IE 9 ]>    <html lang="en" class="ie9"> <![endif]-->
+<!--[if !IE]><!--> <html lang="en"> <!--<![endif]-->
+<head>
+<meta name="viewport" content="width = 1050, user-scalable = no" />	<!--전체 섹션 규격 & 유저 크기 조정 가능여부-->
+<script type="text/javascript" src="../../static/lib/JQuery/jquery.min.1.7.js"></script>	<!--경로 & 실제 파일 존재여부 반드시 확인-->
+<script type="text/javascript" src="../../static/lib/JQuery/modernizr.2.5.3.min.js"></script>	<!--경로 & 실제 파일 존재여부 반드시 확인-->
+<!--	<script type="text/javascript" src="../lib/JQuery/yepnope.js"></script>-->
+<!--	<script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/3.11.2/modernizr.min.js"></script>-->
+</head>
+<body style="background-image: url(../../static/img/mypageBackground.jpg); background-repeat: no-repeat ; background-size: cover;">
+<div class="logo">
+	<div class="logo" style="background-image: url(../../static/img/mypageLogo.png);"></div>
+</div>
+<div class="flipbook-viewport">
+	<div class="container">
+		<div class="flipbook">
+			<div style="background-image:url(../../static/img/mypageTitle.png)"></div>	<!--배경이미지 설정 부분 (여권사진 홀수번 우측, 짝수번 좌측 화면 표시 예정)-->
+			<div style="background-image:url(../../static/img/sample_left.png)">
+				<div class="mypageUserInfo">
+					<div class="circle">프사</div>
+					<div class="InfoArea">
+					<div class="InfoName">사용자명</div>
+					<div class="decorateName">꾸미기용 문구</div>
+				</div>
+				</div>
+			<div class="mypageUserIntroduce">자기소개</div>
+			<div class="mypageFreind">친구영역</div>
+			<div class="mypageCityLiked">좋아요한도시</div>
+		</div>
+			<div style="background-image:url(../../static/img/sample_right.png)"><div class="recentPost">
+				<div class="firstSection">
+					<div class="postFrame" style="background-image:url(../../static/img/postFrame.png);">
+						<div class="postImg">피드이미지</div>					
+						<div class="postTitle">피드제목</div>					
+					</div>
+					<div class="postFrame"></div>
+					<div class="postFrame"></div>
+				</div>
+				<div class="secondSection">
+					<div class="postFrame"></div>
+					<div class="postFrame"></div>
+					<div class="postFrame"></div>
+				</div>
+				<div class="thirdSection">
+					<div class="postFrame"></div>
+					<div class="postFrame"></div>
+					<div class="postFrame"></div>
+				</div>
+			</div></div>
+			<div style="background-image:url(../../static/img/sample_left.png)"></div>
+			<div style="background-image:url(../../static/img/sample_right.png)"></div>
+			<div style="background-image:url(../../static/img/sample_left.png)"></div>
+			<div style="background-image:url(../../static/img/sample_right.png)"></div>
+			<div style="background-image:url(../../static/img/sample_left.png)"></div>
+			<div style="background-image:url(../../static/img/sample_right.png)"></div>
+			<div style="background-image:url(../../static/img/sample_left.png)"></div>
+			<div style="background-image:url(../../static/img/sample_right.png)"></div>
+		</div>
+	</div>
+</div>
+<div class="menu1" id="1" style="background-image: url(../../static/img/mypageMenu.png);"><h4 id="Post">&nbsp;결제내역</h4></div>
+<div class="menu2" id="2" style="background-image: url(../../static/img/mypageMenu.png);"><h4 id="PostLiked">&nbsp;피드</h4></div>
+<div class="menu3" id="3" style="background-image: url(../../static/img/mypageMenu.png);"><h4 id="GuestBook">&nbsp;피드♥</h4></div>
+<div class="menu4" id="4" style="background-image: url(../../static/img/mypageMenu.png);"><h4 id="PackageLiked">&nbsp;패키지♥</h4></div>
+<div class="menu5" id="5" style="background-image: url(../../static/img/mypageMenu.png);"><h4 id="Invoice">&nbsp;방명록</h4></div>
+	<div class="goChat" style="background-image: url(../../static/img/mypageChat.png);"></div>
+
+
+</div>
+
+
+<script type="text/javascript">
+
+function loadApp() {
+
+	// Create the flipbook
+
+	$('.flipbook').turn({
+			// Width
+
+			width:922,
+			
+			// Height
+
+			height:600,
+
+			// Elevation
+
+			elevation: 50,
+			
+			// Enable gradients
+
+			gradients: true,
+			
+			// Auto center this flipbook
+
+			autoCenter: true
+
+	});
+	$('.flipbook').bind('turning', function(event, page) {
+		if (page === 2) {
+			$('.menu1').show(); // Show menu after the first page turn
+			$('.menu2').show();
+			$('.menu3').show();
+			$('.menu4').show();
+			$('.menu5').show();
+		}else if (page ===1){
+			$('.menu1').hide();
+			$('.menu2').hide();
+			$('.menu3').hide();
+			$('.menu4').hide();
+			$('.menu5').hide();
+		}
+	});
+	$('.goChat').hover(function(){
+		hoverChat();
+	});
+
+	function hoverChat() {
+		let angle = 0;
+		clearInterval(shakeInterval);       
+		$('.goChat').css('transform', 'rotateY(0deg)');  // 초기 상태 설정
+		let shakeInterval = setInterval(function() {
+			angle += 10;  // 한 번에 10도씩 증가
+			$('.goChat').css('transform', `rotateY(${angle}deg)`);  // Y축을 중심으로 회전
+			if (angle >= 35) {  // 35도까지 회전
+				clearInterval(shakeInterval);
+				$('.goChat').css('transform', 'rotateY(0deg)');  // 원래 위치로 돌아가게 설정
+			}
+		}, 100);  // 0.1초마다 회전
+    }
+	
+}
+
+// Load the HTML4 version if there's not CSS transform
+
+function isCSSTransformSupported() {
+	var testElement = document.createElement('div');
+	var transformProperties = ['transform', 'WebkitTransform', 'MozTransform', 'OTransform', 'msTransform'];
+
+	for (var i = 0; i < transformProperties.length; i++) {
+		if (testElement.style[transformProperties[i]] !== undefined) {
+			return true; // CSS transform이 지원됩니다.
+		}
+	}
+
+	return false; // CSS transform이 지원되지 않습니다.
+}
+
+if (isCSSTransformSupported()) {
+	// transform 지원 시
+	$.getScript('../../lib/animationjs/turn.js', function() {
+		loadApp();
+	});
+} else {
+	// transform 미지원 시
+	$.getScript('../../lib/JQuery/turn.html4.min.js', function() {
+		loadApp();
+	});
+}
+
+// if (Modernizr.csstransforms) {
+// 	$.getScript('../../lib/animationjs/turn.js', function() {
+// 		loadApp();
+// 	});
+// } else {
+// 	$.getScript('../../lib/JQuery/turn.html4.min.js', function() {
+// 		loadApp();
+// 	});
+// }
+
+// yepnope({
+// 	test : Modernizr.csstransforms,
+// 	yep: ['../../lib/animationjs/turn.js'],				//경로 & 실제 파일 존재여부 반드시 확인
+// 	nope: ['../../lib/JQuery/turn.html4.min.js'],	//경로 & 실제 파일 존재여부 반드시 확인
+// 	both: ['css/basic.css'],				//경로 & 실제 파일 존재여부 반드시 확인
+// 	complete: loadApp
+// });
+
+</script>
+
+</body>
+</html>

@@ -18,3 +18,4 @@ public interface UserService {
     // TODO 특정 user_id의 status 확인
 
 }
+// git push를 위한 주석 241210 10:45
