@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/board")
+@RequestMapping("/board/city")
 public class PackagePostController {
 
     private final PackagePostService packagePostService;
@@ -24,14 +24,14 @@ public class PackagePostController {
     }
 
     @ModelAttribute("cityId")
-    public int getCityId(@RequestParam int cityId) {
+    public Integer addCityId(@PathVariable(required = false) Integer cityId) {
         return cityId;
     }
 
     // 도시 별 페이지 이동
     // board.city.html
-    @GetMapping("/city/{cityId}")
-    public void getPackagesByCityId(@PathVariable int cityId,
+    @GetMapping("/{cityId}")
+    public String getPackagesByCityId(@PathVariable int cityId,
                                     Model model) {
 
         //메인 페이지 사이드 도시 목록 출력용
@@ -43,11 +43,14 @@ public class PackagePostController {
         model.addAttribute("packages", packages);
 
         // 소모임 목록도 가져와야함
+
+
+        return "/board/city";
     }
 
     // 검색 결과 페이지 이동 -> 당장 안쓸듯?
     // board.search.html
-    @GetMapping("{cityId}/search")
+    @GetMapping("{cityId}/package/search")
     public void searchPackagesByTitle(@PathVariable int cityId,
                                       @RequestParam String keyword,
                                       Model model) {
@@ -80,7 +83,7 @@ public class PackagePostController {
         int id = packagePostService.savePackage(packagePost);
 
         // 저장 후 상세 페이지로 리다이렉트
-        return "redirect:/board/" + cityId + "/package/detail/" + packagePost.getPackageId();
+        return "redirect:/board/" + cityId + "/package/detail/" + id;
     }
 
     // 패키지 수정 페이지 이동
@@ -103,7 +106,7 @@ public class PackagePostController {
         int id = packagePostService.savePackage(packagePost);
 
         // 저장 후 상세 페이지로 리다이렉트
-        return "redirect:/board/" + cityId +"/package/detail/" + packagePost.getPackageId();
+        return "redirect:/board/" + cityId +"/package/detail/" + id;
     }
 
     // 패키지 삭제
