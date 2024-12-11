@@ -554,3 +554,17 @@ insert into city_liked (user_id,city_id)
 values(1,2);
 insert into city_liked (user_id,city_id)
 values(1,3);
+insert into payment_info (user_id, package_id, user_count, payment_status)
+values(1,1,1,'결제완료');
+insert into payment_info (user_id, package_id, user_count, payment_status)
+values(1,2,1,'결제완료');
+insert into payment_info (user_id, package_id, user_count, payment_status)
+values(1,3,1,'결제완료');
+insert into payment_info (user_id, package_id, user_count, payment_status)
+values(1,4,1,'결제완료');
+insert into payment_info (user_id, package_id, user_count, payment_status)
+values(1,5,1,'결제완료');
+insert into payment_info (user_id, package_id, user_count, payment_status)
+                     values(1,6,1,'결제완료');
+insert into payment_info (user_id, package_id, user_count, payment_status)
+                                          values(1,7,1,'결제완료');

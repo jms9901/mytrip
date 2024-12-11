@@ -6,8 +6,10 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -32,13 +34,16 @@ public class PaymentController {
         else return "redirect:/board/payment"; //결제페이지 재이동
     }
 
-    //마이페이지 출력
-    @PostMapping("")
-    public void paymentList(Model model) {
-        List<Payment> model_an_ssil_gemen_baggu_yo = paymentService.getPaymentDetails();
-        model.addAttribute("payments", model_an_ssil_gemen_baggu_yo);
-    }
+    @GetMapping("/payment")
+    public String getPaymentDetails(Model model, @RequestParam int userId) {
+        // userId에 해당하는 결제 내역을 가져옴
+        List<Payment> payments = paymentService.getPaymentDetails(userId);
 
-    //기업페이지 출력
+        // 모델에 결제 내역을 추가
+        model.addAttribute("payments", payments);
+
+        // 결제 내역을 출력할 뷰를 반환
+        return "mypage/myPagePayment";  // myPagePayment.html로 결과를 전달
+    }
 
 }
