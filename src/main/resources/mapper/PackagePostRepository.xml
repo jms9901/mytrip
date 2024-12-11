@@ -51,6 +51,13 @@
         SELECT * FROM package
         WHERE package_status = #{status}
     </select>
+    
+    <!-- 도시별 승인 된 데이터만 조회(board 출력용) -->
+    <select id="findByCityAndStatus" parameterType="int" resultMap="PackagePostResultMap">
+        SELECT * FROM package
+        WHERE city_id = #{cityId}
+            AND package_status = '승인'
+    </select>
 
     <!-- 패키지 제목 검색 -->
     <select id="searchByTitle" parameterType="string" resultMap="PackagePostResultMap">
