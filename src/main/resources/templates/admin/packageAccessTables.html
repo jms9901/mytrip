@@ -89,23 +89,26 @@
                         <table id="datatablesSimple">
                             <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Start Date</th>
+                                <th>user name</th>
+                                <th>package subject</th>
+                                <th>posting Date</th>
+                                <th>package status</th>
                             </tr>
                             </thead>
                             <tfoot>
                             <tr>
-                                <th>Name</th>
-                                <th>Position</th>
-                                <th>Office</th>
+                                <th>user name</th>
+                                <th>package subject</th>
+                                <th>posting Date</th>
+                                <th>package status</th>
                             </tr>
                             </tfoot>
                             <tbody>
-                            <tr>
-                                <td>Tiger Nixon</td>
-                                <td>System Architect</td>
-                                <td>Edinburgh</td>
+                            <tr th:each="AccessPackages : ${AccessPackages}">
+                                <td th:text="${AccessPackages.userName}"></td>
+                                <td th:text="${AccessPackages.title}"></td>
+                                <td th:text="${AccessPackages.regDate}"></td>
+                                <td th:text="${AccessPackages.status}"></td>
                             </tr>
                             </tbody>
                         </table>

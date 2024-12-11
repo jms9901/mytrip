@@ -85,23 +85,26 @@
                         <table id="datatablesSimple">
                             <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Start Date</th>
+                                <th>user name</th>
+                                <th>package name</th>
+                                <th>payment date</th>
+                                <th>payment status</th>
                             </tr>
                             </thead>
                             <tfoot>
                             <tr>
-                                <th>Name</th>
-                                <th>Position</th>
-                                <th>Office</th>
+                                <th>user name</th>
+                                <th>package name</th>
+                                <th>payment date</th>
+                                <th>payment status</th>
                             </tr>
                             </tfoot>
                             <tbody>
-                            <tr>
-                                <td>Tiger Nixon</td>
-                                <td>System Architect</td>
-                                <td>Edinburgh</td>
+                            <tr th:each="payments : ${payments}">
+                                <td th:text="${payments.userName}"></td>
+                                <td th:text="${payments.packageTitle}"></td>
+                                <td th:text="${payments.date}"></td>
+                                <td th:text="${payments.status}"></td>
                             </tr>
                             </tbody>
                         </table>

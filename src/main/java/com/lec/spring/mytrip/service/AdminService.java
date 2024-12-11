@@ -13,10 +13,8 @@ public interface AdminService {
     List<Board> findByBoardCategory(String boardCategory);
     List<Board> findByFeedCategory(String feedCategory);
     List<PackagePost> findByAccessPackage(String packageStatus);
-    List<PackagePost> findByStandByPackage(String packageStatus);
+    List<PackagePost> findByStandByPackage(String standBy, String disapproved);
     List<Payment> findByPayment();
-
-    boolean checkPassword(User user, String password);
 
     void deleteUser(int userId);
     void updateBusinessUserStatus(int userId, String status);

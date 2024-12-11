@@ -89,23 +89,23 @@
                         <table id="datatablesSimple">
                             <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Start Date</th>
+                                <th>user name</th>
+                                <th>board subject</th>
+                                <th>posting date</th>
                             </tr>
                             </thead>
                             <tfoot>
                             <tr>
-                                <th>Name</th>
-                                <th>Position</th>
-                                <th>Office</th>
+                                <th>user name</th>
+                                <th>board subject</th>
+                                <th>posting date</th>
                             </tr>
                             </tfoot>
                             <tbody>
-                            <tr>
-                                <td>Tiger Nixon</td>
-                                <td>System Architect</td>
-                                <td>Edinburgh</td>
+                            <tr th:each="boards : ${boards}">
+                                <td th:text="${boards.userName}"></td>
+                                <td th:text="${boards.subject}"></td>
+                                <td th:text="${boards.date}"></td>
                             </tr>
                             </tbody>
                         </table>

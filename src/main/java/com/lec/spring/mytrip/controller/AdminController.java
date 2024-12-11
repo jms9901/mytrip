@@ -1,9 +1,8 @@
 package com.lec.spring.mytrip.controller;
 
-import com.lec.spring.mytrip.domain.User;
+import com.lec.spring.mytrip.domain.*;
 import com.lec.spring.mytrip.service.AdminService;
 import com.lec.spring.mytrip.service.UserService;
-import com.lec.spring.mytrip.domain.UserValidator;
 import com.lec.spring.mytrip.util.U;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -48,40 +47,62 @@ public class AdminController {
     @GetMapping("/userTables")
     public String userTables(Model model, HttpSession session) {
         User loggedUser = U.getLoggedUser();
-        model.addAttribute("user", loggedUser);
+        model.addAttribute("adminUser", loggedUser);
 
         System.out.println("Session ID : " + session.getId());
         System.out.println("Logged User: " + loggedUser);
+
+        List<User> users = adminService.findByAuthorityRoleUser("ROLE_USER");
+        model.addAttribute("users", users);
+
         return "admin/userTables";
     }
 
+//    @GetMapping("/userDetail")
+//    @ResponseBody
+//    public User getUserDetail(@RequestParam("username") String username){
+//        return userService.findByUsername(username);
+//    }
+
     @GetMapping("/businessTables")
     public String businessTables(Model model, HttpSession session) {
+        List<User> businessUsers = adminService.findByAuthorityRoleBusiness("ROLE_BUSINESS");
+        model.addAttribute("businessUsers", businessUsers);
         return "admin/businessTables";
     }
 
     @GetMapping("/boardTables")
     public String boardTables(Model model, HttpSession session) {
+        List<Board> boards = adminService.findByBoardCategory("소모임");
+        model.addAttribute("boards", boards);
         return "admin/boardTables";
     }
 
     @GetMapping("/feedTables")
     public String feedTables(Model model, HttpSession session) {
+        List<Board> feeds = adminService.findByFeedCategory("피드");
+        model.addAttribute("feeds", feeds);
         return "admin/feedTables";
     }
 
     @GetMapping("/packageAccessTables")
     public String packageAccessTables(Model model, HttpSession session) {
+        List<PackagePost> AccessPackages = adminService.findByAccessPackage("승인");
+        model.addAttribute("AccessPackages", AccessPackages);
         return "admin/packageAccessTables";
     }
 
     @GetMapping("/packageStandbyTables")
     public String packageStandbyTables(Model model, HttpSession session) {
+        List<PackagePost> standByPackages = adminService.findByStandByPackage("미승인", "대기");
+        model.addAttribute("standByPackages", standByPackages);
         return "admin/packageStandbyTables";
     }
 
     @GetMapping("/paymentTables")
     public String paymentTables(Model model, HttpSession session) {
+        List<Payment> payments = adminService.findByPayment();
+        model.addAttribute("payments", payments);
         return "admin/paymentTables";
     }
 

@@ -24,7 +24,7 @@ public interface AdminRepository {
     List<PackagePost> findByAccessPackage(String packageStatus);
 
     // package 상태가 대기인 리스트 가져오기
-    List<PackagePost> findByStandByPackage(String packageStatus);
+    List<PackagePost> findByStandByPackage(String standBy, String disapproved);
 
     // payment 리스트 가져오기
     List<Payment> findByPayment();

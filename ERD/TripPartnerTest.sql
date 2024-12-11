@@ -42,5 +42,6 @@ delete from message;
 
 
 update user
-set user_password = "$2a$10$y54jausXmoCMgc4wKgAAc.L2VQsLbk0vCDZ33mMKw4UrG/SXSPlxW"
+set user_password = '$2a$10$y54jausXmoCMgc4wKgAAc.L2VQsLbk0vCDZ33mMKw4UrG/SXSPlxW'
 where user_id = 34;
+

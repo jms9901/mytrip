@@ -69,7 +69,7 @@ public class SecurityConfig {
                         .loginPage("/admin/adminLogin")
                         .loginProcessingUrl("/admin/login")
                         .defaultSuccessUrl("/admin/userTables", true)
-                        .failureUrl("/user/login?error=true"))
+                        .failureUrl("/admin/adminLogin?error=true"))
                 .logout(logout -> logout
                         .logoutUrl("/admin/logout")
                         .invalidateHttpSession(true))

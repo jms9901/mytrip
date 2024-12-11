@@ -20,4 +20,5 @@ public class Board {
     private int viewCount;       // 조회수
     private LocalDateTime date;  // 게시일
     private String category;     // 카테고리 (예: "소모임" / "피드")
+    private String userName;
 }

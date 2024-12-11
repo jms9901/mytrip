@@ -53,18 +53,13 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public List<PackagePost> findByStandByPackage(String packageStatus) {
-        return adminRepository.findByStandByPackage(packageStatus);
+    public List<PackagePost> findByStandByPackage(String standBy, String disapproved) {
+        return adminRepository.findByStandByPackage(standBy, disapproved);
     }
 
     @Override
     public List<Payment> findByPayment() {
         return adminRepository.findByPayment();
-    }
-
-    @Override
-    public boolean checkPassword(User user, String password) {
-        return passwordEncoder.matches(password, user.getPassword());
     }
 
 

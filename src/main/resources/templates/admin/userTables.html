@@ -89,23 +89,27 @@
                         <table id="datatablesSimple">
                             <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Email</th>
+                                <th>user name</th>
+                                <th>email</th>
                                 <th>Start Date</th>
+                                <th>detail</th>
                             </tr>
                             </thead>
                             <tfoot>
                             <tr>
-                                <th>Name</th>
-                                <th>Position</th>
-                                <th>Office</th>
+                                <th>user name</th>
+                                <th>email</th>
+                                <th>Start Date</th>
+                                <th>detail</th>
                             </tr>
                             </tfoot>
                             <tbody>
-                            <tr>
-                                <td>Tiger Nixon</td>
-                                <td>System Architect</td>
-                                <td>Edinburgh</td>
+                            <tr th:each="users : ${users}">
+                                <td th:text="${users.name}"></td>
+                                <td th:text="${users.email}"></td>
+                                <td th:text="${users.regDate}"></td>
+                                <td><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" th:text="상세"></button></td>
+<!--                                <td><button type="button" class="btn btn-primary user-details-button" th:data-username="${user.username}" data-bs-toggle="modal" data-bs-target="#exampleModal" th:text="상세"></button></td>-->
                             </tr>
                             </tbody>
                         </table>
@@ -113,6 +117,28 @@
                 </div>
             </div>
         </main>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Detail Information</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p id="modalName"></p>
+                <p id="modalId"></p>
+                <p id="modalEmail"></p>
+                <p id="modalBirthday"></p>
+                <p id="modalRegDate"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">삭제</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+            </div>
+        </div>
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>

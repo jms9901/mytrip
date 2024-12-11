@@ -90,22 +90,22 @@
                             <thead>
                             <tr>
                                 <th>Name</th>
-                                <th>Email</th>
-                                <th>Start Date</th>
+                                <th>board subject</th>
+                                <th>posting date</th>
                             </tr>
                             </thead>
                             <tfoot>
                             <tr>
                                 <th>Name</th>
-                                <th>Position</th>
-                                <th>Office</th>
+                                <th>board subject</th>
+                                <th>posting date</th>
                             </tr>
                             </tfoot>
                             <tbody>
-                            <tr>
-                                <td>Tiger Nixon</td>
-                                <td>System Architect</td>
-                                <td>Edinburgh</td>
+                            <tr th:each="feeds : ${feeds}">
+                                <td th:text="${feeds.userName}"></td>
+                                <td th:text="${feeds.subject}"></td>
+                                <td th:text="${feeds.date}"></td>
                             </tr>
                             </tbody>
                         </table>

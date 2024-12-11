@@ -23,4 +23,20 @@ window.addEventListener('DOMContentLoaded', event => {
         });
     }
 
+    // var userDetailButton = document.querySelectorAll('.user-details-button');
+    // userDetailButton.forEach(function(button){
+    //     button.addEventListener('click', function(){
+    //         var username = this.getAttribute('data-username');
+    //
+    //         fetch(`/userDetail?username=${username}`)
+    //             .then(reponse => response.json())
+    //             .then(user => {
+    //                 document.getElementById('modalName').textContent = 'Name : ' + user.name;
+    //                 document.getElementById('modalId').textContent = 'Id : ' + user.username;
+    //                 document.getElementById('modalEmail').textContent = 'Email : ' + user.email;
+    //                 document.getElementById('modalBirthday').textContent = 'Birthday : ' + user.birthday;
+    //                 document.getElementById('modalRegDate').textContent = 'Register Date : ' + user.regDate;
+    //             });
+    //     });
+    // });
 });
