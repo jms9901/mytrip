@@ -22,6 +22,8 @@ public class PrincipalDetailService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        System.out.println("loadUserByUsername (" + username + ") 호출");
+
         User user = userRepository.findByUsername(username);
 
         if (user != null) {
@@ -32,3 +34,4 @@ public class PrincipalDetailService implements UserDetailsService {
         throw new UsernameNotFoundException(username);
     }
 }
+// git push를 위한 주석 241210 10:45

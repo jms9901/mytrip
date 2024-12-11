@@ -8,14 +8,6 @@
   <script th:src="@{/js/registerError.js}"></script>
   <title>Document</title>
 </head>
-
-<script th:inline="javascript">
-  const error = [[${error}]];
-  if (error) {
-    showErrorPopup(error);
-  }
-</script>
-
 <body>
 <header id="header">
   <div class="topnav">
@@ -89,13 +81,13 @@
             <input type="text" name="name" required th:value="${user?.name}"/>
           </label>
           <label>
-            <span>Phone Number</span>
-            <input type="tel" name="phoneNumber" required th:value="${user?.phoneNumber}"/>
-          </label>
-          <label>
             <span>Birthday</span>
             <input type="date" name="birthday" required th:value="${user?.birthday}"/>
           </label>
+          <div class="row mt-5">
+            <div class="col-12 text-danger" th:text="${error}">
+            </div>
+          </div>
           <button id="submit2" type="submit" class="submit">Sign Up</button>
         </div>
       </form>
@@ -123,13 +115,13 @@
             <input type="text" name="name" required th:value="${user?.name}"/>
           </label>
           <label>
-            <span>Phone Number</span>
-            <input type="tel" name="phoneNumber" required th:value="${user?.phoneNumber}"/>
-          </label>
-          <label>
             <span>Company Number</span>
             <input type="text" name="companyNumber" required th:value="${user?.companyNumber}"/>
           </label>
+          <div class="row mt-5">
+            <div class="col-12 text-danger" th:text="${error}">
+            </div>
+          </div>
           <button id="submit3" type="submit" class="submit">Sign Up</button>
         </div>
       </form>
