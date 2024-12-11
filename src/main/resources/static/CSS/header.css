@@ -57,7 +57,22 @@
 
 /* 로그인 버튼 */
 .topnav a:last-child {
-    font-size: 32px;
+    font-size: 30px;
     margin-left: auto; /* 오른쪽으로 정렬 */
     margin-right: 200px; /* 오른쪽 여백 추가 */
+}
+
+
+.custom-font {
+    font-family: 'BMkkubulimTTF-Regular', sans-serif;
+    font-size: 30px;
+    margin-left: auto; /* 오른쪽으로 정렬 */
+    margin-right: 200px; /* 오른쪽 여백 추가 */
+}
+
+.custom-font:hover {
+    font-family: 'BMkkubulimTTF-Regular', sans-serif;
+    background-color: #ddd;
+    color: black;
+    text-decoration: none; /* 호버 시 밑줄 제거 */
 }

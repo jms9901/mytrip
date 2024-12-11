@@ -27,7 +27,8 @@
                 <a th:href="@{/aipage/start}">여행지 추천</a>
                 <a th:href="@{/post}">여행지 게시판</a>
                 <a th:href="@{/flight/search}">항공권 예약</a>
-                <a th:href="@{/user/login}">login</a>
+                <a th:if="${session.user != null}" th:href="@{/mypage}" class="custom-font">Mypage</a>
+                <a th:if="${session.user == null}" th:href="@{/login}">login</a>
             </div>
         </header>
 
