@@ -17,16 +17,10 @@ import java.util.Objects;
 public class PaymentServiceImpl implements PaymentService {
 
     private final PaymentsRepository paymentsRepository;
-    private final UserRepository userRepository;
-    private final PackagePostRepository packagePostRepository;
 
     @Autowired
-    public PaymentServiceImpl(SqlSession sqlSession,
-                              UserRepository userRepository,
-                              PackagePostRepository packagePostRepository) {
+    public PaymentServiceImpl(SqlSession sqlSession) {
         this.paymentsRepository = sqlSession.getMapper(PaymentsRepository.class);
-        this.userRepository = sqlSession.getMapper(UserRepository.class);
-        this.packagePostRepository = sqlSession.getMapper(PackagePostRepository.class);
     }
 
 
@@ -42,8 +36,16 @@ public class PaymentServiceImpl implements PaymentService {
     public List<Payment> getPaymentDetails() {
 //      현재 접속한 유저 확인. 없으면 nullpointE 던짐
         int userId = Objects.requireNonNull(U.getLoggedUser()).getId();
+        List<Payment> paypay = paymentsRepository.getPaymentsByUserId(userId);
 
-        return paymentsRepository.getPaymentsByUserId(userId);
+        paypay.forEach(e -> {
+            e.setTotalPrice(e.getPrice() * e.getUserCount());
+            System.out.println(e.getUserCount());
+            System.out.println(e.getPrice());
+            System.out.println(e.getTotalPrice());
+        });
+
+        return paypay;
     }
 
 }

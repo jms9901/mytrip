@@ -21,4 +21,7 @@ public class Payment {
 
     private String userName;
     private String packageTitle;
+    private int price;
+
+    private int totalPrice;
 }

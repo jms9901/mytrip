@@ -32,6 +32,6 @@ class PaymentsRepositoryTest {
     @Test
     void getPaymentByUserId() {
         System.out.println("왜안나와");
-        System.out.println(paymentsRepository.getPaymentsByUserId(1));
+        paymentsRepository.getPaymentsByUserId(1).forEach(System.out::println);
     }
 }

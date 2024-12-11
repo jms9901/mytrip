@@ -21,10 +21,11 @@
         p.payment_date AS Date,
         p.payment_status AS Status,
         u.user_name AS userName,
-        pk.package_title AS packageTitle
+        pk.package_title AS packageTitle,
+        pk.package_cost AS price
         FROM payment_info p
-            JOIN user u ON p.user_id = u.user_id  <!-- users 테이블과 JOIN -->
-                JOIN package pk ON p.package_id = pk.package_id  <!-- packages 테이블과 JOIN -->
+            JOIN user u ON p.user_id = u.user_id
+                JOIN package pk ON p.package_id = pk.package_id
         WHERE p.user_id = #{userId}
         ORDER BY p.payment_date DESC;
     </select>
