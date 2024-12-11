@@ -168,7 +168,7 @@ public class FlightApiCall {
         List<FlightRoundTripInfo> flights = new ArrayList<>();
 
         // 토큰과 세션 아이디, 그리고 status 추출
-        String token = "";
+        String token = "0";
         if (!flightsNode.path("token").asText().isEmpty()) {
             token = flightsNode.path("token").asText();
         }
@@ -242,11 +242,19 @@ public class FlightApiCall {
             // 리스트에 추가
             if(!roundTripInfoNull(flight)) flights.add(flight);
 
-            // 객체 참조 제거 (더 이상 사용되지 않도록 설정)
             flight = null;
         }
+        if (!flights.isEmpty()) {
+            return flights;
+        } else {
+            FlightRoundTripInfo flight = new FlightRoundTripInfo();
+            flight.setToken(token);
+            flight.setSessionId(sessionId);
+            flight.setCallStatus(callStatus);
+            flights.add(flight);
 
-        return flights;
+            return flights;
+        }
     }
 
     private String minToHourAndMin(String min){

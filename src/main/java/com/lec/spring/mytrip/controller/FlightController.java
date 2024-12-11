@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -64,9 +65,12 @@ public class FlightController {
 
             System.out.println("flightApiResponse 생겨먹은거  " + flightApiResponse + "\n");
             System.out.println("flightApiResponse.getFlights() 생겨먹은거  " + flightApiResponse.getFlights() + "\n");
-
-            model.addAttribute("flights", flightApiResponse.getFlights());
-            System.out.println("flights 모달 보냄");
+            if (flightApiResponse.getFlights() == null) {
+                flightApiResponse.setFlights(new ArrayList<>());
+            } else {
+                model.addAttribute("flights", flightApiResponse.getFlights());
+                System.out.println("flights 모달 보냄");
+            }
         } catch (Exception e) {
             model.addAttribute("error", "항공편 조회 중 오류가 발생했습니다.");
         } finally {

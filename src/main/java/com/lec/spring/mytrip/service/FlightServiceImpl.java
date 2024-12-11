@@ -35,6 +35,7 @@ public class FlightServiceImpl implements FlightService {
             //확인용. 차후 수정
             FlightRoundTripResponse f = flightApiCall.fetchFlightData(flightRoundTrip);
             System.out.println("api에서 받아온  값 확인" + f);
+            f.getFlights().isEmpty();
             return f;
 
 //            return flightApiCall.fetchFlightData(flightRoundTrip);
