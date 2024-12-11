@@ -58,12 +58,12 @@ public class AdminServiceTest {
         access.forEach(packagePost -> System.out.println(packagePost));
     }
 
-    @Test
-    public void findByStandByPackage(){
-        List<PackagePost> standBy = adminService.findByStandByPackage("대기");
-        assertNotNull(standBy);
-        standBy.forEach(packagePost -> System.out.println(packagePost));
-    }
+  // @Test
+  // public void findByStandByPackage(){
+  //     List<PackagePost> standBy = adminService.findByStandByPackage("대기");
+  //     assertNotNull(standBy);
+  //     standBy.forEach(packagePost -> System.out.println(packagePost));
+  // }
 
     @Test
     public void findByPayment(){

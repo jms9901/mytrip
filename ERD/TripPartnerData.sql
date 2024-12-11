@@ -600,3 +600,75 @@ VALUES
     ('SPN', '사이판 국제공항', '사이판', '미국'),
     ('SYD', '시드니 공항', '시드니', '호주')
 ;
+
+
+INSERT INTO user_city (user_id, city_id, created_date)
+VALUES
+    (1, 5, DATE_SUB(NOW(), INTERVAL 1 DAY)),
+    (2, 5, DATE_SUB(NOW(), INTERVAL 1 DAY)),
+    (2, 5, DATE_SUB(NOW(), INTERVAL 1 DAY)),
+    (1, 7, DATE_SUB(NOW(), INTERVAL 1 DAY)),
+    (1, 7, DATE_SUB(NOW(), INTERVAL 1 DAY)),
+    (2, 7, DATE_SUB(NOW(), INTERVAL 1 DAY)),
+    (2, 9, DATE_SUB(NOW(), INTERVAL 1 DAY)),
+    (1, 9, DATE_SUB(NOW(), INTERVAL 1 DAY)),
+    (2, 9, DATE_SUB(NOW(), INTERVAL 1 DAY)),
+    (2, 9, DATE_SUB(NOW(), INTERVAL 1 DAY)),
+    (1, 9, DATE_SUB(NOW(), INTERVAL 1 DAY)),
+    (2, 9, DATE_SUB(NOW(), INTERVAL 1 DAY)),
+    (2, 9, DATE_SUB(NOW(), INTERVAL 1 DAY));
+
+INSERT INTO package (city_id, user_id, package_status, package_content, package_regdate, package_title, package_cost, package_maxpeople, package_start_day, package_end_day)
+VALUES
+    (1, 1, '승인', 'This is a sample package content.', NOW(), 'Sample Package 1', 1000, 10, '2023-05-01 00:00:00', '2023-05-10 00:00:00'),
+    (2, 1, '대기', 'Another sample package content.', NOW(), 'Sample Package 2', 2000, 20, '2023-06-01 00:00:00', '2023-06-10 00:00:00'),
+    (3, 1, '승인', 'Yet another sample package content.', NOW(), 'Sample Package 3', 1500, 15, '2023-07-01 00:00:00', '2023-07-10 00:00:00'),
+    (4, 1, '승인', 'Fourth sample package content.', NOW(), 'Sample Package 4', 2500, 25, '2023-08-01 00:00:00', '2023-08-10 00:00:00'),
+    (5, 1, '승인', 'Fifth sample package content.', NOW(), 'Sample Package 5', 3000, 30, '2023-09-01 00:00:00', '2023-09-10 00:00:00'),
+    (1, 1, '대기', 'Sixth sample package content.', NOW(), 'Sample Package 6', 3500, 35, '2023-10-01 00:00:00', '2023-10-10 00:00:00'),
+    (2, 1, '승인', 'Seventh sample package content.', NOW(), 'Sample Package 7', 4000, 40, '2023-11-01 00:00:00', '2023-11-10 00:00:00'),
+    (3, 1, '미승인', 'Eighth sample package content.', NOW(), 'Sample Package 8', 4500, 45, '2023-12-01 00:00:00', '2023-12-10 00:00:00'),
+    (4, 1, '승인', 'Ninth sample package content.', NOW(), 'Sample Package 9', 5000, 50, '2024-01-01 00:00:00', '2024-01-10 00:00:00'),
+    (5, 1, '승인', 'Tenth sample package content.', NOW(), 'Sample Package 10', 5500, 55, '2024-02-01 00:00:00', '2024-02-10 00:00:00'),
+    (1, 1, '승인', 'Eleventh sample package content.', NOW(), 'Sample Package 11', 6000, 60, '2024-03-01 00:00:00', '2024-03-10 00:00:00'),
+    (2, 1, '승인', 'Twelfth sample package content.', NOW(), 'Sample Package 12', 6500, 65, '2024-04-01 00:00:00', '2024-04-10 00:00:00'),
+    (3, 1, '대기', 'Thirteenth sample package content.', NOW(), 'Sample Package 13', 7000, 70, '2024-05-01 00:00:00', '2024-05-10 00:00:00'),
+    (4, 1, '승인', 'Fourteenth sample package content.', NOW(), 'Sample Package 14', 7500, 75, '2024-06-01 00:00:00', '2024-06-10 00:00:00'),
+    (5, 1, '미승인', 'Fifteenth sample package content.', NOW(), 'Sample Package 15', 8000, 80, '2024-07-01 00:00:00', '2024-07-10 00:00:00'),
+    (1, 1, '승인', 'Sixteenth sample package content.', NOW(), 'Sample Package 16', 8500, 85, '2024-08-01 00:00:00', '2024-08-10 00:00:00'),
+    (2, 1, '승인', 'Seventeenth sample package content.', NOW(), 'Sample Package 17', 9000, 90, '2024-09-01 00:00:00', '2024-09-10 00:00:00'),
+    (3, 1, '대기', 'Eighteenth sample package content.', NOW(), 'Sample Package 18', 9500, 95, '2024-10-01 00:00:00', '2024-10-10 00:00:00'),
+    (4, 1, '승인', 'Nineteenth sample package content.', NOW(), 'Sample Package 19', 10000, 100, '2024-11-01 00:00:00', '2024-11-10 00:00:00'),
+    (5, 1, '승인', 'Twentieth sample package content.', NOW(), 'Sample Package 20', 10500, 105, '2024-12-01 00:00:00', '2024-12-10 00:00:00');
+
+INSERT INTO package_attachment (package_id, package_attachment_file)
+VALUES
+    (51, '/img/BailImg.jpg'),
+    (52, '/img/BangkokImg.jpg'),
+    (53, '/img/BarcelonaImg.jpg'),
+    (54, '/img/CebuImg.jpg'),
+    (55, '/img/DanangImg.jpg'),
+    (56, '/img/DelhiImg.jpg'),
+    (57, '/img/DubaiImg.jpg'),
+    (58, '/img/FranceImg.jpg'),
+    (59, '/img/FukuokaImg.jpg'),
+    (60, '/img/GuamImg.jpg');
+
+update user
+set user_password = '$2a$10$y54jausXmoCMgc4wKgAAc.L2VQsLbk0vCDZ33mMKw4UrG/SXSPlxW'
+where user_id = 1;
+
+
+insert into user (user_email, user_password, user_username, user_name, user_birthday, user_profile, user_provider, user_introdution, user_authorization)
+values
+       (
+           'jeolmi@naver.com',
+           '1234',
+           'jjeol_mii',
+           '절미',
+           '2023-01-16',
+           '',
+           '',
+           '',
+           'ROLE_USER'
+       );

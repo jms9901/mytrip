@@ -1,4 +1,6 @@
 var current = null;
+
+
 document.querySelector('#email').addEventListener('focus', function(e) {
   if (current) current.pause();
   current = anime({
@@ -15,6 +17,8 @@ document.querySelector('#email').addEventListener('focus', function(e) {
     }
   });
 });
+
+
 document.querySelector('#password').addEventListener('focus', function(e) {
   if (current) current.pause();
   current = anime({
@@ -32,3 +36,15 @@ document.querySelector('#password').addEventListener('focus', function(e) {
   });
 });
 
+document.addEventListener('DOMContentLoaded', () => {
+  const logoutLink = document.querySelector('.dropdown-item'); // 클래스 이름 수정
+  if (logoutLink) {
+    logoutLink.addEventListener('click', (event) => {
+      event.preventDefault(); // 기본 동작 방지
+      console.log('Logout link clicked!');
+      // 추가 동작 수행
+    });
+  } else {
+    console.error('Logout link not found.');
+  }
+});

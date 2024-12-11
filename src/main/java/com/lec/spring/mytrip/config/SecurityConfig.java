@@ -72,7 +72,9 @@ public class SecurityConfig {
                         .failureUrl("/admin/adminLogin?error=true"))
                 .logout(logout -> logout
                         .logoutUrl("/admin/logout")
-                        .invalidateHttpSession(true))
+                        .invalidateHttpSession(true)
+                        .logoutSuccessUrl("/admin/adminLogin")
+                )
                 .userDetailsService(principalDetailService)
                 .exceptionHandling(exception -> exception
                         .authenticationEntryPoint((request, response, authException) -> {
