@@ -457,10 +457,19 @@ values(
         );
 INSERT INTO user_city (user_id, city_id, created_date)
 VALUES
-    (1, 1, DATE_SUB(NOW(), INTERVAL 1 DAY)),
-    (2, 1, DATE_SUB(NOW(), INTERVAL 1 DAY)),
-    (2, 2, DATE_SUB(NOW(), INTERVAL 1 DAY)),
-    (1, 1, DATE_SUB(NOW(), INTERVAL 1 DAY));
+    (1, 5, DATE_SUB(NOW(), INTERVAL 1 DAY)),
+    (2, 5, DATE_SUB(NOW(), INTERVAL 1 DAY)),
+    (2, 5, DATE_SUB(NOW(), INTERVAL 1 DAY)),
+    (1, 7, DATE_SUB(NOW(), INTERVAL 1 DAY)),
+    (1, 7, DATE_SUB(NOW(), INTERVAL 1 DAY)),
+    (2, 7, DATE_SUB(NOW(), INTERVAL 1 DAY)),
+    (2, 9, DATE_SUB(NOW(), INTERVAL 1 DAY)),
+    (1, 9, DATE_SUB(NOW(), INTERVAL 1 DAY)),
+    (2, 9, DATE_SUB(NOW(), INTERVAL 1 DAY)),
+    (2, 9, DATE_SUB(NOW(), INTERVAL 1 DAY)),
+    (1, 9, DATE_SUB(NOW(), INTERVAL 1 DAY)),
+    (2, 9, DATE_SUB(NOW(), INTERVAL 1 DAY)),
+    (2, 9, DATE_SUB(NOW(), INTERVAL 1 DAY));
 
 INSERT INTO package (city_id, user_id, package_status, package_content, package_regdate, package_title, package_cost, package_maxpeople, package_start_day, package_end_day)
 VALUES

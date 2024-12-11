@@ -1,0 +1,19 @@
+/* Scroll to Top 버튼 스타일 */
+#myBtn {
+    position: fixed;
+    bottom: 30px;
+    right:30px;
+    display: none; /* 기본적으로 숨김 */
+    z-index: 99;
+    background-color: #06D6A0;
+    color: white;
+    padding: 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+
+#myBtn:hover {
+    background-color: #555;
+}
