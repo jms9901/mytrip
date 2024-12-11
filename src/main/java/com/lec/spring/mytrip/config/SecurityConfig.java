@@ -1,6 +1,7 @@
 package com.lec.spring.mytrip.config;
 
 import com.lec.spring.mytrip.config.oauth.PrincipalOauth2UserService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -44,15 +45,19 @@ public class SecurityConfig {
                 .formLogin(form -> form
                         .loginPage("/user/login") // 로그인 페이지 설정
                         .loginProcessingUrl("/user/login") // 로그인 처리 URL
-                        .defaultSuccessUrl("/user/home", true)) // 로그인 성공 시 이동할 URL
+                        .defaultSuccessUrl("/main/mainpage", true)) // 로그인 성공 시 이동할 URL
                 .logout(logout -> logout
                         .logoutUrl("/user/logout") // 로그아웃 처리 URL
                         .invalidateHttpSession(true)) // 세션 무효화
                 .oauth2Login(oauth2 -> oauth2
                         .loginPage("/user/login") // OAuth2 로그인 페이지 설정
-                        .defaultSuccessUrl("/user/home", true)
+                        .defaultSuccessUrl("/main/mainpage", true)
                         .userInfoEndpoint(userInfo -> userInfo
                                 .userService(principalOauth2UserService))) // OAuth2 UserService 설정
+//                .exceptionHandling(exception -> exception
+//                        .authenticationEntryPoint((request, response, authException) -> {
+//                            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+//                        }))
                 .build();
     }
 

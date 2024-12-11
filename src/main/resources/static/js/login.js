@@ -7,55 +7,67 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   function showForm(type) {
-    document.getElementById('loginForm2').classList.add('hidden');
-    document.getElementById('loginForm3').classList.add('hidden');
+    const form2 = document.getElementById("loginForm2");
+    const form3 = document.getElementById("loginForm3");
 
-    if (type === 'member') {
-      document.getElementById('loginForm2').classList.remove('hidden');
-    } else if (type === 'business') {
-      document.getElementById('loginForm3').classList.remove('hidden');
-      document.getElementById('business').classList.remove('hidden');
+    if (form2) form2.classList.add("hidden");
+    if (form3) form3.classList.add("hidden");
+
+    if (type === "member" && form2) {
+      form2.classList.remove("hidden");
+    } else if (type === "business" && form3) {
+      form3.classList.remove("hidden");
     }
   }
 
-  document.getElementById("member").addEventListener("click", function () {
-    showForm('member');
+  document.getElementById("member")?.addEventListener("click", function () {
+    showForm("member");
   });
 
-  document.getElementById("business").addEventListener("click", function () {
-    showForm('business');
+  document.getElementById("business")?.addEventListener("click", function () {
+    showForm("business");
   });
 
-  document.getElementById("submit1").addEventListener("click", function (event) {
-    event.preventDefault();
-    const form = document.getElementById("loginForm1");
+  function handleFormSubmission(formId) {
+    const form = document.getElementById(formId);
+    if (!form) {
+      console.error(`Form with ID ${formId} not found.`);
+      return;
+    }
+
     const inputs = form.querySelectorAll("input");
-    form.submit();
+    let isValid = true;
 
-
+    inputs.forEach((input) => {
+      if (!input.value.trim()) {
+        isValid = false;
+        input.classList.add("error");
+      } else {
+        input.classList.remove("error");
+      }
     });
 
-    document.getElementById("submit2").addEventListener("click", function (event) {
-      event.preventDefault();
-      const form = document.getElementById("loginForm2");  // ID 수정
-      const inputs = form.querySelectorAll("input");
-      let check = true;
-
+    if (isValid) {
+      console.log("Submitting form:", formId);
       form.submit();
+    }
+  }
 
-    });
-
-    document.getElementById("submit3").addEventListener("click", function (event) {
-      event.preventDefault();
-      const form = document.getElementById("loginForm3");  // ID 수정
-      const inputs = form.querySelectorAll("input");
-      let check = true;
-
-
-      form.submit();
-
-    });
+  document.getElementById("submit1")?.addEventListener("click", function (event) {
+    event.preventDefault();
+    handleFormSubmission("loginForm1");
   });
+
+  document.getElementById("submit2")?.addEventListener("click", function (event) {
+    event.preventDefault();
+    handleFormSubmission("loginForm2");
+  });
+
+  document.getElementById("submit3")?.addEventListener("click", function (event) {
+    event.preventDefault();
+    handleFormSubmission("loginForm3");
+  });
+});
 
 
 

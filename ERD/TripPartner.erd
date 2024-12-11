@@ -11,9 +11,9 @@
     "width": 5000,
     "height": 5000,
 <<<<<<< HEAD
-    "scrollTop": -2350.6938,
-    "scrollLeft": -1292.2952,
-    "zoomLevel": 0.82,
+    "scrollTop": -2195.6688,
+    "scrollLeft": -1998.8665,
+    "zoomLevel": 0.52,
     "show": 511,
 =======
     "scrollTop": -2147.8562,
@@ -21,7 +21,7 @@
 >>>>>>> main
     "zoomLevel": 1,
     "show": 431,
->>>>>>> 77f620befc436717c18ba713de9e98915042a048
+>>>>>>> boardpage/feat/boardpage-main
     "database": 4,
     "databaseName": "",
     "canvasType": "ERD",

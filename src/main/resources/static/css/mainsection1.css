@@ -1,0 +1,22 @@
+
+
+.parallax {
+    /* 패럴렉스 효과를 위한 고정 배경 이미지 */
+    background-image: url('../img/mainimg.jpg');
+    height: 700px; /* 섹션 높이 */
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#section1 {
+    background-color: #142055;
+    width: 100%;
+    position: relative;
+}
+
+#mainimg {
+    display: block;
+    width: 95%;
+}

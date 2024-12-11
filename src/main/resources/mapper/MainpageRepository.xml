@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lec.spring.mytrip.repository.MainRepository">
+
+    <!-- City 도메인과 쿼리 결과 매핑 -->
+    <resultMap id="CityResultMap" type="com.lec.spring.mytrip.domain.City">
+        <id property="cityId" column="city_id" />
+        <result property="cityName" column="city_name" />
+        <result property="cityContinent" column="city_continent" />
+        <result property="cityLanguage" column="city_language" />
+        <result property="cityCurrency" column="city_currency" />
+        <result property="cityImg" column="city_img" />
+        <result property="cityNation" column="city_nation" />
+    </resultMap>
+
+    <resultMap id="PackageResultMap" type="com.lec.spring.mytrip.domain.PackagePost">
+        <id property="packageId" column="package_id" />
+        <result property="cityId" column="city_id" />
+        <result property="userId" column="user_id" />
+        <result property="status" column="package_status" />
+        <result property="content" column="package_content" />
+        <result property="regDate" column="package_regdate" />
+        <result property="title" column="package_title" />
+        <result property="cost" column="package_cost" />
+        <result property="maxPeople" column="package_maxpeople" />
+        <result property="startDay" column="package_start_day" />
+        <result property="endDay" column="package_end_day" />
+        <result property="packageAttachmentFile" column="package_attachment_file" />
+    </resultMap>
+
+
+    <!-- user_city와 city를 JOIN하여 추천 횟수 상위 2개 도시 조회 -->
+    <select id="findMostRecommendedCities" resultMap="CityResultMap">
+        SELECT
+            c.city_id,
+            c.city_name,
+            c.city_continent,
+            c.city_language,
+            c.city_currency,
+            c.city_img,
+            c.city_nation
+        FROM
+            user_city uc
+                JOIN
+            city c ON uc.city_id = c.city_id
+        WHERE
+            DATE(uc.created_date) = DATE(NOW() - INTERVAL 1 DAY)
+        GROUP BY
+            c.city_id, c.city_name, c.city_continent, c.city_language,
+            c.city_currency, c.city_img, c.city_nation
+        ORDER BY
+            COUNT(uc.city_id) DESC
+        LIMIT 2;
+    </select>
+
+    <!-- package와 package_attachment를 JOIN하여 최신 10개 패키지와 첨부파일 명 조회 -->
+    <select id="findTop10OrderByDateDesc" resultMap="PackageResultMap">
+        SELECT
+            p.package_id, p.city_id, p.user_id, p.package_status, p.package_content,
+            p.package_regdate, p.package_title, p.package_cost, p.package_maxpeople,
+            p.package_start_day, p.package_end_day, pa.package_attachment_file
+        FROM
+            package p
+                LEFT JOIN package_attachment pa ON p.package_id = pa.package_id
+        ORDER BY
+            p.package_id DESC
+        LIMIT 10
+    </select>
+
+</mapper>
