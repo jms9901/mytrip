@@ -72,4 +72,6 @@ public class AipageController {
         model.addAttribute("city", city);
         return "ai/aipage"; // 결과 페이지 뷰 반환
     }
+
+    // git push
 }
