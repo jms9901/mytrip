@@ -1,4 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
+  if(window.location.search.includes('error')){
+    alert('로그인에 실패했습니다. 다시 시도해주세요.');
+  }
   document.querySelector(".img__btn").addEventListener("click", function () {
     document.querySelector(".cont").classList.toggle("s--signup");
   });
@@ -29,28 +32,31 @@ document.addEventListener("DOMContentLoaded", function () {
     const inputs = form.querySelectorAll("input");
     form.submit();
 
-  });
 
-  document.getElementById("submit2").addEventListener("click", function (event) {
-    event.preventDefault();
-    const form = document.getElementById("loginForm2");  // ID 수정
-    const inputs = form.querySelectorAll("input");
-    let check = true;
+    });
 
-    form.submit();
+    document.getElementById("submit2").addEventListener("click", function (event) {
+      event.preventDefault();
+      const form = document.getElementById("loginForm2");  // ID 수정
+      const inputs = form.querySelectorAll("input");
+      let check = true;
 
-  });
+      form.submit();
 
-  document.getElementById("submit3").addEventListener("click", function (event) {
-    event.preventDefault();
-    const form = document.getElementById("loginForm3");  // ID 수정
-    const inputs = form.querySelectorAll("input");
-    let check = true;
+    });
+
+    document.getElementById("submit3").addEventListener("click", function (event) {
+      event.preventDefault();
+      const form = document.getElementById("loginForm3");  // ID 수정
+      const inputs = form.querySelectorAll("input");
+      let check = true;
 
 
       form.submit();
 
+    });
   });
-});
+
+
 
 // <!--// git push를 위한 주석 241210 10:45-->

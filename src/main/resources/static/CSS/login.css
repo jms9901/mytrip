@@ -301,3 +301,8 @@ section {
 .hidden{
   display: none;
 }
+
+.text-danger{
+  color:red;
+  text-align: center;
+}

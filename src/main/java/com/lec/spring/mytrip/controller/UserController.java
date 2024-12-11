@@ -14,10 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -57,53 +54,37 @@ public class UserController {
 
     // 로그인 페이지
     @GetMapping("/login")
-    public String login(Model model) {
-//        model.addAttribute("user", new User()); // 로그인과 회원가입에서 사용할 빈 유저 객체 추가
+    public String login(Model model, @RequestParam(value = "username", required = false) String username,
+                        @RequestParam(value = "password", required = false) String password) {
+        model.addAttribute("user", new User()); // 로그인과 회원가입에서 사용할 빈 유저 객체 추가
+        // 사용자 이름 검증
         return "user/login";
     }
 
-    // 로그인 처리
-    @PostMapping("/login")
-    public String loginPost(@Valid User user, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
-        if (result.hasErrors()) {
-            model.addAttribute("errors", result.getAllErrors());
-            return "user/login";
-        }
 
-        // 로그인 로직 구현
-        // 예: 사용자가 입력한 이메일과 비밀번호로 인증을 시도합니다.
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        // TODO: 여기에 로그인 성공/실패 처리 로직 추가
-        return "redirect:user/home"; // 로그인 성공 시 홈으로 리다이렉트
+    @RequestMapping("/auth")
+    @ResponseBody
+    public Authentication auth(){
+        return SecurityContextHolder.getContext().getAuthentication();
     }
 
     // 회원가입 처리
     @PostMapping("/register")
-    public String register(@Valid User user, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
-        if (result.hasErrors()) {
-            model.addAttribute("errors", result.getAllErrors());
+    public String register(@Valid User user, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
+            //검증동작
+            if(bindingResult.hasErrors()){
+                redirectAttributes.addFlashAttribute("username", user.getUsername());
+                redirectAttributes.addFlashAttribute("name", user.getName());
+                redirectAttributes.addFlashAttribute("email", user.getEmail());
 
-            // 전체 오류 메시지를 flash attribute에 추가
-            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.user", result);
-            redirectAttributes.addFlashAttribute("user", user);
+                List<FieldError> errorList = bindingResult.getFieldErrors();
+                for(FieldError error : errorList){
+                    // 가장 처음에 발견된 에러만 담아서 보낸다
+                    redirectAttributes.addFlashAttribute("error", error.getDefaultMessage());
+                    break;
+                }
 
-            List<FieldError> errorList = result.getFieldErrors();
-            for (FieldError error : errorList) {
-                // 가장 처음에 발견된 에러만 담아서 보낸다
-                redirectAttributes.addFlashAttribute("error", error.getDefaultMessage());
-                break;
-            }
-            if(userService.findByUsername(user.getUsername()) != null){
-                redirectAttributes.addFlashAttribute("error", "이미 존재하는 아이디입니다.");
-                redirectAttributes.addFlashAttribute("user", user);
                 return "redirect:/user/login";
-            }
-            if (userService.findByUsername(user.getEmail()) != null) {
-                redirectAttributes.addFlashAttribute("error", "이미 존재하는 이메일입니다.");
-                redirectAttributes.addFlashAttribute("user", user);
-                return "redirect:/user/login";
-            }
-            return "redirect:/user/login";
         }
 
         // 사용자명 중복 확인

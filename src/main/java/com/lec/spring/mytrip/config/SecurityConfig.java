@@ -23,9 +23,6 @@ public class SecurityConfig {
     @Autowired
     private Environment env;
 
-    @Autowired
-    private CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -43,11 +40,10 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable()) // CSRF 비활성화
                 .authorizeRequests(auth -> auth
                         .requestMatchers("/", "/user/login", "/oauth2/**" ,"/css/**", "/js/**", "/img/**" ).permitAll() // 해당 URL에 대해 모두 접근 허용
-                        .anyRequest().authenticated()) // 그 밖의 모든 요청은 인증 필요
+                        .anyRequest().permitAll()) // 그 밖의 모든 요청은 인증 필요
                 .formLogin(form -> form
                         .loginPage("/user/login") // 로그인 페이지 설정
                         .loginProcessingUrl("/user/login") // 로그인 처리 URL
-                        .successHandler(customAuthenticationSuccessHandler)
                         .defaultSuccessUrl("/user/home", true)) // 로그인 성공 시 이동할 URL
                 .logout(logout -> logout
                         .logoutUrl("/user/logout") // 로그아웃 처리 URL
@@ -60,34 +56,5 @@ public class SecurityConfig {
                 .build();
     }
 
-    // 권한 관련 주석
-    /*
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, PrincipalDetailService principalDetailService) throws Exception {
-        return http
-                .csrf(csrf -> csrf.disable())
-                .authorizeRequests(auth -> auth
-                        .requestMatchers("/", "/user/login", "/oauth2/**").permitAll()
-                        // 해당 url로 들어오는 요청은 인증만 필요
-                        // .requestMatchers("").authenticated()
-                        // 해당 url로 들어오는 요청은 인증 뿐아니라 권한도 필요
-                        // .requestMatchers("").hasAnyRole("ROLE_USER")
-                        // .requestMatchers().hasAnyRole("ROLE_BUSINESS")
-                        // .requestMatchers().hasAnyRole("ROLE_ADMIN")
-                        .anyRequest().permitAll())
-                .formLogin(form -> form
-                        .loginPage("/user/login")
-                        .loginProcessingUrl("/user/login")
-                        .defaultSuccessUrl("/user/home", true))
-                .logout(logout -> logout
-                        .logoutUrl("/user/logout")
-                        .invalidateHttpSession(false))
-                .oauth2Login(oauth2 -> oauth2
-                        .loginPage("/user/login")
-                        .userInfoEndpoint(userInfo -> userInfo
-                                .userService(principalOauth2UserService)))
-                .build();
-    }
-    */
 }
 // git push를 위한 주석 241210 10:45
