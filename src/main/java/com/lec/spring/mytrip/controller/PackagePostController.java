@@ -23,7 +23,10 @@ public class PackagePostController {
         this.packagePostService = packagePostService;
     }
 
-//    @ModelAttribute id 전체 입력
+    @ModelAttribute("cityId")
+    public int getCityId(@RequestParam int cityId) {
+        return cityId;
+    }
 
     // 도시 별 페이지 이동
     // board.city.html
@@ -66,10 +69,7 @@ public class PackagePostController {
     // 패키지 글쓰기 페이지 이동
     // board.package.write.html
     @GetMapping("{cityId}/package/write")
-    public void writePackagePage(@PathVariable int cityId,
-                                 Model model) {
-        // 패키지 글쓰기 페이지로 이동
-    }
+    public void writePackagePage(@PathVariable int cityId) {}
 
     // 패키지 저장
     @PostMapping("{cityId}/package/save")
@@ -80,7 +80,7 @@ public class PackagePostController {
         int id = packagePostService.savePackage(packagePost);
 
         // 저장 후 상세 페이지로 리다이렉트
-        return "redirect:/board/package/details/" + id;
+        return "redirect:/board/" + cityId + "/package/details/" + packagePost.getPackageId();
     }
 
     // 패키지 수정 페이지 이동
@@ -90,6 +90,7 @@ public class PackagePostController {
                                   @PathVariable int packageId,
                                   Model model) {
         // 패키지 수정 페이지로 이동
+        model.addAttribute("packagePost", packagePostService.getPackageDetails(packageId));
         return "package/edit";
     }
 
@@ -102,16 +103,17 @@ public class PackagePostController {
         int id = packagePostService.savePackage(packagePost);
 
         // 저장 후 상세 페이지로 리다이렉트
-        return "redirect:/board/package/details/" + id;
+        return "redirect:/board/" + cityId +"/package/details/" + packagePost.getPackageId();
     }
 
     // 패키지 삭제
     @DeleteMapping("{cityId}/package/delete/{packageId}")
     public String deletePackage(@PathVariable int cityId,
                                 @PathVariable int packageId) {
+        int userId = packagePostService.getPackageDetails(packageId).getUserId();
         // 패키지 삭제 처리
-        int id = 0; //도시 id
-        return "redirect:/board/city/" + id;
+        packagePostService.deletePackage(packageId, userId);
+        return "redirect:/board/city/" + cityId;
     }
 
 
