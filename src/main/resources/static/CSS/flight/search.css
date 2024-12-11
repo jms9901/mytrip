@@ -37,6 +37,7 @@
 
 
 
+
 #image-slider {
     position: relative;
     width: 100%;
@@ -113,7 +114,16 @@
 }
 
 #selection-container {
-    display: none;
+    position: absolute; /* 부모 요소 기준으로 절대 위치 */
+    top: 100%; /* 버튼 바로 아래 */
+    left: 0; /* 버튼의 왼쪽 정렬 */
+    z-index: 1050; /* 다른 요소 위에 표시 */
+    background-color: white; /* 배경색 */
+    border: 1px solid #ddd; /* 테두리 */
+    padding: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 그림자 */
+    width: 300px; /* 적절한 크기 */
+    display: none; /* 기본적으로 숨김 */
 }
 /* 드롭박스 활성화 */
 #selectionContainer.d-block {
@@ -224,8 +234,18 @@
     }
 }
 
+.flight-icon {
+    font-size: 40px; /* 아이콘 크기 */
+    color: #007bff; /* 아이콘 색상 */
+    transform: rotate(90deg); /* 오른쪽으로 90도 회전 */
+    display: inline-block; /* 위치 조정을 위해 block 속성 */
 
-
+}
+.icon-container {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* 부모 컨테이너 내에서 가운데 정렬 */
+}
 
 
 
@@ -238,10 +258,24 @@
     font-weight: bold;
     color: #000;
 }
+.dropdown-button .airport-code {
+    font-size: 24px; /* 크고 두껍게 */
+    font-weight: bold;
+    color: #000;
+}
+.dropdown-button .airport-city {
+    font-size: 14px; /* 작은 텍스트 */
+    color: #6c757d;
+}
 
 .airport-city {
     font-size: 14px;
     color: #6c757d; /* 회색 텍스트 */
+}
+.dropdown-button.selected {
+    /* 선택 전과 동일한 스타일 유지 */
+    font-size: 24px;
+    font-weight: bold;
 }
 
 .custom-dropdown {
@@ -249,13 +283,13 @@
 }
 
 .dropdown-button {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    background-color: #fff;
-    text-align: center;
+    background-color: transparent;
+    border-radius: 8px;
+    padding: 8px 12px;
     cursor: pointer;
-    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .dropdown-content {
@@ -310,7 +344,10 @@
 }
 
 
-
+i.fa-plane {
+    color: #6c757d;
+    font-size: 1.5rem;
+}
 
 
 

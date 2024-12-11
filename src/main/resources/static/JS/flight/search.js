@@ -34,20 +34,31 @@ $(document).ready(function () {
     $("#start-date-btn").attr("type", "button");
     $('#end-date-btn').prop('disabled', true).attr("type", "button");
 
-    // 좌석 및 인원 드롭다운 열기/닫기
+// 좌석 및 인원 드롭다운 열기/닫기
     $("#openSelectionBtn").on("click", function (e) {
-        console.log("좌석 및 인원 선택 버튼 클릭");
         e.preventDefault(); // 기본 동작 방지
-        const $selectionContainer = $("#selectionContainer");
 
+        const $button = $(this); // 버튼
+        const $selectionContainer = $("#selectionContainer"); // 드롭다운
+
+        // 버튼의 위치와 크기 계산
+        const buttonOffset = $button.offset();
+        const buttonHeight = $button.outerHeight();
+        const buttonWidth = $button.outerWidth();
+
+        // 드롭다운 위치 설정
         if ($selectionContainer.hasClass("d-none")) {
-            $selectionContainer.removeClass("d-none").addClass("d-block");
+            $selectionContainer.css({
+                top: buttonOffset.top + buttonHeight + 5, // 버튼 바로 아래
+                left: buttonOffset.left, // 버튼 왼쪽 정렬
+                minWidth: buttonWidth // 버튼 너비와 동일하게 설정
+            }).removeClass("d-none").addClass("d-block");
         } else {
             $selectionContainer.removeClass("d-block").addClass("d-none");
         }
     });
 
-    // 문서 외부 클릭 시 드롭다운 닫기
+// 문서 외부 클릭 시 드롭다운 닫기
     $(document).on("click", function (event) {
         if (!$(event.target).closest("#selectionContainer").length &&
             !$(event.target).is("#openSelectionBtn")) {
@@ -97,10 +108,10 @@ $(document).ready(function () {
 
             $input.val(selectedValue);
 
-            $button.html(`
-                <div>${airportCode}</div>
-                <small class="text-muted">${airportCity}</small>
-            `);
+            // 기존 구조를 유지하면서 내용만 변경
+            // `airport-code`와 `airport-city` 텍스트만 업데이트
+            $button.find(".airport-code").text(airportCode);
+            $button.find(".airport-city").html(`${airportCity} <span class="dropdown-icon">▼</span>`); // 아이콘 유지
 
             $content.removeClass("show");
         });
