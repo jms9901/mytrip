@@ -9,6 +9,7 @@
     <title>TripAdmin</title>
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link th:href="@{/css/styles.css}" rel="stylesheet" />
+    <link th:href="@{/css/userTables.css}" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 </head>
 <body class="sb-nav-fixed">
@@ -78,7 +79,7 @@
     <div id="layoutSidenav_content">
         <main>
             <div class="container-fluid px-4">
-                <h1 class="mt-4">User Tables</h1>
+                <h1 class="mt-4">사용자 관리</h1>
                 <ol class="breadcrumb mb-4">
                     <li class="breadcrumb-item"><a th:href="@{/admin/userTables}">회원</a></li>
                     <li class="breadcrumb-item active"><a th:href="@{/admin/businessTables}">사업자</a></li>
@@ -92,18 +93,18 @@
                         <table id="datatablesSimple">
                             <thead>
                             <tr>
-                                <th>user name</th>
-                                <th>email</th>
-                                <th>Start Date</th>
-                                <th>detail</th>
+                                <th>회원이름</th>
+                                <th>이메일</th>
+                                <th>가입일자</th>
+                                <th>상세보기</th>
                             </tr>
                             </thead>
                             <tfoot>
                             <tr>
-                                <th>user name</th>
-                                <th>email</th>
-                                <th>Start Date</th>
-                                <th>detail</th>
+                                <th>회원이름</th>
+                                <th>이메일</th>
+                                <th>가입일자</th>
+                                <th>상세보기</th>
                             </tr>
                             </tfoot>
                             <tbody>
