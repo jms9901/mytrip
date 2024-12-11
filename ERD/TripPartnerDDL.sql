@@ -222,7 +222,7 @@ CREATE TABLE user
     user_introdution       VARCHAR(100)  NULL     COMMENT '사용자 프로필 자기소개 ',
     user_authorization     VARCHAR(20)   NOT NULL COMMENT '사용자 권한',
     business_companynumber VARCHAR(100)  NULL     COMMENT '기업 사업자 번호',
-    user_status             VARCHAR(100)  NULL     COMMENT '사용자 승인 상태',
+    user_status            VARCHAR(100)  NULL     COMMENT '사용자 승인 상태',
     PRIMARY KEY (user_id)
 ) COMMENT '사용자 계정';
 
