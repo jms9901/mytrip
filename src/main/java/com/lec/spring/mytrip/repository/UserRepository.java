@@ -14,6 +14,9 @@ public interface UserRepository {
     // 특정  username 의 user 리턴
     User findByUsername(String username);
 
+    //id로 유저찾기
+    User findById(int id);
+
     // 새로운 user 등록
     int save (User user);
 
@@ -21,5 +24,5 @@ public interface UserRepository {
     Optional<User> findById(Long userId);
 
     // user 정보를 업데이트 (비밀번호, 자기소개, 프로필 이미지)
-    public int updateUser(Long userId, String password, String introduction, String profile);
+    int updateUser(Long userId, String password, String introduction, String profile);
 }

@@ -3,6 +3,7 @@ package com.lec.spring.mytrip.service;
 import com.lec.spring.mytrip.domain.PackagePost;
 import com.lec.spring.mytrip.repository.PackagePostRepository;
 import org.apache.ibatis.session.SqlSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.List;
 public class PackagePostServiceImpl implements PackagePostService {
     private final PackagePostRepository packagePostRepository;
 
+    @Autowired
     public PackagePostServiceImpl(SqlSession sqlSession) {
         this.packagePostRepository = sqlSession.getMapper(PackagePostRepository.class);
     }

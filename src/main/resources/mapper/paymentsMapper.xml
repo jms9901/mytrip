@@ -5,4 +5,27 @@
 
 <mapper namespace="com.lec.spring.mytrip.repository.PaymentsRepository">
 
+    <!-- 결제 정보 저장 -->
+    <insert id="paymentSave" parameterType="com.lec.spring.mytrip.domain.Payment">
+        INSERT INTO payment_info (user_id, package_id, user_count, payment_date, payment_status)
+        VALUES (#{userId}, #{packageId}, #{userCount}, NOW(), #{Status});
+    </insert>
+
+    <!-- 사용자 ID로 결제 정보 조회 -->
+    <select id="getPaymentsByUserId" parameterType="int" resultType="com.lec.spring.mytrip.domain.Payment">
+        SELECT
+        p.payment_id AS paymentId,
+        p.user_id AS userId,
+        p.package_id AS packageId,
+        p.user_count AS userCount,
+        p.payment_date AS Date,
+        p.payment_status AS Status,
+        u.user_name AS userName,
+        pk.package_title AS packageTitle
+        FROM payment_info p
+            JOIN user u ON p.user_id = u.user_id  <!-- users 테이블과 JOIN -->
+                JOIN package pk ON p.package_id = pk.package_id  <!-- packages 테이블과 JOIN -->
+        WHERE p.user_id = #{userId}
+        ORDER BY p.payment_date DESC;
+    </select>
 </mapper>
