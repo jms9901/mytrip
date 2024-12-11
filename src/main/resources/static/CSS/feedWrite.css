@@ -1,0 +1,184 @@
+/* General Reset */
+body {
+    margin: 0;
+    font-family: 'Kaushan Script';
+}
+
+/* Modal Background */
+.modal-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-title {
+    text-align: center;
+    padding-top: 30px;
+    font-size: 30px;
+    font-weight: 700;
+}
+
+/* Modal Content */
+.modal-content {
+    width: 810px;
+    height: 600px;
+    background-position: center;
+    background-size: cover;
+    border-radius: 10px;
+    display: block;
+    visibility: visible;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding:  20px;
+}
+
+.section {
+    display: flex;
+    width: 800px;
+    height: 300px;
+    margin-top: -26px;
+}
+
+/* Image Upload Section */
+.image-upload {
+    width: 300px;
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+    margin-left: 20px;
+    margin-top: 13px;
+    position: relative;
+}
+
+.image-frame {
+    position: relative;
+    width: 80%;
+    height: 80%;
+    border: 1px solid black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    cursor: pointer;
+}
+#camera-icon {
+    /* position: absolute; */
+    width: 70px;
+    height: 70px;
+    transition: opacity 0.3s ease-in-out;
+    cursor: pointer;
+}
+
+/* Slider Controls */
+#image-preview {
+    display: flex;
+    transition: transform 0.3s ease-in-out;
+    overflow: hidden;
+    transform: translate(20%, 0%);
+}
+
+#image-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.prev-btn, .next-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.prev-btn {
+    left: 10px;
+}
+
+.next-btn {
+    right: 10px;
+}
+
+.hidden {
+    display: none;
+}
+
+/* Post Title */
+.feed-title {
+    width: 400px;
+    height: 40px;
+    font-size: 30px;
+    margin-top: 120px;
+    padding: 8px;
+    border: 1px solid black;
+    border-radius: 5px;
+    float: left;
+    flex-direction: row;
+}
+
+/* City Select */
+.city-select {
+    float: right;
+    padding-bottom: 10px;
+    margin-right: 37px;
+    margin-top: -20px;
+}
+
+/* Hide File Input */
+.hidden {
+    display: none;
+}
+
+/* Post Content */
+#feed-content {
+    display: flex;
+    margin-left: 50px;
+    margin-top: 15px;
+    width: 710px;
+    height: 180px;
+    padding: 8px;
+    font-size: 30px;
+    border: 1px solid black;
+    border-radius: 5px;
+    resize: none;
+}
+
+/* Submit Button */
+.submit-button {
+    position: absolute;
+    top: 50px;
+    right: 40px;
+    color: black;
+    border: none;
+    font-size: 18px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 20px;
+    height: auto;
+}
+
+.image-message {
+    font-size: x-small;
+    color: red;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin-left: 50px;
+    display: flex;
+    margin-top: -14px;
+}

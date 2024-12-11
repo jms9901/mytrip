@@ -18,9 +18,11 @@
 <div class="logo">
 	<div class="logo" style="background-image: url(/img/mypageLogo.png);"></div>
 </div>
-<div class="myPageGoHome" style="background-image: url(/img/myPageGoHome.png)"></div>
+<div class="addGuestBookModal"></div>
+<div class="myPageGoHome" style="background-image: url(/img/myPageGoHome.png)" onclick="window.location.href='/mypage/bookMain';"></div>
 
 <div class="flipbook-viewport">
+
 	<div class="container">
 		<div class="flipbook">
 			<div style="background-image:url(/img/mypageTitle.png)"></div>	<!--배경이미지 설정 부분 (여권사진 홀수번 우측, 짝수번 좌측 화면 표시 예정)-->
@@ -76,12 +78,26 @@
 		</div>
 	</div>
 </div>
-<div class="menu1" id="1" style="background-image: url(/img/mypageMenu.png);"><h4 id="Post">&nbsp;Invoice</h4></div>
-<div class="menu2" id="2" style="background-image: url(/img/mypageMenu.png);"><h4 id="PostLiked">&nbsp;Post</h4></div>
-<div class="menu3" id="3" style="background-image: url(/img/mypageMenu.png);"><h4 id="GuestBook">&nbsp;Post♥</h4></div>
-<div class="menu4" id="4" style="background-image: url(/img/mypageMenu.png);"><h4 id="PackageLiked">&nbsp;패키지♥</h4></div>
-<div class="menu5" id="5" style="background-image: url(/img/mypageMenu.png);"><h4 id="Invoice">&nbsp;방명록</h4></div>
+<div class="menu1" id="1" style="background-image: url(/img/mypageMenu.png);"><h4 id="Invoice">&nbsp;Invoice</h4></div>
+<div class="menu2" id="2" style="background-image: url(/img/mypageMenu.png);"><h4 id="post">&nbsp;Post</h4></div>
+<div class="menu3" id="3" style="background-image: url(/img/mypageMenu.png);"><h4 id="PostLiked">&nbsp;Post♥</h4></div>
+<div class="menu4" id="4" style="background-image: url(/img/mypageMenu.png);"><h4 id="PackageLiked">&nbsp;Package♥</h4></div>
+<div class="menu5" id="5" style="background-image: url(/img/mypageMenu.png);" ><h4 id="GuestBook" onclick="window.location.href='/mypage/bookGuestBook';">&nbsp;GuestBook</h4></div>
 	<div class="goChat" style="background-image: url(/img/mypageChat.png);"></div>
+<div class="updateUserModal" >
+	<div class="NameAndImg">
+	<div class="Updatecircle"></div>
+		<div class="UserNameArea">userName</div>
+		<button class="closeUpdateModal">X</button>
+	</div>
+	<div class="IntroduceMyself"></div>
+	<div class="UpdatePassword">
+		<div id="passwordArea"><div>password</div><input type="text" class="UserPassword"></div>
+		<div id="newpasswordArea"><div>new password</div><input type="text" class="NewUserPassword"></div>
+		<div class="submitUpdate" style="background-image: url(/img/checkIcon.png)"></div>
+	</div>
+	<div></div>
+</div>
 
 
 </div>
@@ -150,6 +166,15 @@ function loadApp() {
 	
 }
 
+$('.myPageUpdate').click(function (){
+	$('.updateUserModal').show();
+});
+$('.closeUpdateModal').click(function(){
+	$('.updateUserModal').hide();
+});
+
+
+
 // Load the HTML4 version if there's not CSS transform
 
 function isCSSTransformSupported() {
@@ -176,24 +201,6 @@ if (isCSSTransformSupported()) {
 		loadApp();
 	});
 }
-
-// if (Modernizr.csstransforms) {
-// 	$.getScript('../../lib/animationjs/turn.js', function() {
-// 		loadApp();
-// 	});
-// } else {
-// 	$.getScript('../../lib/JQuery/turn.html4.min.js', function() {
-// 		loadApp();
-// 	});
-// }
-
-// yepnope({
-// 	test : Modernizr.csstransforms,
-// 	yep: ['../../lib/animationjs/turn.js'],				//경로 & 실제 파일 존재여부 반드시 확인
-// 	nope: ['../../lib/JQuery/turn.html4.min.js'],	//경로 & 실제 파일 존재여부 반드시 확인
-// 	both: ['css/basic.css'],				//경로 & 실제 파일 존재여부 반드시 확인
-// 	complete: loadApp
-// });
 
 </script>
 

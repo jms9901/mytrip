@@ -6,8 +6,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class MyPageController {
 
-    @GetMapping("/bookMain")
+    @GetMapping("/mypage/bookMain")
     public String myPage() {
-        return "bookMain";
+        return "mypage/bookMain";
     }
+
+
+
+    @GetMapping("/mypage/bookGuestBook")
+    public String myPageGuestBook() {
+        return "mypage/bookGuestBook";
+    }
+
 }
