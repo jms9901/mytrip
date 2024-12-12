@@ -129,11 +129,11 @@
 
                 payments.forEach((payment, index) => {
                     const entryHtml = `
-                    <div class="payment-entry">
-                        <h4>Package: ${payment.packageTitle}</h4>
-                        <p>Date: ${payment.date}</p>
-                        <p>Price: ${payment.price}</p>
-                        <p>Status: ${payment.status}</p>
+                    <div class="payment-entry" style="background-image: url(/img/paymentReceipt.png); background-repeat: no-repeat; background-size: contain; height: 26%; font-size:15px; line-height: 70%" >
+                        <h4><br><br><br><br><br>&nbsp&nbsp Package: ${payment.packageTitle}</h4>
+                        <p>&nbsp&nbsp Date: ${payment.date}</p>
+                        <p>&nbsp&nbsp Price: ${payment.price}</p>
+                        <p>&nbsp&nbsp Status: ${payment.status}</p>
                     </div>
                 `;
                     addEntryToPage(entryHtml, index + 1, pages, entriesPerPage);
