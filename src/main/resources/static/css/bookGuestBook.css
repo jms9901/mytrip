@@ -296,6 +296,12 @@ body{
     top: 82px;
 
 }
+.feed-entry {
+    width: 140px;
+    height: 180px;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
 
 
 

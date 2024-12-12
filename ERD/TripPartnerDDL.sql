@@ -395,3 +395,5 @@ ALTER TABLE package
             REFERENCES user (user_id);
 
 ALTER TABLE user MODIFY user_profile BLOB;
+ALTER TABLE board
+    MODIFY COLUMN board_category ENUM('피드', '소모임') NOT NULL COMMENT '피드 카테고리';
