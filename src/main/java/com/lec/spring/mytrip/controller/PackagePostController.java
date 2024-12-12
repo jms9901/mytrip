@@ -37,6 +37,7 @@ public class PackagePostController {
         //메인 페이지 사이드 도시 목록 출력용
         List<City> sideCities = cityService.findCitiesByContinentOfThisCity(cityId);
         model.addAttribute("cities", sideCities);
+        System.out.println("도시 목록"  + sideCities.toString());
 
         // 이 도시의 패키지 목록
         List<PackagePost> packages = packagePostService.getPackagesByCityId(cityId);

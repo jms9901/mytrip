@@ -83,8 +83,10 @@
         <aside class="col-md-3">
             <div class="bg-light p-3 rounded shadow-sm">
                 <h4 class="text-center">Menu</h4>
-                <ul class="list-unstyled" th:each="${cities}">
-                    <li class="py-2"><a th:href="${cityId}" class="text-decoration-none"></a></li>
+                <ul class="list-unstyled">
+                    <li class="py-2" th:each="city : ${cities}">
+                        <a th:href="${city.cityId}" class="text-decoration-none" th:text="${city.cityName}"></a>
+                    </li>
                 </ul>
             </div>
         </aside>
@@ -95,15 +97,6 @@
             <div class="d-flex gap-3 overflow-auto">
                 <div class="card package-card flex-shrink-0" style="width: 200px;">
                     <div class="card-body">Package 1</div>
-                </div>
-                <div class="card package-card flex-shrink-0" style="width: 200px;">
-                    <div class="card-body">Package 2</div>
-                </div>
-                <div class="card package-card flex-shrink-0" style="width: 200px;">
-                    <div class="card-body">Package 3</div>
-                </div>
-                <div class="card package-card flex-shrink-0" style="width: 200px;">
-                    <div class="card-body">Package 4</div>
                 </div>
             </div>
 

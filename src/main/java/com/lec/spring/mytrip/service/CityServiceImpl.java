@@ -18,7 +18,7 @@ public class CityServiceImpl implements CityService {
 
     @Override
     public List<City> findCitiesByContinentOfThisCity(int cityId) {
-        return List.of();
+        return aipageRepository.findContinentByCity(cityId);
     }
 
     @Override
