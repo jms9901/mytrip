@@ -56,6 +56,7 @@
         <result property="status" column="payment_status"/>
         <result property="userName" column="user_name"/>
         <result property="packageTitle" column="package_title"/>
+        <result property="packageCost" column="package_cost" />
     </resultMap>
 
     <!-- ROLE_USER 리스트 가져오기 -->
@@ -107,7 +108,7 @@
 
     <!-- payment 리스트 가져오기 -->
     <select id="findByPayment" resultMap="PaymentResultMap">
-        SELECT DISTINCT i.*, u.user_name, p.package_title
+        SELECT DISTINCT i.*, u.user_name, p.package_title, p.package_cost
         FROM payment_info i
                  LEFT JOIN user u ON i.user_id = u.user_id
                  LEFT JOIN package p ON i.package_id = p.package_id

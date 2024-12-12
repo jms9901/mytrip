@@ -9,9 +9,11 @@
     <title>TripAdmin</title>
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link th:href="@{/css/styles.css}" rel="stylesheet" />
+    <link th:href="@{/css/userTables.css}" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 </head>
 <body class="sb-nav-fixed">
+
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
     <!-- Navbar Brand-->
     <a class="navbar-brand ps-3" th:href="@{/index.html}">Trip Partner</a>
@@ -88,18 +90,20 @@
                         <table id="datatablesSimple">
                             <thead>
                             <tr>
-                                <th>user name</th>
-                                <th>package name</th>
-                                <th>payment date</th>
-                                <th>payment status</th>
+                                <th>회원이름</th>
+                                <th>패키지명</th>
+                                <th>결제일자</th>
+                                <th>결제상태</th>
+                                <th>상세보기</th>
                             </tr>
                             </thead>
                             <tfoot>
                             <tr>
-                                <th>user name</th>
-                                <th>package name</th>
-                                <th>payment date</th>
-                                <th>payment status</th>
+                                <th>회원이름</th>
+                                <th>패키지명</th>
+                                <th>결제일자</th>
+                                <th>결제상태</th>
+                                <th>상세보기</th>
                             </tr>
                             </tfoot>
                             <tbody>
@@ -108,6 +112,19 @@
                                 <td th:text="${payments.packageTitle}"></td>
                                 <td th:text="${payments.date}"></td>
                                 <td th:text="${payments.status}"></td>
+                                <td>
+                                    <button type="button" class="btn btn-primary payment-details-button"
+                                            th:attr="data-bs-toggle='modal',
+                                                     data-bs-target='#exampleModal',
+                                                     data-paymentid=${payments.paymentId},
+                                                     data-paymentusername=${payments.userName},
+                                                     data-packagetitle=${payments.packageTitle},
+                                                     data-paymentregdate=${payments.Date},
+                                                     data-packagecost=${payments.packageCost},
+                                                     data-paymentusercount=${payments.userCount},
+                                                     data-paymenttotalcost=${payments.packageCost * payments.userCount}">
+                                        상세</button>
+                                </td>
                             </tr>
                             </tbody>
                         </table>
@@ -117,9 +134,32 @@
         </main>
     </div>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" inert>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"> 사용자 정보</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong>결제자명:</strong> <span id="modalUsername">[데이터 없음]</span></p>
+                <p><strong>패키지명:</strong> <span id="modalPackageTitle">[데이터 없음]</span></p> <!-- user_username 표시 -->
+                <p><strong>결제일시:</strong> <span id="modalPaymentRegDate">[데이터 없음]</span></p>
+                <p><strong>패키지금액:</strong> <span id="modalPackageCost">[데이터 없음]</span></p>
+                <p><strong>결제인원수:</strong> <span id="modalPaymentUserCount">[데이터 없음]</span></p>
+                <p><strong>총금액:</strong> <span id="modalPaymentTotalCost">[데이터 없음]</span></p>
+            </div>
+            <div class="modal-footer">
+                <input type="button" class="btn btn-secondary" data-bs-dismiss="modal" value="닫기">
+            </div>
+        </div>
+    </div>
+</div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 <script th:src="@{/js/scripts.js}"></script>
 <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+<script th:src="@{/js/paymentTables.js}"></script>
 <script th:src="@{/js/datatables-simple-demo.js}"></script>
 </body>
 </html>

@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // 테이블 내 버튼 클릭 이벤트 처리
     document.body.addEventListener('click', function (event) {
-        if (event.target.classList.contains('user-details-button')) {
+        if (event.target.classList.contains('payment-details-button')) {
             console.log("User details button clicked:", event.target);
 
             // 데이터 가져오기
