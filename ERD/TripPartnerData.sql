@@ -503,3 +503,20 @@ VALUES
      (58, '/img/FranceImg.jpg'),
      (59, '/img/FukuokaImg.jpg'),
      (60, '/img/GuamImg.jpg');
+
+
+INSERT INTO user_city (user_id, city_id, created_date)
+VALUES
+    (1, 5, DATE_SUB(NOW(), INTERVAL 1 DAY)),
+    (2, 5, DATE_SUB(NOW(), INTERVAL 1 DAY)),
+    (2, 5, DATE_SUB(NOW(), INTERVAL 1 DAY)),
+    (1, 7, DATE_SUB(NOW(), INTERVAL 1 DAY)),
+    (1, 7, DATE_SUB(NOW(), INTERVAL 1 DAY)),
+    (2, 7, DATE_SUB(NOW(), INTERVAL 1 DAY)),
+    (2, 9, DATE_SUB(NOW(), INTERVAL 1 DAY)),
+    (1, 9, DATE_SUB(NOW(), INTERVAL 1 DAY)),
+    (2, 9, DATE_SUB(NOW(), INTERVAL 1 DAY)),
+    (2, 9, DATE_SUB(NOW(), INTERVAL 1 DAY)),
+    (1, 9, DATE_SUB(NOW(), INTERVAL 1 DAY)),
+    (2, 9, DATE_SUB(NOW(), INTERVAL 1 DAY)),
+    (2, 9, DATE_SUB(NOW(), INTERVAL 1 DAY));

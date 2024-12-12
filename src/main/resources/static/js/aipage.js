@@ -105,7 +105,7 @@ function showResult(data) {
 
     if (city.cityName && city.cityNation && city.cityImg) {
         container.style.backgroundImage = `url('/img/${city.cityImg}')`;
-        const resultText = `${username}님의 추천여행지로는 \n ${city.cityNation}의\u00A0 ${city.cityName}을 추천합니다.\n`;
+        const resultText = `${username}님의 추천여행지로는 \n ${city.cityNation}의\u00A0 ${city.cityName}을(를) 추천합니다.\n`;
         document.getElementById("result-text").innerText = resultText;
     } else {
         document.getElementById("result-text").innerText = `${username}님의 추천 여행지를 찾을 수 없습니다.`;
