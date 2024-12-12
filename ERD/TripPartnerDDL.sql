@@ -177,12 +177,12 @@ CREATE TABLE package_liked
 
 CREATE TABLE payment_info
 (
-    payment_id      INT         NOT NULL AUTO_INCREMENT COMMENT '결제 정보 ID',
+    payment_id      TINYTEXT    NOT NULL COMMENT '결제 정보        ID',
     user_id         INT         NOT NULL COMMENT '사용자 ID',
     package_id      INT         NOT NULL COMMENT '패키지 ID',
     user_count      INT         NOT NULL COMMENT '결제에 관련된 인원수',
     payment_date    DATETIME    NOT NULL DEFAULT NOW() COMMENT '결제 일시',
-    payment_status VARCHAR(20) NOT NULL COMMENT '결제 상태',
+    payment_status  VARCHAR(20) NOT NULL DEFAULT '결제완료' COMMENT '결제 상태',
     PRIMARY KEY (payment_id)
 ) COMMENT '결제 정보';
 

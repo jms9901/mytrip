@@ -26,7 +26,8 @@
 
     <!-- 도시별 패키지 조회 -->
     <select id="findByCityId" parameterType="int" resultMap="PackagePostResultMap">
-        SELECT user_id,
+        SELECT package_id,
+               user_id,
                package_status,
                package_content,
                package_regdate,
@@ -37,7 +38,7 @@
                package_end_day
         FROM package
         WHERE city_id = #{cityId}
-        ORDER BY package_id DESC
+        ORDER BY package_regdate DESC
     </select>
 
     <!-- 사용자별 패키지 조회 -->

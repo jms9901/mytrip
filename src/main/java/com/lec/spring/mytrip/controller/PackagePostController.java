@@ -37,10 +37,12 @@ public class PackagePostController {
         //메인 페이지 사이드 도시 목록 출력용
         List<City> sideCities = cityService.findCitiesByContinentOfThisCity(cityId);
         model.addAttribute("cities", sideCities);
+        System.out.println("도시 목록"  + sideCities.toString());
 
         // 이 도시의 패키지 목록
         List<PackagePost> packages = packagePostService.getPackagesByCityId(cityId);
         model.addAttribute("packages", packages);
+        System.out.println("패키지 목록" + packages.toString());
 
         // 소모임 목록도 가져와야함
 
@@ -62,17 +64,22 @@ public class PackagePostController {
     // 패키지 상세 이동
     // board.package.detail.html
     @GetMapping("{cityId}/package/detail/{packageId}")
-    public void getPackageDetails(@PathVariable int cityId,
+    public String getPackageDetails(@PathVariable int cityId,
                                   @PathVariable int packageId,
                                   Model model) {
         PackagePost packagePost = packagePostService.getPackageDetails(packageId);
         model.addAttribute("packagePost", packagePost);
+        model.addAttribute("packageId", packageId);
+
+        return "board/city/package/detail";
     }
 
     // 패키지 글쓰기 페이지 이동
     // board.package.write.html
     @GetMapping("{cityId}/package/write")
-    public void writePackagePage(@PathVariable int cityId) {}
+    public String writePackagePage(@PathVariable int cityId) {
+        return "board/city/package/write";
+    }
 
     // 패키지 저장
     @PostMapping("{cityId}/package/save")
