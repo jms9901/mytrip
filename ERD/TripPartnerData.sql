@@ -662,10 +662,10 @@ where user_id = 1;
 insert into user (user_email, user_password, user_username, user_name, user_birthday, user_profile, user_provider, user_introdution, user_authorization)
 values
        (
-           'jeolmi@naver.com',
+           'jeolmi9@naver.com',
            '1234',
-           'jjeol_mii',
-           '절미',
+           'jjeol_mii9',
+           '절미9',
            '2023-01-16',
            '',
            '',

@@ -7,6 +7,8 @@ import com.lec.spring.mytrip.util.U;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -58,11 +60,18 @@ public class AdminController {
         return "admin/userTables";
     }
 
-//    @GetMapping("/userDetail")
-//    @ResponseBody
-//    public User getUserDetail(@RequestParam("username") String username){
-//        return userService.findByUsername(username);
-//    }
+    @PostMapping("/deleteuser")
+    @ResponseBody
+    public ResponseEntity<String> deleteUser(@RequestParam("userId") int userId) {
+        try {
+            adminService.deleteUser(userId); // 서비스 메서드 호출
+            System.out.println("User with ID " + userId + " deleted successfully.");
+            return ResponseEntity.ok("User deleted successfully!");
+        } catch (Exception e) {
+            System.err.println("Error deleting user: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to delete user.");
+        }
+    }
 
     @GetMapping("/businessTables")
     public String businessTables(Model model, HttpSession session) {

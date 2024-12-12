@@ -17,13 +17,11 @@ import java.util.List;
 public class AdminServiceImpl implements AdminService {
 
     private final AdminRepository adminRepository;
-    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
     public AdminServiceImpl(SqlSession sqlSession, PasswordEncoder passwordEncoder) {
         this.adminRepository = sqlSession.getMapper(AdminRepository.class);
-        this.userRepository = sqlSession.getMapper(UserRepository.class);
         this.passwordEncoder = passwordEncoder;
     }
 
