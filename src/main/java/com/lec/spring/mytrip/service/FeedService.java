@@ -5,6 +5,7 @@ import com.lec.spring.mytrip.domain.Feed;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -12,7 +13,7 @@ public interface FeedService {
 
     List<Feed> getFeedByUserId(int userId);
 
-    void insertFeed(Feed feed);
+    void insertFeed(Feed feed,List<MultipartFile> files) throws IOException;
 
     void updateFeed(Feed feed);
 

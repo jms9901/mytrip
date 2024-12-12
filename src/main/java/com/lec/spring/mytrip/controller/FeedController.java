@@ -5,6 +5,7 @@ import com.lec.spring.mytrip.domain.Feed;
 //import com.lec.spring.mytrip.domain.FeedValidator;
 import com.lec.spring.mytrip.service.FeedService;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -23,7 +25,7 @@ public class FeedController {
 
     private final FeedService feedService;
 
-
+    @Autowired
     public FeedController(FeedService feedService) {
         System.out.println("FeedController() 생성");
         this.feedService = feedService;
@@ -52,9 +54,10 @@ public class FeedController {
     // 피드 등록
     @PostMapping("/create/{userId}")
     @ResponseBody
-    public ResponseEntity<String> createFeed(@PathVariable int userId,@RequestBody Feed feed) {
+    public ResponseEntity<String> createFeed(@PathVariable int userId, @ModelAttribute Feed feed, @RequestParam("files") List<MultipartFile> files) throws IOException {
         feed.setUserId(userId);
-        feedService.insertFeed(feed);
+        feed.setBoardCategory("피드");
+        feedService.insertFeed(feed,files);
         return ResponseEntity.ok("success");
     }
 

@@ -303,5 +303,16 @@ body{
     background-size: contain;
 }
 
+.writeFeed{
+    background-repeat:no-repeat;
+    height:600px;
+    width:1500px;
+    z-index: 9999;
+    display: none;
+    position: fixed;
+    left: 350px;
+    /*transform: translate(-50%, -50%);*/
+    background-size: contain;
+}
 
 

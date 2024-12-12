@@ -21,6 +21,9 @@ public class Feed {
     private int userId;
     private City city;                          // 도시
     private List<PostAttachment> attachments;   // 첨부파일
+    @Getter
+    @Setter
+    private int cityId;
 
     // 파일 업로드를 위한 임시 필드
     private transient List<MultipartFile> uploadFiles;

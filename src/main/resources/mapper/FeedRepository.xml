@@ -45,6 +45,12 @@
         VALUES (#{userId}, #{cityId}, #{boardSubject}, #{boardContent}, #{boardCategory})
     </insert>
 
+    <!-- 첨부파일 삽입 -->
+    <insert id="insertAttachments" parameterType="com.lec.spring.mytrip.domain.PostAttachment">
+        insert into board_attachment(board_id, board_attachment_file)
+        values(#{boardId}, #{fileName})
+    </insert>
+
     <!-- 게시물 수정 -->
     <update id="updateFeed" parameterType="com.lec.spring.mytrip.domain.Feed">
         update board

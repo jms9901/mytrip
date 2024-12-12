@@ -20,6 +20,7 @@
     <link href='https://fonts.googleapis.com/css?family=Kaushan Script' rel='stylesheet'>
 
 </head>
+
 <body style="background-image: url(/img/mypageBackground.jpg); background-repeat: no-repeat ; background-size: cover;">
 <div class="logo">
     <div class="logo" style="background-image: url(/img/mypageLogo.png);"></div>
@@ -31,6 +32,8 @@
     <!-- feedEntries 동적 생성 영역 -->
 </div>
 <div class="flipbook-viewport">
+
+
 
     <div class="container">
         <div class="flipbook">
@@ -49,7 +52,60 @@
 </div>
 <div class="menu5" id="5" style="background-image: url(/img/mypageMenu.png);"><h4 id="Invoice">&nbsp;GuestBook</h4>
 </div>
+
+<button id="open-modal" class="open-modal-btn">피드 작성</button>
+<div class="writeFeed" style="background-image: url(/img/feedDetailFrame.png);">
+    <form action="/mypage/feed/createFeed" method="post" enctype="multipart/form-data">
+
+            <label for="city">도시 선택:</label>
+            <select name="cityId" id="city" required>
+                <option value="1">괌</option>
+                <option value="2">마닐라</option>
+                <option value="3">나트랑</option>
+                <option value="4">세부</option>
+                <option value="5">방콕</option>
+                <option value="6">파리</option>
+                <option value="7">홍콩</option>
+                <option value="8">상하이</option>
+                <option value="9">하와이</option>
+                <option value="10">다낭</option>
+                <option value="11">울란바토르</option>
+                <option value="12">발리</option>
+                <option value="13">로스엔젤레스</option>
+                <option value="14">두바이</option>
+                <option value="15">도쿄</option>
+                <option value="16">런던</option>
+                <option value="17">삿포로</option>
+                <option value="18">사이판</option>
+                <option value="19">이스탄불</option>
+                <option value="20">로마</option>
+                <option value="21">뉴욕</option>
+                <option value="22">하얼빈</option>
+                <option value="23">오사카</option>
+                <option value="24">마카오</option>
+                <option value="25">델리</option>
+                <option value="26">프랑크푸르트</option>
+                <option value="27">시드니</option>
+                <option value="28">호쿠오카</option>
+                <option value="29">오키나와</option>
+                <option value="30">타이베이</option>
+                <option value="31">벤쿠버</option>
+                <option value="32">지린</option>
+            </select>
+
+
+        <input type="text" name="boardSubject" placeholder="제목" required>
+        <textarea name="boardContent" placeholder="내용" required></textarea>
+        <input type="file" name="files" multiple>  <!-- 여러 파일을 선택 가능 -->
+        <button type="submit">피드 작성</button>
+        <!-- 모달 안에 닫기 버튼 추가 -->
+        <button type="button" class="close-modal-btn" onclick="closeModal()">닫기</button>
+    </form>
+</div>
 <div class="goChat" style="background-image: url(/img/mypageChat.png);"></div>
+
+
+</div>
 
 
 
@@ -61,7 +117,37 @@
 </div>
 
 <script type="text/javascript">
+    function closeModal() {
+        $('.writeFeed').hide();  // 모달 숨기기
+    }
+
     $(document).ready(function () {
+        $('#open-modal').click(function (){
+            $('.writeFeed').show();
+        });
+
+        $('.writeFeed form').submit(function(event) {
+            event.preventDefault();  // 페이지 새로 고침 방지
+            const formData = new FormData(this);  // 폼 데이터 가져오기
+
+            $.ajax({
+                url: `/mypage/feed/create/${userId}`,  // 제출할 URL
+                type: 'POST',
+                data: formData,
+                contentType: false,  // 파일 업로드를 위한 설정
+                processData: false,  // jQuery에서 데이터 처리 방지
+                success: function(response) {
+                    console.log('피드 작성 성공:', response);
+                    closeModal();  // 피드 작성 후 모달 닫기
+                    loadFeedPages();  // 새로운 피드 목록 로드
+                },
+                error: function(error) {
+                    console.log('에러 발생:', error);
+                }
+            });
+        });
+
+
         const userId = getToUserIdFromUrl();
         const apiUrl = `/mypage/feed/list/${userId}`; // API URL 설정
         let initialPageCount = $('.flipbook .page').length;
@@ -257,6 +343,7 @@
                 console.log(`새 페이지 생성: #page${pageNumber}`);
 
         }
+
 
         // 채팅 hover 효과
         function hoverChat() {
