@@ -23,9 +23,9 @@ public class PaymentServiceImpl implements PaymentService {
 
 
     @Autowired
-    public PaymentServiceImpl(SqlSession sqlSession) {
+    public PaymentServiceImpl(SqlSession sqlSession, KakaoPayApiUtil kakaoPayApiUtil) {
         this.paymentsRepository = sqlSession.getMapper(PaymentsRepository.class);
-        this.kakaoPayApiUtil = sqlSession.getMapper(KakaoPayApiUtil.class);
+        this.kakaoPayApiUtil = kakaoPayApiUtil;
     }
 
 

@@ -528,7 +528,7 @@ VALUES
 
 INSERT INTO package (city_id, user_id, package_content, package_status, package_title, package_cost, package_maxpeople, package_start_day, package_end_day)
 VALUES
-    (1, 3, '보온무운', '대기', '제에에ㅔ목', 123456, 10, '2024-12-01', '2024-12-12'),
+    (1, 2, '보온무운', '대기', '제에에ㅔ목', 123456, 10, '2024-12-01', '2024-12-12'),
     (1, 3, '보온무운', '대기', '제에에ㅔ목', 123456, 10, '2024-12-02', '2024-12-12'),
     (1, 3, '보온무운', '대기', '제에에ㅔ목', 6578657, 10, '2024-12-03', '2024-12-12'),
     (1, 3, '보온무운', '대기', '제에에ㅔ목', 435376, 10, '2024-12-04', '2024-12-12'),
@@ -551,6 +551,8 @@ VALUES
 insert into city_liked (user_id,city_id)
 values(1,1);
 insert into city_liked (user_id,city_id)
-values(1,2);
+values(1,2);INSERT INTO package (city_id, user_id, package_content, package_status, package_title, package_cost, package_maxpeople, package_start_day, package_end_day)
+            VALUES
+                (1, 2, '보온무운', '대기', '제에에ㅔ목', 123456, 10, '2024-12-01', '2024-12-12')
 insert into city_liked (user_id,city_id)
 values(1,3);
