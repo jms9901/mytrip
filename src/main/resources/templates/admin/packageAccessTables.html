@@ -9,9 +9,11 @@
     <title>TripAdmin</title>
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link th:href="@{/css/styles.css}" rel="stylesheet" />
+    <link th:href="@{/css/userTables.css}" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 </head>
 <body class="sb-nav-fixed">
+
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
     <!-- Navbar Brand-->
     <a class="navbar-brand ps-3" th:href="@{/index.html}">Trip Partner</a>
@@ -78,7 +80,7 @@
     <div id="layoutSidenav_content">
         <main>
             <div class="container-fluid px-4">
-                <h1 class="mt-4">Package Access Tables</h1>
+                <h1 class="mt-4">패키지 관리</h1>
                 <ol class="breadcrumb mb-4">
                     <li class="breadcrumb-item"><a th:href="@{/admin/packageAccessTables}">승인</a></li>
                     <li class="breadcrumb-item active"><a th:href="@{/admin/packageStandbyTables}">대기</a></li>
@@ -92,18 +94,20 @@
                         <table id="datatablesSimple">
                             <thead>
                             <tr>
-                                <th>user name</th>
-                                <th>package subject</th>
-                                <th>posting Date</th>
-                                <th>package status</th>
+                                <th>사업자명</th>
+                                <th>패키지명</th>
+                                <th>게시일자</th>
+                                <th>패키지상태</th>
+                                <th>상세보기</th>
                             </tr>
                             </thead>
                             <tfoot>
                             <tr>
-                                <th>user name</th>
-                                <th>package subject</th>
-                                <th>posting Date</th>
-                                <th>package status</th>
+                                <th>사업자명</th>
+                                <th>패키지명</th>
+                                <th>게시일자</th>
+                                <th>패키지상태</th>
+                                <th>상세보기</th>
                             </tr>
                             </tfoot>
                             <tbody>
@@ -113,12 +117,51 @@
                                 <td th:text="${AccessPackages.regDate}"></td>
                                 <td th:text="${AccessPackages.status}"></td>
                             </tr>
+                            <td>
+                                <button type="button" class="btn btn-primary user-details-button"
+                                        th:attr="data-bs-toggle='modal',
+                                                     data-bs-target='#exampleModal',
+                                                     data-packageId=${AccessPackages.packageId},
+                                                     data-username=${AccessPackages.userName},
+                                                     data-packageTitle=${AccessPackages.title},
+                                                     data-packageContent=${AccessPackages.content},
+                                                     data-packageCost=${AccessPackages.cost},
+                                                     data-packageMaxPeople=${AccessPackages.maxPeople},
+                                                     data-packageStartDay=${AccessPackages.startDay},
+                                                     data-packageEndDay=${AccessPackages.endDay}
+                                                    ">
+                                    상세</button>
+                            </td>
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
         </main>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" inert>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"> 사용자 정보</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong>기업이름:</strong> <span id="modalUsername">[데이터 없음]</span></p>
+                <p><strong>패키지명:</strong> <span id="modalPackageTitle">[데이터 없음]</span></p> <!-- user_username 표시 -->
+                <p><strong>패키지내용:</strong> <span id="modalPackageContent=">[데이터 없음]</span></p>
+                <p><strong>패키지비용:</strong> <span id="modalPackageCost">[데이터 없음]</span></p>
+                <p><strong>최대인원:</strong> <span id="modalPackageMaxPeople">[데이터 없음]</span></p>
+                <p><strong>시작일자:</strong> <span id="modalPackageStartDay">[데이터 없음]</span></p>
+                <p><strong>종료일자:</strong> <span id="modalPackageEndDay">[데이터 없음]</span></p>
+            </div>
+            <div class="modal-footer">
+                <input type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="deleteUser()" value="삭제">
+                <input type="button" class="btn btn-secondary" data-bs-dismiss="modal" value="닫기">
+            </div>
+        </div>
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>

@@ -9,9 +9,11 @@
     <title>TripAdmin</title>
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link th:href="@{/css/styles.css}" rel="stylesheet" />
+    <link th:href="@{/css/businessTables.css}" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 </head>
 <body class="sb-nav-fixed">
+
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
     <!-- Navbar Brand-->
     <a class="navbar-brand ps-3" th:href="@{/index.html}">Trip Partner</a>
@@ -30,7 +32,7 @@
             <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                 <li>
-                    <form th:action="@{/admin/logout}" method="POST"  th:with="user=${#authentication.getPrincipal().getUser()}">
+                    <form th:action="@{/admin/logout}" method="POST"  th:with="user=${#authentication.getPrincipal()}">
                         <button type="submit" class="dropdown-item"> Logout </button></form>
                 </li>
             </ul>
@@ -78,7 +80,7 @@
     <div id="layoutSidenav_content">
         <main>
             <div class="container-fluid px-4">
-                <h1 class="mt-4">Feed Tables</h1>
+                <h1 class="mt-4">게시글 관리</h1>
                 <ol class="breadcrumb mb-4">
                     <li class="breadcrumb-item"><a th:href="@{/admin/boardTables}">소모임</a></li>
                     <li class="breadcrumb-item active"><a th:href="@{/admin/feedTables}">피드</a></li>
@@ -92,16 +94,18 @@
                         <table id="datatablesSimple">
                             <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>board subject</th>
-                                <th>posting date</th>
+                                <th>작성자이름</th>
+                                <th>게시물제목</th>
+                                <th>게시일자</th>
+                                <th>상세보기</th>
                             </tr>
                             </thead>
                             <tfoot>
                             <tr>
-                                <th>Name</th>
-                                <th>board subject</th>
-                                <th>posting date</th>
+                                <th>작성자이름</th>
+                                <th>게시물제목</th>
+                                <th>게시일자</th>
+                                <th>상세보기</th>
                             </tr>
                             </tfoot>
                             <tbody>
@@ -109,6 +113,18 @@
                                 <td th:text="${feeds.userName}"></td>
                                 <td th:text="${feeds.subject}"></td>
                                 <td th:text="${feeds.date}"></td>
+                                <td>
+                                    <button type="button" class="btn btn-primary board-details-button"
+                                            th:attr="data-bs-toggle='modal',
+                                                     data-bs-target='#exampleModal',
+                                                     data-date=${feeds.date},
+                                                     data-subject=${feeds.subject},
+                                                     data-content=${feeds.content},
+                                                     data-viewCount=${feeds.viewCount},
+                                                     data-cityId=${feeds.cityId},
+                                                     data-boardId=${feeds.boardId}">
+                                        상세</button>
+                                </td>
                             </tr>
                             </tbody>
                         </table>
@@ -118,9 +134,33 @@
         </main>
     </div>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" inert>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"> 사용자 정보</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong>게시일자:</strong> <span id="modalRegDate">[데이터 없음]</span></p>
+                <p><strong>소모임 제목:</strong> <span id="modalBoardSubject">[데이터 없음]</span></p> <!-- user_username 표시 -->
+                <p><strong>소모임 내용:</strong> <span id="modalBoardContent">[데이터 없음]</span></p>
+                <p><strong>소모임 조회수:</strong> <span id="modalBoardViewCount">[데이터 없음]</span></p>
+                <p><strong>업로드된 도시 ID:</strong> <span id="modalBoardCityId">[데이터 없음]</span></p>
+                <p><strong>게시물 ID:</strong> <span id="modalBoardId">[데이터 없음]</span></p>
+            </div>
+            <div class="modal-footer">
+                <input type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="deletePost()" value="삭제">
+                <input type="button" class="btn btn-secondary" data-bs-dismiss="modal" value="닫기">
+            </div>
+        </div>
+    </div>
+</div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 <script th:src="@{/js/scripts.js}"></script>
 <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+<script th:src="@{/js/feedTables.js}"></script>
 <script th:src="@{/js/datatables-simple-demo.js}"></script>
 </body>
 </html>

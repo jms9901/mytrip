@@ -1,0 +1,57 @@
+@font-face {
+    font-family: 'TheJamsil5Bold';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/TheJamsil5Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'GmarketSansMedium';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+h1{
+    font-family: 'TheJamsil5Bold', sans-serif;
+}
+
+body{
+    font-family: 'GmarketSansMedium', sans-serif;
+}
+
+.breadcrumb {
+    display: flex;
+    gap: 10px; /* 버튼 사이 간격 */
+    padding: 10px 0;
+    background-color: transparent; /* 기본 배경 제거 */
+    list-style: none; /* 점 제거 */
+}
+
+.breadcrumb-item a {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    text-decoration: none;
+    font-size: 14px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    color: #fff;
+    background-color: #003366;
+    transition: all 0.3s ease;
+}
+
+.breadcrumb-item::before {
+    content: none !important; /* ::before 내용을 제거 */
+}
+
+.breadcrumb-item.active a {
+    background-color: #fff; /* 활성화된 버튼 색상 */
+    color: #333;
+    border-color: #003366;
+}
+
+.breadcrumb-item a:hover {
+    background-color: #f0f0f0; /* 호버 효과 */
+    border-color: #bbb;
+}

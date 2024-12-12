@@ -60,6 +60,9 @@ public class AdminController {
         return "admin/userTables";
     }
 
+    @PostMapping("/login")
+    public void adminLogin(){}
+
     @PostMapping("/deleteuser")
     @ResponseBody
     public ResponseEntity<String> deleteUser(@RequestParam("userId") int userId) {
@@ -92,6 +95,19 @@ public class AdminController {
         List<Board> feeds = adminService.findByFeedCategory("피드");
         model.addAttribute("feeds", feeds);
         return "admin/feedTables";
+    }
+
+    @PostMapping("/deletePost")
+    @ResponseBody
+    public ResponseEntity<String> deletePost(@RequestParam("boardId") int boardId) {
+        try {
+            adminService.deleteBoard(boardId); // 서비스 메서드 호출
+            System.out.println("Board with ID " + boardId + " deleted successfully.");
+            return ResponseEntity.ok("Board deleted successfully!");
+        } catch (Exception e) {
+            System.err.println("Error deleting board: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to delete board.");
+        }
     }
 
     @GetMapping("/packageAccessTables")

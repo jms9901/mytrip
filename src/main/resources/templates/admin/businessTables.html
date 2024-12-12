@@ -9,6 +9,7 @@
     <title>TripAdmin</title>
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link th:href="@{/css/styles.css}" rel="stylesheet" />
+    <link th:href="@{/css/businessTables.css}" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 </head>
 <body class="sb-nav-fixed">
@@ -78,7 +79,7 @@
     <div id="layoutSidenav_content">
         <main>
             <div class="container-fluid px-4">
-                <h1 class="mt-4">Business Tables</h1>
+                <h1 class="mt-4">사용자 관리</h1>
                 <ol class="breadcrumb mb-4">
                     <li class="breadcrumb-item"><a th:href="@{/admin/userTables}">회원</a></li>
                     <li class="breadcrumb-item active"><a th:href="@{/admin/businessTables}">사업자</a></li>
@@ -92,16 +93,18 @@
                         <table id="datatablesSimple">
                             <thead>
                             <tr>
-                                <th>user name</th>
-                                <th>email</th>
-                                <th>Start Date</th>
+                                <th>회원이름</th>
+                                <th>이메일</th>
+                                <th>가입일자</th>
+                                <th>상세보기</th>
                             </tr>
                             </thead>
                             <tfoot>
                             <tr>
-                                <th>user name</th>
-                                <th>email</th>
-                                <th>Start Date</th>
+                                <th>회원이름</th>
+                                <th>이메일</th>
+                                <th>가입일자</th>
+                                <th>상세보기</th>
                             </tr>
                             </tfoot>
                             <tbody>
@@ -109,6 +112,18 @@
                                 <td th:text="${businessUsers.name}"></td>
                                 <td th:text="${businessUsers.email}"></td>
                                 <td th:text="${businessUsers.regDate}"></td>
+                                <td>
+                                    <button type="button" class="btn btn-primary user-details-button"
+                                            th:attr="data-bs-toggle='modal',
+                                                     data-bs-target='#exampleModal',
+                                                     data-userid=${businessUsers.id},
+                                                     data-username=${businessUsers.name},
+                                                     data-userusername=${businessUsers.username},
+                                                     data-useremail=${businessUsers.email},
+                                                     data-userbirthday=${businessUsers.birthday},
+                                                     data-userregdate=${businessUsers.regDate}">
+                                        상세</button>
+                                </td>
                             </tr>
                             </tbody>
                         </table>
@@ -118,9 +133,32 @@
         </main>
     </div>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" inert>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"> 사용자 정보</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong>이 름:</strong> <span id="modalName">[데이터 없음]</span></p>
+                <p><strong>아이디:</strong> <span id="modalusername">[데이터 없음]</span></p> <!-- user_username 표시 -->
+                <p><strong>이메일:</strong> <span id="modalEmail">[데이터 없음]</span></p>
+                <p><strong>생년월일:</strong> <span id="modalBirthday">[데이터 없음]</span></p>
+                <p><strong>가입일자:</strong> <span id="modalRegDate">[데이터 없음]</span></p>
+            </div>
+            <div class="modal-footer">
+                <input type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="deleteUser()" value="삭제">
+                <input type="button" class="btn btn-secondary" data-bs-dismiss="modal" value="닫기">
+            </div>
+        </div>
+    </div>
+</div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 <script th:src="@{/js/scripts.js}"></script>
 <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+<script th:src="@{/js/businessTables.js}"></script>
 <script th:src="@{/js/datatables-simple-demo.js}"></script>
 </body>
 </html>
