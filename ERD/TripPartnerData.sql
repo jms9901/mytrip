@@ -586,6 +586,8 @@ insert into payment_info (user_id, package_id, user_count, payment_status)
                                           values(7,7,1,'결제완료');
 
 SELECT * FROM user WHERE user_id = 9;
+SELECT * FROM user WHERE user_id = 10;
+SELECT * FROM user WHERE user_id = 11;
 UPDATE user
 SET user_status = '승인'
 WHERE user_id = 9;
@@ -596,6 +598,4 @@ UPDATE user
 SET user_status = '승인'
 WHERE user_id = 11;
 SELECT * FROM user WHERE user_id = 10;
-SELECT * FROM user WHERE user_id = 11;
-insert into user (user_id, user_status)
-values (9, '대기');
+SELECT * FROM user WHERE user_id = 11;;

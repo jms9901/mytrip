@@ -20,27 +20,28 @@
     <div class="container">
         <div class="profile-section">
             <!-- 비즈니스 개인정보 수정 링크 연결  -->
-            <img src="/img/basicProfile.png" class="profile-icon-Button" type="button" id="profile-icon-Button"/>
-            <div class="business-name">[[${user.username}]]</div>
+            <img src="/img/basicProfile.png" class="profile-icon-Button" type="button" id="profile-icon-Button">
+            <div class="business-name" data-user-id="${user.username}">[[${user.username}]]</div>
         </div>
 
         <!-- 패키지 목록 -->
         <div class="package-section">
-            <div class="package-header">패키지 목록</div>
+            <div class="package-header">Package List</div>
             <!-- 패키지 결제 내역 리스트 버튼 -->
             <img src="/img/paymentListIcon.png" alt="package-payment-button" id="package-payment-button" type="button"></img>
 
             <!-- 등록한 패키지 목록 -->
             <div class="package-list">
-                <div th:each="package : ${packages}" class="package-item">
+<!--                등록한 패키지 목록 동적으로 추가 -->
+                <div th:each="packagePost : ${packages}" class="package-item">
                     <div class="package-header">
-                        <div class="package-name">[[${package.packageTitle}]]</div>
+                        <div class="package-name">[[${packagePost.title}]]</div>
                     </div>
-                    <div class="package-content">[[${package.packageContent}]]</div>
-                    <div class="package-status">[[${package.packageStatus}]]</div>
+                    <div class="package-content">[[${packagePost.content}]]</div>
+                    <div class="package-status">[[${packagePost.status}]]</div>
                     <div class="liked">
                         <img src="/img/heart-icon-fill.png" alt="heart-icon-fill" id="liked-heart-icon" type="button">
-                        <span class="likedCnt">[[${package.likedCount}]]</span>
+                        <span class="likedCnt">[[${packagePost.likedCount}]]</span>
                     </div>
                 </div>
             </div>

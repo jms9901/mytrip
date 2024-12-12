@@ -9,6 +9,7 @@ import com.lec.spring.mytrip.service.UserServiceImpl;
 import com.lec.spring.mytrip.service.businessMypageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -41,7 +42,7 @@ public class BusinessMypageController {
 
     // 기업 개인정보 수정 -> 모달
     // businessMain.html
-    @PostMapping("/profile")
+    @PostMapping("/business/profile")
     public ResponseEntity<?> updateCompanyProfile(
             @AuthenticationPrincipal User user,
             @RequestParam(required = false) String currentPassword,
@@ -49,12 +50,13 @@ public class BusinessMypageController {
             @RequestParam(required = false)MultipartFile profileImage
             ) {
          try {
+             String profileImageFilename = profileImage != null ? profileImage.getOriginalFilename() : null;
             User result = businessMypageService.updateCompany(
                     user.getId(),
                     currentPassword,
                     newPassword,
                     profileImage,
-                    profileImage != null ? profileImage.getOriginalFilename() : null
+                    profileImageFilename
             );
             return result != null ? ResponseEntity.ok().build(): ResponseEntity.badRequest().body("프로필 수정 실패");
         } catch (Exception e) {
@@ -82,26 +84,30 @@ public class BusinessMypageController {
                 return "error";
             }
 
+
             List<PackagePost> packages = businessMypageService.likeCntByPackage(userId);
             model.addAttribute("packages", packages);
             model.addAttribute("user", user);
 
+            log.info("Business data: {}, Packages: {}", user, packages);
             return "mypage/businessMain";
 
         } catch (Exception e) {
-            log.error("마이페이지 로드 중 오류 발생", e);
-            model.addAttribute("errorMessage", "서버 오류가 발생했습니다.");
+//            log.error("마이페이지 로드 중 오류 발생", e);
+//            model.addAttribute("errorMessage", "서버 오류가 발생했습니다.");
+            ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("패키지 조회 중 오류가 발생했습니다: " + e.getMessage());
             return "error";
         }
+
     }
 
 
     // 기업이 등록한 패키지 리스트 (패키지 제목, 패키지 내용, 패키지, 패키지 승인 상태, 좋아요 수) -> 메인 페이지 하단
-    @GetMapping("/packageList")
-    public ResponseEntity<List<PackagePost>> getBusinessPackages(@AuthenticationPrincipal User user) {
-        List<PackagePost> packages = businessMypageService.likeCntByPackage(user.getId());
-        return ResponseEntity.ok(packages);
-    }
+//    @GetMapping("/")
+//    public ResponseEntity<List<PackagePost>> getBusinessPackages(@AuthenticationPrincipal User user) {
+//        List<PackagePost> packages = businessMypageService.likeCntByPackage(user.getId());
+//        return ResponseEntity.ok(packages);
+//    }
 
     // 기업이 등록한 모든 패키지에 관한 일반 유저의 결제 내역(사용자, 패키지 상품 제목, 결제 상태) -> 모달
     @GetMapping("/payments")
