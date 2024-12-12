@@ -36,8 +36,6 @@ public class PaymentServiceImpl implements PaymentService {
             // KakaoPay API 호출
             kakaoPayApiUtil.readyToPay(payment);
 
-
-
             // 저장 성공 시 1 반환
             return  paymentsRepository.paymentSave(payment);
         } catch (Exception e) {
