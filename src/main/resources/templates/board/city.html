@@ -103,7 +103,7 @@
                     <div class="card-body">
                         <a th:href="@{|${cityId}/package/detail/${package.packageId}|}"
                            th:text="${package.packageTitle}"></a>
-                        <button class="packageLikeButton" type="button" data-package-id="[[${package.packageId}]]">
+                        <button class="packageLikeButton" type="button" th:data-package-id="${package.packageId}">
                             좋아요 이미지
                         </button>
                     </div>
