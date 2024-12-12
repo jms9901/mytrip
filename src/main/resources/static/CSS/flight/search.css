@@ -134,6 +134,11 @@
     display: none;
 }
 
+.dropdown-content{
+    max-height: 300px;
+    overflow-y: auto;
+}
+
 /* 버튼 스타일 */
 .btn-decrease, .btn-increase {
     cursor: pointer;
