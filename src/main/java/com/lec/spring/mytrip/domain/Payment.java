@@ -12,12 +12,12 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 public class Payment {
-    private int paymentId;
-    private int userId;
-    private int packageId;
-    private int  userCount;
-    private LocalDateTime Date;
-    private String  Status;
+    private int paymentId; //
+    private int userId; // 구매자 id
+    private int packageId; // 상품 ID
+    private int  userCount; // 인원 수
+    private LocalDateTime Date; // 구매한 날짜
+    private String  Status; // 구매한 상태
 
     private String userName;
     private String packageTitle;
