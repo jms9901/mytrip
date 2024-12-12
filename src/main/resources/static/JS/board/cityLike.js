@@ -3,7 +3,7 @@ $(document).ready(function () {
     const cityId = $('meta[name="city-id"]').attr('content');
 
     // 좋아요 버튼 클릭 이벤트
-    $('.like-button').on('click', function () {
+    $('.cityLikeButton').on('click', function () {
         console.log("들어오긴 함?");
         $.ajax({
             url: `/likey/city`,
@@ -18,7 +18,7 @@ $(document).ready(function () {
                 }
             },
             error: function (xhr, status, error) {
-                console.error("Error:", error);
+                alert("오류가 발생했습니다. 다시 시도해주세요.");
             }
         });
     });

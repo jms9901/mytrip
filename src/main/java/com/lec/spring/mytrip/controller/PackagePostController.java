@@ -69,6 +69,7 @@ public class PackagePostController {
                                   Model model) {
         PackagePost packagePost = packagePostService.getPackageDetails(packageId);
         model.addAttribute("packagePost", packagePost);
+        model.addAttribute("packageId", packageId);
 
         return "board/city/package/detail";
     }
