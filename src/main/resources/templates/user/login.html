@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -10,12 +11,24 @@
 </head>
 <body>
 <header id="header">
-  <div class="topnav">
-    <img th:src="@{/img/logo.png}" alt="" class="logo">
-    <a th:href="@{#}">여행지 추천</a>
-    <a th:href="@{#}">여행지 게시판</a>
-    <a th:href="@{#}">항공권 예약</a>
-    <a th:href="@{/user/login}">login</a>
+  <div class="topnav SMN_effect-6">
+    <a th:href="@{/main/mainpage}">
+      <img th:src="@{/img/logo.png}" alt="" class="logo">
+    </a>
+    <sec:authorize access="isAuthenticated()">
+      <a th:href="@{/aipage/start}" class="top-menu">여행지 추천</a>
+    </sec:authorize>
+    <sec:authorize access="isAuthenticated()">
+      <a th:href="@{/post}" class="top-menu">여행지 게시판</a>
+    </sec:authorize>
+    <sec:authorize access="isAuthenticated()">
+      <a th:href="@{/flight/search}" class="top-menu">항공권 예약</a>
+    </sec:authorize>
+    <a sec:authorize="isAnonymous()" th:href="@{/user/login}" class="top-menu">login</a>
+    <form th:action="@{/user/mypage}" method="GET" sec:authorize="isAuthenticated()">
+      <button type="submit" class="mypage ">Mypage</button></form>
+    <!--                <form th:action="@{/user/logout}" method="POST" sec:authorize="isAuthenticated()" th:with="user=${#authentication.getPrincipal()}">-->
+    <!--                    <button type="submit" class="">logout</button></form>-->
   </div>
 </header>
 <section>

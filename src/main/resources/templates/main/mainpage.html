@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,13 +23,24 @@
     <body>
         <!-- 헤더 부분 -->
         <header id="header">
-            <div class="topnav">
-                <img th:src="@{/img/logo.png}" alt="" class="logo">
-                <a th:href="@{/aipage/start}">여행지 추천</a>
-                <a th:href="@{/post}">여행지 게시판</a>
-                <a th:href="@{/flight/search}">항공권 예약</a>
-                <a th:if="${session.user != null}" th:href="@{/mypage}" class="custom-font">Mypage</a>
-                <a th:if="${session.user == null}" th:href="@{/login}">login</a>
+            <div class="topnav SMN_effect-6">
+                <a th:href="@{/main/mainpage}">
+                    <img th:src="@{/img/logo.png}" alt="" class="logo">
+                </a>
+                <sec:authorize access="isAuthenticated()">
+                    <a th:href="@{/aipage/start}" class="top-menu">여행지 추천</a>
+                </sec:authorize>
+                <sec:authorize access="isAuthenticated()">
+                    <a th:href="@{/post}" class="top-menu">여행지 게시판</a>
+                </sec:authorize>
+                <sec:authorize access="isAuthenticated()">
+                    <a th:href="@{/flight/search}" class="top-menu">항공권 예약</a>
+                </sec:authorize>
+                <a sec:authorize="isAnonymous()" th:href="@{/user/login}" class="top-menu">login</a>
+                <form th:action="@{/user/mypage}" method="GET" sec:authorize="isAuthenticated()">
+                    <button type="submit" class="mypage ">Mypage</button></form>
+                <!--                <form th:action="@{/user/logout}" method="POST" sec:authorize="isAuthenticated()" th:with="user=${#authentication.getPrincipal()}">-->
+                <!--                    <button type="submit" class="">logout</button></form>-->
             </div>
         </header>
 
@@ -92,7 +104,6 @@
                             <!-- 이미지 -->
                             <a th:href="@{|/post/${city.cityId}|}">
                                 <img th:src="@{|/img/${city.cityImg}|}" th:alt="${city.cityName}" class="img-fluid rounded shadow">
-
                             </a>
                             <!-- 텍스트 정보 -->
                             <div class="info mt-3">
@@ -196,9 +207,9 @@
         </footer>
 
         <div id="scrollMenu">
-            <a href="/aipage/start">여행지 추천</a>
-            <a href="/flight/search">항공권 예약</a>
-            <a href="/post">여행지 게시판</a>
+            <a th:href="@{/aipage/start}">여행지 추천</a>
+            <a th:href="@{/flight/search}">항공권 예약</a>
+            <a th:href="@{/post}">여행지 게시판</a>
         </div>
 
         <button onclick="topFunction()" id="myBtn" title="Go to top">Top</button>

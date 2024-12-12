@@ -1,5 +1,5 @@
 let scrollMenu = document.getElementById("scrollMenu");
-let section3 = document.getElementById("section3");
+let section3 = document.getElementById("section1");
 
 // 통합된 스크롤 이벤트 핸들러
 function handleScroll() {
