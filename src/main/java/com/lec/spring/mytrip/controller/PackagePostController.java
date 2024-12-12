@@ -119,6 +119,8 @@ public class PackagePostController {
         return "redirect:/board/city/" + cityId;
     }
 
+    // 결제 페이지 이동
+
 
     // 서비스 단 이하는 차후
     // 소모임 상세 이동
