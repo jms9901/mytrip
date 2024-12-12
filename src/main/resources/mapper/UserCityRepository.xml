@@ -8,7 +8,16 @@
     <select id="findUserIdByName" resultType="int">
         SELECT user_id
         FROM user
-        WHERE user_username = #{userName}
+        WHERE user_username = #{username}
+        LIMIT 1
+    </select>
+
+
+
+    <select id="findNameByUsername" resultType="string">
+        SELECT user_name
+        FROM user
+        WHERE user_username = #{username}
     </select>
 
     <insert id="insertUserCity">

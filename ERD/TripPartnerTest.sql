@@ -57,3 +57,10 @@ values(19,3,'2024-12-10'),
       (19,3,'2024-12-10'),
       (19,3,'2024-12-10')
 ;
+
+
+
+SELECT user_username, COUNT(*)
+FROM user
+GROUP BY user_username
+HAVING COUNT(*) > 1;

@@ -55,10 +55,6 @@ public class SecurityConfig {
                         .defaultSuccessUrl("/main/mainpage", true)
                         .userInfoEndpoint(userInfo -> userInfo
                                 .userService(principalOauth2UserService))) // OAuth2 UserService 설정
-                .exceptionHandling(exception -> exception
-                        .authenticationEntryPoint((request, response, authException) -> {
-                            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
-                        }))
                 .build();
     }
 

@@ -1,10 +1,9 @@
 #  user admin 데이터
-insert into user (user_email, user_password, user_username, user_name, user_phonenumber, user_birthday, user_profile, user_provider, user_introdution, user_authorization)
+insert into user (user_email, user_password, user_username, user_name,  user_birthday, user_profile, user_provider, user_introdution, user_authorization)
 values ('fullstackK08@naver.com',
         '1234',
         'admin1234',
         '이경원',
-        '010-8297-0195',
         '2000-04-24',
         '',
         '',
@@ -16,7 +15,6 @@ values ('fullstackK08@naver.com',
          '1234',
          'user1234',
          '이경원',
-        '010-1234-1234',
          '2000-02-11',
          '',
          '',
@@ -33,7 +31,6 @@ insert into user (user_email, user_password,user_username,user_name,user_authori
          '1234',
          'business1234',
          '이경원',
-         '010-1111-1111',
          'business',
          '123-11-12345'
         ) ;
