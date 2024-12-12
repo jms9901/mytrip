@@ -1,6 +1,7 @@
 package com.lec.spring.mytrip.service;
 
 import com.lec.spring.mytrip.domain.Payment;
+import com.lec.spring.mytrip.domain.payment.Response;
 import com.lec.spring.mytrip.repository.PackagePostRepository;
 import com.lec.spring.mytrip.repository.PaymentsRepository;
 import com.lec.spring.mytrip.repository.UserRepository;
@@ -31,18 +32,20 @@ public class PaymentServiceImpl implements PaymentService {
 
     //결제 저장
     @Override
-    public int paymentSave(Payment payment) {
+    public Response paymentSave(Payment payment) {
+        System.out.println("싸-비쓰 왔슈");
         try {
             // KakaoPay API 호출
-            kakaoPayApiUtil.readyToPay(payment);
+            Response response = kakaoPayApiUtil.readyToPay(payment);
+            if(response.getResponse().get("tid") != null){
+                int i = paymentsRepository.paymentSave(response.getPayment());
+            };
 
-            // 저장 성공 시 1 반환
-            return  paymentsRepository.paymentSave(payment);
+            return response;
         } catch (Exception e) {
             e.printStackTrace();
-
             // 실패 시 0 반환
-            return 0;
+            return null;
         }
     }
     //마이/기업페이지 결제 출력

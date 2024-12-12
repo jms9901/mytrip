@@ -1,6 +1,7 @@
 package com.lec.spring.mytrip.controller;
 
 import com.lec.spring.mytrip.domain.Payment;
+import com.lec.spring.mytrip.domain.payment.Response;
 import com.lec.spring.mytrip.service.PaymentService;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +27,35 @@ public class PaymentController {
 
     //결제 저장
     @PostMapping("board/package/payment")
-    public String packagePaymentSave(Payment payment) {
-        if(1 == paymentService.paymentSave(payment))
-            return "/board/payment/success"; //결제 성공 팝업 후 어디로 갈까요
-        else return "redirect:/board/payment"; //결제페이지 재이동
+    public String packagePaymentSave() {
+        Payment payment = Payment.builder()
+//                paymentId=null,
+                .paymentId(null)
+//                userId=0,
+                .userId(2)
+//                packageId=0,
+                .packageId(14)
+//                userCount=0,
+                .userCount(4)
+//                Date=null,
+                .Date(null)
+//                Status=null,
+                .Status(null)
+//                userName=null,
+                .userName("qjatns777")
+//                packageTitle=null,
+                .packageTitle("그럼요 당연하죠 네네칰흰")
+//                price=0,
+                .price(39800)
+//                totalPrice=0
+                .totalPrice(0)
+                .build();
+
+        System.out.println(payment);
+        Response response = paymentService.paymentSave(payment);
+        String url = response.getResponse().get("next_redirect_pc_url").toString();
+        System.out.println(url);
+    return url;
     }
 
     //마이페이지 출력

@@ -2,6 +2,7 @@ package com.lec.spring.mytrip.util;
 
 import com.lec.spring.mytrip.config.AppConfig;
 import com.lec.spring.mytrip.domain.Payment;
+import com.lec.spring.mytrip.domain.payment.Response;
 import org.hibernate.annotations.Comment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -30,14 +31,15 @@ public class KakaoPayApiUtil {
     }
 
 
-    public Payment readyToPay(Payment payment) {
+    public Response readyToPay(Payment payment) {
+        System.out.println("유틸와쓔");
         HttpHeaders headers = createHeaders(); // 헤더 생성
         Map<String, Object> params = createParams(payment); // 파라미터 생성
-        Payment payment1 = callKakaoPayApi(READY_URL, params, headers, payment);
+        Response response = callKakaoPayApi(READY_URL, params, headers, payment);
 //        api 호출 결과에 따라 params 에서 필요한 내용들 저장,
         //
 
-        return payment1; // API 호출
+        return response; // API 호출
     }
 
 
@@ -54,7 +56,7 @@ public class KakaoPayApiUtil {
         String order = payment.getUserId() + "_" + payment.getPackageId() + "_" + timestamp;
 
         payment.setPaymentId(order);
-
+        System.out.println(payment.toString());
 
 
         // 요청 파라미터 생성
@@ -75,17 +77,24 @@ public class KakaoPayApiUtil {
     }
 
 
-    private Payment callKakaoPayApi(String url, Map<String, Object> params, HttpHeaders headers, Payment payment) {
+    private Response callKakaoPayApi(String url, Map<String, Object> params, HttpHeaders headers, Payment payment) {
+        System.out.println("api 호출까지");
         try {
             HttpEntity<Map<String, Object>> request = new HttpEntity<>(params, headers);
-            ResponseEntity<Map> response = restTemplate.postForEntity(url, request, Map.class);
+            ResponseEntity<Map> res = restTemplate.postForEntity(url, request, Map.class);
             // res 확인
 
-            // parms값을 빼서 payment에 set으로 뽑아서 저장
+            Map<String, Object> responseBody = res.getBody();
+
+            System.out.println(responseBody);
+
+            Response response = new Response();
+            response.setResponse(responseBody);
+            response.setPayment(payment);
             // Payment 객체에 partner_order_id 설정
 
 
-            return payment;
+            return response;
         } catch (Exception e) {
             throw new RuntimeException("KakaoPay API 호출 중 오류 발생: " + e.getMessage(), e);
         }
