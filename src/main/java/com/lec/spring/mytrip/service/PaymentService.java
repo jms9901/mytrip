@@ -13,6 +13,4 @@ public interface PaymentService {
     // 유저 정보를 받아 payment 정보 리턴
     List<Payment> getPaymentDetails();
 
-    // kakaoPay
-    String readyToPay();
 }
