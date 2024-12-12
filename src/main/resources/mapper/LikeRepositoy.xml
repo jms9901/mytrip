@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lec.spring.mytrip.repository.LikeRepository">
+<!--    //도시-->
+<!--    //내가 좋아요를 했는가?-->
+    <select id="checkIfCityLiked" resultType="boolean">
+        SELECT EXISTS (
+            SELECT 1
+            FROM city_liked
+            WHERE user_id = #{userId} AND city_id = #{cityId}
+        ) AS liked
+    </select>
+<!--    //좋아요 증가-->
+    <insert id="incrementCityLike">
+        INSERT INTO city_liked (user_id, city_id, city_liked_date)
+        VALUES (#{userId}, #{cityId}, NOW())
+    </insert>
+    <!-- 도시 좋아요 감소 -->
+    <delete id="decrementCityLike">
+        DELETE FROM city_liked
+        WHERE user_id = #{userId} AND city_id = #{cityId}
+    </delete>
+
+    <select id="findAllCityLike">
+        SELECT count(*)
+        FROM city_liked
+    </select>
+
+    <!-- 특정 사용자의 좋아요한 도시 조회 -->
+    <select id="getLikedCityByUserId" resultType="com.lec.spring.mytrip.domain.City">
+        SELECT c.city_img, c.city_name
+        FROM city c
+                 JOIN city_liked cl ON c.city_id = cl.city_id
+        WHERE cl.user_id = #{userId}
+    </select>
+
+<!--    //피드-->
+<!--    //내가 좋아요를 했는가?-->
+    <select id="checkIfPeedLiked" resultType="boolean">
+        SELECT EXISTS (
+            SELECT 1
+            FROM board_liked
+            WHERE user_id = #{userId} AND board_id = #{peedId}
+        ) AS liked
+    </select>
+<!--    //좋아요 증가-->
+    <insert id="incrementPeedLike">
+        INSERT INTO board_liked (user_id, board_id, board_liked_date)
+        VALUES (#{userId}, #{peedId}, NOW())
+    </insert>
+<!--    //좋아요 감소-->
+    <delete id="decrementPeedLike">
+        DELETE FROM board_liked
+        WHERE user_id = #{userId} AND board_id = #{peedId}
+    </delete>
+
+    <select id="findAllPeedLike">
+        SELECT count(*)
+        FROM city_liked
+    </select>
+
+<!--    //패키지-->
+<!--    //내가 좋아요를 했는가?-->
+    <select id="checkIfPackageLiked" resultType="boolean">
+        SELECT EXISTS (
+            SELECT 1
+            FROM package_liked
+            WHERE user_id = #{userId} AND package_id = #{packageId}
+        ) AS liked
+    </select>
+<!--    //좋아요 증가-->
+    <insert id="incrementPackageLike">
+        INSERT INTO package_liked (user_id, package_id, package_liked_date)
+        VALUES (#{userId}, #{packageId}, NOW())
+    </insert>
+<!--    //좋아요 감소-->
+    <delete id="decrementPackageLike">
+        DELETE FROM package_liked
+        WHERE user_id = #{userId} AND package_id = #{packageId}
+    </delete>
+
+    <select id="findAllPackageLike">
+        SELECT count(*)
+        FROM city_liked
+    </select>
+</mapper>
