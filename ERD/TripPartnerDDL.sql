@@ -177,7 +177,7 @@ CREATE TABLE package_liked
 
 CREATE TABLE payment_info
 (
-    payment_id      INT         NOT NULL COMMENT '결제 정보 ID',
+    payment_id      TINYTEXT    NOT NULL COMMENT '결제 정보 ID',
     user_id         INT         NOT NULL COMMENT '사용자 ID',
     package_id      INT         NOT NULL COMMENT '패키지 ID',
     user_count      INT         NOT NULL COMMENT '결제에 관련된 인원수',
