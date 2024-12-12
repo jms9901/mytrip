@@ -84,4 +84,5 @@
         SELECT count(*)
         FROM city_liked
     </select>
+
 </mapper>

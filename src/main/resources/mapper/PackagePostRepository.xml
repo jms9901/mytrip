@@ -91,4 +91,19 @@
         WHERE package_id = #{packageId}
     </delete>
 
+    <!-- 기업 회원이 등록한 패키지 리스트와 그에 해당 패키지의 좋아요 수 -->
+    <select id="likeCntByPackage" resultType="com.lec.spring.mytrip.domain.PackagePost">
+        SELECT
+            pk.package_id AS packageId,
+            pk.package_title AS packageTitle,
+            pk.package_content AS packageContent,
+            pk.package_status AS packageStatus,
+            COUNT(pl.user_id) AS likedCount
+        FROM package pk
+                 LEFT JOIN package_liked pl ON pk.package_id = pl.package_id
+        WHERE pk.user_id = #{userId}
+        GROUP BY pk.package_id
+        ORDER BY pk.package_id DESC;
+    </select>
+
 </mapper>

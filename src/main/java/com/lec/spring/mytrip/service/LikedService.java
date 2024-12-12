@@ -9,6 +9,6 @@ public interface LikedService {
     int changeLikeStatus(int target, int id);
 
     // 특정 유저의 좋아요한 도시
-    List<City> getLikedCityByUserId(int userId);
+    List<City> getLikedCityByUserId(Long userId);
 
 }

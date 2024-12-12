@@ -33,9 +33,6 @@ CREATE TABLE board
 ) COMMENT '피드, 소모임';
 
 ALTER TABLE board
-    MODIFY COLUMN board_category ENUM('피드', '소모임') NOT NULL COMMENT '피드 카테고리';
-
-ALTER TABLE board
     ADD CONSTRAINT chk_board_category
         CHECK (board_category IN ('피드', '소모임'));
 
@@ -75,6 +72,7 @@ CREATE TABLE city
 ALTER TABLE city
     ADD CONSTRAINT UQ_city_name UNIQUE (city_name);
 
+
 CREATE TABLE city_liked
 (
     user_id         INT      NOT NULL COMMENT '사용자 ID',
@@ -98,7 +96,7 @@ CREATE TABLE friendship
     request_friend_id INT         NOT NULL AUTO_INCREMENT COMMENT '친구 관계 테이블 ID',
     to_user_id        INT         NOT NULL COMMENT '친구 요청된 사용자 ID',
     from_user_id      INT         NOT NULL COMMENT '친구 요청한 사용자 ID',
-    friend_status     VARCHAR(20) NOT NULL COMMENT '친구 상태',
+    friend_status     ENUM('수락','대기','거절') NOT NULL default '대기' COMMENT '친구 상태',
     friendship_date   DATETIME    NULL     DEFAULT NOW() COMMENT '친구 수락 일자',
     PRIMARY KEY (request_friend_id)
 ) COMMENT '친구 관계';
@@ -216,8 +214,9 @@ CREATE TABLE user
     user_id                INT           NOT NULL AUTO_INCREMENT COMMENT '사용자 테이블 ID',
     user_email             VARCHAR(100)  NOT NULL COMMENT '사용자 이메일',
     user_password          VARCHAR(100)  NOT NULL COMMENT '사용자 비밀번호',
-    user_username          VARCHAR(200)   NOT NULL COMMENT '사용자 ID',
+    user_username          VARCHAR(20)   NOT NULL COMMENT '사용자 ID',
     user_name              VARCHAR(20)   NOT NULL COMMENT '사용자 실제 이름',
+    user_phonenumber       VARCHAR(20)   NOT NULL COMMENT '사용자 핸드폰 번호',
     user_regdate           DATETIME      NOT NULL DEFAULT NOW() COMMENT '사용자 계정 생성 일자',
     user_birthday          VARCHAR(20)   NULL     COMMENT '사용자 생년월일',
     user_profile           VARCHAR(1000) NULL     COMMENT '사용자 프로필 사진',
@@ -225,7 +224,7 @@ CREATE TABLE user
     user_introdution       VARCHAR(100)  NULL     COMMENT '사용자 프로필 자기소개 ',
     user_authorization     VARCHAR(20)   NOT NULL COMMENT '사용자 권한',
     business_companynumber VARCHAR(100)  NULL     COMMENT '기업 사업자 번호',
-    user_status             VARCHAR(100)  NULL     COMMENT '사용자 승인 상태',
+    user_status            VARCHAR(100)  NULL     COMMENT '사용자 승인 상태',
     PRIMARY KEY (user_id)
 ) COMMENT '사용자 계정';
 
@@ -394,3 +393,5 @@ ALTER TABLE package
     ADD CONSTRAINT FK_user_TO_package
         FOREIGN KEY (user_id)
             REFERENCES user (user_id);
+
+ALTER TABLE user MODIFY user_profile BLOB;

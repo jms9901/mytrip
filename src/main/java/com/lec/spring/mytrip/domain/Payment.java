@@ -17,7 +17,7 @@ public class Payment {
     private int packageId;
     private int  userCount;
     private LocalDateTime Date;
-    private String  Status;        // 결제 상태 ('결제 완료' , '결제 취소')
+    private String  Status;
 
     private String userName;
     private String packageTitle;

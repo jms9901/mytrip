@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.List;
 
 @RestController
-@RequestMapping("/bookGuestBook")
+@RequestMapping("bookMain/bookGuestBook")
 public class GuestBookController {
 
     private final GuestBookService guestBookService;

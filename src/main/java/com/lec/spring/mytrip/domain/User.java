@@ -1,6 +1,8 @@
 package com.lec.spring.mytrip.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.Column;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -11,7 +13,7 @@ import java.time.LocalDateTime;
 @Builder
 public class User {
 
-    public User(String email, String name){
+    public User(String email, String name, Long id){
         this.email = email;
         this.name = name;
     }
@@ -28,6 +30,8 @@ public class User {
 
     private String username;  // 사용자 아이디
 
+    @Column(name = "user_name")
+    @JsonProperty("user_name")
     private String name;  // 사용자 이름
 
     private LocalDateTime regDate;  // 회원 가입일
@@ -47,5 +51,13 @@ public class User {
     private String companyNumber;  // 기업 사업자 번호
 
     private String status;
+
+    public String getProfile() {
+        if (profile == null) {
+            return "/img/defaultProfile.jpg";  // 기본 프로필 이미지 경로
+        }
+        return profile;
+    }
+
 
 }

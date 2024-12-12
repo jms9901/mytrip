@@ -1,9 +1,11 @@
 package com.lec.spring.mytrip.service;
 
 import com.lec.spring.mytrip.domain.City;
+import com.lec.spring.mytrip.domain.User;
 import com.lec.spring.mytrip.repository.CityRepository;
 import com.lec.spring.mytrip.repository.LikeRepository;
 import com.lec.spring.mytrip.util.LikeUtil;
+import com.lec.spring.mytrip.util.U;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -73,7 +75,7 @@ public class LikedServiceImpl implements LikedService {
     }
 
     @Override
-    public List<City> getLikedCityByUserId(int userId) {
+    public List<City> getLikedCityByUserId(Long userId) {
         return cityRepository.findLikedCitiesByUserId(userId);
     }
 

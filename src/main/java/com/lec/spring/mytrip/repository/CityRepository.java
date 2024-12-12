@@ -15,6 +15,5 @@ public interface CityRepository {
             @Param("q4Id") String q4Id,
             @Param("q5Id") String q5Id
     );
-
-    List<City> findCityById(int boardId);
+    List<City> findLikedCitiesByUserId(Long userId);
 }

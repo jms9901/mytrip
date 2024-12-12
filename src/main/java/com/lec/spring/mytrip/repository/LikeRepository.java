@@ -38,4 +38,5 @@ public interface LikeRepository {
     int decrementPackageLike(int userId, int packageId);
 
     int findAllPackageLike(int userId);
+
 }

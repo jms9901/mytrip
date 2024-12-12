@@ -44,7 +44,7 @@ public class likedController {
     }
     @GetMapping("/likedCity")
     @ResponseBody
-    public List<City> getLikedCity(@RequestParam("userId") int userId) {
+    public List<City> getLikedCity(@RequestParam("userId") Long userId) {
         return likedService.getLikedCityByUserId(userId);
     }
 

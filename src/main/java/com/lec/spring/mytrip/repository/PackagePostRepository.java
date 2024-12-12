@@ -28,4 +28,7 @@ public interface PackagePostRepository {
 
     // 패키지 삭제
     int deleteById(int packageId);
+
+    // 기업 회원이 등록한 패키지 리스트와 그에 해당 패키지의 좋아요 수
+    List<PackagePost> likeCntByPackage (int userId);
 }

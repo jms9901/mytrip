@@ -75,6 +75,7 @@ public class MyPageService {
                 user.setProfile(imageName);  // 프로필 이미지 업데이트
             } catch (IOException e) {
                 e.printStackTrace();
+
                 return false;
             }
         }
