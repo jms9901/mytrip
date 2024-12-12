@@ -19,5 +19,6 @@ public interface AdminService {
     void deleteUser(int userId);
     void updateBusinessUserStatus(int userId, String status);
     void deleteBoard(int boardId);
+    void deletePackage(int packageId);
     void updatePackageStatus(int packageId, String status);
 }

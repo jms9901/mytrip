@@ -116,22 +116,23 @@
                                 <td th:text="${AccessPackages.title}"></td>
                                 <td th:text="${AccessPackages.regDate}"></td>
                                 <td th:text="${AccessPackages.status}"></td>
+                                <td>
+                                    <button type="button" class="btn btn-primary user-details-button"
+                                            th:attr="data-bs-toggle='modal',
+                                                         data-bs-target='#exampleModal',
+                                                         data-packageid=${AccessPackages.packageId},
+                                                         data-username=${AccessPackages.userName},
+                                                         data-packagetitle=${AccessPackages.title},
+                                                         data-packagecontent=${AccessPackages.content},
+                                                         data-packagecost=${AccessPackages.cost},
+                                                         data-packagemaxpeople=${AccessPackages.maxPeople},
+                                                         data-packagestartday=${AccessPackages.startDay},
+                                                         data-packageendday=${AccessPackages.endDay},
+                                                         data-packageregdate=${AccessPackages.regDate}
+                                                        ">
+                                        상세</button>
+                                </td>
                             </tr>
-                            <td>
-                                <button type="button" class="btn btn-primary user-details-button"
-                                        th:attr="data-bs-toggle='modal',
-                                                     data-bs-target='#exampleModal',
-                                                     data-packageId=${AccessPackages.packageId},
-                                                     data-username=${AccessPackages.userName},
-                                                     data-packageTitle=${AccessPackages.title},
-                                                     data-packageContent=${AccessPackages.content},
-                                                     data-packageCost=${AccessPackages.cost},
-                                                     data-packageMaxPeople=${AccessPackages.maxPeople},
-                                                     data-packageStartDay=${AccessPackages.startDay},
-                                                     data-packageEndDay=${AccessPackages.endDay}
-                                                    ">
-                                    상세</button>
-                            </td>
                             </tbody>
                         </table>
                     </div>
@@ -149,16 +150,18 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+                <p><strong>패키지 ID:</strong> <span id="modalPackageId">[데이터 없음]</span></p>
                 <p><strong>기업이름:</strong> <span id="modalUsername">[데이터 없음]</span></p>
                 <p><strong>패키지명:</strong> <span id="modalPackageTitle">[데이터 없음]</span></p> <!-- user_username 표시 -->
-                <p><strong>패키지내용:</strong> <span id="modalPackageContent=">[데이터 없음]</span></p>
+                <p><strong>패키지내용:</strong> <span id="modalPackageContent">[데이터 없음]</span></p>
                 <p><strong>패키지비용:</strong> <span id="modalPackageCost">[데이터 없음]</span></p>
                 <p><strong>최대인원:</strong> <span id="modalPackageMaxPeople">[데이터 없음]</span></p>
                 <p><strong>시작일자:</strong> <span id="modalPackageStartDay">[데이터 없음]</span></p>
                 <p><strong>종료일자:</strong> <span id="modalPackageEndDay">[데이터 없음]</span></p>
+                <p><strong>게시일자:</strong> <span id="modalPackageRegDate">[데이터 없음]</span></p>
             </div>
             <div class="modal-footer">
-                <input type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="deleteUser()" value="삭제">
+                <input type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="deletePackage()" value="삭제">
                 <input type="button" class="btn btn-secondary" data-bs-dismiss="modal" value="닫기">
             </div>
         </div>
@@ -167,6 +170,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 <script th:src="@{/js/scripts.js}"></script>
 <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+<script th:src="@{/js/packageAccessTables.js}"></script>
 <script th:src="@{/js/datatables-simple-demo.js}"></script>
 </body>
 </html>

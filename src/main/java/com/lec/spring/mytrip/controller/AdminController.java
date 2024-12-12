@@ -124,6 +124,19 @@ public class AdminController {
         return "admin/packageStandbyTables";
     }
 
+    @PostMapping("/deletePackage")
+    @ResponseBody
+    public ResponseEntity<String> deletePackage(@RequestParam("packageId") int packageId) {
+        try {
+            adminService.deleteBoard(packageId); // 서비스 메서드 호출
+            System.out.println("Board with ID " + packageId + " deleted successfully.");
+            return ResponseEntity.ok("Board deleted successfully!");
+        } catch (Exception e) {
+            System.err.println("Error deleting board: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to delete board.");
+        }
+    }
+
     @GetMapping("/paymentTables")
     public String paymentTables(Model model, HttpSession session) {
         List<Payment> payments = adminService.findByPayment();

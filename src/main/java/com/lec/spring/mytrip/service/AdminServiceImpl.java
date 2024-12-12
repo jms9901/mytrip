@@ -77,6 +77,11 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
+    public void deletePackage(int packageId) {
+        adminRepository.deletePackage(packageId);
+    }
+
+    @Override
     public void updatePackageStatus(int packageId, String status) {
         adminRepository.updatePackageStatus(packageId, status);
     }

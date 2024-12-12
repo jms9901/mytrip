@@ -38,6 +38,9 @@ public interface AdminRepository {
     // 소모임/피드 삭제
     void deleteBoard(int boardId);
 
+    // 패키지 삭제
+    void deletePackage(int packageId);
+
     // 패키지 승인 상태 변경
     void updatePackageStatus(int packageId, String status);
 }
