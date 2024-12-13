@@ -34,7 +34,7 @@ public class PaymentController {
 //                userId=0,
                 .userId(2)
 //                packageId=0,
-                .packageId(14)
+                .packageId(2)
 //                userCount=0,
                 .userCount(4)
 //                Date=null,
@@ -49,13 +49,14 @@ public class PaymentController {
                 .price(39800)
 //                totalPrice=0
                 .totalPrice(0)
+                .cityId(1)
                 .build();
 
         System.out.println(payment);
         Response response = paymentService.paymentSave(payment);
         String url = response.getResponse().get("next_redirect_pc_url").toString();
         System.out.println(url);
-    return url;
+        return "redirect:" + url;
     }
 
     //마이페이지 출력

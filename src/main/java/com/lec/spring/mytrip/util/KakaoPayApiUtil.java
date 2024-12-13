@@ -22,7 +22,7 @@ public class KakaoPayApiUtil {
 
 
     private static final String CID = "TC0ONETIME"; // 테스트용 가맹점 코드
-    private static final String SECRET_KEY = "YDEV2E00C3E59BCFC94808617B157D8DF64003292"; // 실제 Secret Key 사용
+    private static final String SECRET_KEY = "DEV2E00C3E59BCFC94808617B157D8DF64003292"; // 실제 Secret Key 사용
     private static final String READY_URL = "https://open-api.kakaopay.com/online/v1/payment/ready";
 
     @Autowired
@@ -38,15 +38,18 @@ public class KakaoPayApiUtil {
         Response response = callKakaoPayApi(READY_URL, params, headers, payment);
 //        api 호출 결과에 따라 params 에서 필요한 내용들 저장,
         //
+        System.out.println("params 레디 : " + params);
+        System.out.println("header 레디 : " + headers);
+
 
         return response; // API 호출
     }
 
-
     private HttpHeaders createHeaders() {
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", "SECRET_KEY " + SECRET_KEY);
+        headers.set("Authorization", "SECRET_KEY " + SECRET_KEY);
         headers.setContentType(MediaType.APPLICATION_JSON);
+        System.out.println("header 구성 : " + headers);
         return headers;
     }
 
@@ -62,16 +65,25 @@ public class KakaoPayApiUtil {
         // 요청 파라미터 생성
         Map<String, Object> params = new HashMap<>();
         params.put("cid", CID); // Test 용 가맹점 코드
-        params.put("Authorization", "SECRET_KEY " + SECRET_KEY); // 인증 키
+//        params.put("Authorization", "SECRET_KEY " + SECRET_KEY); // 인증 키
         params.put("partner_order_id", order); // 가맹점 주문번호
         params.put("partner_user_id", payment.getUserId()); // 가맹점 회원 ID
         params.put("item_name", payment.getPackageTitle()); // 상품명
         params.put("quantity", payment.getUserCount()); // 결제 인원
         params.put("total_amount", payment.getPrice()*payment.getUserCount()); // 상품 총액
         params.put("tax_free_amount", 0); // 비과세 금액 (기본값)
-        params.put("approval_url", "http://localhost:8081/payment/approve"); // 결제 성공 시 리다이렉트 URL
-        params.put("cancel_url", "http://localhost:8081/payment/cancel"); // 결제 취소 시 리다이렉트 URL
-        params.put("fail_url", "http://localhost:8081/payment/fail"); // 결제 실패 시 리다이렉트 URL
+        params.put("approval_url", "http://localhost:8081/board/city/"
+                + payment.getCityId() +
+                "/package/detail/" + payment.getPackageId()); // 결제 성공 시 리다이렉트 URL
+        params.put("cancel_url", "http://localhost:8081/board/city/"
+                + payment.getCityId() +
+                "/package/detail/" + payment.getPackageId()); // 결제 취소 시 리다이렉트 URL
+        params.put("fail_url", "http://localhost:8081/board/city/"
+                + payment.getCityId() +
+                "/package/detail/" + payment.getPackageId()); // 결제 실패 시 리다이렉트 URL
+
+
+        System.out.println("params 구성 : " + params);
 
         return params;
     }
@@ -79,8 +91,11 @@ public class KakaoPayApiUtil {
 
     private Response callKakaoPayApi(String url, Map<String, Object> params, HttpHeaders headers, Payment payment) {
         System.out.println("api 호출까지");
+        System.out.println("params 사용 : " + params);
+        System.out.println("header 생성 : " + headers);
+        HttpEntity<Map<String, Object>> request = new HttpEntity<>(params, headers);
+        System.out.println("HttpEntity" + request);
         try {
-            HttpEntity<Map<String, Object>> request = new HttpEntity<>(params, headers);
             ResponseEntity<Map> res = restTemplate.postForEntity(url, request, Map.class);
             // res 확인
 
@@ -92,6 +107,11 @@ public class KakaoPayApiUtil {
             response.setResponse(responseBody);
             response.setPayment(payment);
             // Payment 객체에 partner_order_id 설정
+
+            response.getResponse().forEach((k, v) ->
+                    System.out.println(k + ":" + v)
+            );
+            System.out.println(response.getPayment().toString());
 
 
             return response;
