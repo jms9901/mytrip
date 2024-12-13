@@ -75,7 +75,7 @@
             <div class="modal-body">
                 <form id="reservationForm" method="post" action="/reservation/submit">
                     <input type="hidden" name="userId" th:value="${userId}">
-                    <input type="hidden" name="packageId" th:value="${packageId.packageId}">
+                    <input type="hidden" name="packageId" th:value="${packagePost.packageId}">
                     <div class="mb-3">
                         <label class="form-label">패키지명</label>
                         <input type="text" class="form-control" name="packageTitle" th:value="${packagePost.packageTitle}" readonly>
