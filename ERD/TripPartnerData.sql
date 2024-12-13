@@ -574,3 +574,7 @@ insert into board_liked(user_id,board_id,board_liked_date)
 values  (1,127,now());
 insert into board_liked(user_id,board_id,board_liked_date)
 values  (1,129,now());
+insert into package_liked (user_id,package_id,package_liked_date)
+values (1,1,now());
+insert into package_liked (user_id,package_id,package_liked_date)
+values (1,2,now());

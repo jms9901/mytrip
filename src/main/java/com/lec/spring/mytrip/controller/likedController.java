@@ -3,12 +3,10 @@ package com.lec.spring.mytrip.controller;
 import com.lec.spring.mytrip.domain.City;
 import com.lec.spring.mytrip.service.LikedService;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/likey")
@@ -47,5 +45,7 @@ public class likedController {
     public List<City> getLikedCity(@RequestParam("userId") Long userId) {
         return likedService.getLikedCityByUserId(userId);
     }
+
+
 
 }
