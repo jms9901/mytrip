@@ -4,27 +4,30 @@
 <mapper namespace="com.lec.spring.mytrip.repository.PackageAttachmentRepository">
 
     <!-- 첨부파일 저장 -->
-    <insert id="insertAttachment" parameterType="com.example.domain.PackagePostAttachment">
+    <insert id="insertAttachment"
+            parameterType="com.lec.spring.mytrip.domain.attachment.PackagePostAttachment">
         INSERT INTO package_attachment (package_id, package_attachment_file)
         VALUES (#{packageId}, #{fileName})
     </insert>
 
     <!-- 패키지 ID로 첨부파일 목록 조회 -->
-    <select id="findByPackageId" parameterType="Long" resultType="com.example.domain.PackagePostAttachment">
+    <select id="findByPackageId" parameterType="int"
+            resultType="com.lec.spring.mytrip.domain.attachment.PackagePostAttachment">
         SELECT package_id, package_attachment_file
         FROM package_attachment
         WHERE package_id = #{packageId}
     </select>
 
     <!-- 첨부파일 ID로 첨부파일 조회 -->
-    <select id="findByAttachmentId" parameterType="Long" resultType="com.example.domain.PackagePostAttachment">
+    <select id="findByAttachmentId" parameterType="int"
+            resultType="com.lec.spring.mytrip.domain.attachment.PackagePostAttachment">
         SELECT package_attachment_id, package_id, package_attachment_file
         FROM package_attachment
         WHERE package_attachment_id = #{packageAttachmentId}
     </select>
 
     <!-- 첨부파일 삭제 -->
-    <delete id="deleteAttachment" parameterType="Long">
+    <delete id="deleteAttachment" parameterType="int">
         DELETE FROM package_attachment
         WHERE package_attachment_id = #{packageAttachmentId}
     </delete>

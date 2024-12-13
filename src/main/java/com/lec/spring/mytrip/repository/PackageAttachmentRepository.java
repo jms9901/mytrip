@@ -15,7 +15,7 @@ public interface PackageAttachmentRepository {
     PackagePostAttachment findByAttachmentId(Long packageAttachmentId);
 
     // 첨부파일 삭제
-    int deleteAttachment(Long packageAttachmentId);
+    int deleteAttachment(int packageAttachmentId);
 
     // 첨부파일 이름 중복 처리 (중복된 이름이 있는지 체크)
     boolean isFileNameExists(String fileName);

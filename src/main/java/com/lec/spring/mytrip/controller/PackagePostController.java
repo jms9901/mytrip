@@ -7,6 +7,7 @@ import com.lec.spring.mytrip.service.PackagePostService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -84,12 +85,12 @@ public class PackagePostController {
     // 패키지 저장
     @PostMapping("{cityId}/package/save")
     public String savePackage(@PathVariable int cityId,
-                              @ModelAttribute PackagePost packagePost
-                              //첨부파일 저장
-    ) {
+                              @RequestParam("files") List<MultipartFile> files,
+                              @ModelAttribute PackagePost packagePost){
+
         // 패키지 저장 처리
         // 패키지 저장 처리. 패키지 저장에서 첨부파일 서비스를 호출
-        int id = packagePostService.savePackage(packagePost);
+        int id = packagePostService.savePackage(packagePost, files);
 
         // 저장 후 상세 페이지로 리다이렉트
         return "redirect:/board/" + cityId + "/package/detail/" + id;
@@ -112,17 +113,16 @@ public class PackagePostController {
                                 @ModelAttribute PackagePost packagePost) {
         // 패키지 수정 저장 처리
         // 패키지 저장 처리 후 저장된 ID 반환
-        int id = packagePostService.savePackage(packagePost);
+        int id = packagePostService.updatePackage(packagePost);
 
-        // 저장 후 상세 페이지로 리다이렉트
-        return "redirect:/board/" + cityId +"/package/detail/" + id;
+        return "redirect:/board/city/" + cityId +"/package/detail/" + id;
     }
 
     // 패키지 삭제
     @DeleteMapping("{cityId}/package/delete/{packageId}")
     public String deletePackage(@PathVariable int cityId,
                                 @PathVariable int packageId) {
-        int userId = packagePostService.getPackageDetails(packageId).getUserId();
+        int userId = packagePostService.getPackageDetails(packageId).getUser().getId();
         // 패키지 삭제 처리
         packagePostService.deletePackage(packageId, userId);
         return "redirect:/board/city/" + cityId;
