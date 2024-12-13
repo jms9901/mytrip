@@ -297,11 +297,18 @@ body{
 
 }
 .feed-entry {
+    display: flex;
     width: 140px;
     height: 180px;
     background-repeat: no-repeat;
     background-size: contain;
+    left:50%;
+    top:20px;
+    flex-direction: column;
+    align-items: center;
+
 }
+
 
 .writeFeed{
     background-repeat:no-repeat;
@@ -314,5 +321,22 @@ body{
     /*transform: translate(-50%, -50%);*/
     background-size: contain;
 }
+.feed-attachment {
 
+    width: 90px; /* 필요한 크기로 조정 */
+    height: 90px; /* 필요한 크기로 조정 */
+    object-fit: cover; /* 이미지 왜곡 없이 잘라냄 */
+    align-items: center;
+}
 
+.feed-entry{
+    padding-top: 20px;
+    flex-direction: column;
+    align-items: center;
+}
+
+.feed-entry div{
+    margin-top: 10px;
+    text-align: center;
+    font-size:10px;
+}

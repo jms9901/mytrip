@@ -21,4 +21,7 @@ public interface FeedRepository {
 
     // 피드 삭제
     void deleteFeed(@Param("boardId") int boardId, @Param("userId") int userId);
+
+    // 첨부파일 등록
+    void insertAttachments(PostAttachment attachment);
 }

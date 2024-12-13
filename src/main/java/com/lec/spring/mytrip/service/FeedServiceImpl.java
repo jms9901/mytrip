@@ -37,17 +37,31 @@ public class FeedServiceImpl implements FeedService{
     }
 
     @Override
-    public void insertFeed(Feed feed,List<MultipartFile> files) throws IOException {
+    @Transactional
+    public void insertFeed(Feed feed, List<MultipartFile> files) throws IOException {
         feed.setBoardCategory("피드");
+
+        System.out.println("Before Insert boardId: " + feed.getBoardId());
+        // 게시물 삽입
+        feedRepository.insertFeed(feed);  // 게시글이 DB에 저장된 후 boardId가 feed에 설정됨
+        System.out.println("After Insert boardId: " + feed.getBoardId());
+
         // 파일이 첨부되었는지 확인
         if (files != null && !files.isEmpty()) {
             String projectDirectory = System.getProperty("user.dir");  // 프로젝트 루트 경로
             String uploadDirectory = projectDirectory + "\\uploads";  // uploads 폴더 경로
+            String staticUploadDirectory = projectDirectory + "/src/main/resources/static/uploads"; // static 폴더 아래
+
 
             // 디렉토리가 존재하지 않으면 생성
-            Path path = Paths.get(uploadDirectory);
-            if (!Files.exists(path)) {
-                Files.createDirectories(path);
+            Path uploadPath = Paths.get(uploadDirectory);
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
+
+            Path staticUploadPath = Paths.get(staticUploadDirectory);
+            if (!Files.exists(staticUploadPath)) {
+                Files.createDirectories(staticUploadPath);
             }
 
             // 파일 첨부 객체 리스트 생성
@@ -60,26 +74,31 @@ public class FeedServiceImpl implements FeedService{
                     String fileName = file.getOriginalFilename();
                     // 안전한 파일 이름 생성 (중복 방지, 특수 문자 제거 등)
                     String sanitizedFileName = fileName.replaceAll("[^a-zA-Z0-9.]", "_");
+                    Path filePath = Paths.get(uploadDirectory, sanitizedFileName);
+
+                    // 파일을 uploads 폴더에 저장
+                    Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+                    // 파일을 static/uploads 폴더에 복사
+                    Path staticFilePath = Paths.get(staticUploadDirectory, sanitizedFileName);
+                    Files.copy(file.getInputStream(), staticFilePath, StandardCopyOption.REPLACE_EXISTING);
 
                     // 첨부파일 객체 생성
-                    PostAttachment attachment = new PostAttachment();
-                    attachment.setFileName(sanitizedFileName);  // 파일 이름만 저장
-                    attachment.setFilePath(uploadDirectory + "\\" + sanitizedFileName);  // 경로 포함하여 저장
-
+                    PostAttachment attachment = PostAttachment.builder()
+                            .boardId(feed.getBoardId()) // 게시물 ID 사용
+                            .fileName(sanitizedFileName)
+                            .filePath(staticFilePath.toString()) // static 폴더로 복사한 경로
+                            .build();
                     attachments.add(attachment);
-
-                    // 파일을 서버에 저장
-                    Path filePath = Paths.get(uploadDirectory, sanitizedFileName);
-                    Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);  // 기존 파일 덮어쓰기
+                    System.out.println("첨부파일 boardId: " + attachment.getBoardAttachmentId());
                 }
             }
 
-            // 첨부파일 목록을 Feed 객체에 설정
-            feed.setAttachments(attachments);
+            // 첨부파일 DB 저장
+            for (PostAttachment attachment : attachments) {
+                feedRepository.insertAttachments(attachment); // 첨부파일 DB에 저장
+            }
         }
-
-        // 피드 저장
-        feedRepository.insertFeed(feed);
     }
     @Override
     public void updateFeed(Feed feed) {

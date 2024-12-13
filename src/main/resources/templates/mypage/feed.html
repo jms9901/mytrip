@@ -220,21 +220,33 @@
         // 결제 내역을 출력하는 함수
         function loadFeed(feeds) {
             if (feeds && feeds.length > 0) {
-
                 feeds.forEach((feeds, index) => {
+                    let attachmentHtml = '';
+
+                    // 첨부파일이 있을 경우 처리
+                    if (feeds.attachmentFiles && feeds.attachmentFiles.length > 0) {
+                        attachmentHtml = feeds.attachmentFiles.map(file => {
+                            const filePath = `/uploads/${file}`; // 첨부파일의 경로
+                            return `<img src="${filePath}" alt="첨부파일" class="feed-attachment">`;
+                        }).join('');
+                    }
+
                     const entryHtml = `
-                    <div class="feed-entry" style="background-image: url(/img/postFrame.png)">
-                        <div>${feeds.boardSubject}</div>
-                        <p>${feeds.city.cityName}</p>
-                    </div>
-                `;
+                <div class="feed-entry" style="background-image: url(/img/postFrame.png)">
+                    ${attachmentHtml} <!-- 첨부파일 이미지 추가 -->
+                    <div>${feeds.boardSubject}</div>
+
+                </div>
+            `;
+
+                    // 항목을 페이지에 추가
                     addEntryToPage(entryHtml, index + 1);
+                    console.log(`feed Entry ${index + 1} added to page`);
                 });
             } else {
-                $('#feedEntries').append('<p>결제 내역이 없습니다.</p>');
+                $('#feedEntries').append('<p>피드가 없습니다.</p>');
             }
         }
-
 
 
         // URL에서 toUserId 값 추출하는 함수
@@ -261,10 +273,23 @@
 
                 // 데이터를 페이지에 추가
                 data.forEach((feeds, index) => {
+                    // 첨부파일이 있을 경우
+                    let attachmentHtml = '';
+                    if (feeds.attachmentFiles && feeds.attachmentFiles.length > 0) {
+                        attachmentHtml = feeds.attachmentFiles.map(file => {
+                            const filePath = `/uploads/${file}`; // 첨부파일의 경로
+                            console.log('Image path: ' + filePath);  // /uploads/japan.jpg 경로가 올바르게 출력되는지 확인
+                            return `<img src="${filePath}" alt="첨부파일" class="feed-attachment">`;
+                        }).join('');
+                    }
+
+
+
                     const entryHtml = `
                         <div class="feed-entry" style="background-image: url(/img/postFrame.png)">
+                        ${attachmentHtml} <!-- 첨부파일 이미지 추가 -->
                         <div>${feeds.boardSubject}</div>
-                        <p>${feeds.city.cityName}</p>
+<!--                        <p>${feeds.city.cityName}</p>-->
                     </div>
                     `;
                     addEntryToPage(entryHtml, index + 1); // 항목을 페이지에 추가

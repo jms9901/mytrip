@@ -19,6 +19,11 @@
             <result property="cityId" column="city_id"/>
             <result property="cityName" column="city_name"/>
         </association>
+
+        <!-- 첨부파일 리스트 매핑 -->
+        <collection property="attachmentFiles" ofType="string">
+            <result column="board_attachment_file"/>
+        </collection>
     </resultMap>
 
     <select id="findFeedByUserId" parameterType="int" resultMap="FeedResultMap">
@@ -31,16 +36,19 @@
         b.board_category,
         b.user_id,
         c.city_name ,
-        c.city_id
+        c.city_id,
+        ba.board_attachment_file
         FROM
         board b
         LEFT JOIN
         city c ON b.city_id = c.city_id  <!-- city 테이블과 JOIN -->
+        left join
+            board_attachment ba on b.board_id = ba.board_id
         WHERE
         b.user_id = #{userId} AND b.board_category = '피드'
     </select>
     <!--게시글 작성-->
-    <insert id="insertFeed" parameterType="com.lec.spring.mytrip.domain.Feed">
+    <insert id="insertFeed" parameterType="com.lec.spring.mytrip.domain.Feed" useGeneratedKeys="true" keyProperty="boardId">
         insert into board(user_id,city_id,board_subject,board_content,board_category)
         VALUES (#{userId}, #{cityId}, #{boardSubject}, #{boardContent}, #{boardCategory})
     </insert>

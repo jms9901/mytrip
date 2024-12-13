@@ -12,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class Feed {
-    private Long boardId;                       // 게시물 ID
+    private int boardId;                       // 게시물 ID
     private String boardSubject;                // 게시물 제목
     private String boardContent;                // 게시물 내용
     private Long boardViewCount;                // 게시물 조회수
@@ -21,6 +21,7 @@ public class Feed {
     private int userId;
     private City city;                          // 도시
     private List<PostAttachment> attachments;   // 첨부파일
+    private List<String> attachmentFiles;
     @Getter
     @Setter
     private int cityId;
