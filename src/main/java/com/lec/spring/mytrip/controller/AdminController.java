@@ -3,7 +3,6 @@ package com.lec.spring.mytrip.controller;
 import com.lec.spring.mytrip.config.PrincipalDetails;
 import com.lec.spring.mytrip.domain.*;
 import com.lec.spring.mytrip.service.AdminService;
-import com.lec.spring.mytrip.service.UserService;
 import com.lec.spring.mytrip.util.U;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -11,7 +10,6 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -29,6 +27,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
+
 
     private final AdminService adminService;
     private UserValidator userValidator;
@@ -117,7 +116,7 @@ public class AdminController {
         return "redirect:/admin/adminLogin";
     }
 
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    // 유저 삭제하기
     @PostMapping("/deleteuser")
     @ResponseBody
     public ResponseEntity<String> deleteUser(@RequestParam("userId") int userId) {
@@ -131,15 +130,35 @@ public class AdminController {
         }
     }
 
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    // 사업자 테이블 보기
     @GetMapping("/businessTables")
-    public String businessTables(Model model, HttpSession session) {
+    public String businessTables(Model model) {
         List<User> businessUsers = adminService.findByAuthorityRoleBusiness("ROLE_BUSINESS");
+        businessUsers.forEach(user -> {
+            if (user.getStatus() == null) {
+                user.setStatus("상세 없음");
+            }
+            System.out.println("User: " + user.getName() + ", Status: " + user.getStatus());
+        });
         model.addAttribute("businessUsers", businessUsers);
         return "admin/businessTables";
     }
 
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    // 사업자 상태 변경하기
+    @PostMapping("/updateBusinessStatus")
+    public ResponseEntity<String> updateBusinessStatus(@RequestParam("userId") int userId,
+                                                       @RequestParam("newStatus") String newStatus) {
+        try {
+            adminService.updateBusinessUserStatus(userId, newStatus);
+            return ResponseEntity.ok("사용자 상태가 성공적으로 업데이트되었습니다.");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("사용자 상태 업데이트 중 오류가 발생했습니다.");
+        }
+    }
+
+
+    // TODO : 여기서부터는 게시물에 대한 테이블
     @GetMapping("/boardTables")
     public String boardTables(Model model, HttpSession session) {
         List<Board> boards = adminService.findByBoardCategory("소모임");
@@ -147,7 +166,6 @@ public class AdminController {
         return "admin/boardTables";
     }
 
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping("/feedTables")
     public String feedTables(Model model, HttpSession session) {
         List<Board> feeds = adminService.findByFeedCategory("피드");
@@ -155,7 +173,6 @@ public class AdminController {
         return "admin/feedTables";
     }
 
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PostMapping("/deletePost")
     @ResponseBody
     public ResponseEntity<String> deletePost(@RequestParam("boardId") int boardId) {
@@ -169,7 +186,6 @@ public class AdminController {
         }
     }
 
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping("/packageAccessTables")
     public String packageAccessTables(Model model, HttpSession session) {
         List<PackagePost> AccessPackages = adminService.findByAccessPackage("승인");
@@ -177,7 +193,6 @@ public class AdminController {
         return "admin/packageAccessTables";
     }
 
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping("/packageStandbyTables")
     public String packageStandbyTables(Model model, HttpSession session) {
         List<PackagePost> standByPackages = adminService.findByStandByPackage("미승인", "대기");
@@ -185,7 +200,6 @@ public class AdminController {
         return "admin/packageStandbyTables";
     }
 
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PostMapping("/deletePackage")
     @ResponseBody
     public ResponseEntity<String> deletePackage(@RequestParam("packageId") int packageId) {
@@ -199,7 +213,6 @@ public class AdminController {
         }
     }
 
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping("/paymentTables")
     public String paymentTables(Model model, HttpSession session) {
         List<Payment> payments = adminService.findByPayment();

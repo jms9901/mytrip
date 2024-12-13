@@ -32,7 +32,7 @@ public interface AdminRepository {
     // 유저 삭제
     void deleteUser(int userId);
 
-    // business 유저 승인 상태로 변경
+    // business 유저 상태 승인 변경
     void updateBusinessUserStatus(int userId, String status);
 
     // 소모임/피드 삭제
