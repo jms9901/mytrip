@@ -1,6 +1,6 @@
 $(document).ready(function () {
-
-    $('.packageLikeButton').on('click', function () {
+    $('.packageLikeButton').on('click', function (event) {
+        event.preventDefault(); // 기본 동작 방지
         const packageId = $(this).data('package-id');
 
         console.log("like 동작");
@@ -11,16 +11,24 @@ $(document).ready(function () {
             method: 'GET',
             data: { packageId: packageId },
             success: function (response) {
-                // 이미지 변경은 좀 다름
+                const icon = $(`button[data-package-id="${packageId}"] i`);
                 if (response === 1) {
-                    $(`button[data-package-id="${packageId}"]`).text('좋아요 취소');
+                    icon.removeClass('bi-heart').addClass('bi-heart-fill');
+                    icon.css('color', 'red'); // 좋아요 클릭
                 } else {
-                    $(`button[data-package-id="${packageId}"]`).text('좋아요 이미지');
+                    icon.removeClass('bi-heart-fill').addClass('bi-heart');
+                    icon.css('color', ''); // 좋아요 취소
                 }
             },
             error: function () {
                 alert("오류가 발생했습니다. 다시 시도해주세요.");
             }
         });
+    });
+
+    // <i> 태그를 눌렀을 때 이벤트를 부모 버튼으로 전파
+    $('.packageLikeButton i').on('click', function (event) {
+        event.stopPropagation(); // 부모 요소의 클릭 이벤트 전파를 막기 위함
+        $(this).closest('.packageLikeButton').trigger('click'); // 부모 버튼 클릭 이벤트 트리거
     });
 });
