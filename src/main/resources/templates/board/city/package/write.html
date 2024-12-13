@@ -1,49 +1,75 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="city-id" th:content="${cityId}">
     <title>City Page</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
 </head>
 <body>
 <!-- Header Placeholder -->
-<header class="bg-dark text-white text-center py-3">
-    Header Section
+<header id="header">
+    <div class="topnav SMN_effect-6">
+        <a th:href="@{/main/mainpage}">
+            <img th:src="@{/img/logo.png}" alt="" class="logo">
+        </a>
+        <sec:authorize access="isAuthenticated()">
+            <a th:href="@{/aipage/start}" class="top-menu">여행지 추천</a>
+        </sec:authorize>
+        <sec:authorize access="isAuthenticated()">
+            <a th:href="@{/post}" class="top-menu">여행지 게시판</a>
+        </sec:authorize>
+        <sec:authorize access="isAuthenticated()">
+            <a th:href="@{/flight/search}" class="top-menu">항공권 예약</a>
+        </sec:authorize>
+        <a sec:authorize="isAnonymous()" th:href="@{/user/login}" class="top-menu">login</a>
+        <form th:action="@{/user/mypage}" method="GET" sec:authorize="isAuthenticated()">
+            <button type="submit" class="mypage ">Mypage</button></form>
+    </div>
 </header>
 
 <!-- Main Section -->
-<main class="container my-4">
-    <form th:action="@{}" method="post" enctype="multipart/form-data">
+<main>
+    <form th:action="@{/board/city}" method="post" enctype="multipart/form-data">
         <div>
-            <!--private int cityId;            // 도시 ID-->
-            <input type="hidden" th:value="${cityId}">
-            <!--private int userId;            // 작성자 ID-->
-            <!--private String packageStatus;          // 패키지 상태 (승인, 대기, 미승인 등)-->
-            <!--private LocalDateTime packageRegdate ;  // 패키지 등록 날짜-->
-            <!--private int packageCost;               // 패키지 비용-->
-            <!--private int packageMaxpeople;          // 최대 참여 가능 인원-->
-            <!--private LocalDateTime packageStartDay; // 패키지 시작 날짜-->
-            <!--private LocalDateTime packageEndDay;   // 패키지 종료 날짜-->
+            <!-- 도시 ID -->
+            <input type="hidden" id="cityId" name="cityId" th:value="${cityId}">
+            <!-- 패키지 비용 -->
+            <div>
+                <label for="packageCost">Package Cost:</label>
+                <input type="number" id="packageCost" name="packageCost" required>
+            </div>
+            <!-- 최대 참여 가능 인원 -->
+            <div>
+                <label for="packageMaxpeople">Max Participants:</label>
+                <input type="number" id="packageMaxpeople" name="packageMaxpeople" required>
+            </div>
+            <!-- 패키지 시작 날짜 -->
+            <div class="">
+                <button type="button" id="start-date-btn">출발일</button>
+                <input type="hidden" name="departDate" id="start-date-value">
+                <button type="button" id="end-date-btn">도착일</button>
+                <input type="hidden" name="returnDate" id="end-date-value">
+            </div>
         </div>
 
-
-
         <!--private String packageTitle;           // 패키지 제목-->
-        <div class="my-3">
+        <div>
             <label for="subject">제목:</label>
             <input type="text" class="form-control" id="subject" placeholder="제목을 입력하세요" name="subject" th:value="${subject}">
         </div>
 <!--        <div><span class="text-danger" th:if="${error_subject}" th:utext="${error_subject}"></span></div>-->
 
 
-
-
         <!--private String packageContent;         // 패키지 내용-->
         <div class="my-3">
-            <label for="content">내용:</label>
-            <textarea class="form-control" rows="5" id="content" placeholder="내용을 입력하세요" name="content" th:utext="${content}"></textarea>
+            <label for="summernote">내용:</label>
+            <textarea class="form-control" rows="5" id="summernote" placeholder="내용을 입력하세요" name="content" th:utext="${content}"></textarea>
         </div>
 
         <button type="submit" class="btn btn-outline-dark">작성완료</button>
@@ -51,13 +77,43 @@
 
 </main>
 
-<!-- Footer Placeholder -->
-<footer class="bg-dark text-white text-center py-3">
-    Footer Section
+<!-- Footer Section -->
+<footer id="footer">
+    <div class="footercontainer">
+        <div class="column1">
+            <a th:href="@{/aipage/start}"><img th:src="@{/img/logo.png}" alt=""></a>
+        </div>
+        <div class="column2">
+            <a th:href="@{/aipage/start}">여행지 추천</a>
+            <a th:href="@{/post}">여행지 게시판</a>
+            <a th:href="@{/flight/search}">항공권 예약</a>
+            <a th:href="@{/flight/search}">마이페이지</a>
+        </div>
+        <div class="column3">
+            <a th:href="@{/aipage/start}">이용약관</a>
+            <a th:href="@{/post}">공지사항</a>
+            <a th:href="@{/flight/search}">고객센터</a>
+        </div>
+
+        <!-- 아이콘과 텍스트를 묶는 컨테이너 -->
+        <div class="icon-and-text">
+            <div class="column4">
+                <a th:href="@{/aipage/start}"><img th:src="@{/img/Instagram_logo.png}" alt="Instagram"></a>
+                <a th:href="@{/aipage/start}"><img th:src="@{/img/facebook-logo.png}" alt="Facebook"></a>
+                <a th:href="@{/aipage/start}"><img th:src="@{/img/youtube_logo.png}" alt="YouTube"></a>
+                <a th:href="@{/aipage/start}"><img th:src="@{/img/naver_logo.png}" alt="Naver"></a>
+            </div>
+            <div class="column5">
+                <p>©트립파트너㈜. ALL RIGHTS RESERVED.</p>
+            </div>
+        </div>
+    </div>
 </footer>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="/JS/board/package/write.js"></script>
 </body>
 </html>
