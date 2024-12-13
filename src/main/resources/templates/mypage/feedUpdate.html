@@ -1,10 +1,61 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="UTF-8" xmlns:th="http://www.thymeleaf.org">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feed Update</title>
+    <link href='https://fonts.googleapis.com/css?family=Kaushan Script' rel='stylesheet'>
+    <link rel="stylesheet" href="/static/CSS/feedWrite.css">
 </head>
 <body>
+<!-- 피드 작성 버튼과 연결 -->
+<button id="open-modal">Open Modal</button>
 
+<!-- Modal Container -->
+<div class="modal-container hidden" id="feed-modal">
+    <img class="modal-content" alt="modal-frame" th:src="@{/static/img/feedDetailFrame.png}">
+        <div class="modal-title">Write Feed Modal</div>
+
+        <!-- Left Side: Image Upload Section -->
+        <div class="section">
+
+            <div class="image-upload">
+                <div class="image-frame">
+                    <button class="prev-btn hidden">&lt;</button>
+                    <div id="image-preview" class="slider"></div>
+                    <button class="next-btn hidden">&gt;</button>
+                    <label for="file-input" class="camera-label">
+                        <img th:src="@{/static/img/carmera.png}" alt="Camera Icon" id="camera-icon">
+                    </label>
+                    <input type="file" id="file-input" multiple accept="image/*" class="hidden">
+                </div>
+            </div>
+
+            <input type="text" placeholder="피드 제목" class="feed-title" id="feed-title">
+
+        </div>
+        <div class="image-message">이미지 최대 규격은 242px X 242px 입니다.</div>
+        <!-- 도시 선택 옵션 : 도시 추가 및 변경.-->
+        <div class="city-select">
+            <a>At</a>
+            <select name="city-name" id="city-name">
+                <option value="" disabled selected>도시 이름을 선택하세요.</option>
+                <option value="Paris">파리</option>
+                <option value="Osaka">오사카</option>
+                <option value="Zilln">지린</option>
+                <option value="Danang">다낭</option>
+            </select>
+        </div>
+
+        <label for="feed-content">
+            <textarea placeholder="피드 내용" class="feed-content" id="feed-content"></textarea>
+        </label>
+
+        <img th:src="@{/static/img/checkIcon.png}" th:href="@{/mypage/feedUpdateOk.html}" alt="submit-button" type="button" id="submit-button" class="submit-button">
+
+    </img>
+</div>
+
+<script th:src="@{/static/JS/feedWrite.js}"></script>
 </body>
 </html>

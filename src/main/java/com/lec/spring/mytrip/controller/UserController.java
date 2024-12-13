@@ -3,6 +3,8 @@ package com.lec.spring.mytrip.controller;
 import com.lec.spring.mytrip.domain.User;
 import com.lec.spring.mytrip.service.UserService;
 import com.lec.spring.mytrip.domain.UserValidator;
+import com.lec.spring.mytrip.util.U;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -41,10 +43,17 @@ public class UserController {
     public void initBinder(WebDataBinder binder) {
         binder.setValidator(userValidator);
     }
+
     @GetMapping("/home")
-    public String home(Model model) {
+    public String home(Model model, HttpSession session) {
+        User loggedUser = U.getLoggedUser();
+        model.addAttribute("user", loggedUser);
+
+        System.out.println("Session ID : " + session.getId());
+        System.out.println("Logged User: " + loggedUser);
         return "user/home";
     }
+
     // 로그인 페이지
     @GetMapping("/login")
     public String login(Model model) {
@@ -122,4 +131,27 @@ public class UserController {
     public String rejectAuth() {
         return "common/rejectAuth";
     }
-}
+
+    // 회원정보 수정
+    // 사용자 정보 수정 페이지 요청
+    @GetMapping("/editUser")
+    public String editUser(Model model, Authentication authentication) {
+
+        // 현재 로그인한 사용자 정보 찾기
+        String username = authentication.getName();
+        User user = userService.findByUsername(username);
+
+        if (user == null) {
+            model.addAttribute("error", "사용자를 찾을 수 없습니다.");
+            return "redirect:/mypage/bookMain"; // 사용자 정보를 찾을 수 없으면 마이페이지 메인으로
+        }
+
+        model.addAttribute("user", user); // 사용자 정보를 모델에 추가
+        return "user/editUser"; // 사용자 정보 수정 페이지 반환
+    }
+
+
+    }
+
+
+

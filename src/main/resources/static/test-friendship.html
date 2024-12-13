@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>친구 기능 테스트</title>
+</head>
+<body>
+<h1>친구 기능 테스트</h1>
+
+<!-- 친구 요청 -->
+<h2>친구 요청 보내기</h2>
+<form id="sendFriendRequestForm">
+  From User ID: <input type="number" id="fromUserId" required><br>
+  To User ID: <input type="number" id="toUserId" required><br>
+  <button type="submit">친구 요청 보내기</button>
+</form>
+
+<!-- 요청 수락 -->
+<h2>친구 요청 수락</h2>
+<form id="acceptFriendRequestForm">
+  From User ID: <input type="number" id="acceptFromUserId" required><br>
+  To User ID: <input type="number" id="acceptToUserId" required><br>
+  <button type="submit">요청 수락</button>
+</form>
+
+<!-- 요청 거절 -->
+<h2>친구 요청 거절</h2>
+<form id="rejectFriendRequestForm">
+  From User ID: <input type="number" id="rejectFromUserId" required><br>
+  To User ID: <input type="number" id="rejectToUserId" required><br>
+  <button type="submit">요청 거절</button>
+</form>
+
+<script>
+  // API URL 설정
+  const apiUrl = "http://localhost:8081/friendship";
+
+  // 친구 요청 보내기
+  document.getElementById("sendFriendRequestForm").addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const fromUserId = document.getElementById("fromUserId").value;
+    const toUserId = document.getElementById("toUserId").value;
+
+    const response = await fetch(`${apiUrl}/send?fromUserId=${fromUserId}&toUserId=${toUserId}`, {
+      method: "POST",
+    });
+
+    const result = await response.text();
+    alert(result);
+  });
+
+  // 요청 수락
+  document.getElementById("acceptFriendRequestForm").addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const fromUserId = document.getElementById("acceptFromUserId").value;
+    const toUserId = document.getElementById("acceptToUserId").value;
+
+    const response = await fetch(`${apiUrl}/accept?fromUserId=${fromUserId}&toUserId=${toUserId}`, {
+      method: "POST",
+    });
+
+    const result = await response.text();
+    alert(result);
+  });
+
+  // 요청 거절
+  document.getElementById("rejectFriendRequestForm").addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const fromUserId = document.getElementById("rejectFromUserId").value;
+    const toUserId = document.getElementById("rejectToUserId").value;
+
+    const response = await fetch(`${apiUrl}/reject?fromUserId=${fromUserId}&toUserId=${toUserId}`, {
+      method: "POST",
+    });
+
+    const result = await response.text();
+    alert(result);
+  });
+</script>
+
+
+</body>
+</html>

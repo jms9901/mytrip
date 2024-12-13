@@ -29,21 +29,22 @@ public class KakaoUserInfo implements OAuth2UserInfo {
     }
 
     @Override
+    public String getName() {
+        Map<String, Object> properties = (Map<String, Object>) attributes.get("properties");
+        if (properties != null && properties.get("nickname") != null) {
+            System.out.println(properties.get("nickname"));
+            return (String) properties.get("nickname");
+        } else {
+            return null; // 이름 정보가 없는 경우 null 반환
+        }
+    }
+
+    @Override
     public String getProfile() {
         Map<String, Object> properties = (Map<String, Object>) attributes.get("properties");
         if (properties != null) {
             return (String) properties.get("profile_image");
         }
-        return null;
-    }
-
-
-    @Override
-    public String getName() {
-        Map<String, Object> properties = (Map<String, Object>) attributes.get("properties");
-        if (properties != null) {
-            return (String) properties.get("nickname");
-        }
-        return null; // 이름 정보가 없는 경우 null 반환
+        return null; // 프로필 이미지 정보가 없는 경우 null 반환
     }
 }

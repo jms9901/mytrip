@@ -1,0 +1,257 @@
+<!doctype html>
+<!--[if lt IE 7 ]>
+<html lang="en" class="ie6"> <![endif]-->
+<!--[if IE 7 ]>
+<html lang="en" class="ie7"> <![endif]-->
+<!--[if IE 8 ]>
+<html lang="en" class="ie8"> <![endif]-->
+<!--[if IE 9 ]>
+<html lang="en" class="ie9"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en"> <!--<![endif]-->
+<head>
+    <meta name="viewport" content="width = 1050, user-scalable = no"/>    <!--전체 섹션 규격 & 유저 크기 조정 가능여부-->
+    <script type="text/javascript" src="/lib/JQuery/jquery.min.1.7.js"></script>    <!--경로 & 실제 파일 존재여부 반드시 확인-->
+    <script type="text/javascript" src="/lib/JQuery/modernizr.2.5.3.min.js"></script>    <!--경로 & 실제 파일 존재여부 반드시 확인-->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!--	<script type="text/javascript" src="../lib/JQuery/yepnope.js"></script>-->
+    <!--	<script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/3.11.2/modernizr.min.js"></script>-->
+    <link rel="stylesheet" type="text/css" href="/CSS/bookGuestBook.css">
+    <link href='https://fonts.googleapis.com/css?family=Kaushan Script' rel='stylesheet'>
+
+</head>
+<body style="background-image: url(/img/mypageBackground.jpg); background-repeat: no-repeat ; background-size: cover;">
+<div class="logo">
+    <div class="logo" style="background-image: url(/img/mypageLogo.png);"></div>
+</div>
+<div class="myPageGoHome" style="background-image: url(/img/myPageGoHome.png)" onclick="window.location.href='/mypage/bookMain';"></div>
+<div class="backgroundGuestBook" style="background-image: url(/img/addBook.png);"></div>
+
+<!-- Guestbook Entries Section -->
+<div id="paymentEntries" style="margin-top: 20px;">
+    <!-- New guestbook entries will be added here -->
+</div>
+
+<div class="flipbook-viewport">
+
+    <div class="container">
+        <div class="flipbook">
+            <div class="titleBook" style="background-image:url(/img/titleGuestBook.png)"></div>
+            <!--배경이미지 설정 부분 (여권사진 홀수번 우측, 짝수번 좌측 화면 표시 예정)-->
+<!--            <div class="leftBook" id="leftBookPage1" style="background-image:url(/img/sample_left.png)"></div>-->
+<!--            <div class="rightBook" id="leftBookPage2" style="background-image:url(/img/sample_right.png)"></div>-->
+
+        </div>
+    </div>
+</div>
+<div class="menu1" id="1" style="background-image: url(/img/mypageMenu.png);"><h4 id="Post">&nbsp;Invoice</h4></div>
+<div class="menu2" id="2" style="background-image: url(/img/mypageMenu.png);"><h4 id="PostLiked">&nbsp;Post</h4></div>
+<div class="menu3" id="3" style="background-image: url(/img/mypageMenu.png);"><h4 id="GuestBook">&nbsp;Post♥</h4></div>
+<div class="menu4" id="4" style="background-image: url(/img/mypageMenu.png);"><h4 id="PackageLiked">&nbsp;Package♥</h4>
+</div>
+<div class="menu5" id="5" style="background-image: url(/img/mypageMenu.png);"><h4 id="Invoice">&nbsp;GuestBook</h4>
+</div>
+<div class="goChat" style="background-image: url(/img/mypageChat.png);"></div>
+
+
+
+
+
+</div>
+
+
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        const userId = getToUserIdFromUrl();
+        const apiUrl = `/bookmain/payments/list/${userId}`; // API URL 설정
+        let initialPageCount = $('.flipbook .page').length;
+
+        // 앱 로드 및 초기화
+        initializeApp();
+
+        let currentPage = 1; // 현재 페이지 번호
+        const entriesPerPage = 3; // 한 페이지에 출력할 항목 수
+        let pages = {}; // 각 페이지에 추가된 항목 수를 저장
+
+        function initializeApp() {
+            checkAndLoadFlipbook();
+            loadGuestBooks();
+
+            // 채팅 hover 효과
+            $('.goChat').hover(() => hoverChat());
+        }
+
+        // Flipbook 초기화
+        function checkAndLoadFlipbook() {
+            if (isCSSTransformSupported()) {
+                $.getScript('/lib/animationjs/turn.js', () => loadApp());
+            } else {
+                $.getScript('../../lib/JQuery/turn.html4.min.js', () => loadApp());
+            }
+        }
+
+        function loadApp() {
+            $('.flipbook').turn({
+                width: 922,
+                height: 600,
+                elevation: 50,
+                gradients: true,
+                autoCenter: false,
+                display: 'double',
+                first: true
+            });
+        }
+
+        // CSS Transform 지원 여부 확인
+        function isCSSTransformSupported() {
+            const testElement = document.createElement('div');
+            const transformProperties = ['transform', 'WebkitTransform', 'MozTransform', 'OTransform', 'msTransform'];
+            return transformProperties.some(prop => testElement.style[prop] !== undefined);
+        }
+
+        // 결제 내역을 요청
+        $.ajax({
+            url: '/bookmain/payment/list/json/' + userId,  // 사용자 ID로 API 호출
+            type: 'GET',
+            dataType: 'json',  // JSON 응답을 받기 위한 설정
+            success: function (data) {
+                console.log("결제 내역 로드 완료:", data);
+                loadPayments(data);  // 받은 데이터를 바탕으로 결제 내역을 로딩
+            },
+            error: function (error) {
+                console.log("에러 발생:", error);
+            }
+        });
+        // 결제 내역을 출력하는 함수
+        function loadPayments(payments) {
+            if (payments && payments.length > 0) {
+
+                payments.forEach((payment, index) => {
+                    const entryHtml = `
+                    <div class="payment-entry" style="background-image: url(/img/paymentReceipt.png); background-repeat: no-repeat; background-size: contain; height: 26%; font-size:15px; line-height: 70%" >
+                        <h4><br><br><br><br><br>&nbsp&nbsp Package: ${payment.packageTitle}</h4>
+                        <p>&nbsp&nbsp Date: ${payment.date}</p>
+                        <p>&nbsp&nbsp Price: ${payment.price}</p>
+                        <p>&nbsp&nbsp Status: ${payment.status}</p>
+                    </div>
+                `;
+                    addEntryToPage(entryHtml, index + 1, pages, entriesPerPage);
+                });
+            } else {
+                $('#paymentEntries').append('<p>결제 내역이 없습니다.</p>');
+            }
+        }
+
+
+
+        // URL에서 toUserId 값 추출하는 함수
+        function getToUserIdFromUrl() {
+            const pathParts = window.location.pathname.split('/');
+            const toUserId = pathParts[pathParts.length - 1]; // 마지막 부분이 toUserId
+            return toUserId;
+        }
+
+
+
+
+        // 방명록 불러오기
+        function loadGuestBooks() {
+            console.log("loadGuestBooks 작동");
+
+            const toUserId = getToUserIdFromUrl();
+
+            $.get(apiUrl, function (data) {
+                console.log("Loaded guestbooks:", data);
+
+                // 기존 페이지 삭제 및 초기화
+                resetFlipbook();
+
+                // 데이터를 페이지에 추가
+                data.forEach((payment, index) => {
+                    const entryHtml = `
+                        <div class="payment-entry">
+                            <h4>title: ${payment.packageTitle}</h4>
+                            <p>Date: ${payment.Date}</p>
+                            <p>Price: ${payment.price}</p>
+                        </div>
+                    `;
+                    addEntryToPage(entryHtml, index + 1); // 결제 내역을 페이지에 추가
+                    console.log(`Payment Entry ${index + 1} added to page ${currentPage}`);
+                });
+            });
+        }
+
+        // 기존 페이지 삭제
+        function resetFlipbook() {
+            console.log("resetFlipbook 작동");
+            // 첫 번째 페이지는 유지하고 나머지를 초기화
+            $('.flipbook').turn('pages', initialPageCount);
+            $('.flipbook .page').not('#page1').remove();
+            $('#guestbookEntries').empty();  // 데이터 초기화
+            currentPage = 2;  // 두 번째 페이지부터 시작
+            pages = { 2: 0 };  // 첫 페이지 제외 초기화
+        }
+
+        // 항목을 페이지에 추가
+        function addEntryToPage(entry, index) {
+            console.log("addEntry 작동");
+            const pageNumber = Math.floor((index - 1) / entriesPerPage) + 2;
+            const adjustedPage = pageNumber + initialPageCount-1;
+
+
+            // 현재 페이지가 없으면 새 페이지 생성
+            if (!pages[adjustedPage]) {
+                createNewPage(pageNumber); // 첫 페이지 생성
+            }
+            $(`#page${adjustedPage}`).append(entry);
+            pages[adjustedPage] = (pages[adjustedPage] || 0) + 1;
+        }
+
+            // 현재 페이지에 추가 가능한 경우
+
+
+
+        // 새 페이지 생성
+        function createNewPage(pageNumber) {
+            console.log("createpage 작동");
+            const totalPages = $('.flipbook').turn('pages');
+            // currentPage = totalPages + 1; // 페이지 번호 계산
+            const adjustedPage = pageNumber + initialPageCount;
+            console.log(`New page created. Total Pages: ${totalPages}, Current Page: ${currentPage}`);
+
+            let newPage;
+
+            // 첫 번째 페이지는 이미지 전용으로 설정
+            if (adjustedPage === 1) {
+                newPage = `<div class="page" id="page${adjustedPage}" style="background-image:url(/img/titleGuestBook.png)"></div>`;
+            } else {
+                // 나머지 페이지는 결제 내역을 위한 기본 배경 이미지로 설정
+                newPage = `<div class="page" id="page${adjustedPage}" style="background-image:url(/img/addBook.png)"></div>`;
+            }
+
+            // 새 페이지를 flipbook에 추가
+            if (!$(`#page${adjustedPage}`).length) {
+                $('.flipbook').turn('addPage', $(newPage)[0], adjustedPage);
+                pages[adjustedPage] = 0;  // 새 페이지 항목 수 초기화
+            }
+        }
+
+        // 채팅 hover 효과
+        function hoverChat() {
+            let angle = 0;
+            let shakeInterval = setInterval(() => {
+                angle += 10;
+                $('.goChat').css('transform', `rotateY(${angle}deg)`);
+                if (angle >= 35) {
+                    clearInterval(shakeInterval);
+                    $('.goChat').css('transform', 'rotateY(0deg)');
+                }
+            }, 100);
+        }
+    });
+</script>
+
+
+</body>
+</html>

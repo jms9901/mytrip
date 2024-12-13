@@ -16,7 +16,6 @@ public class GuestBook {
 
     private int guestBookId;
 
-
     private int toUserId;
 
     private int fromUserId;

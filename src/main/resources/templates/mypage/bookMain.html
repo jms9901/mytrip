@@ -4,6 +4,7 @@
 <!--[if IE 8 ]>    <html lang="en" class="ie8"> <![endif]-->
 <!--[if IE 9 ]>    <html lang="en" class="ie9"> <![endif]-->
 <!--[if !IE]><!--> <html lang="en"> <!--<![endif]-->
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta name="viewport" content="width = 1050, user-scalable = no" />	<!--전체 섹션 규격 & 유저 크기 조정 가능여부-->
 <script type="text/javascript" src="/lib/JQuery/jquery.min.1.7.js"></script>	<!--경로 & 실제 파일 존재여부 반드시 확인-->
@@ -28,24 +29,38 @@
 			<div style="background-image:url(/img/mypageTitle.png)"></div>	<!--배경이미지 설정 부분 (여권사진 홀수번 우측, 짝수번 좌측 화면 표시 예정)-->
 			<div style="background-image:url(/img/sample_left.png)">
 				<div class="mypageUserInfo">
-					<div class="circle">프사</div>
+					<div class="circle">
+						<img th:src="@{'/uploads/profiles/' + ${user.profile}}">
+
+					</div>
 					<div class="InfoArea">
 						<div>
-					<div class="InfoName">사용자명</div>
+					<div class="InfoName" th:text="${user.name}">사용자명</div>
 					<div class="decorateName" style="font-family: 'Kaushan Script'">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp    A.k.a Best Travler.</div>
 					</div>
 					</div>
 					<div class="myPageUpdate" style="background-image: url(/img/myPageUpdate.png)"></div>
 				</div>
-			<div class="mypageUserIntroduce">자기소개</div>
+			<div class="mypageUserIntroduce" th:text="${user.introduction}">자기소개</div>
 			<div class="mypageFreind">
 				<div class="Connections" >Connections.</div>
-				<div class="ConnectionsCnt">207</div>
+				<div class="ConnectionsCnt" id="ConnectionsCnt">
+					<span th:text="${countAcceptedFriends}">0</span>
+				</div>
 			</div>
-			<div class="mypageCityLiked">
-				<div class="CityLikedTitle">Travel Destination ♥</div>
-				<div class="CityLikedImg"></div>
-			</div>
+				<div class="mypageCityLiked">
+					<div class="slider">
+					<div class="cityLikedItem">
+						<div class="CityLikedTitle"></div>  <!-- 도시 이름 -->
+						<div class="CityLikedImg">
+							<img src="" alt="City Image">  <!-- 도시 이미지 -->
+						</div>
+					</div>
+
+						</div>
+					<button class="prev">Previous</button>
+					<button class="next">Next</button>
+				</div>
 		</div>
 			<div style="background-image:url(/img/sample_right.png)"><div class="recentPost">
 				<div class="firstSection">
@@ -78,131 +93,76 @@
 		</div>
 	</div>
 </div>
+
+
+
 <div class="menu1" id="1" style="background-image: url(/img/mypageMenu.png);"><h4 id="Invoice">&nbsp;Invoice</h4></div>
 <div class="menu2" id="2" style="background-image: url(/img/mypageMenu.png);"><h4 id="post">&nbsp;Post</h4></div>
 <div class="menu3" id="3" style="background-image: url(/img/mypageMenu.png);"><h4 id="PostLiked">&nbsp;Post♥</h4></div>
 <div class="menu4" id="4" style="background-image: url(/img/mypageMenu.png);"><h4 id="PackageLiked">&nbsp;Package♥</h4></div>
-<div class="menu5" id="5" style="background-image: url(/img/mypageMenu.png);" ><h4 id="GuestBook" onclick="window.location.href='/mypage/bookGuestBook';">&nbsp;GuestBook</h4></div>
-	<div class="goChat" style="background-image: url(/img/mypageChat.png);"></div>
-<div class="updateUserModal" >
+<div class="menu5" id="5" style="background-image: url(/img/mypageMenu.png);">
+	<h4 id="GuestBook" th:onclick="|window.location.href='/mypage/bookMain/bookGuestBook/' + ${user.id}|">
+		&nbsp;GuestBook
+	</h4>
+</div>
+
+
+
+<div class="goChat" style="background-image: url(/img/mypageChat.png);"></div>
+<div id="friendModal" style="display:none;">
+	<div class="modal-content">
+		<h2>Friend List</h2>
+		<ul id="friendList">
+			<!-- 친구 목록은 여기에 동적으로 추가됩니다 -->
+		</ul>
+		<button onclick="closeModal()">Close</button>
+	</div>
+</div>
+<div class="updateUserModal">
 	<div class="NameAndImg">
-	<div class="Updatecircle"></div>
-		<div class="UserNameArea">userName</div>
+		<div class="Updatecircle">
+			<img th:src="${user.profile != null && !user.profile.isEmpty() ? '/img/profiles/' + user.profile : '/img/defaultProfile.jpg'}"
+				 alt="Profile Image">
+		</div>
+		<div class="UserNameArea" id="userName" th:text="${user.name}" onclick="editUserName()">userName</div>
 		<button class="closeUpdateModal">X</button>
 	</div>
-	<div class="IntroduceMyself"></div>
-	<div class="UpdatePassword">
-		<div id="passwordArea"><div>password</div><input type="text" class="UserPassword"></div>
-		<div id="newpasswordArea"><div>new password</div><input type="text" class="NewUserPassword"></div>
-		<div class="submitUpdate" style="background-image: url(/img/checkIcon.png)"></div>
+
+	<!-- 소개글 수정 -->
+	<div class="IntroduceMyself">
+		<div>Introduce yourself:</div>
+		<span id="userIntroduction" onclick="updateIntroduction()">${user.introduction}</span>
+		<input type="text" id="editIntroduction" class="UserIntroduction" style="display: none;">
 	</div>
-	<div></div>
+
+	<!-- 비밀번호 수정 -->
+	<div class="UpdatePassword">
+		<div id="passwordArea">
+			<div>Current password</div>
+			<span id="currentPasswordText" onclick="updatePassword('currentPassword')">password</span>
+			<input type="password" id="currentPassword" style="display: none;">
+		</div>
+		<div id="newpasswordArea">
+			<div>New password</div>
+			<span id="newPasswordText" onclick="updatePassword('newPassword')">new password</span>
+			<input type="password" id="newPassword" style="display: none;">
+		</div>
+		<div class="submitUpdate" style="background-image: url('/img/checkIcon.png')" id="submitUpdateBtn" onclick="submitUserChanges()"></div>
+	</div>
+
+	<!-- 프로필 이미지 수정 -->
+	<div class="UpdateProfileImage">
+		<input type="file" id="profileImageInput" class="ProfileImageInput" onchange="previewProfileImage()" style="display: none;">
+		<button onclick="document.getElementById('profileImageInput').click()">Change Profile Image</button>
+		<img id="profilePreview" src="" alt="Profile Image" style="display: none;">
+	</div>
+</div>
 </div>
 
 
 </div>
 
 
-<script type="text/javascript">
-
-function loadApp() {
-
-	// Create the flipbook
-
-	$('.flipbook').turn({
-			// Width
-
-			width:922,
-			
-			// Height
-
-			height:600,
-
-			// Elevation
-
-			elevation: 50,
-			
-			// Enable gradients
-
-			gradients: true,
-			
-			// Auto center this flipbook
-
-			autoCenter: true
-
-	});
-	$('.flipbook').bind('turning', function(event, page) {
-		if (page === 2) {
-			$('.menu1').show(); // Show menu after the first page turn
-			$('.menu2').show();
-			$('.menu3').show();
-			$('.menu4').show();
-			$('.menu5').show();
-		}else if (page ===1){
-			$('.menu1').hide();
-			$('.menu2').hide();
-			$('.menu3').hide();
-			$('.menu4').hide();
-			$('.menu5').hide();
-		}
-	});
-	$('.goChat').hover(function(){
-		hoverChat();
-	});
-
-	function hoverChat() {
-		let angle = 0;
-		clearInterval(shakeInterval);       
-		$('.goChat').css('transform', 'rotateY(0deg)');  // 초기 상태 설정
-		let shakeInterval = setInterval(function() {
-			angle += 10;  // 한 번에 10도씩 증가
-			$('.goChat').css('transform', `rotateY(${angle}deg)`);  // Y축을 중심으로 회전
-			if (angle >= 35) {  // 35도까지 회전
-				clearInterval(shakeInterval);
-				$('.goChat').css('transform', 'rotateY(0deg)');  // 원래 위치로 돌아가게 설정
-			}
-		}, 100);  // 0.1초마다 회전
-    }
-	
-}
-
-$('.myPageUpdate').click(function (){
-	$('.updateUserModal').show();
-});
-$('.closeUpdateModal').click(function(){
-	$('.updateUserModal').hide();
-});
-
-
-
-// Load the HTML4 version if there's not CSS transform
-
-function isCSSTransformSupported() {
-	var testElement = document.createElement('div');
-	var transformProperties = ['transform', 'WebkitTransform', 'MozTransform', 'OTransform', 'msTransform'];
-
-	for (var i = 0; i < transformProperties.length; i++) {
-		if (testElement.style[transformProperties[i]] !== undefined) {
-			return true; // CSS transform이 지원됩니다.
-		}
-	}
-
-	return false; // CSS transform이 지원되지 않습니다.
-}
-
-if (isCSSTransformSupported()) {
-	// transform 지원 시
-	$.getScript('../../lib/animationjs/turn.js', function() {
-		loadApp();
-	});
-} else {
-	// transform 미지원 시
-	$.getScript('../../lib/JQuery/turn.html4.min.js', function() {
-		loadApp();
-	});
-}
-
-</script>
-
+<script src="/JS/bookMain.js"></script>
 </body>
 </html>

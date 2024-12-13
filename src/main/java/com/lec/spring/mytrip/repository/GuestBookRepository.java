@@ -13,7 +13,7 @@ public interface GuestBookRepository {
 
     void writeGuestBook(GuestBook guestBook);
 
-    List<GuestBook> viewGuestBookByUserId(@Param("toUserId") int toUserId);
+    List<GuestBook> viewGuestBookByUserId(int toUserId);
 
     void deleteGuestBook(@Param("guestBookId") int guestBookId);
 

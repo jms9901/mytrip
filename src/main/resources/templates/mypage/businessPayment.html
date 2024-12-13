@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://fonts.googleapis.com/css?family=Kaushan Script' rel='stylesheet'>
+    <link rel="stylesheet" th:href="@{/static/CSS/businessPaymentList.css}">
+    <title>business payment modal</title>
+</head>
+<body>
+<!-- 결제 내역 버튼과 연결 -->
+<!-- <button id="open-modal">Open Modal</button> -->
+
+<!-- Modal -->
+<div id="payment-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <div class="modal-title">결제정보</div>
+            <select class="pay-status-select">
+                <option value="" disabled selected>결제 상태</option>
+                <option value="" selected>전체</option>
+                <option value="complete">결제 완료</option>
+                <option value="cancel">결제 취소</option>
+            </select>
+        </div>
+
+        <table class="payment-table">
+            <thead>
+            <tr class="table-header">
+                <th>사용자명</th>
+                <th>패키지명</th>
+                <th>금액</th>
+                <th>결제상태</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>OOOOO</td>
+                <td>XXXXXX</td>
+                <td>12345$</td>
+                <td class="pay-status">결제 완료</td>
+            </tr>
+            <tr>
+                <td>OOOOO</td>
+                <td>XXXXXX</td>
+                <td>12345$</td>
+                <td>결제 취소</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <!-- 모달 나가기 버튼은 모달 밖을 클릭 시 나가게 처리 -->
+    </div>
+</div>
+
+<!--<script th:src="@{/static/JS/businessPaymentModal.js}"></script>-->
+</body>
+</html>

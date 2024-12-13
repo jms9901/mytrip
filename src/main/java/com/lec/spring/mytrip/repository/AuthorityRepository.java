@@ -17,3 +17,4 @@ public interface AuthorityRepository {
     // 특정 user_id에 권한 주기
     int addAuthority(Authority authority);
 }
+// git push를 위한 주석 241210 10:45

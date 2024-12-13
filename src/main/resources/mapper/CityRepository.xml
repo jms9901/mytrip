@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lec.spring.mytrip.repository.CityRepository">
+    <resultMap id="CityResultMap" type="com.lec.spring.mytrip.domain.City">
+        <id property="cityId" column="city_id"/>
+        <result property="cityName" column="city_name"/>
+        <result property="cityContinent" column="city_continent"/>
+        <result property="cityLanguage" column="city_language"/>
+        <result property="cityCurrency" column="city_currency"/>
+        <result property="cityImg" column="city_img"/>
+        <result property="cityNation" column="city_nation"/>
+        <result property="q1Id" column="q1_id"/>
+        <result property="q2Id" column="q2_id"/>
+        <result property="q3Id" column="q3_id"/>
+        <result property="q4Id" column="q4_id"/>
+        <result property="q5Id" column="q5_id"/>
+    </resultMap>
+
+    <select id="findCityByAnswers" resultMap="CityResultMap">
+        SELECT *
+        FROM city
+        WHERE q1_id = #{q1Id}
+          AND q2_id = #{q2Id}
+          AND q3_id = #{q3Id}
+          AND q4_id = #{q4Id}
+          AND q5_id = #{q5Id}
+    </select>
+    <select id="findLikedCitiesByUserId" resultType="com.lec.spring.mytrip.domain.City">
+        SELECT c.*
+        FROM city c
+                 JOIN city_liked cl ON c.city_id = cl.city_id
+        WHERE cl.user_id = #{userId}
+    </select>
+
+</mapper>

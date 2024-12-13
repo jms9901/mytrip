@@ -4,6 +4,8 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.lec.spring.mytrip.repository.GuestBookRepository">
+
+
     
     <insert id="writeGuestBook" parameterType="com.lec.spring.mytrip.domain.GuestBook">
         INSERT INTO guest_book (to_user_id, from_user_id, guest_book_content, guest_book_date)

@@ -39,5 +39,12 @@ delete from friendship;
 delete from guest_book;
 delete from messageroom;
 delete from message;
+SELECT * FROM guest_book WHERE to_user_id = 1;
+alter table user
+add column user_status varchar(20);
 
-
+ALTER TABLE user MODIFY COLUMN user_authorization VARCHAR(255) DEFAULT 'ROLE_USER';
+SELECT user_name, user_username, user_profile FROM user WHERE user_id = 3;
+select * from friendship;
+SELECT * FROM board WHERE board_id = 121;
+ALTER TABLE board AUTO_INCREMENT = 119;

@@ -12,6 +12,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+
 public class PrincipalDetails implements UserDetails, OAuth2User {
 
     private AuthorityRepository authorityRepository;
@@ -30,12 +31,10 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
     }
 
     // 소셜 회원가입
-    // TODO: 소셜 회원가입 구현
-     public PrincipalDetails(User user, Map<String, Object> attributes) {
-         this.user = user;
-         this.attributes = attributes;
-     }
-
+    public PrincipalDetails(User user, Map<String, Object> attributes) {
+        this.user = user;
+        this.attributes = attributes;
+    }
 
     // 해당 user의 권한들을 리턴
     @Override
@@ -86,7 +85,7 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
 
     @Override
     public String getName() {
-        return null;
+        return user.getName();
     }
 
     private Map<String, Object> attributes;
@@ -96,3 +95,4 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
         return this.attributes;
     }
 }
+// git push를 위한 주석 241210 10:45

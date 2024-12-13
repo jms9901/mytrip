@@ -23,6 +23,9 @@ public class SecurityConfig {
     @Autowired
     private Environment env;
 
+    @Autowired
+    private CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -35,15 +38,16 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        String redirectUri = env.getProperty("spring.security.oauth2.client.registration.kakao.redirect-uri");
+//        String redirectUri = env.getProperty("spring.security.oauth2.client.registration.kakao.redirect-uri");
         return http
                 .csrf(csrf -> csrf.disable()) // CSRF 비활성화
                 .authorizeRequests(auth -> auth
                         .requestMatchers("/", "/user/login", "/oauth2/**" ,"/css/**", "/js/**", "/img/**" ).permitAll() // 해당 URL에 대해 모두 접근 허용
-                        .anyRequest().authenticated()) // 그 밖의 모든 요청은 인증 필요
+                        .anyRequest().permitAll()) // 그 밖의 모든 요청은 인증 필요
                 .formLogin(form -> form
                         .loginPage("/user/login") // 로그인 페이지 설정
                         .loginProcessingUrl("/user/login") // 로그인 처리 URL
+                        .successHandler(customAuthenticationSuccessHandler)
                         .defaultSuccessUrl("/user/home", true)) // 로그인 성공 시 이동할 URL
                 .logout(logout -> logout
                         .logoutUrl("/user/logout") // 로그아웃 처리 URL
@@ -86,3 +90,4 @@ public class SecurityConfig {
     }
     */
 }
+// git push를 위한 주석 241210 10:45

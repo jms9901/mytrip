@@ -15,6 +15,8 @@ public interface UserService {
     // 신규 회원등록
     int register(User user);
 
+//    int updateUser(Long userId, String newPassword, String introduction ,String Profile);
     // TODO 특정 user_id의 status 확인
 
 }
+// git push를 위한 주석 241210 10:45

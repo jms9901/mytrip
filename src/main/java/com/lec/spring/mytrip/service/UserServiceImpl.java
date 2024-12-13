@@ -6,6 +6,8 @@ import com.lec.spring.mytrip.repository.AuthorityRepository;
 import com.lec.spring.mytrip.repository.UserRepository;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -76,6 +78,7 @@ public class UserServiceImpl implements UserService {
         return 1;
     }
 
+
 //    @Override
 //    public List<Authority> selectAuthorityById(Long id) {
 //        User user = userRepository.findById(id);
@@ -85,3 +88,4 @@ public class UserServiceImpl implements UserService {
 //    }
 }
 
+// git push를 위한 주석 241210 10:45
