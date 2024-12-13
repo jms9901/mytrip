@@ -38,36 +38,55 @@ document.addEventListener('DOMContentLoaded', function () {
             console.log("board details button clicked:", event.target);
 
             // 데이터 가져오기
-            var regDate = event.target.getAttribute('data-date'); // 숫자형 ID
-            const boardSubject = event.target.getAttribute('data-subject'); // 로그인 ID
-            const boardContent = event.target.getAttribute('data-content');
-            const boardViewCount = event.target.getAttribute('data-viewCount');
-            const boardCityId = event.target.getAttribute('data-cityId');
-            let boardId = event.target.getAttribute('data-boardId');
+            const boardId = event.target.getAttribute('data-boardId');
 
-            regDate = regDate ? regDate.split('T')[0] : '[데이터 없음]';
+            console.log("Fetching attachments for boardId:", boardId);
 
-            console.log("Board ID:", boardId); // 서버로 전달할 userId
-            console.log("Board Subject:", boardSubject); // 모달 창에 표시할 username
+            // 첨부파일 가져오기
+            fetch(`/admin/boardAttachments/${boardId}`)
+                .then((response) => response.json())
+                .then((attachments) => {
+                    const imageContainer = document.getElementById('imageContainer');
+                    imageContainer.innerHTML = ''; // 기존 이미지 제거
 
-            // 모달 데이터 업데이트
-            document.getElementById('modalRegDate').textContent = regDate || '[데이터 없음]';
-            document.getElementById('modalBoardSubject').textContent = boardSubject || '[데이터 없음]'; // 모달에 로그인 ID 표시
-            document.getElementById('modalBoardContent').textContent = boardContent || '[데이터 없음]';
-            document.getElementById('modalBoardViewCount').textContent = boardViewCount || '[데이터 없음]';
-            document.getElementById('modalBoardCityId').textContent = boardCityId || '[데이터 없음]';
-            document.getElementById('modalBoardId').textContent = boardId || '[데이터 없음]';
+                    if (attachments && attachments.length > 0) {
+                        attachments.forEach((attachment) => {
+                            const img = document.createElement('img');
+                            img.src = `/img/${attachment.fileName.trim()}`; // 서버의 업로드 디렉토리 경로
+                            img.alt = '첨부 이미지';
+                            img.style.width = '100px';
+                            img.style.margin = '5px';
+                            imageContainer.appendChild(img);
+                        });
+                    } else {
+                        imageContainer.innerHTML = '<p>첨부파일이 없습니다.</p>';
+                    }
+                })
+                .catch((error) => {
+                    console.error("Error fetching attachments:", error);
+                    alert("첨부파일 정보를 불러오지 못했습니다.");
+                });
 
-            // 모달에 userId를 숨겨진 데이터로 저장 (삭제 시 사용)
-            document.getElementById('modalBoardId').setAttribute('data-boardId', boardId);
+            // 기타 모달 데이터 설정 (이전 코드 유지)
+            const regDate = event.target.getAttribute('data-date')?.split('T')[0] || '[데이터 없음]';
+            const boardSubject = event.target.getAttribute('data-subject') || '[데이터 없음]';
+            const boardContent = event.target.getAttribute('data-content') || '[데이터 없음]';
+            const boardViewCount = event.target.getAttribute('data-viewCount') || '[데이터 없음]';
+            const boardCityId = event.target.getAttribute('data-cityId') || '[데이터 없음]';
+
+            document.getElementById('modalRegDate').textContent = regDate;
+            document.getElementById('modalBoardSubject').textContent = boardSubject;
+            document.getElementById('modalBoardContent').textContent = boardContent;
+            document.getElementById('modalBoardViewCount').textContent = boardViewCount;
+            document.getElementById('modalBoardCityId').textContent = boardCityId;
+            document.getElementById('modalBoardId').textContent = boardId;
         }
     });
 
 
-
     // 사용자 삭제
     window.deletePost = function () {
-        // 삭제를 위한 userId를 가져오기 (숫자형 ID)
+        // 삭제를 위한 boardId 가져오기
         const boardId = document.getElementById('modalBoardId').getAttribute('data-boardId');
 
         if (!boardId) {
@@ -83,7 +102,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     'Content-Type': 'application/x-www-form-urlencoded'
                 },
                 body: new URLSearchParams({
-                    boardId: boardId // 서버로 숫자형 userId 전달
+                    boardId: boardId // 서버로 숫자형 boardId 전달
                 })
             })
                 .then(response => {
@@ -100,12 +119,11 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                 })
                 .catch(error => {
-                    console.error('Error deleting user:', error);
+                    console.error('Error deleting board:', error);
                     alert('게시물 삭제 중 오류가 발생했습니다.');
                 });
         }
     };
-
 
     function reloadTable() {
         location.reload();

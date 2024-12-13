@@ -1,0 +1,6 @@
+/* 상태가 '승인'일 때 */
+.package-details-button[data-packagestatus="승인"] {
+    background-color: green;
+    color: white;
+    border: none;
+}

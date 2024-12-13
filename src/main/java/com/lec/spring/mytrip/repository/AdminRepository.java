@@ -4,6 +4,8 @@ import com.lec.spring.mytrip.domain.Board;
 import com.lec.spring.mytrip.domain.PackagePost;
 import com.lec.spring.mytrip.domain.Payment;
 import com.lec.spring.mytrip.domain.User;
+import com.lec.spring.mytrip.domain.attachment.BoardAttachment;
+import com.lec.spring.mytrip.domain.attachment.PackagePostAttachment;
 
 import java.util.List;
 
@@ -43,4 +45,8 @@ public interface AdminRepository {
 
     // 패키지 승인 상태 변경
     void updatePackageStatus(int packageId, String status);
+
+    List<BoardAttachment> findBoardAttachments(int boardId);
+
+    List<PackagePostAttachment> findPackageAttachments(int packageId);
 }

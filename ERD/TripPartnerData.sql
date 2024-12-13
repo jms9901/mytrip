@@ -654,6 +654,11 @@ VALUES
     (59, '/img/FukuokaImg.jpg'),
     (60, '/img/GuamImg.jpg');
 
+INSERT INTO board_attachment (board_id, board_attachment_file)
+VALUES
+    (32,'/img/BailImg.jpg');
+
+
 update user
 set user_password = '$2a$10$y54jausXmoCMgc4wKgAAc.L2VQsLbk0vCDZ33mMKw4UrG/SXSPlxW'
 where user_id = 1;

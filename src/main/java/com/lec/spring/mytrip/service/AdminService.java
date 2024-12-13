@@ -4,6 +4,8 @@ import com.lec.spring.mytrip.domain.Board;
 import com.lec.spring.mytrip.domain.PackagePost;
 import com.lec.spring.mytrip.domain.Payment;
 import com.lec.spring.mytrip.domain.User;
+import com.lec.spring.mytrip.domain.attachment.BoardAttachment;
+import com.lec.spring.mytrip.domain.attachment.PackagePostAttachment;
 
 import java.util.List;
 
@@ -21,5 +23,9 @@ public interface AdminService {
     void deleteBoard(int boardId);
     void deletePackage(int packageId);
     void updatePackageStatus(int packageId, String status);
+    List<PackagePostAttachment> findPackageAttachments(int packageId);
+
+    List<BoardAttachment> findBoardAttachments(int boardId);
+
 
 }

@@ -2,6 +2,8 @@ package com.lec.spring.mytrip.controller;
 
 import com.lec.spring.mytrip.config.PrincipalDetails;
 import com.lec.spring.mytrip.domain.*;
+import com.lec.spring.mytrip.domain.attachment.BoardAttachment;
+import com.lec.spring.mytrip.domain.attachment.PackagePostAttachment;
 import com.lec.spring.mytrip.service.AdminService;
 import com.lec.spring.mytrip.util.U;
 import jakarta.servlet.http.HttpServletRequest;
@@ -160,6 +162,7 @@ public class AdminController {
         }
     }
 
+    // NOTE : 소모임과 피드
 
     // 소모임에 대한 정보를 가져오는 url 연결
     @GetMapping("/boardTables")
@@ -191,6 +194,38 @@ public class AdminController {
         }
     }
 
+    // 게시글 첨부파일 조회
+    @GetMapping("/boardAttachments/{boardId}")
+    @ResponseBody
+    public ResponseEntity<List<BoardAttachment>> getBoardAttachments(@PathVariable int boardId) {
+        try {
+            System.out.println("Fetching attachments for boardId: " + boardId);
+
+            List<BoardAttachment> attachments = adminService.findBoardAttachments(boardId);
+
+            // Log the attachments for debugging purposes
+            if (attachments != null && !attachments.isEmpty()) {
+                System.out.println("Attachments found for boardId " + boardId + ":");
+                for (BoardAttachment attachment : attachments) {
+                    System.out.println("Attachment ID: " + attachment.getBoardAttachmentId());
+                    System.out.println("Board ID: " + attachment.getBoardId());
+                    System.out.println("File Name: " + attachment.getFileName());
+                }
+            } else {
+                System.out.println("No attachments found for boardId " + boardId);
+            }
+
+            return ResponseEntity.ok(attachments);
+        } catch (Exception e) {
+            System.err.println("Error fetching attachments for boardId: " + boardId);
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+
+    // NOTE : 패키지
+
     // 승인 처리된 package 정보 가져오기
     @GetMapping("/packageAccessTables")
     public String packageAccessTables(Model model, HttpSession session) {
@@ -221,6 +256,33 @@ public class AdminController {
         }
     }
 
+    // 패키지 상태 변경하기
+    @PostMapping("/updatePackageStatus")
+    public ResponseEntity<String> updatePackageStatus(@RequestParam("packageId") int packageId,
+                                                       @RequestParam("newStatus") String newStatus) {
+        try {
+            adminService.updatePackageStatus(packageId, newStatus);
+            return ResponseEntity.ok("사용자 상태가 성공적으로 업데이트되었습니다.");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("패키지 승인 요청 중 오류가 발생했습니다.");
+        }
+    }
+
+    // 패키지 첨부파일 조회
+    @GetMapping("/packageAttachments/{packageId}")
+    @ResponseBody
+    public ResponseEntity<List<PackagePostAttachment>> getPackageAttachments(@PathVariable int packageId) {
+        try {
+            List<PackagePostAttachment> attachments = adminService.findPackageAttachments(packageId);
+            return ResponseEntity.ok(attachments);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    // NOTE : 결제 관리
+
     // payment 정보 가져오는 url 연결
     @GetMapping("/paymentTables")
     public String paymentTables(Model model, HttpSession session) {
@@ -228,6 +290,9 @@ public class AdminController {
         model.addAttribute("payments", payments);
         return "admin/paymentTables";
     }
+
+
+    // NOTE : 관리자 로그인
 
     // 현재 로그인한 유저 정보를 json 파일로 가져오는 url
     @RequestMapping("/auth")

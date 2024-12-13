@@ -59,11 +59,27 @@
         <result property="packageCost" column="package_cost" />
     </resultMap>
 
+    <resultMap id="PackageAttachmentResultMap" type="com.lec.spring.mytrip.domain.attachment.PackagePostAttachment">
+        <id property="packageAttachmentId" column="package_attachment_id"/>
+        <result property="packageId" column="package_id"/>
+        <result property="fileName" column="package_attachment_file"/>
+    </resultMap>
+
+    <resultMap id="BoardAttachmentResultMap" type="com.lec.spring.mytrip.domain.attachment.BoardAttachment">
+        <id property="boardAttachmentId" column="board_attachment_id"/>
+        <result property="boardId" column="board_id"/>
+        <result property="fileName" column="board_attachment_file"/>
+    </resultMap>
+
+
     <!-- ROLE_USER 리스트 가져오기 -->
     <select id="findByAuthorityRoleUser" resultMap="UserResultMap">
         SELECT * FROM user WHERE user_authorization = #{authority}
         ORDER BY user_id ASC
     </select>
+
+
+
 
     <!-- ROLE_BUSINESS 리스트 가져오기 -->
     <select id="findByAuthorityRoleBusiness" resultMap="UserResultMap">
@@ -89,6 +105,14 @@
         ORDER BY b.board_id ASC
     </select>
 
+    <!-- 게시물 첨부파일 조회 -->
+    <select id="findBoardAttachments" resultMap="BoardAttachmentResultMap">
+        SELECT *
+        FROM board_attachment
+        WHERE board_id = #{boardId}
+    </select>
+
+
     <!-- package 상태가 승인인 리스트 가져오기 -->
     <select id="findByAccessPackage" resultMap="PackagePostResultMap">
         SELECT p.*, u.user_name
@@ -105,6 +129,14 @@
         JOIN user u on p.user_id = u.user_id
         WHERE package_status = #{param1} OR package_status = #{param2}
     </select>
+
+    <!-- package 첨부파일 조회 -->
+    <select id="findPackageAttachments" resultMap="PackageAttachmentResultMap">
+        SELECT *
+        FROM package_attachment
+        WHERE package_id = #{packageId}
+    </select>
+
 
     <!-- payment 리스트 가져오기 -->
     <select id="findByPayment" resultMap="PaymentResultMap">
