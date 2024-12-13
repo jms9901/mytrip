@@ -1,24 +1,28 @@
 package com.lec.spring.mytrip.controller;
 
+import com.lec.spring.mytrip.config.PrincipalDetails;
 import com.lec.spring.mytrip.domain.*;
 import com.lec.spring.mytrip.service.AdminService;
 import com.lec.spring.mytrip.service.UserService;
 import com.lec.spring.mytrip.util.U;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -26,14 +30,13 @@ import java.util.List;
 @RequestMapping("/admin")
 public class AdminController {
 
-    private final UserService userService;
     private final AdminService adminService;
     private UserValidator userValidator;
+    private AuthenticationManager authenticationManager;
 
     @Autowired
-    public AdminController(AdminService adminService, UserService userService) {
+    public AdminController(AdminService adminService) {
         this.adminService = adminService;
-        this.userService = userService;
     }
 
     @Autowired
@@ -46,23 +49,75 @@ public class AdminController {
         binder.setValidator(userValidator);
     }
 
+    // 로그인 페이지
+    @GetMapping("/adminLogin")
+    public String login(Model model, HttpSession session) {
+        return "admin/adminLogin";
+    }
+
     @GetMapping("/userTables")
     public String userTables(Model model, HttpSession session) {
         User loggedUser = U.getLoggedUser();
         model.addAttribute("adminUser", loggedUser);
 
-        System.out.println("Session ID : " + session.getId());
-        System.out.println("Logged User: " + loggedUser);
+        // session 에 저장된 유저 정보가 없거나 권한이 ROLE_ADMIN이 아닐 경우 adminLogin 페이지로 redirect
+        if(loggedUser == null || !loggedUser.getAuthorization().equalsIgnoreCase("ROLE_ADMIN")) {
+            return "redirect:/admin/adminLogin";
+        }
 
+        // ROLE_USER 인 유저 정보 가져와서 model 에 저장
         List<User> users = adminService.findByAuthorityRoleUser("ROLE_USER");
         model.addAttribute("users", users);
 
         return "admin/userTables";
     }
 
+    // adminLogin 에서 로그인을 시도하는 관리자의 login을 처리하는 Controller
     @PostMapping("/login")
-    public void adminLogin(){}
+    public ModelAndView adminLogin(@RequestParam("username") String username, @RequestParam("password") String password, HttpServletRequest request) {
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(username, password)
+            );
 
+            if (authentication.isAuthenticated()) {
+                // 인증된 사용자 정보를 세션에 저장
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+
+                // 세션에 사용자 정보를 저장
+                Object principal = authentication.getPrincipal();
+
+                // principal 객체가 PrincipalDetails 클래스의 인스턴스인지 확인
+                if(principal instanceof PrincipalDetails) {
+                    // principal 객체를 PrincipalDetails 타입으로 캐스팅
+                    PrincipalDetails details = (PrincipalDetails) principal;
+                    // 현재 Http 요청과 연결된 사용자의 정보를 세션에 저장
+                    request.getSession().setAttribute("loggedInUser", details.getUser());
+                }
+
+                System.out.println("Session ID : " + request.getSession().getId());
+                System.out.println("Logged User: " + request.getSession().getAttribute("loggedInUser"));
+
+                return new ModelAndView("redirect:/admin/userTables");
+            } else {
+                return new ModelAndView("redirect:/admin/adminLogin?error=true");
+            }
+        } catch (AuthenticationException e) {
+            return new ModelAndView("redirect:/admin/adminLogin?error=true");
+        }
+    }
+
+
+    @PostMapping("/logout")
+    public String logout(HttpServletRequest request, HttpServletResponse response) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null) {
+            new SecurityContextLogoutHandler().logout(request, response, auth);
+        }
+        return "redirect:/admin/adminLogin";
+    }
+
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PostMapping("/deleteuser")
     @ResponseBody
     public ResponseEntity<String> deleteUser(@RequestParam("userId") int userId) {
@@ -76,6 +131,7 @@ public class AdminController {
         }
     }
 
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping("/businessTables")
     public String businessTables(Model model, HttpSession session) {
         List<User> businessUsers = adminService.findByAuthorityRoleBusiness("ROLE_BUSINESS");
@@ -83,6 +139,7 @@ public class AdminController {
         return "admin/businessTables";
     }
 
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping("/boardTables")
     public String boardTables(Model model, HttpSession session) {
         List<Board> boards = adminService.findByBoardCategory("소모임");
@@ -90,6 +147,7 @@ public class AdminController {
         return "admin/boardTables";
     }
 
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping("/feedTables")
     public String feedTables(Model model, HttpSession session) {
         List<Board> feeds = adminService.findByFeedCategory("피드");
@@ -97,6 +155,7 @@ public class AdminController {
         return "admin/feedTables";
     }
 
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PostMapping("/deletePost")
     @ResponseBody
     public ResponseEntity<String> deletePost(@RequestParam("boardId") int boardId) {
@@ -110,6 +169,7 @@ public class AdminController {
         }
     }
 
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping("/packageAccessTables")
     public String packageAccessTables(Model model, HttpSession session) {
         List<PackagePost> AccessPackages = adminService.findByAccessPackage("승인");
@@ -117,6 +177,7 @@ public class AdminController {
         return "admin/packageAccessTables";
     }
 
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping("/packageStandbyTables")
     public String packageStandbyTables(Model model, HttpSession session) {
         List<PackagePost> standByPackages = adminService.findByStandByPackage("미승인", "대기");
@@ -124,6 +185,7 @@ public class AdminController {
         return "admin/packageStandbyTables";
     }
 
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PostMapping("/deletePackage")
     @ResponseBody
     public ResponseEntity<String> deletePackage(@RequestParam("packageId") int packageId) {
@@ -137,18 +199,12 @@ public class AdminController {
         }
     }
 
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping("/paymentTables")
     public String paymentTables(Model model, HttpSession session) {
         List<Payment> payments = adminService.findByPayment();
         model.addAttribute("payments", payments);
         return "admin/paymentTables";
-    }
-
-    // 로그인 페이지
-    @GetMapping("/adminLogin")
-    public String login(Model model) {
-        model.addAttribute("user", new User()); // 로그인과 회원가입에서 사용할 빈 유저 객체 추가
-        return "admin/adminLogin";
     }
 
     @RequestMapping("/auth")
@@ -171,5 +227,8 @@ public class AdminController {
     }
 
 
-
+    @Autowired
+    public void setAuthenticationManager(AuthenticationManager authenticationManager) {
+        this.authenticationManager = authenticationManager;
+    }
 }
