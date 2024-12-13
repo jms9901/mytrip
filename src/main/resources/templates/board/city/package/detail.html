@@ -10,7 +10,7 @@
 </head>
 <body>
 <!-- Header -->
-<header id="header">
+<header id="header" class="text-center mb-4">
     <div class="topnav SMN_effect-6">
         <a th:href="@{/main/mainpage}">
             <img th:src="@{/img/logo.png}" alt="" class="logo">
@@ -27,44 +27,61 @@
 
 <!-- Main Content -->
 <main class="container my-5">
-    <div class="row">
-        <!-- 제목 -->
-        <h2 class="fw-bold" id="packageTitle" th:text="${packagePost.packageTitle}">여행 목적지</h2>
-        <!-- Thumbnail Section -->
+    <!-- Title Section -->
+    <div class="row align-items-center mb-4">
+        <div class="col-md-8">
+            <h2 class="fw-bold" id="packageTitle" th:text="${packagePost.packageTitle}">여행 목적지</h2>
+        </div>
+        <div class="col-md-4 text-end">
+
+            <button class="btn btn-danger">삭제</button>
+        </div>
+    </div>
+
+    <!-- Thumbnail and Details Section -->
+    <div class="row mb-5">
+        <!-- Thumbnail -->
         <div class="col-md-6">
             <img th:src="@{/img/thumbnail_example.jpg}" alt="썸네일 이미지" class="img-fluid">
         </div>
-
-        <!-- Details Section -->
+        <!-- Details -->
         <div class="col-md-6">
-            <h2 class="fw-bold">여행 목적지</h2>
+            <h3 class="fw-bold mb-3">여행 정보</h3>
             <p>모집 시작 기간: <span th:text="${packagePost.packageStartDay}"></span></p>
             <p>모집 마감 기간: <span th:text="${packagePost.packageEndDay}"></span></p>
+            <p>패키지 비용: <span th:text="${packagePost.packageCost}"></span>원</p>
+            <p>최대 인원: <span th:text="${packagePost.packageMaxpeople}"></span>명</p>
 
+            <!-- Reservation Section -->
             <div class="mb-3">
                 <label class="form-label">예약 인원</label>
                 <div class="d-flex align-items-center">
-                    <input type="number" id="peopleCount" class="form-control w-50" value="1" min="1" max="10">
+                    <input type="number" id="peopleCount" class="form-control w-50 text-center" value="1" min="1" th:max="${packagePost.packageMaxpeople}">
                     <button type="button" class="btn btn-primary mx-2" onclick="increaseCount()">Up</button>
                     <button type="button" class="btn btn-secondary" onclick="decreaseCount()">Down</button>
                 </div>
             </div>
 
-            <p>총 금액: <span id="totalPrice" th:text="${packagePost.packageCost}"></span>원</p>
+            <p>
+                총 금액:
+                <span id="totalPrice" th:data-price-per-person="${packagePost.packageCost}" th:text="${packagePost.packageCost} + '원'"></span>
+            </p>
             <button type="button" class="btn btn-success" id="openModalBtn">예약</button>
         </div>
     </div>
 
     <!-- Content Section -->
-    <div class="mt-5">
-        <h3>본문 내용</h3>
-        <p th:text="${packagePost.packageContent}"></p>
+    <div class="row">
+        <div class="col-md-12">
+            <h3 class="fw-bold mb-3">본문 내용</h3>
+            <p th:text="${packagePost.packageContent}"></p>
+        </div>
     </div>
 </main>
 
 <!-- Modal -->
 <div class="modal fade" id="reservationModal" tabindex="-1" aria-labelledby="reservationModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <!-- Modal Header -->
             <div class="modal-header">
@@ -74,7 +91,7 @@
             <!-- Modal Body -->
             <div class="modal-body">
                 <form id="reservationForm" method="post" action="/reservation/submit">
-                    <input type="hidden" name="userId" th:value="${userId}">
+
                     <input type="hidden" name="packageId" th:value="${packagePost.packageId}">
                     <div class="mb-3">
                         <label class="form-label">패키지명</label>
@@ -100,41 +117,21 @@
 </div>
 
 <!-- Footer -->
-<footer id="footer">
-    <div class="footercontainer">
-        <div class="column1">
-            <a th:href="@{/aipage/start}"><img th:src="@{/img/logo.png}" alt=""></a>
-        </div>
-        <div class="column2">
-            <a th:href="@{/aipage/start}">여행지 추천</a>
-            <a th:href="@{/post}">여행지 게시판</a>
-            <a th:href="@{/flight/search}">항공권 예약</a>
-            <a th:href="@{/flight/search}">마이페이지</a>
-        </div>
-        <div class="column3">
-            <a th:href="@{/aipage/start}">이용약관</a>
-            <a th:href="@{/post}">공지사항</a>
-            <a th:href="@{/flight/search}">고객센터</a>
-        </div>
-        <div class="icon-and-text">
-            <div class="column4">
-                <a th:href="@{/aipage/start}"><img th:src="@{/img/Instagram_logo.png}" alt="Instagram"></a>
-                <a th:href="@{/aipage/start}"><img th:src="@{/img/facebook-logo.png}" alt="Facebook"></a>
-                <a th:href="@{/aipage/start}"><img th:src="@{/img/youtube_logo.png}" alt="YouTube"></a>
-                <a th:href="@{/aipage/start}"><img th:src="@{/img/naver_logo.png}" alt="Naver"></a>
-            </div>
-            <div class="column5">
-                <p>©트립파트너㈜. ALL RIGHTS RESERVED.</p>
-            </div>
-        </div>
-    </div>
+<footer id="footer" class="text-center mt-4">
+    <p>©트립파트너㈜. ALL RIGHTS RESERVED.</p>
 </footer>
 
 <script>
     function increaseCount() {
-        const countInput = document.getElementById('peopleCount');
-        countInput.value = parseInt(countInput.value) + 1;
-        updateTotalPrice();
+        const countInput = document.getElementById('peopleCount'); // 인원 수 입력 필드
+        const maxPeople = parseInt(countInput.getAttribute('max')); // 최대 인원
+
+        if (parseInt(countInput.value) < maxPeople) {
+            countInput.value = parseInt(countInput.value) + 1; // 인원 증가
+            updateTotalPrice(); // 총 금액 업데이트
+        } else {
+            alert("최대 인원 수를 초과할 수 없습니다."); // 경고 메시지 표시
+        }
     }
 
     function decreaseCount() {
@@ -146,29 +143,29 @@
     }
 
     function updateTotalPrice() {
-        const count = parseInt(document.getElementById('peopleCount').value);
-        const pricePerPerson = 499000; // 예시 금액
-        document.getElementById('totalPrice').innerText = (count * pricePerPerson).toLocaleString();
+        const count = parseInt(document.getElementById('peopleCount').value); // 예약 인원 수
+        const pricePerPerson = parseInt(document.getElementById('totalPrice').getAttribute('data-price-per-person')); // 1인당 가격
 
-        // 모달에도 반영
-        document.getElementById('modalPeopleCount').value = count;
-        document.getElementById('modalTotalPrice').value = (count * pricePerPerson).toLocaleString();
+        console.log("인원 수:", count, "1인당 가격:", pricePerPerson); // 디버깅용 출력
+
+        if (!isNaN(count) && !isNaN(pricePerPerson)) {
+            const totalPrice = count * pricePerPerson;
+            document.getElementById('totalPrice').innerText = totalPrice.toLocaleString() + '원';
+
+            // 모달에도 반영
+            document.getElementById('modalPeopleCount').value = count;
+            document.getElementById('modalTotalPrice').value = totalPrice.toLocaleString() + '원';
+        } else {
+            console.error("총 금액 계산 실패: 데이터가 올바르지 않습니다.");
+        }
     }
 
-    // 예약 버튼 클릭 시 모달 표시
     document.getElementById('openModalBtn').addEventListener('click', function () {
         const reservationModal = new bootstrap.Modal(document.getElementById('reservationModal'));
         reservationModal.show();
         updateTotalPrice();
     });
-
-    document.getElementById('openModalBtn').addEventListener('click', function () {
-        const reservationModal = new bootstrap.Modal(document.getElementById('reservationModal'));
-        document.getElementById('modalPackageTitle').value = document.getElementById('packageTitle').innerText; // 제목 전달
-        reservationModal.show();
-    });
 </script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -35,6 +35,7 @@ public class PaymentServiceImpl implements PaymentService {
     public Response paymentSave(Payment payment) {
         System.out.println("싸-비쓰 왔슈");
         try {
+            payment.setUserId(U.getLoggedUser().getId()); 
             // KakaoPay API 호출
             Response response = kakaoPayApiUtil.readyToPay(payment);
             if(response.getResponse().get("tid") != null){
