@@ -35,8 +35,9 @@
 
 <!-- Main Section -->
 <main>
-    <form th:action="@{/board/city}" method="post" enctype="multipart/form-data">
-        <div>
+    <form th:action="@{/board/city/{cityId}/package/save(cityId=${cityId})}"
+          method="post" enctype="multipart/form-data">
+    <div>
             <!-- 도시 ID -->
             <input type="hidden" id="cityId" name="cityId" th:value="${cityId}">
             <!-- 패키지 비용 -->
@@ -114,6 +115,6 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-<script src="/JS/board/package/write.js"></script>
+<script src="/js/board/package/write.js"></script>
 </body>
 </html>

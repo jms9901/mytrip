@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 public class PackagePost {
     private int packageId;         // 패키지 ID
     private int cityId;            // 도시 ID
-    private int userId;            // 작성자 ID
+    private User user;            // 작성자
     private String packageStatus;          // 패키지 상태 (승인, 대기, 미승인 등)
     private String packageContent;         // 패키지 내용
     private LocalDateTime packageRegdate ;  // 패키지 등록 날짜

@@ -69,7 +69,6 @@ class PackagePostRepositoryTest {
                 .packageMaxpeople(28)
                 .packageStartDay(LocalDateTime.parse("2025-01-01T00:00:00"))
                 .packageEndDay(LocalDateTime.parse("2025-01-01T00:00:00"))
-                .userId(3)
                 .cityId(1)
                 .build();
 
