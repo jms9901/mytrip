@@ -4,6 +4,7 @@ import com.lec.spring.mytrip.domain.PackagePost;
 import com.lec.spring.mytrip.domain.Payment;
 import com.lec.spring.mytrip.domain.User;
 import com.lec.spring.mytrip.repository.PackagePostRepository;
+import com.lec.spring.mytrip.service.PackagePostService;
 import com.lec.spring.mytrip.service.PackagePostServiceImpl;
 import com.lec.spring.mytrip.service.UserServiceImpl;
 import com.lec.spring.mytrip.service.businessMypageService;
@@ -28,16 +29,17 @@ public class BusinessMypageController {
 
     private final businessMypageService businessMypageService;
     private final UserServiceImpl userService;
+    private final PackagePostService packagePostService;
+
     @Autowired
     private View error;
     @Autowired
     private PackagePostRepository packagePostRepository;
-    @Autowired
-    private PackagePostServiceImpl packagePostServiceImpl;
 
-    public BusinessMypageController(com.lec.spring.mytrip.service.businessMypageService businessMypageService, UserServiceImpl userService) {
+    public BusinessMypageController(com.lec.spring.mytrip.service.businessMypageService businessMypageService, UserServiceImpl userService, PackagePostService packagePostService) {
         this.businessMypageService = businessMypageService;
         this.userService = userService;
+        this.packagePostService = packagePostService;
     }
 
     // 기업 마이페이지 메인
@@ -160,7 +162,7 @@ public class BusinessMypageController {
 
     // 등록한 패키지 클릭 시 상세보기 -> 모달
     // 패키지 상세 정보 반환
-    @GetMapping("/package/{packageId}")
+    @GetMapping("/business/package/{packageId}")
     @ResponseBody
     public ResponseEntity<?> getPackageDetails(@PathVariable("packageId") int packageId) {
         try {
@@ -176,14 +178,68 @@ public class BusinessMypageController {
         }
     }
 
-    // 상세보기에서 삭제 -> 상태가 대기/거절일 경우에만 가능
+    // 상세보기에서 수정 -> 상태가 대기/미승인일 경우에만 가능
+    @GetMapping("/package/update/{packageId}")
+    public ResponseEntity<?> updatePackage(@PathVariable("packageId") int packageId, @RequestBody PackagePost updatedPackage) {
+        try {
+            // 패키지 데이터 조회
+            PackagePost existingPackage = packagePostService.getPackageDetails(packageId);
+            if (existingPackage == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("해당 ID의 패키지를 찾을 수 없습니다.");
+            }
+
+            // 상태 확인 (대기/미승인 상태만 수정 가능)
+            if (!"대기".equals(existingPackage.getPackageStatus()) && !"미승인".equals(existingPackage.getPackageStatus())) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("해당 패키지는 대기/미승인 상태에서만 수정할 수 있습니다.");
+            }
+
+            // 수정 수행
+            updatedPackage.setPackageId(packageId); // ID 설정
+            int result = packagePostService.updatePackage(updatedPackage);
+
+            // 수정 결과 반환
+            if (result > 0) {
+                return ResponseEntity.ok("패키지가 성공적으로 수정되었습니다.");
+            } else {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("패키지 수정 중 문제가 발생했습니다.");
+            }
+        } catch (IllegalArgumentException | SecurityException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 에러가 발생했습니다.");
+        }
+    }
+
+    // 상세보기에서 삭제 -> 상태가 대기/미승인일 경우에만 가능
     @DeleteMapping("/package/delete/{packageId}")
-    public ResponseEntity<?> deletePackage(@PathVariable("packageId") int packageId, @AuthenticationPrincipal User user) {
-       try {
-           int result = packagePostServiceImpl.deletePackage(packageId, user.getId());
-           return result > 0 ? ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
-       } catch (IllegalArgumentException | SecurityException e) {
-           return ResponseEntity.badRequest().body(e.getMessage());
-       }
+    public ResponseEntity<?> deletePackage(@PathVariable("packageId") int packageId, @AuthenticationPrincipal int userId) {
+        try {
+            // 패키지 데이터 조회
+            PackagePost existingPackage = packagePostService.getPackageDetails(packageId);
+            if (existingPackage == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("해당 ID의 패키지를 찾을 수 없습니다.");
+            }
+
+            // 상태 확인 (대기/미승인 상태만 삭제 가능)
+            if (!"대기".equals(existingPackage.getPackageStatus()) && !"미승인".equals(existingPackage.getPackageStatus())) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("해당 패키지는 대기/미승인 상태에서만 삭제할 수 있습니다.");
+            }
+
+            // 삭제 수행
+            int result = packagePostService.deletePackage(packageId, userId);
+
+            // 삭제 결과 반환
+            if (result > 0) {
+                return ResponseEntity.ok("패키지가 성공적으로 삭제되었습니다.");
+            } else {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("패키지 삭제 중 문제가 발생했습니다.");
+            }
+        } catch (IllegalArgumentException | SecurityException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 에러가 발생했습니다.");
+        }
     }
 }
+
+

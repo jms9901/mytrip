@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="/css/businessMain.css">
     <link rel="stylesheet" href="/css/businessPaymentList.css">
     <link rel="stylesheet" href="/css/businessUpdate.css">
+    <link rel="stylesheet" href="/css/businessPackageDetail.css">
     <script src="/js/businessMain.js"></script>
     <title>Business Main Mypage</title>
 </head>
@@ -22,7 +23,7 @@
     <div class="container">
         <div class="profile-section">
             <!-- 비즈니스 개인정보 수정 링크 연결  -->
-            <img src="/img/basicProfile.png" class="profile-icon-Button" type="button" id="profile-icon-Button">
+            <img src="/img/basicProfile.png" class="profile-icon-Button" type="button" id="profile-icon-Button" alt="profileUpdate-button">
             <div class="business-name">[[${user.username}]]</div>
         </div>
 
@@ -51,9 +52,10 @@
         <img src="/img/paymentListIcon.png" alt="package-payment-button" id="package-payment-button" type="button"></img>
 
         <!--  결제 리스트 모달   -->
-        <div id="payment-modal" class="modal">
+        <div id="payment-modal hidden" class="modal">
             <div class="modal-content">
                 <div class="modal-header">
+                    <span class="close-button">&times;</span>
                     <div class="modal-title">결제정보</div>
 
                     <!-- 결제 상태 필터링 -->
@@ -88,8 +90,7 @@
         </div>
 
         <!--  개인정보 수정 모달   -->
-
-        <div class="businessUpdate-modal" id="modalOverlay">
+        <div class="modal" id="businessUpdate-modal hidden">
             <div class="modal">
                 <div class="header">
                     <span class="close-button">&times;</span>
@@ -130,6 +131,75 @@
 
 
         <!--  패키지 상세정보 모달  -->
+        <div id="package-modal hidden" class="modal">
+            <div class="modal-content">
+                <span class="close-button">&times;</span>
+                <h2 class="package-title">[[${packagePost.packageTitle}]]</h2>
+                <p class="package-regdate">게시일: [[${packagePost.packageRegDate}]]</p>
+
+                <div class="modal-body">
+                    <div class="image-section">
+                        <div class="slideshow-container">
+                            <!-- 해당 패키지 이미지 프리뷰 동적 생성 -->
+                            <div class="slide fade">
+                                <img th:src="${packageAttachment.packagePostFile}" alt="package-image">
+                            </div>
+                        </div>
+
+                        <!-- 슬라이드 이전/다음 버튼 -->
+                        <a class="prev">&#10094;</a>
+                        <a class="next">&#10095;</a>
+                    </div>
+                </div>
+
+                    <div class="info-section">
+                        <label>
+                            <span>도시</span>
+                            <input type="text" th:value="${packagePost.cityName}">
+                        </label>
+
+                        <label>
+                            <span>시작일</span>
+                            <input type="date" th:value="${packagePost.packageStartDay}">
+                        </label>
+
+                        <label>
+                            <span>종료일</span>
+                            <input type="date" th:value="${packagePost.packageEndDay}">
+                        </label>
+
+                        <label>
+
+                            <input type="text" th:value="${packagePost.packageCost}">
+                        </label>
+
+                        <label>
+                            <span>최대 인원</span>
+                            <input type="number" placeholder="000 People">
+                        </label>
+                    </div>
+                </div>
+
+                <div class="package-details">
+                    <label>
+                        <span>패키지 내용</span>
+                        <textarea readonly>[[${packagePost.packageContent}]]</textarea>
+                    </label>
+                </div>
+
+                <div class="file-attachments">
+                    <!-- 해당 패키지 이미지 첨부파일 리스트 동적 추가 -->
+                </div>
+                <div class="attachmentInfo">해당 첨부파일 클릭 시 삭제됩니다.</div>
+
+                <div class="button-action">
+                    <img src="/img/myPageUpdate.png" alt="update-button" class="update-button" type="button">
+                    <img src="/img/checkIcon.png" alt="submit-button" class="submit-button" type="button">
+                    <img src="/img/mypageDeleteIcon.png" alt="delete-button" class="delete-button" type="button">
+                </div>
+            </div>
+        </div>
+
 
     </div>
 </div>

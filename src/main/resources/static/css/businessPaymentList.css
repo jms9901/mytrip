@@ -4,7 +4,7 @@ body {
     font-family: 'Kaushan Script';
 }
 
-.hidden {
+.modal .hidden {
     display: none;
 }
 
