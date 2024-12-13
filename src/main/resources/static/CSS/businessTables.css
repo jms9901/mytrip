@@ -20,6 +20,35 @@ body{
     font-family: 'GmarketSansMedium', sans-serif;
 }
 
+/* 상태가 '대기'일 때 */
+.user-details-button[data-userstatus="대기"] {
+    background-color: black;
+    color: white;
+    border: none;
+}
+
+/* 상태가 '승인'일 때 */
+.user-details-button[data-userstatus="승인"] {
+    background-color: green;
+    color: white;
+    border: none;
+}
+
+/* 상태가 '거절'일 때 */
+.user-details-button[data-userstatus="거절"] {
+    background-color: red;
+    color: white;
+    border: none;
+}
+
+/* 상태가 '상태 없음'일 때 */
+.user-details-button[data-userstatus="상세"] {
+    background-color: gray;
+    color: white;
+    border: none;
+}
+
+
 .breadcrumb {
     display: flex;
     gap: 10px; /* 버튼 사이 간격 */
@@ -55,3 +84,7 @@ body{
     background-color: #f0f0f0; /* 호버 효과 */
     border-color: #bbb;
 }
+
+
+
+

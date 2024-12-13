@@ -121,7 +121,10 @@
         UPDATE user SET user_authorization = 'ROLE_DORMANT' WHERE user_id = #{userId}
     </update>
 
-    <!-- business 유저 승인 상태로 변경 -->
+    <select id="viewBusinessUser">
+        select * from user where user_authorization='ROLE_BUSINESS';
+    </select>
+    <!-- business 유저 대기값 상태 변경 -->
     <update id="updateBusinessUserStatus">
         UPDATE user SET user_status = #{status} WHERE user_id = #{userId}
     </update>

@@ -26,14 +26,12 @@ import java.util.List;
 @RequestMapping("/admin")
 public class AdminController {
 
-    private final UserService userService;
     private final AdminService adminService;
     private UserValidator userValidator;
 
     @Autowired
-    public AdminController(AdminService adminService, UserService userService) {
+    public AdminController(AdminService adminService) {
         this.adminService = adminService;
-        this.userService = userService;
     }
 
     @Autowired
@@ -46,6 +44,11 @@ public class AdminController {
         binder.setValidator(userValidator);
     }
 
+    // admin login 구현
+    @PostMapping("/login")
+    public void adminLogin(){}
+
+    // User table 상세보기
     @GetMapping("/userTables")
     public String userTables(Model model, HttpSession session) {
         User loggedUser = U.getLoggedUser();
@@ -60,9 +63,7 @@ public class AdminController {
         return "admin/userTables";
     }
 
-    @PostMapping("/login")
-    public void adminLogin(){}
-
+    // 유저 삭제하기
     @PostMapping("/deleteuser")
     @ResponseBody
     public ResponseEntity<String> deleteUser(@RequestParam("userId") int userId) {
@@ -76,13 +77,35 @@ public class AdminController {
         }
     }
 
+    // 사업자 테이블 보기
     @GetMapping("/businessTables")
-    public String businessTables(Model model, HttpSession session) {
+    public String businessTables(Model model) {
         List<User> businessUsers = adminService.findByAuthorityRoleBusiness("ROLE_BUSINESS");
+        businessUsers.forEach(user -> {
+            if (user.getStatus() == null) {
+                user.setStatus("상세 없음");
+            }
+            System.out.println("User: " + user.getName() + ", Status: " + user.getStatus());
+        });
         model.addAttribute("businessUsers", businessUsers);
         return "admin/businessTables";
     }
 
+    // 사업자 상태 변경하기
+    @PostMapping("/updateBusinessStatus")
+    public ResponseEntity<String> updateBusinessStatus(@RequestParam("userId") int userId,
+                                                       @RequestParam("newStatus") String newStatus) {
+        try {
+            adminService.updateBusinessUserStatus(userId, newStatus);
+            return ResponseEntity.ok("사용자 상태가 성공적으로 업데이트되었습니다.");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("사용자 상태 업데이트 중 오류가 발생했습니다.");
+        }
+    }
+
+
+    // TODO : 여기서부터는 게시물에 대한 테이블
     @GetMapping("/boardTables")
     public String boardTables(Model model, HttpSession session) {
         List<Board> boards = adminService.findByBoardCategory("소모임");

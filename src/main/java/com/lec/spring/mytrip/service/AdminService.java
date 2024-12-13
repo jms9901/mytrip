@@ -21,4 +21,5 @@ public interface AdminService {
     void deleteBoard(int boardId);
     void deletePackage(int packageId);
     void updatePackageStatus(int packageId, String status);
+
 }
