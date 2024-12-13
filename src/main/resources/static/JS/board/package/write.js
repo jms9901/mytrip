@@ -33,4 +33,17 @@ $().ready(function (){
     $('#end-date-btn').prop('disabled', true).attr("type", "button");
 
 
+    //웹에디터
+    $('#summernote').summernote({
+        toolbar: [
+            ['style', ['bold', 'italic', 'underline']],
+            ['font', ['strikethrough', 'superscript', 'subscript']],
+            ['color', ['forecolor', 'backcolor']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['insert', ['link', 'picture']]
+        ],
+        height: 300
+    });
+
+
 })
