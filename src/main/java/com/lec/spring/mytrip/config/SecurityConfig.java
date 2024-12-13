@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -21,17 +22,18 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration, AccessDeniedHandler accessDeniedHandler) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
     @Bean
-    public SecurityFilterChain userSecurityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, AccessDeniedHandler accessDeniedHandler) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/user/login", "/oauth2/**", "/css/**", "/js/**", "/img/**", "/admin/adminLogin").permitAll()
-                        .requestMatchers("/user/**").hasAuthority("ROLE_USER")
+                .authorizeRequests(auth -> auth
+                        .requestMatchers("/", "/user/login", "/oauth2/**", "/css/**", "/js/**", "/img/**", "/admin/adminLogin", "/admin/auth").permitAll()
+                        .requestMatchers("/user/home", "/user/login").hasAnyAuthority("ROLE_USER", "ROLE_DORMENT")
+                        .requestMatchers("/user/**").hasAnyAuthority("ROLE_USER", "ROLE_BUSINESS")
                         .anyRequest().permitAll())
                 .formLogin(form -> form
                         .loginPage("/user/login")
@@ -42,8 +44,11 @@ public class SecurityConfig {
                         .invalidateHttpSession(true))
                 .oauth2Login(oauth2 -> oauth2
                         .loginPage("/user/login")
-                        .defaultSuccessUrl("/user/home", true));
+                        .defaultSuccessUrl("/user/home", true))
+                .exceptionHandling(exception -> exception
+                        .accessDeniedHandler(accessDeniedHandler)); // 커스텀 AccessDeniedHandler 추가
         return http.build();
+
     }
 
 }
