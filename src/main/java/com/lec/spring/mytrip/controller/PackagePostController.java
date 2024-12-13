@@ -88,6 +88,9 @@ public class PackagePostController {
                               @RequestParam("files") List<MultipartFile> files,
                               @ModelAttribute PackagePost packagePost){
         System.out.println("컨트롤러 들어옴");
+
+        System.out.println("저장할 파일" + packagePost);
+
         // 패키지 저장 처리
         // 패키지 저장 처리. 패키지 저장에서 첨부파일 서비스를 호출
         int packageId = packagePostService.savePackage(packagePost, files);

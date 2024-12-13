@@ -71,20 +71,18 @@ public class PackagePostServiceImpl implements PackagePostService {
                 .email("wonwon123123@naver.com")
                 .build();
         pkg.setUser(user);
+        pkg.setPackageStatus("대기");
 
         // 패키지 데이터 검증. 이거 찐하게 수정해야겠는데
         if (user == null) {
             throw new RuntimeException("로그인 하세요.");
-        }
-        if (pkg == null) {
-            throw new RuntimeException("패키지 정보가 null일 수 없습니다.");
         }
         if (pkg.getCityId() <= 0 || pkg.getUser().getId() <= 0 || pkg.getPackageTitle() == null || pkg.getPackageTitle().trim().isEmpty()) {
             throw new RuntimeException("유효하지 않은 패키지 데이터입니다. 다시 작성해주세요");
         }
 
         // 패키지 저장
-        int savedPackageId = packagePostRepository.save(pkg); // 실제 저장된 패키지 ID 반환
+        int savedPackageId = packagePostRepository.save(pkg);
 
         // 첨부파일 저장
         try {
@@ -103,7 +101,6 @@ public class PackagePostServiceImpl implements PackagePostService {
         if (pkg == null || pkg.getPackageId() <= 0) {
             throw new IllegalArgumentException("패키지 또는 패키지 ID가 null일 수 없습니다.");
         }
-
         // 기존 데이터 조회 및 검증
         PackagePost existingPackage = packagePostRepository.findById(pkg.getPackageId());
         if (existingPackage == null) {

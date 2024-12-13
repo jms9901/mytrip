@@ -25,15 +25,15 @@ values ('fullstackK08@naver.com',
         );
 
 # business 데이터
-insert into user (user_email, user_password,user_username,user_name,user_authorization,business_companynumber)
+insert into user (user_email, user_password,user_username,user_name,user_authorization,user_phonenumber, business_companynumber)
  values       (
-        'business@naver.com',
-         '1234',
-         'business1234',
-         '이경원',
-         '010-1111-1111',
-         'business',
-         '123-11-12345'
+               'business@naver.com',
+               '1234',
+               'business1234',
+               '이경원',
+               'business',
+               '010-1111-1111',
+               '123-11-12345'
         ) ;
 
 # city data
@@ -553,6 +553,6 @@ values(1,1);
 insert into city_liked (user_id,city_id)
 values(1,2);INSERT INTO package (city_id, user_id, package_content, package_status, package_title, package_cost, package_maxpeople, package_start_day, package_end_day)
             VALUES
-                (1, 2, '보온무운', '대기', '제에에ㅔ목', 123456, 10, '2024-12-01', '2024-12-12')
+                (1, 2, '보온무운', '대기', '제에에ㅔ목', 123456, 10, '2024-12-01', '2024-12-12');
 insert into city_liked (user_id,city_id)
 values(1,3);

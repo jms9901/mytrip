@@ -2,6 +2,7 @@ package com.lec.spring.mytrip.domain;
 
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -19,6 +20,6 @@ public class PackagePost {
     private String packageTitle;           // 패키지 제목
     private int packageCost;               // 패키지 비용
     private int packageMaxpeople;          // 최대 참여 가능 인원
-    private LocalDateTime packageStartDay; // 패키지 시작 날짜
-    private LocalDateTime packageEndDay;   // 패키지 종료 날짜
+    private LocalDate packageStartDay; // 패키지 시작 날짜
+    private LocalDate packageEndDay;   // 패키지 종료 날짜
 }

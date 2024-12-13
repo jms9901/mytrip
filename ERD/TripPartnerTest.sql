@@ -47,4 +47,26 @@ ALTER TABLE user MODIFY COLUMN user_authorization VARCHAR(255) DEFAULT 'ROLE_USE
 SELECT user_name, user_username, user_profile FROM user WHERE user_id = 3;
 select * from friendship;
 
-DROP TABLE payment_info;
+
+SET foreign_key_checks = 0;
+SET foreign_key_checks = 1;
+DROP TABLE IF EXISTS user;
+DROP TABLE IF EXISTS package;
+DROP TABLE IF EXISTS package_attachment;
+DROP TABLE IF EXISTS package_liked;
+DROP TABLE IF EXISTS payment_info;
+DROP TABLE IF EXISTS board;
+DROP TABLE IF EXISTS board_liked;
+DROP TABLE IF EXISTS board_comment;
+DROP TABLE IF EXISTS board_attachment;
+DROP TABLE IF EXISTS declaration;
+DROP TABLE IF EXISTS city;
+DROP TABLE IF EXISTS city_liked;
+DROP TABLE IF EXISTS user_city;
+DROP TABLE IF EXISTS question_answer;
+DROP TABLE IF EXISTS airport;
+DROP TABLE IF EXISTS search_history;
+DROP TABLE IF EXISTS friendship;
+DROP TABLE IF EXISTS guest_book;
+DROP TABLE IF EXISTS messageroom;
+DROP TABLE IF EXISTS message;
