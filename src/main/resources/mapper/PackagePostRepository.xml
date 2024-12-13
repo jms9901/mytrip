@@ -42,7 +42,7 @@
     </select>
 
     <!-- 사용자별 패키지 조회 -->
-    <select id="findByUserId" parameterType="int" resultMap="PackagePostResultMap">
+    <select id="findByUserId" parameterType="User" resultMap="PackagePostResultMap">
         SELECT * FROM package
         WHERE user_id = #{userId}
     </select>
@@ -73,7 +73,7 @@
             package_regdate, package_title, package_cost, package_maxpeople,
             package_start_day, package_end_day
         ) VALUES (
-                     #{cityId}, #{userId}, #{packageStatus}, #{packageContent},
+                     #{cityId}, #{user.id}, #{packageStatus}, #{packageContent},
                      NOW(), #{packageTitle}, #{packageCost}, #{packageMaxpeople},
                      #{packageStartDay}, #{packageEndDay}
                  )

@@ -93,7 +93,7 @@ public class PackagePostController {
         int id = packagePostService.savePackage(packagePost, files);
 
         // 저장 후 상세 페이지로 리다이렉트
-        return "redirect:/board/" + cityId + "/package/detail/" + id;
+        return "redirect:" + cityId + "/package/detail/" + id;
     }
 
     // 패키지 수정 페이지 이동
@@ -116,7 +116,7 @@ public class PackagePostController {
         int id = packagePostService.updatePackage(packagePost);
 
         // 저장 후 상세 페이지로 리다이렉트
-        return "redirect:/board/city" + cityId +"/package/detail/" + id;
+        return "redirect:" + cityId + "/package/detail/" + id;
     }
 
     // 패키지 삭제
