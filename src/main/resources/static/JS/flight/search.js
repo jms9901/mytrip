@@ -3,6 +3,8 @@ $(document).ready(function () {
 
     // flatpickr 초기화
     const today = new Date();
+    let progress = 0;
+    let interval;
 
     flatpickr("#start-date-btn", {
         minDate: today,
@@ -12,10 +14,10 @@ $(document).ready(function () {
                 $("#start-date-btn").text(dateStr).attr("type", "button");
                 $("#start-date-value").val(dateStr);
                 endPicker.set("minDate", new Date(selectedDates[0].getTime() + 86400000));
-                $('#end-date-btn').prop('disabled', false); // endPicker 활성화
-                $("#end-date-btn").text("오는 날"); // 버튼 텍스트 초기화
+                $('#end-date-btn').prop('disabled', false);
+                $("#end-date-btn").text("오는 날");
                 $("#end-date-value").val("");
-                endPicker.clear(); // endPicker 날짜 초기화
+                endPicker.clear();
             }
         }
     });
@@ -34,62 +36,81 @@ $(document).ready(function () {
     $("#start-date-btn").attr("type", "button");
     $('#end-date-btn').prop('disabled', true).attr("type", "button");
 
-// 좌석 및 인원 드롭다운 열기/닫기
+    // 좌석 및 인원 드롭다운 열기/닫기
     $("#openSelectionBtn").on("click", function (e) {
-        e.preventDefault(); // 기본 동작 방지
+        e.preventDefault();
 
-        const $button = $(this); // 버튼
-        const $selectionContainer = $("#selectionContainer"); // 드롭다운
+        const $button = $(this);
+        const $selectionContainer = $("#selectionContainer");
 
-        // 버튼의 위치와 크기 계산
         const buttonOffset = $button.offset();
         const buttonHeight = $button.outerHeight();
         const buttonWidth = $button.outerWidth();
 
-        // 드롭다운 위치 설정
         if ($selectionContainer.hasClass("d-none")) {
             $selectionContainer.css({
-                top: buttonOffset.top + buttonHeight + 5, // 버튼 바로 아래
-                left: buttonOffset.left, // 버튼 왼쪽 정렬
-                minWidth: buttonWidth // 버튼 너비와 동일하게 설정
+                top: buttonOffset.top + buttonHeight + 5,
+                left: buttonOffset.left,
+                minWidth: buttonWidth
             }).removeClass("d-none").addClass("d-block");
         } else {
             $selectionContainer.removeClass("d-block").addClass("d-none");
+            updateSelectionButtonText();
         }
     });
 
-// 문서 외부 클릭 시 드롭다운 닫기
     $(document).on("click", function (event) {
         if (!$(event.target).closest("#selectionContainer").length &&
             !$(event.target).is("#openSelectionBtn")) {
             $("#selectionContainer").removeClass("d-block").addClass("d-none");
+            updateSelectionButtonText();
         }
     });
 
-    // 인원 증가/감소 버튼 클릭 처리
+    // 인원 증가/감소 버튼 처리
     $(".btn-sm").on("click", function () {
-        const $button = $(this); // 현재 클릭된 버튼
-        const $parent = $button.closest(".col-auto"); // 버튼이 위치한 부모 컨테이너
-        const $countElement = $parent.find("span"); // 숫자 표시 <span>
-        const $inputField = $parent.find("input[type='hidden']"); // 숨겨진 <input>
+        const $button = $(this);
+        const $parent = $button.closest(".col-auto");
+        const $countElement = $parent.find("span");
+        const $inputField = $parent.find("input[type='hidden']");
 
-        let currentCount = parseInt($countElement.text()) || 0; // 현재 값
-        const delta = $button.attr("id").includes("increase") ? 1 : -1; // 증가/감소 결정
-        const newCount = Math.max(0, currentCount + delta); // 최소값 0 이상
+        let currentCount = parseInt($countElement.text()) || 0;
+        const delta = $button.attr("id").includes("increase") ? 1 : -1;
+        const newCount = Math.max(0, currentCount + delta);
 
-        // 숫자 업데이트
         $countElement.text(newCount);
-        $inputField.val(newCount); // 숨겨진 <input> 값 업데이트
+        $inputField.val(newCount);
     });
 
-    // 좌석 선택 변경 시 숨겨진 input 동기화
+    // 좌석 선택 처리
     $("#cabin-class-select").on("change", function () {
         const selectedClass = $(this).val();
-        console.log(`선택된 좌석: ${selectedClass}`);
         $("#cabin-class-input").val(selectedClass);
     });
 
-    // 드롭다운 처리 함수
+    function updateSelectionButtonText() {
+        const adultCount = parseInt($("#adult-count").text()) || 0;
+        const childCount = parseInt($("#child-count").text()) || 0;
+        const infantCount = parseInt($("#infant-count").text()) || 0;
+        const totalCount = adultCount + childCount + infantCount;
+        const cabinClass = $("#cabin-class-select option:selected").text();
+
+        let passengerText = "";
+
+        if (totalCount === 1) {
+            if (adultCount === 1) passengerText = "성인 1명";
+            else if (childCount === 1) passengerText = "어린이 1명";
+            else if (infantCount === 1) passengerText = "아기 1명";
+        } else if (totalCount > 1) {
+            passengerText = `인원 ${totalCount}명`;
+        }
+
+        const buttonText = `${passengerText} ${cabinClass}`;
+        $("#openSelectionBtn").text(buttonText);
+    }
+
+    updateSelectionButtonText();
+
     function setupDropdown(dropdownClass, inputId) {
         const $dropdown = $(`.${dropdownClass}`);
         const $button = $dropdown.find(".dropdown-button");
@@ -108,10 +129,8 @@ $(document).ready(function () {
 
             $input.val(selectedValue);
 
-            // 기존 구조를 유지하면서 내용만 변경
-            // `airport-code`와 `airport-city` 텍스트만 업데이트
             $button.find(".airport-code").text(airportCode);
-            $button.find(".airport-city").html(`${airportCity} <span class="dropdown-icon">▼</span>`); // 아이콘 유지
+            $button.find(".airport-city").html(`${airportCity} <span class="dropdown-icon">▼</span>`);
 
             $content.removeClass("show");
         });
@@ -123,17 +142,14 @@ $(document).ready(function () {
         });
     }
 
-    // 도착지 드롭다운 설정
     setupDropdown("custom-dropdown", "toEntityId");
-
-    // 출발지 드롭다운 설정
     setupDropdown("fromAirport", "fromEntityId");
 
-    // 폼 검증 및 조회 버튼만 제출 허용
+    // 폼 검증 및 로딩 화면 동작
     $('#roundTrip').on('submit', function (event) {
         const clickedButtonId = $(document.activeElement).attr("id");
         if (clickedButtonId !== "api-query") {
-            event.preventDefault(); // 조회 버튼이 아닌 경우 제출 방지
+            event.preventDefault();
             return;
         }
 
@@ -163,15 +179,40 @@ $(document).ready(function () {
             return;
         }
 
+        $("#loading-text").html(`${fromAirportId}에서 ${toAirportId}까지<br>왕복 여정을 찾고 있습니다`);
         $("#loading-overlay").removeClass("d-none");
+
+        progress = 0;
+        const loadingBar = $(".loading-bar");
+        interval = setInterval(() => {
+            if (progress < 100) {
+                progress += 1;
+                loadingBar.css("width", `${progress}%`);
+            } else {
+                clearInterval(interval);
+                setTimeout(() => {
+                    $("#loading-overlay").addClass("d-none");
+                }, 500);
+            }
+        }, 50);
     });
 
-    // 페이지 로드 후 로딩 오버레이 숨기기
+    // 페이지 로드 시 로딩 오버레이 초기화
     $(window).on("pageshow", function () {
         $("#loading-overlay").addClass("d-none");
+        $(".loading-bar").css("width", "0"); // 로딩 바 초기화
+        progress = 0; // 내부 값 초기화
     });
 
-    // 슬라이더 이미지 변경
+    $(window).on('pagehide', function(){
+        clearInterval(interval);
+    });
+
+
+
+
+
+// 슬라이더 이미지 변경
     const images = document.querySelectorAll("#background-slider .slider-image");
     let currentIndex = 0;
 
@@ -184,3 +225,4 @@ $(document).ready(function () {
     setInterval(changeImage, 5000);
     images[currentIndex].classList.add("active");
 });
+

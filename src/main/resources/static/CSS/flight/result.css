@@ -37,8 +37,10 @@ td {
 }
 
 .detailBtn {
-    height: 100%; /* 부모 td의 높이를 꽉 채움 */
-    width: 100%; /* 버튼이 td의 너비도 꽉 채우도록 설정 (선택사항) */
+    height: 50px;
+    width: 100%;
+    align-items: center;
+    margin: 100px 0;
 }
 
 /*상단 이동 버튼*/
@@ -75,9 +77,11 @@ td {
     background-color: #0056b3; /* 마우스를 올리면 배경 색 변경 */
 }
 
+
 /* 화면 크기에 따라 조정 */
 @media (max-width: 768px) {
     .log {
         max-width: 20px; /* 작은 화면에서 크기 줄이기 */
     }
 }
+

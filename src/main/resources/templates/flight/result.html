@@ -144,8 +144,9 @@
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-10">
-        <table id="apiResult" class="table">
+        <table id="apiResult" class="table" style="top:-200px;">
           <tbody id="incompleteResult">
+          <hr>
           <tr th:each="flight : ${flights}">
             <form class="detailApiCall" th:action="@{/flight/detail}" method="post">
               <!-- 기타 필요 정보들을 hidden으로 전송 -->
