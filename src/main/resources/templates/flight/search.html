@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>항공권 검색</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/CSS/flight/search.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+<!-- 로딩 화면 -->
+<div id="loading-overlay" class="d-none">
+    <div class="loading-container">
+        <!-- 배경 이미지 -->
+        <div class="background"></div>
+
+        <!-- 로딩 텍스트와 로딩 바 -->
+        <div class="loading-content">
+            <!-- 로딩 텍스트 -->
+            <div id="loading-text" class="loading-text">
+                인천에서 도쿄까지<br>왕복 여정을 찾고 있습니다
+            </div>
+
+            <!-- 로딩 바 -->
+            <div class="loading-bar-container">
+                <div class="loading-bar"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<header id="header">
+    <div class="topnav">
+        <img th:src="@{/img/logo.png}" alt="Logo" class="logo">
+        <a th:href="@{#}">여행지 추천</a>
+        <a th:href="@{#}">여행지 게시판</a>
+        <a th:href="@{#}">항공권 예약</a>
+        <a th:href="@{/user/login}">로그인</a>
+    </div>
+</header>
+
+<div id="pageContainer" class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div id="background-slider">
+        <div class="slider-image" style="background-image: url('/img/flight/spring.jpg');"></div>
+        <div class="slider-image" style="background-image: url('/img/flight/spiring2.jpg');"></div>
+        <div class="slider-image" style="background-image: url('/img/flight/summer.jpg');"></div>
+        <div class="slider-image" style="background-image: url('/img/flight/summer2.jpg');"></div>
+        <div class="slider-image" style="background-image: url('/img/flight/autumn2.jpg');"></div>
+        <div class="slider-image" style="background-image: url('/img/flight/winter.jpg');"></div>
+    </div>
+
+    <!-- 검색 폼 -->
+    <form id="roundTrip" name="frm" th:action="@{/flight/result}" method="post" enctype="multipart/form-data" class="w-100 w-md-75 w-lg-50">
+        <div id="formContainer" class="row gy-3 d-flex align-items-center">
+            <!-- 출발지 -->
+            <div class="col-12 col-md-2">
+                <div class="text-center">
+                    <div class="airport-code fw-bold">ICN</div>
+                    <div class="airport-city text-muted">서울</div>
+                </div>
+                <input type="hidden" id="fromEntityId" name="fromAirportId" value="ICN">
+            </div>
+            <!-- 유니코드 비행기 -->
+            <div class="col-auto mx-2">
+                <span class="material-icons flight-icon">flight</span><!-- 비행기 유니코드 -->
+            </div>
+            <!-- 도착지 -->
+            <div class="col-12 col-md-3">
+                <div class="custom-dropdown">
+                    <div class="dropdown-button text-center d-flex flex-column align-items-center">
+                        <div class="airport-code fw-bold" id="toAirportCode">도착</div>
+                        <div class="airport-city text-muted" id="toAirportCity">선택<i class="fas fa-caret-down ms-2"></i></div>
+                    </div>
+                    <div class="dropdown-content p-2 border bg-white shadow">
+                        <div class="d-flex flex-wrap gap-2">
+                            <button class="btn btn-outline-primary dropdown-item-btn"
+                                    th:each="port : ${airports}"
+                                    th:if="${port.airportCode} != 'ICN'"
+                                    th:value="${port.airportCode}">
+                                <span th:utext="${port.airportCode}"></span>
+                                <br>
+                                <small th:utext="${port.airportCity}" class="text-muted"></small>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <input type="hidden" id="toEntityId" name="toAirportId">
+            </div>
+
+            <!-- 날짜 선택 -->
+            <div class="col-12 col-md-3 d-flex">
+                <button id="start-date-btn" class="btn btn-outline-primary flex-fill">가는 날</button>
+                <input type="hidden" name="departDate" id="start-date-value">
+                <button id="end-date-btn" class="btn btn-outline-primary flex-fill">오는 날</button>
+                <input type="hidden" name="returnDate" id="end-date-value">
+            </div>
+
+            <!-- 인원 및 좌석 선택 -->
+            <div class="col-12 col-md-3">
+                 <!-- 상대 위치 설정 -->
+                <button id="openSelectionBtn" class="btn btn-outline-secondary w-100">성인 1명 프리미엄 이코노미</button>
+
+                <div id="selectionContainer" class="mt-3 d-none p-3 border bg-white rounded shadow">
+                    <!-- 인원 선택 -->
+                    <div class="mb-3">
+                        <h5>인원 선택</h5>
+                        <div class="row mb-2">
+                            <div class="col">성인</div>
+                            <div class="col-auto">
+                                <button class="btn btn-sm btn-outline-secondary" id="adult-decrease">-</button>
+                                <span id="adult-count">1</span>
+                                <button class="btn btn-sm btn-outline-secondary" id="adult-increase">+</button>
+                                <input type="hidden" id="adult-input" name="adultsHeadCnt" value="1"> <!-- 숨겨진 input 추가 -->
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col">어린이</div>
+                            <div class="col-auto">
+                                <button class="btn btn-sm btn-outline-secondary" id="child-decrease">-</button>
+                                <span id="child-count">0</span>
+                                <button class="btn btn-sm btn-outline-secondary" id="child-increase">+</button>
+                                <input type="hidden" id="child-input" name="childrenHeadCnt" value="0"> <!-- 숨겨진 input 추가 -->
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">아기</div>
+                            <div class="col-auto">
+                                <button class="btn btn-sm btn-outline-secondary" id="infant-decrease">-</button>
+                                <span id="infant-count">0</span>
+                                <button class="btn btn-sm btn-outline-secondary" id="infant-increase">+</button>
+                                <input type="hidden" id="infant-input" name="infantsHeadCnt" value="0"> <!-- 숨겨진 input 추가 -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 좌석 선택 -->
+                    <!-- 좌석 선택 -->
+                    <div>
+                        <h5>좌석 선택</h5>
+                        <select name="cabinClass" class="form-select" id="cabin-class-select">
+                            <option value="economy" selected>이코노미</option>
+                            <option value="premium_economy">프리미엄 이코노미</option>
+                            <option value="business">비즈니스</option>
+                            <option value="first">퍼스트 클래스</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 조회 버튼 -->
+            <div class="col-12 text-center">
+                <button id="api-query" class="btn btn-primary btn-lg px-5">조회</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="/JS/flight/search.js"></script>
+</body>
+</html>
