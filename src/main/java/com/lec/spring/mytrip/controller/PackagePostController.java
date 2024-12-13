@@ -115,7 +115,8 @@ public class PackagePostController {
         // 패키지 저장 처리 후 저장된 ID 반환
         int id = packagePostService.updatePackage(packagePost);
 
-        return "redirect:/board/city/" + cityId +"/package/detail/" + id;
+        // 저장 후 상세 페이지로 리다이렉트
+        return "redirect:/board/city" + cityId +"/package/detail/" + id;
     }
 
     // 패키지 삭제
