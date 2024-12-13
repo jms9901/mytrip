@@ -54,23 +54,6 @@ public class AdminController {
         return "admin/adminLogin";
     }
 
-    @GetMapping("/userTables")
-    public String userTables(Model model, HttpSession session) {
-        User loggedUser = U.getLoggedUser();
-        model.addAttribute("adminUser", loggedUser);
-
-        // session 에 저장된 유저 정보가 없거나 권한이 ROLE_ADMIN이 아닐 경우 adminLogin 페이지로 redirect
-        if(loggedUser == null || !loggedUser.getAuthorization().equalsIgnoreCase("ROLE_ADMIN")) {
-            return "redirect:/admin/adminLogin";
-        }
-
-        // ROLE_USER 인 유저 정보 가져와서 model 에 저장
-        List<User> users = adminService.findByAuthorityRoleUser("ROLE_USER");
-        model.addAttribute("users", users);
-
-        return "admin/userTables";
-    }
-
     // adminLogin 에서 로그인을 시도하는 관리자의 login을 처리하는 Controller
     @PostMapping("/login")
     public ModelAndView adminLogin(@RequestParam("username") String username, @RequestParam("password") String password, HttpServletRequest request) {
@@ -106,14 +89,34 @@ public class AdminController {
         }
     }
 
-
+    // 로그아웃 후 리다이렉트할 url을 반환
     @PostMapping("/logout")
     public String logout(HttpServletRequest request, HttpServletResponse response) {
+        // SecurityContextHolder에서 현재 인증된 사용자의 정보를 가져오기
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        // 현재 로그인된 사용자의 정보를 가져오기
         if (auth != null) {
             new SecurityContextLogoutHandler().logout(request, response, auth);
         }
         return "redirect:/admin/adminLogin";
+    }
+
+    // 유저 정보를 보여주는 url 연결
+    @GetMapping("/userTables")
+    public String userTables(Model model, HttpSession session) {
+        User loggedUser = U.getLoggedUser();
+        model.addAttribute("adminUser", loggedUser);
+
+        // session 에 저장된 유저 정보가 없거나 권한이 ROLE_ADMIN이 아닐 경우 adminLogin 페이지로 redirect
+        if(loggedUser == null || !loggedUser.getAuthorization().equalsIgnoreCase("ROLE_ADMIN")) {
+            return "redirect:/admin/adminLogin";
+        }
+
+        // ROLE_USER 인 유저 정보 가져와서 model 에 저장
+        List<User> users = adminService.findByAuthorityRoleUser("ROLE_USER");
+        model.addAttribute("users", users);
+
+        return "admin/userTables";
     }
 
     // 유저 삭제하기
@@ -158,7 +161,7 @@ public class AdminController {
     }
 
 
-    // TODO : 여기서부터는 게시물에 대한 테이블
+    // 소모임에 대한 정보를 가져오는 url 연결
     @GetMapping("/boardTables")
     public String boardTables(Model model, HttpSession session) {
         List<Board> boards = adminService.findByBoardCategory("소모임");
@@ -166,6 +169,7 @@ public class AdminController {
         return "admin/boardTables";
     }
 
+    // 피드 테이블 정보 가져오는 url 연결
     @GetMapping("/feedTables")
     public String feedTables(Model model, HttpSession session) {
         List<Board> feeds = adminService.findByFeedCategory("피드");
@@ -173,6 +177,7 @@ public class AdminController {
         return "admin/feedTables";
     }
 
+    // 소모임 또는 피드 삭제하기
     @PostMapping("/deletePost")
     @ResponseBody
     public ResponseEntity<String> deletePost(@RequestParam("boardId") int boardId) {
@@ -186,6 +191,7 @@ public class AdminController {
         }
     }
 
+    // 승인 처리된 package 정보 가져오기
     @GetMapping("/packageAccessTables")
     public String packageAccessTables(Model model, HttpSession session) {
         List<PackagePost> AccessPackages = adminService.findByAccessPackage("승인");
@@ -193,6 +199,7 @@ public class AdminController {
         return "admin/packageAccessTables";
     }
 
+    // 대기 상태인 package 정보 가져오기
     @GetMapping("/packageStandbyTables")
     public String packageStandbyTables(Model model, HttpSession session) {
         List<PackagePost> standByPackages = adminService.findByStandByPackage("미승인", "대기");
@@ -200,6 +207,7 @@ public class AdminController {
         return "admin/packageStandbyTables";
     }
 
+    // 패키지 삭제하기
     @PostMapping("/deletePackage")
     @ResponseBody
     public ResponseEntity<String> deletePackage(@RequestParam("packageId") int packageId) {
@@ -213,6 +221,7 @@ public class AdminController {
         }
     }
 
+    // payment 정보 가져오는 url 연결
     @GetMapping("/paymentTables")
     public String paymentTables(Model model, HttpSession session) {
         List<Payment> payments = adminService.findByPayment();
@@ -220,6 +229,7 @@ public class AdminController {
         return "admin/paymentTables";
     }
 
+    // 현재 로그인한 유저 정보를 json 파일로 가져오는 url
     @RequestMapping("/auth")
     @ResponseBody
     public Authentication auth(){
