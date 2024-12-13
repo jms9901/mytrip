@@ -105,10 +105,16 @@ public class FlightController {
 
             // 서비스 호출
             FlightDetailResponse response = flightService.detailCall(itineraryId, token);
+            //이미지 호출
+            City city = cityService.findCityName(response.getTicket().getReturnCity());
+
+            System.out.println(response.getTicket().getReturnCity());
+            System.out.println(city.toString());
 
             // 데이터를 Model에 추가
             model.addAttribute("details", response.getDetails());
             model.addAttribute("detailTicket", response.getTicket());
+            model.addAttribute("arriveCity", city);
 
         } catch (Exception e) {
             System.out.println("API 호출 중 오류: " + e.getMessage());

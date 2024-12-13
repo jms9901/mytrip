@@ -19,8 +19,8 @@
     <!-- 가는 티켓 -->
     <div class="ticket">
         <!-- 왼쪽 이미지 섹션 -->
-        <div id="imageContainer" class="ticket-image flight-details-button" th:href="@{/detailImg/{cityName}}" th:attr="data-cityimg=${cityImg.cityImg}">
-
+        <div class="ticket-image-box">
+            <img class="ticket-image" th:src="@{/img/{cityImg}(cityImg=${arriveCity.cityImg})}" alt="cityImg">
         </div>
 
         <!-- 오른쪽 텍스트 섹션 -->
@@ -63,8 +63,8 @@
     <!-- 오는 티켓 -->
     <div class="ticket">
         <!-- 왼쪽 이미지 섹션 -->
-        <div class="ticket-image" style="background-image: url('/img/TokyoImg.jpg');">
-<!--            <img th:src="@{}" Dalt="">-->
+        <div class="ticket-image-box">
+            <img class="ticket-image" th:src="@{/img/{cityImg}(cityImg=${arriveCity.cityImg})}" alt="cityImg">
         </div>
 
         <!-- 오른쪽 텍스트 섹션 -->
