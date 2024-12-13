@@ -17,15 +17,31 @@
 <main class="container my-4">
     <form th:action="@{}" method="post" enctype="multipart/form-data">
         <div>
-            <!--private int cityId;            // 도시 ID-->
-            <input type="hidden" th:value="${cityId}">
-            <!--private int userId;            // 작성자 ID-->
-            <!--private String packageStatus;          // 패키지 상태 (승인, 대기, 미승인 등)-->
-            <!--private LocalDateTime packageRegdate ;  // 패키지 등록 날짜-->
-            <!--private int packageCost;               // 패키지 비용-->
-            <!--private int packageMaxpeople;          // 최대 참여 가능 인원-->
-            <!--private LocalDateTime packageStartDay; // 패키지 시작 날짜-->
-            <!--private LocalDateTime packageEndDay;   // 패키지 종료 날짜-->
+            <!-- 도시 ID -->
+            <div>
+                <label for="cityId">City ID:</label>
+                <input type="number" id="cityId" name="cityId" required>
+            </div>
+            <!-- 패키지 비용 -->
+            <div>
+                <label for="packageCost">Package Cost:</label>
+                <input type="number" id="packageCost" name="packageCost" required>
+            </div>
+            <!-- 최대 참여 가능 인원 -->
+            <div>
+                <label for="packageMaxpeople">Max Participants:</label>
+                <input type="number" id="packageMaxpeople" name="packageMaxpeople" required>
+            </div>
+            <!-- 패키지 시작 날짜 -->
+            <div>
+                <label for="packageStartDay">Start Date:</label>
+                <input type="datetime-local" id="packageStartDay" name="packageStartDay" required>
+            </div>
+            <!-- 패키지 종료 날짜 -->
+            <div>
+                <label for="packageEndDay">End Date:</label>
+                <input type="datetime-local" id="packageEndDay" name="packageEndDay" required>
+            </div>
         </div>
 
 
