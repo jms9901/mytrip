@@ -568,3 +568,9 @@ insert into payment_info (user_id, package_id, user_count, payment_status)
                      values(1,6,1,'결제완료');
 insert into payment_info (user_id, package_id, user_count, payment_status)
                                           values(1,7,1,'결제완료');
+insert into board_liked(user_id,board_id,board_liked_date)
+values  (1,126,now());
+insert into board_liked(user_id,board_id,board_liked_date)
+values  (1,127,now());
+insert into board_liked(user_id,board_id,board_liked_date)
+values  (1,129,now());

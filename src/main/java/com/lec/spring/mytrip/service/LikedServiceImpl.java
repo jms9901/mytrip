@@ -1,5 +1,6 @@
 package com.lec.spring.mytrip.service;
 
+import com.lec.spring.mytrip.domain.Board;
 import com.lec.spring.mytrip.domain.City;
 import com.lec.spring.mytrip.domain.User;
 import com.lec.spring.mytrip.repository.CityRepository;
@@ -79,4 +80,11 @@ public class LikedServiceImpl implements LikedService {
         return cityRepository.findLikedCitiesByUserId(userId);
     }
 
+    public List<Board> getLikedPosts(Long userId) {
+        System.out.println(likeRepository.findLikedPostsByUser(userId));
+        return likeRepository.findLikedPostsByUser(userId);
+    }
+
 }
+
+

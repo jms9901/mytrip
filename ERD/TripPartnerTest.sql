@@ -4,7 +4,7 @@ select * from package_attachment;
 select * from package_liked;
 select * from payment_info;
 select * from board;
-select * from board_liked;
+select * from board_liked where user_id=1;
 select * from board_comment;
 select * from board_attachment;
 select * from declaration;
