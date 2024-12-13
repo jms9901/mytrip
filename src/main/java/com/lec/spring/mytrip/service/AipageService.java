@@ -13,8 +13,11 @@ public interface AipageService {
     // 추천 도시 반환
     City getRecommendedCity(List<String> answers);
 
+    // 사용자 이름 조회
+    String findNameByUsername(String username);
+
     // 사용자 답변 저장
-    void saveUserCityRecord(String userName, int cityId);
+    void saveUserCityRecord(String username, int cityId);
 
     // git push를 위한 주석
 

@@ -54,8 +54,14 @@ public class AipageServiceImpl implements AipageService {
     }
 
     @Override
-    public void saveUserCityRecord(String userName, int cityId) {
-        int userId = userCityRepository.findUserIdByName(userName);
+    public void saveUserCityRecord(String username, int cityId) {
+        int userId = userCityRepository.findUserIdByName(username);
         userCityRepository.insertUserCity(userId, cityId);
+    }
+
+    @Override
+    public String findNameByUsername(String username) {
+        return userCityRepository.findNameByUsername(username);
+
     }
 }

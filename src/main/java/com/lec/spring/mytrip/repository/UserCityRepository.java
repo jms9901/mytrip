@@ -8,10 +8,7 @@ import java.util.Map;
 
 @Mapper
 public interface UserCityRepository {
-    int findUserIdByName(@Param("userName") String userName);
+    int findUserIdByName(@Param("username") String username);
     int insertUserCity(@Param("userId") int userId, @Param("cityId") int cityId);
-
-
-
-
+    String findNameByUsername(@Param("username") String username);
 }
