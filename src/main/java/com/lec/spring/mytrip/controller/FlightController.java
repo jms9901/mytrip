@@ -1,14 +1,17 @@
 package com.lec.spring.mytrip.controller;
 
+import com.lec.spring.mytrip.domain.City;
 import com.lec.spring.mytrip.domain.Flight;
 import com.lec.spring.mytrip.domain.History;
 import com.lec.spring.mytrip.form.flight.FlightDetailResponse;
 import com.lec.spring.mytrip.form.flight.FlightRoundTrip;
 import com.lec.spring.mytrip.form.flight.FlightRoundTripResponse;
+import com.lec.spring.mytrip.service.CityService;
 import com.lec.spring.mytrip.service.FlightService;
 import com.lec.spring.mytrip.service.FlightServiceImpl;
 import com.lec.spring.mytrip.service.HistoryService;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -26,12 +29,12 @@ public class FlightController {
 
     private final FlightService flightService;
     private final HistoryService historyService;
-    private final FlightServiceImpl flightServiceImpl;
+    private final CityService cityService;
 
-    public FlightController(FlightService flightService, HistoryService historyService, FlightServiceImpl flightServiceImpl) {
+    public FlightController(FlightService flightService, HistoryService historyService, CityService cityService) {
         this.flightService = flightService;
         this.historyService = historyService;
-        this.flightServiceImpl = flightServiceImpl;
+        this.cityService = cityService;
     }
 
     // 검색 페이지를 렌더링하는 엔드포인트
@@ -114,6 +117,29 @@ public class FlightController {
             model.addAttribute("error", "오류 발생: " + e.getMessage());
 
         }
+    }
+
+    @GetMapping("/detailImg/{cityName}")
+    @ResponseBody
+    public ResponseEntity<City> getFlightDetailImg(@PathVariable String cityName, Model model) {
+        try {
+            System.out.println("Fetching attachments for boardId: " + cityName);
+
+            City cityImg = cityService.findCityName(cityName);
+            if (cityImg != null) {
+                System.out.println("Attachments found for boardId " + cityName + ":");
+                model.addAttribute("cityImg", cityImg);
+            } else {
+                System.out.println("No attachments found for boardId " + cityName);
+            }
+
+            return ResponseEntity.ok(cityImg);
+        } catch (Exception e) {
+            System.err.println("Error fetching attachments for boardId: " + cityName);
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+
     }
 
     // 검색 기록을 저장하는 엔드포인트
