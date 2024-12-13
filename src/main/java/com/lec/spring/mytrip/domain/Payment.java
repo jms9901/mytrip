@@ -12,16 +12,17 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 public class Payment {
-    private int paymentId;
-    private int userId;
-    private int packageId;
-    private int  userCount;
-    private LocalDateTime Date;
-    private String  Status;
+    private int paymentId;              // 결제 정보 ID
+    private int userId;                 // 사용자 ID
+    private int packageId;              // 패키지 ID
+    private int  userCount;             // 결제 관련 인원수
+    private LocalDateTime paymentdate;         // 결제 일시
+    private String  paymentStatus;      // 결제 상태 ("결제 완료" / "결제 취소"
 
-    private String userName;
-    private String packageTitle;
-    private int price;
+    private String userName;            // 사용자 이름
+    private String packageTitle;        // 패키지 이름
+    private int price;                  // 가격
 
-    private int totalPrice;
+    private int totalCost;              // 결제 관련 인원수 * 일인당 가격 => 총 가격
+    private int cityId;                 // 도시 ID
 }

@@ -34,8 +34,7 @@
     <select id="getPaymentByCompanyId" parameterType="int" resultType="com.lec.spring.mytrip.domain.Payment">
         SELECT
         p.payment_id AS paymentId,
-        p.user_id AS userId,
-        p.package_id AS packageId,
+        pk.package_title AS packageTitle
         u.user_name AS userName,
         p.user_count AS userCount,
         (p.user_count * pk.package_cost) AS totalCost,

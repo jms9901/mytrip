@@ -78,7 +78,16 @@ body {
     padding: 8px 15px;
     border-radius: 5px;
     font-size: 14px;
-    background-color: rgb(251, 195, 195);
+}
+
+.payment-complete {
+    background-color: #4CAF50; /* 초록색 바탕 */
+    color: black; /* 검은색 글씨 */
+}
+
+.payment-cancel {
+    background-color: #F44336; /* 빨간 바탕 */
+    color: black; /* 검은색 글씨 */
 }
 
 /* Center Modal */

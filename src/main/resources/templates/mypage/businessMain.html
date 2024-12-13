@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href='https://fonts.googleapis.com/css?family=Kaushan Script' rel='stylesheet'>
     <link rel="stylesheet" href="/css/businessMain.css">
+    <link rel="stylesheet" href="/css/businessPaymentList.css">
+    <link rel="stylesheet" href="/css/businessUpdate.css">
     <script src="/js/businessMain.js"></script>
     <title>Business Main Mypage</title>
 </head>
@@ -21,24 +23,21 @@
         <div class="profile-section">
             <!-- 비즈니스 개인정보 수정 링크 연결  -->
             <img src="/img/basicProfile.png" class="profile-icon-Button" type="button" id="profile-icon-Button">
-            <div class="business-name" data-user-id="${user.username}">[[${user.username}]]</div>
+            <div class="business-name">[[${user.username}]]</div>
         </div>
 
         <!-- 패키지 목록 -->
         <div class="package-section">
             <div class="package-header">Package List</div>
-            <!-- 패키지 결제 내역 리스트 버튼 -->
-            <img src="/img/paymentListIcon.png" alt="package-payment-button" id="package-payment-button" type="button"></img>
-
             <!-- 등록한 패키지 목록 -->
             <div class="package-list">
 <!--                등록한 패키지 목록 동적으로 추가 -->
                 <div th:each="packagePost : ${packages}" class="package-item">
-                    <div class="package-header">
-                        <div class="package-name">[[${packagePost.title}]]</div>
+                    <div class="package-title">
+                        <div class="package-name">[[${packagePost.packageTitle}]]</div>
                     </div>
-                    <div class="package-content">[[${packagePost.content}]]</div>
-                    <div class="package-status">[[${packagePost.status}]]</div>
+                    <div class="package-content">[[${packagePost.packageContent}]]</div>
+                    <div class="package-status ${getStatusClass(packages.packageStatus)}">${getStatusText(packages.packageStatus)}</div>
                     <div class="liked">
                         <img src="/img/heart-icon-fill.png" alt="heart-icon-fill" id="liked-heart-icon" type="button">
                         <span class="likedCnt">[[${packagePost.likedCount}]]</span>
@@ -46,6 +45,92 @@
                 </div>
             </div>
         </div>
+
+        <!--  패키지 결제 모달  -->
+        <!-- 패키지 결제 내역 리스트 버튼 -->
+        <img src="/img/paymentListIcon.png" alt="package-payment-button" id="package-payment-button" type="button"></img>
+
+        <!--  결제 리스트 모달   -->
+        <div id="payment-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title">결제정보</div>
+
+                    <!-- 결제 상태 필터링 -->
+                    <select class="pay-status-select">
+                        <option value="" disabled selected>결제 상태</option>
+                        <option value="" selected>전체</option>
+                        <option value="complete">결제 완료</option>
+                        <option value="cancel">결제 취소</option>
+                    </select>
+
+                    <table class="payment-table">
+                        <thead>
+                        <tr class="table-header">
+                            <th>사용자명</th>
+                            <th>패키지명</th>
+                            <th>금액</th>
+                            <th>결제상태</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <!-- 서버에서 전달된 결제 데이터 동적 생성 -->
+                        <tr th:each="payment : ${list}">
+                            <td>[[${payment.userName}]]</td>
+                            <td>[[${payment.packageTitle}]]</td>
+                            <td>[[${payment.totalPrice]]원 </td>
+                            <td class="pay-status ${getPaymentStatusClass(payment.paymentStatus)}">[[${getPaymentStatusText(payment.paymentStatus)}]]</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!--  개인정보 수정 모달   -->
+
+        <div class="businessUpdate-modal" id="modalOverlay">
+            <div class="modal">
+                <div class="header">
+                    <span class="close-button">&times;</span>
+                    <h2 class="businessName">[[${user.name}</h2>
+                    <span class="joinDate">가입일 : [[${user.regDate}]]</span>
+                </div>
+                <div class="profile">
+                    <img src="/img/basicProfile.png" alt="프로필" type="button">
+                </div>
+                <div class="businessInfo">
+                    <label>기업 ID</label>
+                    <input type="text" th:value="${user.username}" readonly>
+                </div>
+                <div class="businessInfo">
+                    <label>기업 이메일</label>
+                    <input type="email" th:value="${user.email}" readonly>
+                </div>
+                <div class="businessInfo">
+                    <label>비밀번호</label>
+                    <input type="password" th:value="${user.password}">
+                </div>
+                <div class="businessInfo">
+                    <label>새비밀번호</label>
+                    <input type="re-password" placeholder="새 비밀번호를 입력하세요.">
+                </div>
+                <div class="businessInfo">
+                    <label>회사 사업자 번호</label>
+                    <input type="text" th:value="${user.companyNumber}">
+                </div>
+
+                <div class="actions">
+                    <img src="/img/myPageUpdate.png" alt="update-button" class="update-button" id="update-button">
+                    <img src="/img/checkIcon.png" alt="submit-button" class="submit-button" type="button">
+                </div>
+            </div>
+        </div>
+
+
+
+        <!--  패키지 상세정보 모달  -->
+
     </div>
 </div>
 

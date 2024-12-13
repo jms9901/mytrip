@@ -59,7 +59,7 @@ public class PackagePostServiceImpl implements PackagePostService {
         if (pkg == null) {
             throw new IllegalArgumentException("패키지 정보가 null일 수 없습니다.");
         }
-        if (pkg.getCityId() <= 0 || pkg.getUserId() <= 0 || pkg.getTitle() == null || pkg.getTitle().trim().isEmpty()) {
+        if (pkg.getCityId() <= 0 || pkg.getUserId() <= 0 || pkg.getPackageTitle() == null || pkg.getPackageTitle().trim().isEmpty()) {
             throw new IllegalArgumentException("유효하지 않은 패키지 데이터입니다. 도시 ID, 사용자 ID, 제목은 필수입니다.");
         }
         return packagePostRepository.save(pkg);

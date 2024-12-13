@@ -98,12 +98,17 @@
             pk.package_title AS packageTitle,
             pk.package_content AS packageContent,
             pk.package_status AS packageStatus,
-            COUNT(pl.user_id) AS likedCount
+            COALESCE(liked_count.cnt, 0) AS likedCount
         FROM package pk
-                 LEFT JOIN package_liked pl ON pk.package_id = pl.package_id
+                 LEFT JOIN (
+            SELECT
+                package_id,
+                COUNT(*) AS cnt
+            FROM package_liked
+            GROUP BY package_id
+        ) liked_count ON pk.package_id = liked_count.package_id
         WHERE pk.user_id = #{userId}
-        GROUP BY pk.package_id
-        ORDER BY pk.package_id DESC;
+        ORDER BY pk.package_id DESC
     </select>
 
 </mapper>

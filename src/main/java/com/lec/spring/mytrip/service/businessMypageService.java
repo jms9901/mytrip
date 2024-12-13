@@ -6,6 +6,7 @@ import com.lec.spring.mytrip.domain.User;
 import com.lec.spring.mytrip.repository.PackagePostRepository;
 import com.lec.spring.mytrip.repository.PaymentsRepository;
 import com.lec.spring.mytrip.repository.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,6 +22,7 @@ import java.util.List;
 import java.util.UUID;
 
 
+@Slf4j
 @Service
 public class businessMypageService {
 
@@ -111,6 +113,10 @@ public class businessMypageService {
     // 패키지 제목, 내용, 상태(대기, 승인, 미승인), 좋아요 수
     @Transactional
     public List<PackagePost> likeCntByPackage(int userId) {
+        List<PackagePost> packages = packagePostRepository.likeCntByPackage(userId);
+
+        // 디버깅용 로그
+        log.info("Fetch packages: {}", packages);
         return packagePostRepository.likeCntByPackage(userId);
     }
 
