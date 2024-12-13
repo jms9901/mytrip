@@ -51,6 +51,14 @@ public class UserController {
 
         System.out.println("Session ID : " + session.getId());
         System.out.println("Logged User: " + loggedUser);
+
+        if (loggedUser == null || "ROLE_DORMANT".equalsIgnoreCase(loggedUser.getAuthorization())) {
+            model.addAttribute("errorMessage", "You do not have permission to access this page. Please log in.");
+            return "user/popupAndRedirect"; // 팝업 창을 띄우고 리다이렉트하는 페이지
+        }
+
+        // 접근이 허용된 경우의 로직
+
         return "user/home";
     }
 
@@ -74,7 +82,7 @@ public class UserController {
         // 예: 사용자가 입력한 이메일과 비밀번호로 인증을 시도합니다.
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         // TODO: 여기에 로그인 성공/실패 처리 로직 추가
-        return "redirect:user/home"; // 로그인 성공 시 홈으로 리다이렉트
+        return "redirect:/user/home"; // 로그인 성공 시 홈으로 리다이렉트
     }
 
     // 회원가입 처리
@@ -118,6 +126,20 @@ public class UserController {
         model.addAttribute("result", cnt);
         return page; // 회원가입 성공 후 로그인 페이지로 리다이렉트
     }
+
+    @GetMapping("/restricted")
+    public String restrictedAccess(HttpSession session, Model model) {
+        User loggedUser = U.getLoggedUser();
+
+        if (loggedUser == null || "ROLE_DORMANT".equalsIgnoreCase(loggedUser.getAuthorization())) {
+            model.addAttribute("errorMessage", "You do not have permission to access this page. Please log in.");
+            return "user/popupAndRedirect"; // 팝업 창을 띄우고 리다이렉트하는 페이지
+        }
+
+        // 접근이 허용된 경우의 로직
+        return "redirect:/user/home";
+    }
+
 
 
     // 로그인 오류 처리

@@ -53,6 +53,8 @@ public class AdminController {
     // 로그인 페이지
     @GetMapping("/adminLogin")
     public String login(Model model, HttpSession session) {
+        User loggedUser = U.getLoggedUser();
+        model.addAttribute("loggedInUser", loggedUser);
         return "admin/adminLogin";
     }
 

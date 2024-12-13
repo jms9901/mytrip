@@ -34,6 +34,8 @@ public class U {
         User loggedUser = (User) session.getAttribute("loggedInUser");
 
         if (loggedUser != null) {
+            session.setAttribute("loggedInUser", loggedUser);
+            System.out.println("로그인한 유저 : " + loggedUser);
             return loggedUser;
         }
 
