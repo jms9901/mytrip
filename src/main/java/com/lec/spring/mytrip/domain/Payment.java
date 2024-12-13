@@ -24,4 +24,5 @@ public class Payment {
     private int price; // 패키지 가격
 
     private int totalPrice; // 패키지 총가격
+    private int cityId; //도시 id. 결제 후 이동 페이지에 필요
 }
