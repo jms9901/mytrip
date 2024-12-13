@@ -1,5 +1,5 @@
 #  user admin 데이터
-insert into user (user_email, user_password, user_username, user_name, user_phonenumber, user_birthday, user_profile, user_provider, user_introdution, user_authorization)
+insert into user (user_email, user_password, user_username, user_name, user_birthday, user_profile, user_provider, user_introdution, user_authorization)
 values ('fullstackK08@naver.com',
         '1234',
         'admin1234',
@@ -544,3 +544,6 @@ VALUES
     ('SPN', '사이판 국제공항', '사이판', '미국'),
     ('SYD', '시드니 공항', '시드니', '호주')
     ;
+
+
+select * from airport;

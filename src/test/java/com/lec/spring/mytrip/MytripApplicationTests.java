@@ -1,8 +1,10 @@
 package com.lec.spring.mytrip;
 
 import com.lec.spring.mytrip.config.oauth.PrincipalOauth2UserService;
+import com.lec.spring.mytrip.domain.City;
 import com.lec.spring.mytrip.domain.User;
 import com.lec.spring.mytrip.repository.UserRepository;
+import com.lec.spring.mytrip.service.CityService;
 import com.lec.spring.mytrip.service.UserService;
 import org.apache.ibatis.session.SqlSession;
 import org.junit.jupiter.api.BeforeEach;
@@ -32,6 +34,7 @@ import org.springframework.web.context.WebApplicationContext;
 import java.util.Collections;
 import java.util.Map;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
@@ -47,6 +50,9 @@ public class MytripApplicationTests {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private CityService cityService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -158,6 +164,20 @@ public class MytripApplicationTests {
         assertNotNull(user);
         assertNotNull(user.getAttributes().get("email"));
         assertNotNull(user.getAttributes().get("name"));
+    }
+
+    @Test
+    public void findCity(){
+        // Given
+        String cityName = "발리";
+
+        // When
+        City city = cityService.findCityName(cityName);
+
+        // Then
+        assertNotNull(city, "도시 정보를 찾을 수 없습니다.");
+
+        System.out.println("도시 이미지 URL: " + city.getCityImg());
     }
 
 }

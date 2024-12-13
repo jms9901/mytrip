@@ -34,7 +34,7 @@
                     <a th:href="@{/post}" class="top-menu">여행지 게시판</a>
                 </sec:authorize>
                 <sec:authorize access="isAuthenticated()">
-                    <a th:href="@{/flight/search}" class="top-menu">항공권 예약</a>
+                    <a th:href="@{/flight/search}" class="top-menu">항공권 조회</a>
                 </sec:authorize>
                 <a sec:authorize="isAnonymous()" th:href="@{/user/login}" class="top-menu">login</a>
                 <form th:action="@{/user/mypage}" method="GET" sec:authorize="isAuthenticated()">

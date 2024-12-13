@@ -13,4 +13,6 @@ public interface CityRepository {
             @Param("q4Id") String q4Id,
             @Param("q5Id") String q5Id
     );
+
+    City findByCityName(String cityName);
 }

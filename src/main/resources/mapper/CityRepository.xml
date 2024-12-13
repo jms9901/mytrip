@@ -28,4 +28,10 @@
           AND q4_id = #{q4Id}
           AND q5_id = #{q5Id}
     </select>
+
+    <select id="findByCityName" resultMap="CityResultMap">
+        SELECT city_id, city_name, city_img
+        FROM city
+        WHERE city_name = #{cityName}
+    </select>
 </mapper>
