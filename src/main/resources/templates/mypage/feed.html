@@ -102,18 +102,13 @@
         <button type="button" class="close-modal-btn" onclick="closeModal()">닫기</button>
     </form>
 </div>
+
+
+    <div>
+    <div>
 <div class="goChat" style="background-image: url(/img/mypageChat.png);"></div>
-
-
 </div>
-
-
-
-
-
 </div>
-
-
 </div>
 
 <script type="text/javascript">
@@ -121,10 +116,35 @@
         $('.writeFeed').hide();  // 모달 숨기기
     }
 
+
+
     $(document).ready(function () {
         $('#open-modal').click(function (){
             $('.writeFeed').show();
         });
+
+
+        // 피드 항목 클릭 시 DetailModal을 열도록 이벤트 위임 추가
+        $(document).on('click', '.feed-entry', function() {
+            const index = $(this).data('index');
+            const feed = feeds[index];
+            console.log(feed);
+
+            // 각 피드 항목에 대한 모달 표시
+            const modal = $(`#feed-modal-${index}`);
+
+            // 모달을 표시
+            modal.css('display', 'block');
+        });
+
+        // 모달 닫기 버튼 클릭 이벤트 처리
+        $(document).on('click', '.close-modal', function() {
+            const modal = $(this).closest('.feed-modal');
+
+            // 모달을 숨김
+            modal.css('display', 'none');
+        });
+
 
         $('.writeFeed form').submit(function(event) {
             event.preventDefault();  // 페이지 새로 고침 방지
@@ -151,6 +171,7 @@
         const userId = getToUserIdFromUrl();
         const apiUrl = `/mypage/feed/list/${userId}`; // API URL 설정
         let initialPageCount = $('.flipbook .page').length;
+        window.feedList =[];
 
         // 앱 로드 및 초기화
         initializeApp();
@@ -202,7 +223,7 @@
             const transformProperties = ['transform', 'WebkitTransform', 'MozTransform', 'OTransform', 'msTransform'];
             return transformProperties.some(prop => testElement.style[prop] !== undefined);
         }
-
+        let feeds = [];
         // 피드 리스트을 요청
         $.ajax({
             url: `/mypage/feed/data/${userId}`,  // 사용자 ID로 API 호출
@@ -211,6 +232,7 @@
 
             success: function (data) {
                 console.log("피드 로드 완료:", data);
+                feeds=data;
                 loadFeed(data);  // 받은 데이터를 바탕으로 결제 내역을 로딩
             },
             error: function (error) {
@@ -220,22 +242,35 @@
         // 결제 내역을 출력하는 함수
         function loadFeed(feeds) {
             if (feeds && feeds.length > 0) {
-                feeds.forEach((feeds, index) => {
+                feeds.forEach((feed, index) => {
                     let attachmentHtml = '';
 
                     // 첨부파일이 있을 경우 처리
-                    if (feeds.attachmentFiles && feeds.attachmentFiles.length > 0) {
-                        attachmentHtml = feeds.attachmentFiles.map(file => {
+                    if (feed.attachmentFiles && feed.attachmentFiles.length > 0) {
+                        attachmentHtml = feed.attachmentFiles.map(file => {
                             const filePath = `/uploads/${file}`; // 첨부파일의 경로
                             return `<img src="${filePath}" alt="첨부파일" class="feed-attachment">`;
                         }).join('');
                     }
 
                     const entryHtml = `
-                <div class="feed-entry" style="background-image: url(/img/postFrame.png)">
+                <div class="feed-entry" style="background-image: url(/img/postFrame.png)" data-index="${index}">
                     ${attachmentHtml} <!-- 첨부파일 이미지 추가 -->
-                    <div>${feeds.boardSubject}</div>
+                    <div>${feed.boardSubject}</div>
 
+                </div>
+                 <!-- 각 피드 항목에 대한 모달 (보이지 않음) -->
+                <div class="feed-modal" id="feed-modal-${index}" style="display: none;">
+                    <div class="modal-content">
+                        <h2>${feed.boardSubject}</h2>
+                        <p>${feed.boardContent}</p>
+                        <p>${feed.city.cityName}</p>
+                        <p>${feed.boardDate}</p>
+                        <div>${attachmentHtml}</div> <!-- 첨부파일 이미지 추가 -->
+                        <button class="close-modal">닫기</button>
+                        <button class="edit-feed-modal" data-feed-id="${feed.boardId}" data-index="${index}">수정</button>
+                        <button class="delete-feed-modal" data-feed-id="${feed.boardId}" data-index="${index}">삭제</button>
+                    </div>
                 </div>
             `;
 
@@ -243,8 +278,139 @@
                     addEntryToPage(entryHtml, index + 1);
                     console.log(`feed Entry ${index + 1} added to page`);
                 });
+
+                // 모달 내 수정 버튼 클릭 이벤트
+                $('.edit-feed-modal').on('click', function() {
+                    const feedId = $(this).data('feed-id');
+                    const feedIndex = $(this).data('index');
+                    openEditModal(feedId, feedIndex);  // 수정 모달 열기
+                });
+
+                // 모달 내 삭제 버튼 클릭 이벤트
+                $('.delete-feed-modal').on('click', function() {
+                    const feedId = $(this).data('feed-id');
+                    const feedIndex = $(this).data('index');
+                    deleteFeed(feedId, feedIndex);  // 피드 삭제 요청
+                });
             } else {
                 $('#feedEntries').append('<p>피드가 없습니다.</p>');
+            }
+        }
+        // 수정 모달을 여는 함수
+        function openEditModal(feedId, feedIndex) {
+            const feed = feeds[feedIndex];
+            const modal = $(`#feed-modal-${feedIndex}`);
+
+            // 수정할 피드 정보로 모달 내용을 채운 후 표시
+            modal.find('h2').text(feed.boardSubject);
+            modal.find('p').text(feed.boardContent);
+            modal.find('.edit-feed-modal').hide();  // 수정 버튼 숨기기
+            modal.find('.delete-feed-modal').hide();  // 삭제 버튼 숨기기
+
+            // 수정할 수 있도록 텍스트 필드와 제출 버튼을 추가
+            modal.find('.modal-content').append(`
+                <form class="edit-feed-form" enctype="multipart/form-data">
+                    <input type="text" name="boardSubject" value="${feed.boardSubject}" required>
+                    <textarea name="boardContent" required>${feed.boardContent}</textarea>
+<label for="city">도시 선택:</label>
+            <select name="cityId" id="city" required>
+                <option value="1" ${feed.cityId === 1 ? 'selected' : ''}>괌</option>
+<option value="2" ${feed.cityId === 2 ? 'selected' : ''}>마닐라</option>
+<option value="3" ${feed.cityId === 3 ? 'selected' : ''}>나트랑</option>
+<option value="4" ${feed.cityId === 4 ? 'selected' : ''}>세부</option>
+<option value="5" ${feed.cityId === 5 ? 'selected' : ''}>방콕</option>
+<option value="6" ${feed.cityId === 6 ? 'selected' : ''}>파리</option>
+<option value="7" ${feed.cityId === 7 ? 'selected' : ''}>홍콩</option>
+<option value="8" ${feed.cityId === 8 ? 'selected' : ''}>상하이</option>
+<option value="9" ${feed.cityId === 9 ? 'selected' : ''}>하와이</option>
+<option value="10" ${feed.cityId === 10 ? 'selected' : ''}>다낭</option>
+<option value="11" ${feed.cityId === 11 ? 'selected' : ''}>울란바토르</option>
+<option value="12" ${feed.cityId === 12 ? 'selected' : ''}>발리</option>
+<option value="13" ${feed.cityId === 13 ? 'selected' : ''}>로스엔젤레스</option>
+<option value="14" ${feed.cityId === 14 ? 'selected' : ''}>두바이</option>
+<option value="15" ${feed.cityId === 15 ? 'selected' : ''}>도쿄</option>
+<option value="16" ${feed.cityId === 16 ? 'selected' : ''}>런던</option>
+<option value="17" ${feed.cityId === 17 ? 'selected' : ''}>삿포로</option>
+<option value="18" ${feed.cityId === 18 ? 'selected' : ''}>사이판</option>
+<option value="19" ${feed.cityId === 19 ? 'selected' : ''}>이스탄불</option>
+<option value="20" ${feed.cityId === 20 ? 'selected' : ''}>로마</option>
+<option value="21" ${feed.cityId === 21 ? 'selected' : ''}>뉴욕</option>
+<option value="22" ${feed.cityId === 22 ? 'selected' : ''}>하얼빈</option>
+<option value="23" ${feed.cityId === 23 ? 'selected' : ''}>오사카</option>
+<option value="24" ${feed.cityId === 24 ? 'selected' : ''}>마카오</option>
+<option value="25" ${feed.cityId === 25 ? 'selected' : ''}>델리</option>
+<option value="26" ${feed.cityId === 26 ? 'selected' : ''}>프랑크푸르트</option>
+<option value="27" ${feed.cityId === 27 ? 'selected' : ''}>시드니</option>
+<option value="28" ${feed.cityId === 28 ? 'selected' : ''}>호쿠오카</option>
+<option value="29" ${feed.cityId === 29 ? 'selected' : ''}>오키나와</option>
+<option value="30" ${feed.cityId === 30 ? 'selected' : ''}>타이베이</option>
+<option value="31" ${feed.cityId === 31 ? 'selected' : ''}>벤쿠버</option>
+<option value="32" ${feed.cityId === 32 ? 'selected' : ''}>지린</option>
+
+            </select>
+            <label for="feedImage">피드 이미지:</label>
+            <input type="file" name="files" id="feedImage" multiple/>
+                    <button type="submit">수정 완료</button>
+                </form>
+            `);
+
+            // 수정 완료 버튼 클릭 시 수정된 정보 서버에 전송
+            modal.find('.edit-feed-form').submit(function(event) {
+                event.preventDefault();
+
+                const form = $(this);
+                const formData = new FormData();
+                formData.append('boardSubject', form.find('[name="boardSubject"]').val());
+                formData.append('boardContent', form.find('[name="boardContent"]').val());
+                formData.append('cityId', form.find('[name="cityId"]').val());
+// 파일 데이터가 있을 경우 추가
+
+                const files = $(this).find('[name="files"]')[0].files;
+                for (let i = 0; i < files.length; i++) {
+                    formData.append('attachmentFiles', files[i]);
+                }
+                console.log(formData);
+                $.ajax({
+                    url: `/mypage/feed/update/${userId}/${feedId}`,
+                    type: 'PUT',
+                    data: formData,
+                    processData:false,
+                    contentType: false,
+                    success: function(response) {
+                        console.log('피드 수정 성공:', response);
+                        modal.find('.edit-feed-form').remove();  // 수정 폼 제거
+                        modal.find('.edit-feed-modal').show();  // 수정 버튼 다시 보이기
+                        modal.find('.delete-feed-modal').show();  // 삭제 버튼 다시 보이기
+                        loadFeedPages();  // 피드 목록 갱신
+                    },
+                    error: function(error) {
+                        console.log('수정 실패:', error);
+                    }
+                });
+            });
+
+            // 모달 열기
+            modal.show();
+        }
+
+// 피드를 삭제하는 함수
+        function deleteFeed(feedId, feedIndex) {
+            if (confirm("정말로 이 피드를 삭제하시겠습니까?")) {
+                $.ajax({
+                    url: `/mypage/feed/delete/${userId}/${feedId}`,  // 사용자 ID로 피드 삭제 요청
+                    type: 'DELETE',
+                    data: {
+                        boardId: feedId
+                    },
+                    success: function(response) {
+                        console.log("피드 삭제 성공:", response);
+                        $(`.feed-entry[data-index="${feedIndex}"]`).remove();  // 삭제된 피드 항목 제거
+                        $('#feed-modal-' + feedIndex).hide();  // 모달 숨기기
+                    },
+                    error: function(error) {
+                        console.log("삭제 실패:", error);
+                    }
+                });
             }
         }
 
@@ -256,7 +422,38 @@
             return UserId;
         }
 
+        // 피드 항목 클릭 이벤트 처리
+        $(document).on('click', '.feed-entry', function() {
+            const index = $(this).data('index');
+            // const modal = $(`#feed-modal-${index}`);
+            const feed=feeds[index];
+            if (feed) {  // feed가 존재하는지 확인
+                console.log(feed);
 
+                $('#feedDetailModal .modal-title').text(feed.boardSubject);
+                $('#feedDetailModal .modal-body').html(`
+                <p><strong>내용:</strong> ${feed.boardContent}</p>
+                <p><strong>작성일:</strong> $(feed.boardDate}</p>
+
+
+                <p><strong>도시:</strong> ${city.cityName}</p>
+                <div>${feed.attachmentFiles.map(file => `<img src="/uploads/${file}" alt="첨부파일" class="feed-attachment">`).join('')}</div>
+            `);
+
+                // 모달 열기 (예시로 Bootstrap을 사용한 경우)
+                $('#feedDetailModal').modal('show');
+            } else {
+                console.error('해당 피드를 찾을 수 없습니다.');
+            }
+        });
+
+        // 모달 닫기 버튼 클릭 이벤트 처리
+        $(document).on('click', '.close-modal', function() {
+            const modal = $(this).closest('.feed-modal');
+
+            // 모달을 숨김
+            modal.css('display', 'none');
+        });
 
 
         // 방명록 불러오기
@@ -283,13 +480,10 @@
                         }).join('');
                     }
 
-
-
                     const entryHtml = `
                         <div class="feed-entry" style="background-image: url(/img/postFrame.png)">
                         ${attachmentHtml} <!-- 첨부파일 이미지 추가 -->
                         <div>${feeds.boardSubject}</div>
-<!--                        <p>${feeds.city.cityName}</p>-->
                     </div>
                     `;
                     addEntryToPage(entryHtml, index + 1); // 항목을 페이지에 추가

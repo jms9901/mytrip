@@ -24,4 +24,6 @@ public interface FeedRepository {
 
     // 첨부파일 등록
     void insertAttachments(PostAttachment attachment);
+
+    void deleteAttachmentsByBoardId(int boardId);
 }

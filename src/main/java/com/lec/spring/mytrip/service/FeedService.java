@@ -15,7 +15,7 @@ public interface FeedService {
 
     void insertFeed(Feed feed,List<MultipartFile> files) throws IOException;
 
-    void updateFeed(Feed feed);
+    void updateFeed(int boardId, int userId, String boardSubject, String boardContent, int cityId, List<MultipartFile> files) throws IOException;
 
     void deleteFeed(int boardId, int userId);
 

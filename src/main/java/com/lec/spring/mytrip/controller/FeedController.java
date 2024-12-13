@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -61,16 +62,28 @@ public class FeedController {
         return ResponseEntity.ok("success");
     }
 
-    @PutMapping("/update/{userId}")
+    // 피드 수정 (AJAX 요청)
+    @PutMapping("/update/{userId}/{boardId}")
     @ResponseBody
-    public ResponseEntity<String> updateFeed(@PathVariable int userId, @RequestBody Feed feed) {
-        feed.setUserId(userId);
-        feedService.updateFeed(feed);
+    public ResponseEntity<String> updateFeed(@PathVariable int userId, @PathVariable int boardId,
+                                             @RequestParam String boardSubject, @RequestParam String boardContent,
+                                             @RequestParam int cityId, @RequestParam(value = "attachmentFiles", required = false) List<MultipartFile> files) throws IOException {
+        System.out.println("Received files: " + files);
+        if (files != null) {
+            for (MultipartFile file : files) {
+                System.out.println("File name: " + file.getOriginalFilename());
+            }
+        } else {
+            System.out.println("No files received");
+        }
+        // Update feed with new information
+        feedService.updateFeed(boardId, userId, boardSubject, boardContent, cityId, files);
         return ResponseEntity.ok("피드가 성공적으로 수정되었습니다.");
     }
 
+
     // 피드 삭제 (AJAX 요청)
-    @DeleteMapping("/delete/{userId}")
+    @DeleteMapping("/delete/{userId}/{boardId}")
     @ResponseBody
     public ResponseEntity<String> deleteFeed(@PathVariable int userId, @RequestParam("boardId") int boardId) {
         feedService.deleteFeed(boardId, userId);

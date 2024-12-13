@@ -59,12 +59,28 @@
         values(#{boardId}, #{fileName})
     </insert>
 
-    <!-- 게시물 수정 -->
     <update id="updateFeed" parameterType="com.lec.spring.mytrip.domain.Feed">
+        <!-- 게시물 수정 -->
         update board
-        SET city_id = #{cityId}, board_subject = #{boardSubject},
-            board_content = #{boardContent}, board_category = #{boardCategory}
-        WHERE board_id = #{boardId} AND user_id = #{userId}
+        SET
+        city_id = #{cityId},
+        board_subject = #{boardSubject},
+        board_content = #{boardContent},
+        board_category = '피드'
+        WHERE
+        board_id = #{boardId} AND user_id = #{userId};
+
+        <!-- 기존 첨부파일 삭제 (업데이트 성공 시에만) -->
+        <if test="_databaseId == 'MYSQL'">
+            DELETE FROM board_attachment WHERE board_id = #{boardId};
+        </if>
+
+        <!-- 새로운 첨부파일 추가 -->
+        <if test="attachmentFiles != null and attachmentFiles.size() > 0">
+            <foreach collection="attachmentFiles" item="file" index="index" open="INSERT INTO board_attachment(board_id, board_attachment_file) VALUES" separator=",">
+                (#{boardId}, #{file})
+            </foreach>
+        </if>
     </update>
 
     <!--게시물 삭제 -->
@@ -72,4 +88,10 @@
         delete from board where board_id=#{boardId} and user_id=#{userId}
     </delete>
 
-    </mapper>
+    <!-- 기존 첨부파일 삭제 -->
+    <delete id="deleteAttachmentsByBoardId" parameterType="int">
+        DELETE FROM board_attachment WHERE board_id = #{boardId}
+    </delete>
+
+
+</mapper>
