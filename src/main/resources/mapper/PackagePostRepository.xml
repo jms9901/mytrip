@@ -4,10 +4,17 @@
 <mapper namespace="com.lec.spring.mytrip.repository.PackagePostRepository">
 
     <!-- ResultMap 정의 -->
+
+    <resultMap id="userMap" type="com.lec.spring.mytrip.domain.User">
+        <result column="user_id" property="id"/>
+        <result column="u_username" property="username"/>
+        <result column="u_email" property="email"/>
+        <result column="u_regdate" property="regDate"/>
+    </resultMap>
+
     <resultMap id="PackagePostResultMap" type="com.lec.spring.mytrip.domain.PackagePost">
         <id property="packageId" column="package_id"/>
         <result property="cityId" column="city_id"/>
-        <result property="userId" column="user_id"/>
         <result property="packageStatus" column="package_status"/>
         <result property="packageContent" column="package_content"/>
         <result property="packageRegdate" column="package_regdate"/>
@@ -16,6 +23,7 @@
         <result property="packageMaxpeople" column="package_maxpeople"/>
         <result property="packageStartDay" column="package_start_day"/>
         <result property="packageEndDay" column="package_end_day"/>
+        <collection property="user" resultMap="userMap"/>
     </resultMap>
 
     <!-- 패키지 상세 조회 -->
@@ -42,9 +50,9 @@
     </select>
 
     <!-- 사용자별 패키지 조회 -->
-    <select id="findByUserId" parameterType="User" resultMap="PackagePostResultMap">
+    <select id="findByUserId" resultMap="PackagePostResultMap">
         SELECT * FROM package
-        WHERE user_id = #{userId}
+        WHERE user_id = #{user.id}
     </select>
 
     <!-- 패키지 상태별 조회 -->

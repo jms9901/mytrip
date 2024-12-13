@@ -35,8 +35,9 @@
 
 <!-- Main Section -->
 <main>
-    <form th:action="@{/board/city}" method="post" enctype="multipart/form-data">
-        <div>
+    <form th:action="@{/board/city/{cityId}/package/save(cityId=${cityId})}"
+          method="post" enctype="multipart/form-data">
+    <div>
             <!-- 도시 ID -->
             <input type="hidden" id="cityId" name="cityId" th:value="${cityId}">
             <!-- 패키지 비용 -->

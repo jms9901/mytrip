@@ -1,7 +1,9 @@
 package com.lec.spring.mytrip.service;
 
 import com.lec.spring.mytrip.domain.PackagePost;
+import com.lec.spring.mytrip.domain.User;
 import com.lec.spring.mytrip.repository.PackagePostRepository;
+import com.lec.spring.mytrip.util.U;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -60,12 +62,25 @@ public class PackagePostServiceImpl implements PackagePostService {
     @Override
     @Transactional  //게시글-이미지 DB 저장-이미지 서버 저장을 트랜잭션으로
     public int savePackage(PackagePost pkg, List<MultipartFile> files) {
-        // 패키지 데이터 검증
+        System.out.println("서비스 들어옴");
+
+//        User user = U.getLoggedUser();
+        User user = User.builder()
+                .id(1)
+                .name("이경원")
+                .email("wonwon123123@naver.com")
+                .build();
+        pkg.setUser(user);
+
+        // 패키지 데이터 검증. 이거 찐하게 수정해야겠는데
+        if (user == null) {
+            throw new RuntimeException("로그인 하세요.");
+        }
         if (pkg == null) {
             throw new RuntimeException("패키지 정보가 null일 수 없습니다.");
         }
         if (pkg.getCityId() <= 0 || pkg.getUser().getId() <= 0 || pkg.getPackageTitle() == null || pkg.getPackageTitle().trim().isEmpty()) {
-            throw new RuntimeException("유효하지 않은 패키지 데이터입니다. 도시 ID, 사용자 ID, 제목은 필수입니다.");
+            throw new RuntimeException("유효하지 않은 패키지 데이터입니다. 다시 작성해주세요");
         }
 
         // 패키지 저장

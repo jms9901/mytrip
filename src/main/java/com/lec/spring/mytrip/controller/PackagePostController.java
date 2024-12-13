@@ -87,13 +87,13 @@ public class PackagePostController {
     public String savePackage(@PathVariable int cityId,
                               @RequestParam("files") List<MultipartFile> files,
                               @ModelAttribute PackagePost packagePost){
-
+        System.out.println("컨트롤러 들어옴");
         // 패키지 저장 처리
         // 패키지 저장 처리. 패키지 저장에서 첨부파일 서비스를 호출
-        int id = packagePostService.savePackage(packagePost, files);
+        int packageId = packagePostService.savePackage(packagePost, files);
 
         // 저장 후 상세 페이지로 리다이렉트
-        return "redirect:" + cityId + "/package/detail/" + id;
+        return "redirect:/" + cityId + "/package/detail/" + packageId;
     }
 
     // 패키지 수정 페이지 이동
