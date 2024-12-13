@@ -51,7 +51,7 @@
 <main class="container my-4">
     <!-- Hero Section -->
     <div class="hero" th:each="city : ${cities}" th:if="${city.cityId == cityId}">
-        <img th:src="${city.cityImg}" alt="City Image">
+        <img th:src="@{/img/${city.cityImg}}" alt="City Image">
         <h1 th:text="@{${city.cityName}}"></h1>
         <button class="cityLikeButton" type="button">좋아요 이미지</button>
     </div>

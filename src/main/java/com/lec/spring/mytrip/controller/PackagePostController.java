@@ -88,10 +88,8 @@ public class PackagePostController {
                               //첨부파일 저장
     ) {
         // 패키지 저장 처리
-        // 패키지 저장 처리 후 저장된 ID 반환
+        // 패키지 저장 처리. 패키지 저장에서 첨부파일 서비스를 호출
         int id = packagePostService.savePackage(packagePost);
-
-        // 첨부파일 저장 서비스 호출
 
         // 저장 후 상세 페이지로 리다이렉트
         return "redirect:/board/" + cityId + "/package/detail/" + id;
