@@ -39,7 +39,7 @@ public class PackageAttachmentServiceImpl implements PackageAttachmentService {
         String uploadPath = System.getProperty("user.dir") + File.separator + "uploads/package"; // 현재 작업 디렉토리 기준
 
         File uploadDir = new File(uploadPath);
-        System.out.println("첨부파일 저장 디렉토리: " + uploadPath); // 경로 출력
+//        System.out.println("첨부파일 저장 디렉토리: " + uploadPath); // 경로 출력
 
         String fileName = ""; //파일 이름
 
@@ -67,7 +67,8 @@ public class PackageAttachmentServiceImpl implements PackageAttachmentService {
                     }
 
                     // 2. 파일 이름 생성
-                    fileName = generateUniqueFileName(file.getOriginalFilename(), packagePost.getUser().getId());
+                    fileName = generateUniqueFileName(
+                            file.getOriginalFilename(), packagePost.getUser().getId());
 
                     // 3. DB에 첨부파일 정보 저장
                     PackagePostAttachment packagePostAttachment = new PackagePostAttachment();
@@ -83,7 +84,7 @@ public class PackageAttachmentServiceImpl implements PackageAttachmentService {
                     // 5. 파일을 static 경로로 복사
                     try {
                         // 스태틱 디렉토리 경로 설정
-                        Path staticPath = Paths.get("src/main/resources/static/uploads", fileName);
+                        Path staticPath = Paths.get("src/main/resources/static/uploads/package", fileName);
 
                         // static 디렉토리가 존재하지 않으면 생성
                         if (!Files.exists(staticPath.getParent())) {

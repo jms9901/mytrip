@@ -7,7 +7,7 @@
     <insert id="insertAttachment"
             parameterType="com.lec.spring.mytrip.domain.attachment.PackagePostAttachment">
         INSERT INTO package_attachment (package_id, package_attachment_file)
-        VALUES (#{packageId}, #{PackageAttachmentFile})
+        VALUES (#{packageId}, #{packageAttachmentFile})
     </insert>
 
     <!-- 패키지 ID로 첨부파일 목록 조회 -->

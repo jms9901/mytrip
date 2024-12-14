@@ -42,7 +42,7 @@ public class PackagePostServiceImpl implements PackagePostService {
             throw new IllegalArgumentException("ID가 " + packageId + "인 패키지를 찾을 수 없습니다.");
         }
 
-        System.out.println(postAndAttachment.toString());
+//        System.out.println(postAndAttachment.toString());
 
 
         return postAndAttachment;

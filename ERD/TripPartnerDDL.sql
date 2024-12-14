@@ -25,7 +25,7 @@ CREATE TABLE board
     user_id          INT           NOT NULL COMMENT '사용자 ID',
     city_id          INT           NOT NULL COMMENT '도시 ID',
     board_subject    VARCHAR(100)  NOT NULL COMMENT '피드 제목',
-    board_content    VARCHAR(1000) NOT NULL COMMENT '파드 내용',
+    board_content    LONGTEXT      NOT NULL COMMENT '피드 내용',
     board_view_count INT           NOT NULL DEFAULT 0 COMMENT '피드 조회수',
     board_date       DATETIME      NOT NULL DEFAULT NOW() COMMENT '피드 게시일',
     board_category   VARCHAR(100)  NOT NULL COMMENT '피드 카테고리',

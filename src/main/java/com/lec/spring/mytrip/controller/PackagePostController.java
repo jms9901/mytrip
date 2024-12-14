@@ -81,7 +81,7 @@ public class PackagePostController {
         model.addAttribute("packagePost", packagePostAndAttachment.getPackagePost());
         model.addAttribute("packageId", packageId);
         model.addAttribute("attachments", packagePostAndAttachment.getPackagePostAttachment());
-        packagePostAndAttachment.getPackagePostAttachment().forEach(System.out::println);
+//        packagePostAndAttachment.getPackagePostAttachment().forEach(System.out::println);
 
         return "board/city/package/detail";
     }
