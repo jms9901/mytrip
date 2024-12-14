@@ -14,8 +14,6 @@
     <script type="text/javascript" src="/lib/JQuery/jquery.min.1.7.js"></script>    <!--경로 & 실제 파일 존재여부 반드시 확인-->
     <script type="text/javascript" src="/lib/JQuery/modernizr.2.5.3.min.js"></script>    <!--경로 & 실제 파일 존재여부 반드시 확인-->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!--	<script type="text/javascript" src="../lib/JQuery/yepnope.js"></script>-->
-    <!--	<script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/3.11.2/modernizr.min.js"></script>-->
     <link rel="stylesheet" type="text/css" href="/css/bookGuestBook.css">
     <link href='https://fonts.googleapis.com/css?family=Kaushan Script' rel='stylesheet'>
 
@@ -32,9 +30,6 @@
     <!-- feedEntries 동적 생성 영역 -->
 </div>
 <div class="flipbook-viewport">
-
-
-
     <div class="container">
         <div class="flipbook">
             <div class="titleBook" style="background-image:url(/img/titleGuestBook.png)"></div>
@@ -52,158 +47,39 @@
 </div>
 <div class="menu5" id="5" style="background-image: url(/img/mypageMenu.png);"><h4 id="Invoice">&nbsp;GuestBook</h4>
 </div>
-
-<button id="open-modal" class="open-modal-btn">피드 작성</button>
-<div class="writeFeed" style="background-image: url(/img/feedDetailFrame.png);">
-    <form action="/mypage/feed/createFeed" method="post" enctype="multipart/form-data">
-
-        <label for="city">도시 선택:</label>
-        <select name="cityId" id="city" required>
-            <option value="1">괌</option>
-            <option value="2">마닐라</option>
-            <option value="3">나트랑</option>
-            <option value="4">세부</option>
-            <option value="5">방콕</option>
-            <option value="6">파리</option>
-            <option value="7">홍콩</option>
-            <option value="8">상하이</option>
-            <option value="9">하와이</option>
-            <option value="10">다낭</option>
-            <option value="11">울란바토르</option>
-            <option value="12">발리</option>
-            <option value="13">로스엔젤레스</option>
-            <option value="14">두바이</option>
-            <option value="15">도쿄</option>
-            <option value="16">런던</option>
-            <option value="17">삿포로</option>
-            <option value="18">사이판</option>
-            <option value="19">이스탄불</option>
-            <option value="20">로마</option>
-            <option value="21">뉴욕</option>
-            <option value="22">하얼빈</option>
-            <option value="23">오사카</option>
-            <option value="24">마카오</option>
-            <option value="25">델리</option>
-            <option value="26">프랑크푸르트</option>
-            <option value="27">시드니</option>
-            <option value="28">호쿠오카</option>
-            <option value="29">오키나와</option>
-            <option value="30">타이베이</option>
-            <option value="31">벤쿠버</option>
-            <option value="32">지린</option>
-        </select>
-
-
-        <input type="text" name="boardSubject" placeholder="제목" required>
-        <textarea name="boardContent" placeholder="내용" required></textarea>
-        <input type="file" name="files" multiple>  <!-- 여러 파일을 선택 가능 -->
-        <button type="submit">피드 작성</button>
-        <!-- 모달 안에 닫기 버튼 추가 -->
-        <button type="button" class="close-modal-btn" onclick="closeModal()">닫기</button>
-    </form>
-</div>
-
-
-<div>
-    <div>
-        <div class="goChat" style="background-image: url(/img/mypageChat.png);"></div>
+ <div class="goChat" style="background-image: url(/img/mypageChat.png);"></div>
     </div>
-</div>
-</div>
 
 <script type="text/javascript">
-    function closeModal() {
-        $('.writeFeed').hide();  // 모달 숨기기
-    }
-
-
 
     $(document).ready(function () {
-        $('#open-modal').click(function (){
-            $('.writeFeed').show();
-        });
-
-
-        // 피드 항목 클릭 시 DetailModal을 열도록 이벤트 위임 추가
-        $(document).on('click', '.feed-entry', function() {
-            const index = $(this).data('index');
-            const feed = feeds[index];
-            console.log(feed);
-
-            // 각 피드 항목에 대한 모달 표시
-            const modal = $(`#feed-modal-${index}`);
-
-            // 모달을 표시
-            modal.css('display', 'block');
-        });
-
-        // 모달 닫기 버튼 클릭 이벤트 처리
-        $(document).on('click', '.close-modal', function() {
-            const modal = $(this).closest('.feed-modal');
-
-            // 모달을 숨김
-            modal.css('display', 'none');
-        });
-
-
-        $('.writeFeed form').submit(function(event) {
-            event.preventDefault();  // 페이지 새로 고침 방지
-            const formData = new FormData(this);  // 폼 데이터 가져오기
-
-            $.ajax({
-                url: `/mypage/feed/create/${userId}`,  // 제출할 URL
-                type: 'POST',
-                data: formData,
-                contentType: false,  // 파일 업로드를 위한 설정
-                processData: false,  // jQuery에서 데이터 처리 방지
-                success: function(response) {
-                    console.log('피드 작성 성공:', response);
-                    closeModal();  // 피드 작성 후 모달 닫기
-                    loadFeedPages();  // 새로운 피드 목록 로드
-                },
-                error: function(error) {
-                    console.log('에러 발생:', error);
-                }
-            });
-        });
 
 
         const userId = getToUserIdFromUrl();
         const apiUrl = `/mypage/likedposts/${userId}`; // API URL 설정
-        let initialPageCount = $('.flipbook .page').length;
-        window.feedList =[];
 
         // 앱 로드 및 초기화
         initializeApp();
-
-        let currentPage = 1; // 현재 페이지 번호
-        const entriesPerPage = 9; // 한 페이지에 출력할 항목 수
-        let pages = {}; // 각 페이지에 추가된 항목 수를 저장
-        let currentRow=0;
 
         function initializeApp() {
             checkAndLoadFlipbook();
             // loadFeedPages();
 
-            // 채팅 hover 효과
-            $('.goChat').hover(() => hoverChat());
         }
-
-
+        let currentPage = 1; // 현재 페이지 번호
+        const entriesPerPage = 9; // 한 페이지에 출력할 항목 수
+        let pages = {}; // 각 페이지에 추가된 항목 수를 저장
+        let currentRow=0;
         // Flipbook 초기화
-        function checkAndLoadFlipbook(callback) {
+        function checkAndLoadFlipbook() {
             if (isCSSTransformSupported()) {
-                $.getScript('/lib/animationjs/turn.js', () => {
-                    loadApp();
-                    callback(); // Flipbook 로딩 후 콜백 호출
-                });
+                $.getScript('/lib/animationjs/turn.js', () => loadApp());
             } else {
-                $.getScript('../../lib/JQuery/turn.html4.min.js', () => {
-                    loadApp();
-                    callback();
-                });
+                $.getScript('../../lib/JQuery/turn.html4.min.js', () => loadApp());
             }
         }
+
+
 
         function loadApp() {
             $('.flipbook').turn({
@@ -223,10 +99,18 @@
             const transformProperties = ['transform', 'WebkitTransform', 'MozTransform', 'OTransform', 'msTransform'];
             return transformProperties.some(prop => testElement.style[prop] !== undefined);
         }
+
+        // URL에서 toUserId 값 추출하는 함수
+        function getToUserIdFromUrl() {
+            const pathParts = window.location.pathname.split('/');
+            const UserId = pathParts[pathParts.length - 1]; // 마지막 부분이 toUserId
+            return UserId;
+        }
+
         let feeds = [];
         // 피드 리스트을 요청
         $.ajax({
-            url: `/mypage/likedposts/${userId}`,  // 사용자 ID로 API 호출
+            url: `/mypage/likedpackages/${userId}`,  // 사용자 ID로 API 호출
             type: 'GET',
             dataType: 'json',  // JSON 응답을 받기 위한 설정
 
@@ -239,70 +123,6 @@
                 console.log("에러 발생:", error);
             }
         });
-        // 결제 내역을 출력하는 함수
-        function loadFeed(feeds) {
-            if (feeds && feeds.length > 0) {
-                feeds.forEach((feed, index) => {
-                    let attachmentHtml = '';
-
-                    // 첨부파일이 있을 경우 처리
-                    if (feed.attachmentFile) {
-                        // feed.attachmentFiles가 배열인 경우 처리
-                        if (Array.isArray(feed.attachmentFile)) {
-                            attachmentHtml = feed.attachmentFile.map(file => {
-                                const filePath = `/uploads/${file}`; // 첨부파일의 경로
-                                return `<img src="${filePath}" alt="첨부파일" class="feed-attachment">`;
-                            }).join('');
-                        }
-                        // feed.attachmentFiles가 문자열인 경우 처리
-                        else if (typeof feed.attachmentFile === 'string') {
-                            const filePath = `/uploads/${feed.attachmentFile}`; // 첨부파일의 경로
-                            attachmentHtml = `<img src="${filePath}" alt="첨부파일" class="feed-attachment">`;
-                        }
-                    }
-
-                    const entryHtml = `
-                <div class="feed-entry" style="background-image: url(/img/postFrame.png)" data-index="${index}">
-                    ${attachmentHtml} <!-- 첨부파일 이미지 추가 -->
-                    <div>${feed.subject}</div>
-                </div>
-            `;
-
-                    // 항목을 페이지에 추가
-                    addEntryToPage(entryHtml, index + 1);
-                    console.log(`feed Entry ${index + 1} added to page`);
-                });
-
-                // 모달 내 수정 버튼 클릭 이벤트
-                $('.edit-feed-modal').on('click', function() {
-                    const feedId = $(this).data('feed-id');
-                    const feedIndex = $(this).data('index');
-                    openEditModal(feedId, feedIndex);  // 수정 모달 열기
-                });
-
-                // 모달 내 삭제 버튼 클릭 이벤트
-                $('.delete-feed-modal').on('click', function() {
-                    const feedId = $(this).data('feed-id');
-                    const feedIndex = $(this).data('index');
-                    deleteFeed(feedId, feedIndex);  // 피드 삭제 요청
-                });
-            } else {
-                $('#feedEntries').append('<p>피드가 없습니다.</p>');
-            }
-        }
-
-
-
-
-
-        // URL에서 toUserId 값 추출하는 함수
-        function getToUserIdFromUrl() {
-            const pathParts = window.location.pathname.split('/');
-            const UserId = pathParts[pathParts.length - 1]; // 마지막 부분이 toUserId
-            return UserId;
-        }
-
-
 
 
 
@@ -322,8 +142,8 @@
                 data.forEach((feeds, index) => {
                     // 첨부파일이 있을 경우
                     let attachmentHtml = '';
-                    if (feeds.attachmentFile) {
-                        const filePath = `/uploads/${feeds.attachmentFile}`; // 첨부파일의 경로
+                    if (feeds.packageAttachmentFile) {
+                        const filePath = `/uploads/${feeds.packageAttachmentFile}`; // 첨부파일의 경로
                         console.log('Image path: ' + filePath);  // /uploads/bus.jpg 경로가 올바르게 출력되는지 확인
                         attachmentHtml = `<img src="${filePath}" alt="첨부파일" class="feed-attachment">`; // 이미지 출력
                     }
@@ -339,6 +159,49 @@
                 });
             });
         }
+
+        // 결제 내역을 출력하는 함수
+        function loadFeed(feeds) {
+            if (feeds && feeds.length > 0) {
+                feeds.forEach((feed, index) => {
+                    let attachmentHtml = '';
+
+                    // 첨부파일이 있을 경우 처리
+                    if (feed.packageAttachmentFile) {
+                        // feed.attachmentFiles가 배열인 경우 처리
+                        if (Array.isArray(feed.packageAttachmentFile)) {
+                            attachmentHtml = feed.packageAttachmentFile.map(file => {
+                                const filePath = `/uploads/${file}`; // 첨부파일의 경로
+                                return `<img src="${filePath}" alt="첨부파일" class="feed-attachment">`;
+                            }).join('');
+                        }
+                        // feed.attachmentFiles가 문자열인 경우 처리
+                        else if (typeof feed.packageAttachmentFile === 'string') {
+                            const filePath = `/uploads/${feed.packageAttachmentFile}`; // 첨부파일의 경로
+                            attachmentHtml = `<img src="${filePath}" alt="첨부파일" class="feed-attachment">`;
+                        }
+                    }
+
+                    const entryHtml = `
+                <div class="feed-entry" style="background-image: url(/img/postFrame.png)" data-index="${index}">
+                    ${attachmentHtml} <!-- 첨부파일 이미지 추가 -->
+                    <div>${feed.subject}</div>
+                </div>
+            `;
+
+                    // 항목을 페이지에 추가
+                    addEntryToPage(entryHtml, index + 1);
+                    console.log(`feed Entry ${index + 1} added to page`);
+                });
+
+            } else {
+                $('#feedEntries').append('<p>피드가 없습니다.</p>');
+            }
+        }
+
+
+
+
 
         // 기존 페이지 삭제
         function resetFlipbook() {
@@ -410,7 +273,7 @@
             console.log(`새 페이지 생성: #page${pageNumber}`);
 
         }
-
+        $('.goChat').hover(() => hoverChat());
 
         // 채팅 hover 효과
         function hoverChat() {

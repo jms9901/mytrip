@@ -36,6 +36,10 @@ public class MypageLikeController {
     public String feedLikedview(@PathVariable String userId, Model model){
         return "mypage/MypageLike";
     }
+    @GetMapping("/packageliked/{userId}")
+    public String packageLikedview(@PathVariable  String userId, Model model){
+        return "mypage/MypagepackgaeLike";
+    }
 
     @GetMapping("/likedpackages/{userId}")
     @ResponseBody

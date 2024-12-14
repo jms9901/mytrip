@@ -578,3 +578,21 @@ insert into package_liked (user_id,package_id,package_liked_date)
 values (1,1,now());
 insert into package_liked (user_id,package_id,package_liked_date)
 values (1,2,now());
+insert into package_attachment (package_id, package_attachment_file)
+values(1,'bus.jpg');
+insert into package_liked (user_id,package_id,package_liked_date)
+values (1,3,now());
+insert into package_liked (user_id,package_id,package_liked_date)
+values (1,4,now());
+insert into package_liked (user_id,package_id,package_liked_date)
+values (1,5,now());
+insert into package_liked (user_id,package_id,package_liked_date)
+values (1,6,now());
+insert into package_liked (user_id,package_id,package_liked_date)
+values (1,7,now());
+insert into package_liked (user_id,package_id,package_liked_date)
+values (1,8,now());
+insert into package_liked (user_id,package_id,package_liked_date)
+values (1,9,now());
+insert into package_liked (user_id,package_id,package_liked_date)
+values (1,10,now());
