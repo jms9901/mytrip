@@ -39,13 +39,13 @@
 <!--                등록한 패키지 목록 동적으로 추가 -->
                 <div th:each="packagePost : ${packages}" class="package-item">
                     <div class="package-title">
-                        <div class="package-name" th:value="${packagePost.packageTitle}">[[${packagePost.packageTitle}]]</div>
+                        <div class="package-name" th:text="${packagePost.packageTitle}"></div>
                     </div>
-                    <div class="package-content" th:value="${packagePost.packageContent}">[[${packagePost.packageContent}]]</div>
-                    <div class="package-status ${getStatusClass(packages.packageStatus)}">${getStatusText(packages.packageStatus)}</div>
+                    <div class="package-content" th:text="${packagePost.packageContent}"></div>
+                    <div class="package-status ${getStatusClass(packages.packageStatus)}"></div>
                     <div class="liked">
                         <img src="/img/heart-icon-fill.png" alt="heart-icon-fill" id="liked-heart-icon">
-                        <span class="likedCnt" th:value="${packagePost.likedCount}">[[${packagePost.likedCount}]]</span>
+                        <span class="likedCnt" th:text="${packagePost.likedCount}"></span>
                     </div>
                 </div>
             </div>
@@ -99,14 +99,14 @@
 
         <!--  개인정보 수정 모달   -->
         <div class="modal hidden" id="businessUpdate-modal">
-            <form th:action="@{/business/updateProfile}">
+            <form th:action="@{/business/profile/${userId}}">
                 <div class="header">
                     <span class="close-button">&times;</span>
                     <h2 class="businessName" th:value="${user.username}"></h2>
                     <span class="joinDate">가입일 : [[${user.regDate}]]</span>
                 </div>
                 <div class="profile">
-                    <img th:src="@{img/basicProfile.png}" alt="프로필">
+                    <img th:src="@{/img/basicProfile.png}" alt="프로필">
                 </div>
                 <div class="businessInfo">
                     <label>
@@ -164,7 +164,7 @@
                         <div class="slideshow-container">
                             <!-- 해당 패키지 이미지 프리뷰 동적 생성 -->
                             <div class="slide fade">
-                                <img th:src="${attachment.packageAttachment.fileName}" alt="package-image" class="packageImage">
+<!--                                <img th:src="${attachment.packageAttachment.fileName}" alt="package-image" class="packageImage">-->
                             </div>
                         </div>
 
@@ -197,15 +197,14 @@
 
                         <label>
                             <span>최대 인원</span>
-                            <input type="number" class="packageMaxPeople" th:value="${packagePost.packageMaxPeople}">
+                            <input type="number" class="packageMaxpeople" th:value="${packagePost.packageMaxpeople}">
                         </label>
                     </div>
-                </div>
 
                 <div class="package-details">
                     <label>
                         <span>패키지 내용</span>
-                        <textarea class="packageContent" th:text="${packagePost.packageContent}"></textarea>
+                        <textarea class="packageContent" th:value="${packagePost.packageContent}"></textarea>
                     </label>
                 </div>
 
@@ -227,6 +226,7 @@
                 </div>
             </div>
         </div>
+    </div>
 
 </div>
 

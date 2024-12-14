@@ -76,7 +76,7 @@ public class BusinessMypageController {
     // businessMain.html
     @GetMapping("/business/js/{userId}")
     @ResponseBody
-    public ResponseEntity<?> businessMypage(@PathVariable("userId") int userId, int packageId) {
+    public ResponseEntity<?> businessMypage(@PathVariable("userId") int userId, @RequestParam(required = true) int packageId) {
         try {
             // 유저 정보 로드
             User user = businessMypageService.getUserById(userId);
@@ -189,7 +189,10 @@ public class BusinessMypageController {
     // JSON API 엔드포인트(js요청)
     // businessMain.html main 에서 패키지 클릭 시 해당 정보가 담긴 모달 출력된 상태에서 수정 버튼 누르면 정보 update 가능
     @GetMapping("/package/update/{packageId}")
-    public ResponseEntity<?> updatePackage(@PathVariable("packageId") int packageId, @RequestBody PackagePost updatedPackage) {
+    public ResponseEntity<?> updatePackage(
+            @PathVariable("packageId") int packageId,
+            @RequestBody PackagePost updatedPackage,
+            @AuthenticationPrincipal User user) {
         try {
             // 패키지 데이터 조회
             PackagePost existingPackage = packagePostService.getPackageDetails(packageId);
@@ -200,6 +203,11 @@ public class BusinessMypageController {
             // 상태 확인 (대기/미승인 상태만 수정 가능)
             if (!"대기".equals(existingPackage.getPackageStatus()) && !"미승인".equals(existingPackage.getPackageStatus())) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body("해당 패키지는 대기/미승인 상태에서만 수정할 수 있습니다.");
+            }
+
+            // 권한 확인
+            if (user.getId() != existingPackage.getUserId()) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("해당 패키지를 수정할 수 있는 권한이 없습니다.");
             }
 
             // 수정 수행

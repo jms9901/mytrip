@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             // 데이터 렌더링
             packageListContainer.innerHTML = data.map(packages => `
-                <div class="package-item">
+                <div class="package-item" data-package-id="${packages.packageId}">
                     <div class="package-title">
                         <div class="package-name">${packages.packageTitle}</div>
                     </div>
@@ -154,14 +154,18 @@ document.addEventListener('DOMContentLoaded', function() {
                         const updatedPackageData = {
                             packageId: packageId,
                             packageTitle: packageModal.querySelector('.packageTitle').value,
-                            packageImage: packageModal.querySelector('.packageImage').value,
+                            // packageImage: packageModal.querySelector('.packageImage').value,
                             cityName: packageModal.querySelector('.cityName').value,
                             packageStartDay: packageModal.querySelector('.packageStartDay').value,
                             packageEndDay: packageModal.querySelector('.packageEndDay').value,
                             packageCost: packageModal.querySelector('.packageCost').value,
-                            maxPeople: packageModal.querySelector('.packageMaxPeople').value,
+                            maxPeople: packageModal.querySelector('.packageMaxpeople').value,
                             packageContent: packageModal.querySelector('.packageContent').value
                         };
+
+                        // Date formatting: Ensuring date fields are in the required yyyy-MM-dd format
+                        updatedPackageData.packageStartDay = updatedPackageData.packageStartDay.split('T')[0];
+                        updatedPackageData.packageEndDay = updatedPackageData.packageEndDay.split('T')[0];
 
                         fetch(`/mypage/package/update/${packageId}`, {
                             method: 'POST',
@@ -204,7 +208,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 // 기존 모달 내용 업데이트 로직 유지
                 packageModal.querySelector('.package-title').textContent = packageDetail.packageTitle;
-                packageModal.querySelector('.package-regdate').textContent = `게시일: ${packageDetail.packageRegDate}`;
+                packageModal.querySelector('.package-regdate').textContent = `게시일: ${packageDetail.packageRegdate}`;
 
                 // 이미지 슬라이드 업데이트
                 const slideshowContainer = packageModal.querySelector('.slideshow-container');
@@ -219,7 +223,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 packageModal.querySelector('.packageStartDay').value = packageDetail.packageStartDay;
                 packageModal.querySelector('.packageEndDay').value = packageDetail.packageEndDay;
                 packageModal.querySelector('.packageCost').value = packageDetail.packageCost;
-                packageModal.querySelector('.packageMaxPeople').value = packageDetail.packageMaxPeople;
+                packageModal.querySelector('.packageMaxpeople').value = packageDetail.packageMaxpeople;
                 packageModal.querySelector('.packageContent').value = packageDetail.packageContent;
 
                 // 패키지 상태 표시
