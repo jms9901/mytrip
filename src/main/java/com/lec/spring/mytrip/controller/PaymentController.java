@@ -7,8 +7,10 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -27,30 +29,10 @@ public class PaymentController {
 
     //결제 저장
     @PostMapping("board/package/payment")
-    public String packagePaymentSave() {
-        Payment payment = Payment.builder()
-//                paymentId=null,
-                .paymentId(null)
-//                userId=0,
-                .userId(2)
-//                packageId=0,
-                .packageId(2)
-//                userCount=0,
-                .userCount(4)
-//                Date=null,
-                .Date(null)
-//                Status=null,
-                .Status(null)
-//                userName=null,
-                .userName("qjatns777")
-//                packageTitle=null,
-                .packageTitle("그럼요 당연하죠 네네칰흰")
-//                price=0,
-                .price(39800)
-//                totalPrice=0
-                .totalPrice(0)
-                .cityId(1)
-                .build();
+    public String packagePaymentSave(
+            @ModelAttribute Payment payment
+    ) {
+
 
         System.out.println(payment);
         Response response = paymentService.paymentSave(payment);
