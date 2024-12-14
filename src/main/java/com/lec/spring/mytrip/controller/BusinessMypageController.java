@@ -31,8 +31,6 @@ public class BusinessMypageController {
     private final PackagePostService packagePostService;
 
     @Autowired
-    private View error;
-    @Autowired
     private PackagePostRepository packagePostRepository;
 
     public BusinessMypageController(BusinessMypageService businessMypageService, UserServiceImpl userService, PackagePostService packagePostService) {
@@ -78,7 +76,7 @@ public class BusinessMypageController {
     // businessMain.html
     @GetMapping("/business/js/{userId}")
     @ResponseBody
-    public ResponseEntity<?> businessMypage(@PathVariable("userId") int userId) {
+    public ResponseEntity<?> businessMypage(@PathVariable("userId") int userId, int packageId) {
         try {
             // 유저 정보 로드
             User user = businessMypageService.getUserById(userId);
@@ -101,26 +99,17 @@ public class BusinessMypageController {
             // 패키지 목록 로드
             List<PackagePost> packages = businessMypageService.likeCntByPackage(userId);
             // 패키지 상세정보 로드
-            List<PackagePost> packageDetail = packagePostRepository.findByUserId(userId);
+            PackagePost packageDetail = packagePostService.getPackageDetails(packageId);
             // 결제 내역 로드
             List<Payment> payments = businessMypageService.getPaymentByCompanyId(userId);
 
             log.info("Business data: {}, Packages: {}, Payments: {}", user, packages, payments);
 
-            // 패키지가 없는 경우 빈 배열 반환
-            if (packages == null || packages.isEmpty()) {
+            // 패키지, 패키지 상세정보, 결제 내역이 없는 경우 빈 배열 반환
+            if (packages == null || packages.isEmpty() || packageDetail == null || payments == null || payments.isEmpty()) {
                 return ResponseEntity.ok(Collections.emptyList());
             }
 
-            // 패키지 상세정보가 없는 경우 빈 배열 반환
-            if(packageDetail == null || packageDetail.isEmpty()) {
-                return ResponseEntity.ok(Collections.emptyList());
-            }
-
-            // 결제 내역이 없는 경우 빈 배열 반환
-            if(payments == null || payments.isEmpty()) {
-                return ResponseEntity.ok(Collections.emptyList());
-            }
 
             return ResponseEntity.ok(packages);
 
