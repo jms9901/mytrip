@@ -80,6 +80,36 @@
 
             // 채팅 hover 효과
             $('.goChat').hover(() => hoverChat());
+
+            $('.myPageGoHome').on('click', function() {
+
+                window.location.href = '/mypage/' + userId;
+            });
+            $('.menu1').on('click', function() {
+
+                window.location.href = '/bookmain/payment/list/' + userId;
+            });
+            $('.menu2').on('click', function() {
+
+                window.location.href = '/mypage/feed/list/' + userId;
+            });
+            $('.menu3').on('click', function() {
+
+                window.location.href = '/mypage/feedliked/' + userId;
+            });
+            $('.menu4').on('click', function() {
+
+                window.location.href = '/mypage/packageliked/' + userId;
+            });
+            $('.menu5').on('click', function() {
+
+                window.location.href = '/bookMain/bookGuestBook/list/' + userId;
+            });
+            $('.goChat').on('click', function() {
+
+                window.location.href = '/chat';
+            });
+
         }
 
         // Flipbook 초기화
@@ -129,7 +159,7 @@
 
                 payments.forEach((payment, index) => {
                     const entryHtml = `
-                    <div class="payment-entry" style="background-image: url(/img/paymentReceipt.png); background-repeat: no-repeat; background-size: contain; height: 26%; font-size:15px; line-height: 70%" >
+                    <div class="payment-entry" style="background-image: url(/img/paymentReceipt.png); margin-left: 9%; background-repeat: no-repeat; background-size: contain; height: 26%; font-size:15px; line-height: 70%" >
                         <h4><br><br><br><br><br>&nbsp&nbsp Package: ${payment.packageTitle}</h4>
                         <p>&nbsp&nbsp Date: ${payment.date}</p>
                         <p>&nbsp&nbsp Price: ${payment.price}</p>
