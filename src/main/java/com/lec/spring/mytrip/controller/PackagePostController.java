@@ -1,8 +1,10 @@
 package com.lec.spring.mytrip.controller;
 
 import com.lec.spring.mytrip.domain.City;
+import com.lec.spring.mytrip.domain.Feed;
 import com.lec.spring.mytrip.domain.PackagePost;
 import com.lec.spring.mytrip.service.CityService;
+import com.lec.spring.mytrip.service.FeedService;
 import com.lec.spring.mytrip.service.PackagePostService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/board/city")
@@ -17,10 +20,12 @@ public class PackagePostController {
 
     private final PackagePostService packagePostService;
     private final CityService cityService;
+    private final FeedService feedService;
 
-    public PackagePostController(PackagePostService packagePostService, CityService cityService) {
+    public PackagePostController(PackagePostService packagePostService, CityService cityService, FeedService feedService) {
         System.out.println("PackagePostController() 시작");
         this.cityService = cityService;
+        this.feedService = feedService;
         this.packagePostService = packagePostService;
     }
 
@@ -143,21 +148,32 @@ public class PackagePostController {
                                 @PathVariable int groupId,
                                 Model model) {
         // 소모임 상세 페이지로 이동
+        Feed feed =  feedService.detail(groupId);
+        model.addAttribute("feed", feed);
+        model.addAttribute("cityId", cityId);
+        model.addAttribute("groupId", groupId);
     }
 
     // 소모임 글쓰기 페이지 이동
     // board.group.write.html
     @GetMapping("{cityId}/group/write")
-    public void writeGroupPage(@PathVariable int cityId) {
+    public String writeGroupPage(@PathVariable int cityId) {
         // 소모임 글쓰기 페이지로 이동
+        return "board/city/group/write";
     }
 
     // 소모임 저장
     @PostMapping("{cityId}/group/save")
     public String saveGroup(@PathVariable int cityId,
-                            @ModelAttribute PackagePost groupPost) {
-        // 소모임 저장 처리
-        return "redirect:/board"; // 저장 후 리스트 페이지로 이동
+                            @ModelAttribute Feed feed,
+                            @RequestParam Map<String, MultipartFile> files) {
+        boolean isSaved = feedService.write(feed, files);
+
+        if (!isSaved) {
+            return "redirect:/error"; // 저장 실패 시 에러 페이지
+        }
+
+        return "redirect:/board/city/" + cityId + "/group/detail/" + feed.getBoardId();
     }
 
     // 소모임 수정 페이지 이동
@@ -167,24 +183,40 @@ public class PackagePostController {
                                 @PathVariable int groupId,
                                 Model model) {
         // 소모임 수정 페이지로 이동
-        return "group/edit";
+        Feed feed = feedService.findById(groupId);
+        model.addAttribute("feed", feed);
+        model.addAttribute("cityId", cityId);
+        return "board/city/group/edit";
     }
 
     // 소모임 수정 저장
     @PostMapping("{cityId}/group/update")
     public String updateGroup(@PathVariable int cityId,
-                              @ModelAttribute PackagePost groupPost) {
-        // 소모임 수정 저장 처리
-        return "redirect:/board"; // 수정 후 리스트 페이지로 이동
+                              @ModelAttribute Feed feed,
+                              @RequestParam Map<String, MultipartFile> files,
+                              @RequestParam(value = "delfile", required = false) int[] delfile) {
+        boolean isUpdated = feedService.update(feed, files, delfile);
+
+        if (!isUpdated) {
+            return "redirect:/error"; // 수정 실패 시 에러 페이지
+        }
+
+        return "redirect:/board/city/" + cityId + "/group/edit/" + feed.getBoardId();
     }
 
     // 소모임 삭제
     @DeleteMapping("{cityId}/group/delete/{groupId}")
     public String deleteGroup(@PathVariable int cityId,
                               @PathVariable int groupId) {
-        // 소모임 삭제 처리
-        return "redirect:/board"; // 삭제 후 리스트 페이지로 이동
+        boolean isDeleted = feedService.deleteById(groupId);
+
+        if (!isDeleted) {
+            return "redirect:/error"; // 삭제 실패 시 에러 페이지
+        }
+
+        return "redirect:/board";
     }
+
 
     // 도시별 피드 모음 페이지 이동
     // board.feeds.html

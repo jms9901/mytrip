@@ -12,10 +12,10 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class Feed {
-    private Long boardId;                       // 게시물 ID
+    private int boardId;                       // 게시물 ID
     private String boardSubject;                // 게시물 제목
     private String boardContent;                // 게시물 내용
-    private Long boardViewCount;                // 게시물 조회수
+    private int boardViewCount;                // 게시물 조회수
     private LocalDateTime boardDate;            // 게시물 작성일
     private String boardCategory;               // 게시물 카테고리 ("소모임" / "피드")
     private User user;                          // 사용자

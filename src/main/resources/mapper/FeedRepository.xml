@@ -29,13 +29,13 @@
     </insert>
 
     <!-- 특정 피드 id로 글 찾기 -->
-    <select id="findById" parameterType="long" resultType="com.lec.spring.mytrip.domain.Feed">
+    <select id="findById" parameterType="int" resultType="com.lec.spring.mytrip.domain.Feed">
         <include refid="SELECT_BOARD"/>
         WHERE board_id = #{id}
     </select>
 
     <!-- 특정 피드 id 글 조회수 증가 -->
-    <update id="viewCnt" parameterType="long">
+    <update id="viewCnt" parameterType="int">
         UPDATE board
         SET board_view_count = board_view_count + 1
         WHERE board_id = #{id}
@@ -48,7 +48,7 @@
     </select>
 
     <!-- 특정 사용자의 최신 게시물 9개 가져오기 -->
-    <select id="findRecentFeedByUser" parameterType="long" resultType="com.lec.spring.mytrip.domain.Feed">
+    <select id="findRecentFeedByUser" parameterType="int" resultType="com.lec.spring.mytrip.domain.Feed">
         <include refid="SELECT_BOARD" />
         WHERE user_id = #{user_id}
         ORDER BY board_date DESC
@@ -66,7 +66,7 @@
     </update>
 
     <!-- 특정 피드 id로 피드 삭제  -->
-    <delete id="delete" parameterType="long">
+    <delete id="delete" parameterType="int">
         DELETE FROM board
         WHERE board_id = #{id}
     </delete>
@@ -92,12 +92,12 @@
                  WHERE board_id = #{boardId}
     </select>
 
-    <delete id="deleteAttachment" parameterType="long">
+    <delete id="deleteAttachment" parameterType="int">
         DELETE FROM board_attachment
                WHERE board_attachment_id = #{boardAttachmentId}
     </delete>
 
-    <delete id="deleteAttachmentByBoardId" parameterType="long">
+    <delete id="deleteAttachmentByBoardId" parameterType="int">
         DELETE FROM board_attachment WHERE board_id = #{boardId}
     </delete>
 
