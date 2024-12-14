@@ -245,7 +245,7 @@ body{
 	position: absolute;
 	width: 90%;
 	height: 88%;
-	border: solid red 1px;
+	/*border: solid red 1px;*/
 	margin: 15px;
 	/*background-color: white;*/
 	top: 3%;
@@ -288,7 +288,7 @@ body{
 .decorateName{
 	width: 180px;
 	height: 30px;
-	border: solid red 1px;
+	/*border: solid red 1px;*/
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -298,7 +298,7 @@ body{
 .firstSection{
 	width: 90%;
 	height: 30%;
-	border: solid red 1px;
+	/*border: solid red 1px;*/
 	margin: 15px;
 	top: 3%;
 	display: flex;
@@ -309,7 +309,7 @@ body{
 .secondSection{
 	width: 90%;
 	height: 30%;
-	border: solid red 1px;
+	/*border: solid red 1px;*/
 	margin: 15px;
 	top: 3%;
 	display: flex;
@@ -319,7 +319,7 @@ body{
 .thirdSection{
 	width: 90%;
 	height: 30%;
-	border: solid red 1px;
+	/*border: solid red 1px;*/
 	margin: 15px;
 	top: 3%;
 	display: flex;
@@ -328,7 +328,7 @@ body{
 .postFrame{
 	width: 32%;
 	height: 100%;
-	border: solid red 1px;	
+	/*border: solid red 1px;	*/
 	margin-left:3px;
 	margin-right: 3px;
 	background-image: url('../img/postFrame.png');
@@ -340,7 +340,7 @@ body{
 .postImg{
 	width: 80%;
 	height: 50%;
-	border: solid red 1px;	
+	/*border: solid red 1px;	*/
 	margin-left:10px;
 	margin-right: 10px;
 	margin-top: 20%;
@@ -352,7 +352,7 @@ body{
 .postTitle{
 	width: 80%;
 	height: 15%;
-	border: solid red 1px;	
+	/*border: solid red 1px;	*/
 	margin-left:10px;
 	margin-right: 10px;
 	margin-top: 4%;
@@ -377,7 +377,7 @@ body{
 	cursor: pointer;
 }
 .CityLikedImg{
-	border: solid red 1px;
+	/*border: solid red 1px;*/
 	width: 250px;
 	height: 130px;
 	cursor: pointer;
@@ -493,7 +493,7 @@ body{
 
 	width: 30px;
 	height: 30px;
-	border: red solid 1px;
+	/*border: red solid 1px;*/
 	right: 10px;
 	background-repeat: no-repeat;
 	background-size: cover;
@@ -668,3 +668,9 @@ button.next {
 	font-size:10px;
 }
 
+.mypageUserIntroduce {
+	display: flex;
+	justify-content: center;  /* 가로 기준 가운데 정렬 (필요시 추가) */
+	align-items: center;      /* 세로 기준 가운데 정렬 */
+
+}

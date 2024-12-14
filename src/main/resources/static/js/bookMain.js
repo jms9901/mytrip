@@ -11,6 +11,10 @@ document.addEventListener('DOMContentLoaded', function () {
     const nextButton = cityLikedContainer.querySelector('.next');
 
     let currentSlide = 0;
+    function goToPage() {
+        var url = '/mypage/bookMain/' + userId;
+        window.location.href = url;
+    }
 
     // 도시 좋아요 목록을 가져오는 API 호출
     fetch(`/likey/likedCity?userId=${userId}`)
@@ -470,4 +474,35 @@ $(document).ready(function() {
 
     // 페이지 로드 시 피드 데이터 로드
     loadFeeds();
+
+    $('.myPageGoHome').on('click', function() {
+
+        window.location.href = '/mypage/' + userId;
+    });
+    $('.menu1').on('click', function() {
+
+        window.location.href = '/bookmain/payment/list/' + userId;
+    });
+    $('.menu2').on('click', function() {
+
+        window.location.href = '/mypage/feed/list/' + userId;
+    });
+    $('.menu3').on('click', function() {
+
+        window.location.href = '/mypage/feedliked/' + userId;
+    });
+    $('.menu4').on('click', function() {
+
+        window.location.href = '/mypage/packageliked/' + userId;
+    });
+    $('.menu5').on('click', function() {
+
+        window.location.href = '/bookMain/bookGuestBook/list/' + userId;
+    });
+    $('.goChat').on('click', function() {
+
+        window.location.href = '/chat';
+    });
+
+
 });
