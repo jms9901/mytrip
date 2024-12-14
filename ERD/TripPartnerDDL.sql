@@ -145,7 +145,7 @@ CREATE TABLE package
     city_id           INT           NOT NULL COMMENT '도시 ID',
     user_id           INT           NOT NULL COMMENT '사용자 테이블 ID',
     package_status    VARCHAR(100)  NOT NULL DEFAULT '대기' COMMENT '패키지 허가 여부',
-    package_content   VARCHAR(1000) NOT NULL COMMENT '패키지 내용',
+    package_content   LONGTEXT      NOT NULL COMMENT '패키지 내용',
     package_regdate   DATETIME      NOT NULL DEFAULT NOW() COMMENT '패키지 게시일자',
     package_title     VARCHAR(100)  NOT NULL COMMENT '패키지 제목',
     package_cost      INT           NOT NULL COMMENT '패키지 비용',
