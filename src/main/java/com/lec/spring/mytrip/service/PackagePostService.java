@@ -1,13 +1,14 @@
 package com.lec.spring.mytrip.service;
 
 import com.lec.spring.mytrip.domain.PackagePost;
+import com.lec.spring.mytrip.domain.attachment.PackagePostAndAttachment;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 public interface PackagePostService {
     // 패키지 상세 조회
-    PackagePost getPackageDetails(int packageId);
+    PackagePostAndAttachment getPackageDetails(int packageId);
 
     // 도시별 패키지 조회
     List<PackagePost> getPackagesByCityId(int cityId);

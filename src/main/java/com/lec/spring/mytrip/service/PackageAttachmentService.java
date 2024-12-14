@@ -1,7 +1,6 @@
 package com.lec.spring.mytrip.service;
 
 import com.lec.spring.mytrip.domain.PackagePost;
-import com.lec.spring.mytrip.domain.attachment.BoardAttachment;
 import com.lec.spring.mytrip.domain.attachment.PackagePostAttachment;
 import com.nimbusds.openid.connect.sdk.assurance.evidences.attachment.Attachment;
 import org.springframework.web.multipart.MultipartFile;

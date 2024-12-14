@@ -2,7 +2,7 @@ package com.lec.spring.mytrip.controller;
 
 import com.lec.spring.mytrip.domain.City;
 import com.lec.spring.mytrip.domain.PackagePost;
-import com.lec.spring.mytrip.domain.attachment.BoardAttachment;
+import com.lec.spring.mytrip.domain.attachment.PackagePostAndAttachment;
 import com.lec.spring.mytrip.domain.attachment.PackagePostAttachment;
 import com.lec.spring.mytrip.service.CityService;
 import com.lec.spring.mytrip.service.PackageAttachmentService;
@@ -20,11 +20,9 @@ public class PackagePostController {
 
     private final PackagePostService packagePostService;
     private final CityService cityService;
-    private final PackageAttachmentService packageAttachmentService;
 
     public PackagePostController(PackagePostService packagePostService, CityService cityService, PackageAttachmentService packageAttachmentService) {
         System.out.println("PackagePostController() 시작");
-        this.packageAttachmentService = packageAttachmentService;
         this.cityService = cityService;
         this.packagePostService = packagePostService;
     }
@@ -73,11 +71,12 @@ public class PackagePostController {
     public String getPackageDetails(@PathVariable int cityId,
                                   @PathVariable int packageId,
                                   Model model) {
-        PackagePost packagePost = packagePostService.getPackageDetails(packageId);
-        List<PackagePostAttachment> boardAttachment = packageAttachmentService.getAttachmentsByPostId(packageId);
-        model.addAttribute("packagePost", packagePost);
+        PackagePostAndAttachment packagePostAndAttachment = packagePostService.getPackageDetails(packageId);
+
+        model.addAttribute("packagePost", packagePostAndAttachment.getPackagePost());
         model.addAttribute("packageId", packageId);
-        model.addAttribute("attachment", boardAttachment);
+        model.addAttribute("attachments", packagePostAndAttachment.getPackagePostAttachment());
+        packagePostAndAttachment.getPackagePostAttachment().forEach(System.out::println);
 
         return "board/city/package/detail";
     }
@@ -106,7 +105,7 @@ public class PackagePostController {
         return "redirect:/board/city/" + cityId + "/package/detail/" + packageId;
     }
 
-    // 패키지 수정 페이지 이동
+    // 패키지 수정 페이지 이동 안써
     // board.package.edit
     @GetMapping("{cityId}/package/edit/{packageId}")
     public String editPackagePage(@PathVariable int cityId,
@@ -117,7 +116,7 @@ public class PackagePostController {
         return "package/edit";
     }
 
-    // 패키지 수정 저장
+    // 패키지 수정 저장 안써
     @PostMapping("{cityId}/package/update")
     public String updatePackage(@PathVariable int cityId,
                                 @ModelAttribute PackagePost packagePost) {
@@ -133,7 +132,7 @@ public class PackagePostController {
     @DeleteMapping("{cityId}/package/delete/{packageId}")
     public String deletePackage(@PathVariable int cityId,
                                 @PathVariable int packageId) {
-        int userId = packagePostService.getPackageDetails(packageId).getUser().getId();
+        int userId = packagePostService.getPackageDetails(packageId).getPackagePost().getUser().getId();
         // 패키지 삭제 처리
         packagePostService.deletePackage(packageId, userId);
         return "redirect:/board/city/" + cityId;

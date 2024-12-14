@@ -1,7 +1,6 @@
 package com.lec.spring.mytrip.service;
 
 import com.lec.spring.mytrip.domain.PackagePost;
-import com.lec.spring.mytrip.domain.attachment.BoardAttachment;
 import com.lec.spring.mytrip.domain.attachment.PackagePostAttachment;
 import com.lec.spring.mytrip.repository.PackageAttachmentRepository;
 import com.nimbusds.openid.connect.sdk.assurance.evidences.attachment.Attachment;
@@ -15,8 +14,10 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -71,13 +72,33 @@ public class PackageAttachmentServiceImpl implements PackageAttachmentService {
                     // 3. DB에 첨부파일 정보 저장
                     PackagePostAttachment packagePostAttachment = new PackagePostAttachment();
                     packagePostAttachment.setPackageId(packagePost.getPackageId());
-                    packagePostAttachment.setFileName(fileName);
+                    packagePostAttachment.setPackageAttachmentFile(fileName);
                     packageAttachmentRepository.insertAttachment(packagePostAttachment);
                     savedAttachments.add(packagePostAttachment);
 
                     // 4. 파일 저장
                     Path filePath = Paths.get(uploadDir.getPath(), fileName);
                     file.transferTo(filePath.toFile());
+
+                    // 5. 파일을 static 경로로 복사
+                    try {
+                        // 스태틱 디렉토리 경로 설정
+                        Path staticPath = Paths.get("src/main/resources/static/uploads", fileName);
+
+                        // static 디렉토리가 존재하지 않으면 생성
+                        if (!Files.exists(staticPath.getParent())) {
+                            Files.createDirectories(staticPath.getParent());
+                        }
+
+                        // 파일 복사
+                        Files.copy(filePath, staticPath, StandardCopyOption.REPLACE_EXISTING);
+
+                    } catch (IOException e) {
+                        System.err.println("스태틱 경로로 파일 복사 실패: " + e.getMessage());
+                        // 복사 실패 시에도 필요하면 예외를 던져 트랜잭션 롤백 가능
+                        throw new RuntimeException("스태틱 경로로 파일 복사 중 오류가 발생했습니다.", e);
+                    }
+
 
                 } catch (IOException e) {
                     // 파일 저장 실패 시 DB에서 해당 첨부파일 레코드 삭제

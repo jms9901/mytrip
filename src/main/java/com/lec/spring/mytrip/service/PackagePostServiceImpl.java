@@ -2,6 +2,7 @@ package com.lec.spring.mytrip.service;
 
 import com.lec.spring.mytrip.domain.PackagePost;
 import com.lec.spring.mytrip.domain.User;
+import com.lec.spring.mytrip.domain.attachment.PackagePostAndAttachment;
 import com.lec.spring.mytrip.repository.PackagePostRepository;
 import com.lec.spring.mytrip.util.U;
 import org.apache.ibatis.session.SqlSession;
@@ -25,17 +26,26 @@ public class PackagePostServiceImpl implements PackagePostService {
 
     // 패키지 상세
     @Override
-    public PackagePost getPackageDetails(int packageId) {
+    public PackagePostAndAttachment getPackageDetails(int packageId) {
+        PackagePostAndAttachment postAndAttachment = new PackagePostAndAttachment();
         // 패키지 ID 검증
         if (packageId <= 0) {
             throw new IllegalArgumentException("유효하지 않은 패키지 ID입니다.");
         }
         // 패키지 데이터 조회
-        PackagePost pkg = packagePostRepository.findById(packageId);
-        if (pkg == null) {
+        postAndAttachment.setPackagePost(packagePostRepository.findById(packageId));
+        if (postAndAttachment.getPackagePost() == null) {
             throw new IllegalArgumentException("ID가 " + packageId + "인 패키지를 찾을 수 없습니다.");
         }
-        return pkg;
+        postAndAttachment.setPackagePostAttachment(packageAttachmentService.getAttachmentsByPostId(packageId));
+        if (postAndAttachment.getPackagePost() == null) {
+            throw new IllegalArgumentException("ID가 " + packageId + "인 패키지를 찾을 수 없습니다.");
+        }
+
+        System.out.println(postAndAttachment.toString());
+
+
+        return postAndAttachment;
     }
 
     //도시 별 패키지 목록

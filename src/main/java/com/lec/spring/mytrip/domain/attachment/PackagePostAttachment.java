@@ -12,5 +12,5 @@ import lombok.NoArgsConstructor;
 public class PackagePostAttachment {
     private int packageAttachmentId; // 첨부파일 ID
     private int packageId;           // 패키지 ID
-    private String fileName;          // 첨부파일 이름'
+    private String packageAttachmentFile;          // 첨부파일 이름'
 }
