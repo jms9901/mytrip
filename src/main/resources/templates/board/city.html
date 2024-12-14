@@ -110,40 +110,16 @@
             <div class="slider-container">
                 <button class="slider-btn prev-btn" onclick="moveSlide('groups', -1)">&#10094;</button>
                 <div class="slider" id="groups">
-                    <div class="slider-item">
-                        <div class="card group-card">
-                            <div class="card-body">Group 1</div>
-                            <br><br><br><br><br>
+                    <div class="slider-item" th:each="feed : ${feeds}">
+                        <div class="card package-card">
+                            <div class="card-body">
+                                <a th:href="@{|${cityId}/group/detail/${feed.boardId}|}" th:text="${feed.boardSubject}"></a>
+                                <br><br><br><br><br>
+                                <button class="packageLikeButton btn" type="button" th:data-package-id="${feed.boardId}">
+                                    <i class="bi bi-heart"></i>
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                    <div class="slider-item">
-                        <div class="card group-card">
-                            <div class="card-body">Group 2</div>
-                            <br><br><br><br><br>
-                        </div>
-                    </div>
-                    <div class="slider-item">
-                        <div class="card group-card">
-                            <div class="card-body">Group 3</div>
-                            <br><br><br><br><br>
-                        </div>
-                    </div>
-                    <div class="slider-item">
-                        <div class="card group-card">
-                            <div class="card-body">Group 4</div>
-                            <br><br><br><br><br>
-                        </div>
-                    </div>
-                    <div class="slider-item">
-                        <div class="card group-card">
-                            <div class="card-body">Group 5</div>
-                            <br><br><br><br><br>
-                        </div>
-                    </div>
-                    <div class="slider-item">
-                        <div class="card group-card">
-                            <div class="card-body">Group 6</div>
-                            <br><br><br><br><br></div>
                     </div>
                 </div>
                 <button class="slider-btn next-btn" onclick="moveSlide('groups', 1)">&#10095;</button>

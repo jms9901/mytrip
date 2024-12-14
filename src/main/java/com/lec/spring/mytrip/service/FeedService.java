@@ -43,4 +43,8 @@ public interface FeedService {
     // 특정 사용자가 좋아요한 피드인지 확인
 //    boolean isLikedByUser(Long feedId, String username);
 
+
+    // 도시 및 카테고리 별 불러오기
+    List<Feed> findByCityAndCategory(int cityId, String Category);
+
 }

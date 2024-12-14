@@ -46,14 +46,17 @@ public class PackagePostController {
         //메인 페이지 사이드 도시 목록 출력용
         List<City> sideCities = cityService.findCitiesByContinentOfThisCity(cityId);
         model.addAttribute("cities", sideCities);
-        System.out.println("도시 목록"  + sideCities.toString());
+//        System.out.println("도시 목록"  + sideCities.toString());
 
         // 이 도시의 패키지 목록
         List<PackagePost> packages = packagePostService.getPackagesByCityId(cityId);
         model.addAttribute("packages", packages);
-        System.out.println("패키지 목록" + packages.toString());
+//        System.out.println("패키지 목록" + packages.toString());
 
-        // 소모임 목록도 가져와야함
+        // 이 도시의 소모임 목록
+        List<Feed> feeds = feedService.findByCityAndCategory(cityId, "소모임");
+        model.addAttribute("feeds", feeds);
+//        System.out.println("소모임 목록" + feeds.toString());
 
 
         return "/board/city";
@@ -134,11 +137,12 @@ public class PackagePostController {
     }
 
     // 패키지 삭제
-    @DeleteMapping("{cityId}/package/delete/{packageId}")
+    @GetMapping("{cityId}/package/delete/{packageId}")
     public String deletePackage(@PathVariable int cityId,
                                 @PathVariable int packageId) {
         int userId = packagePostService.getPackageDetails(packageId).getPackagePost().getUser().getId();
         // 패키지 삭제 처리
+        System.out.println("삭제 컨트롤러 진입");
         packagePostService.deletePackage(packageId, userId);
         return "redirect:/board/city/" + cityId;
     }
@@ -155,6 +159,9 @@ public class PackagePostController {
                                 Model model) {
         // 소모임 상세 페이지로 이동
         Feed feed =  feedService.detail(groupId);
+
+        System.out.println(feed); //현 시점에선 불러와지지도 않음
+
         model.addAttribute("feed", feed);
         model.addAttribute("cityId", cityId);
         model.addAttribute("groupId", groupId);

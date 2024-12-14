@@ -48,4 +48,7 @@ public interface FeedRepository {
 
     City findCityById(Long id);
 
+    //도시와 카테고리 별 피드
+    List<Feed> findByCityAndCategory(int cityId, String category);
+
 }
