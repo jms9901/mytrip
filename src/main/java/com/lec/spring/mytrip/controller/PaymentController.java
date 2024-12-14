@@ -29,15 +29,20 @@ public class PaymentController {
 
     //결제 저장
     @PostMapping("board/package/payment")
-    public String packagePaymentSave(
-            @ModelAttribute Payment payment
-    ) {
+    public String packagePaymentSave(@ModelAttribute Payment payment) {
+        System.out.println("수신한 Payment 데이터: " + payment);
 
-
-        System.out.println(payment);
         Response response = paymentService.paymentSave(payment);
+
+        // 응답 검증
+        if (response == null || response.getResponse() == null) {
+            throw new RuntimeException("결제 응답이 null입니다. KakaoPay API 호출 실패");
+        }
+
+        // 리다이렉트 URL 확인
         String url = response.getResponse().get("next_redirect_pc_url").toString();
-        System.out.println(url);
+        System.out.println("리다이렉트 URL: " + url);
+
         return "redirect:" + url;
     }
 
