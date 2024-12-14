@@ -21,14 +21,14 @@ import java.util.UUID;
 public class MyPageService {
 
     private final UserRepository userRepository;
-    private final Path uploadDir = Paths.get("uploads/profiles");
+    private final Path uploadDir = Paths.get("static/uploads/profiles");  // static 경로로 수정
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();  // 직접 인스턴스 생성
+
     @Autowired
     public MyPageService(UserRepository userRepository) throws IOException {
         this.userRepository = userRepository;
         Files.createDirectories(uploadDir);  // 업로드 폴더 생성
     }
-
 
     // 사용자 정보 가져오기
     public User getUserById(Long userId) {
@@ -37,8 +37,6 @@ public class MyPageService {
 
     @Transactional
     public boolean updateUser(Long userId, String introduction, String currentPassword, String newPassword, MultipartFile profileImage, String profileImageFileName) {
-
-
         // 사용자 정보를 가져옴
         User user = userRepository.findById(userId).orElse(null);
         if (user == null) {
@@ -48,27 +46,26 @@ public class MyPageService {
         // 비밀번호 확인 및 업데이트
         if (currentPassword != null && newPassword != null && !newPassword.isEmpty()) {
             // 현재 비밀번호가 맞는지 확인
-            if (!user.getPassword().equals(currentPassword)) {
+            if (!passwordEncoder.matches(currentPassword, user.getPassword())) {  // bcrypt 비교
                 return false;  // 현재 비밀번호가 틀리면 실패
             }
             // 새로운 비밀번호가 기존 비밀번호와 다를 경우에만 업데이트
-            if (!user.getPassword().equals(newPassword)) {
-                user.setPassword(newPassword);  // 평문 비밀번호 업데이트
+            if (!passwordEncoder.matches(newPassword, user.getPassword())) {
+                user.setPassword(passwordEncoder.encode(newPassword));  // 암호화하여 새 비밀번호 저장
             }
         }
-
 
         // 자기소개 수정
         if (introduction != null && !introduction.isEmpty()) {
             user.setIntroduction(introduction);  // 자기소개 업데이트
         }
-        // **수정 위치: 프로필 이미지 업데이트 로직 삽입**
+
+        // 프로필 이미지 파일 이름을 업데이트
         if (profileImageFileName != null && !profileImageFileName.isEmpty()) {
             user.setProfile(profileImageFileName);  // 프로필 이미지 파일 이름 업데이트
         }
 
-
-        // 프로필 이미지 수정
+        // 프로필 이미지 수정 (MultipartFile로 전달된 이미지 처리)
         if (profileImage != null && !profileImage.isEmpty()) {
             try {
                 String imageName = saveProfileImage(profileImage);  // 파일 이미지 저장
@@ -84,24 +81,24 @@ public class MyPageService {
 
         return result > 0; // 업데이트가 성공하면 true, 실패하면 false 반환
     }
+
     // 프로필 이미지 저장 메서드 (MultipartFile을 실제 파일로 저장)
-    private String saveProfileImage(MultipartFile file) throws IOException {
+    public String saveProfileImage(MultipartFile file) throws IOException {
         byte[] bytes = file.getBytes();
         String imageName = UUID.randomUUID().toString() + ".jpg";  // UUID 기반 고유 이미지 이름 생성
-        Path path = Paths.get("static/uploads/profiles", imageName);
+        Path path = Paths.get(uploadDir.toString(), imageName);  // static/uploads/profiles 경로에 저장
         Files.write(path, bytes);  // 파일 저장
-        return imageName;
+        return imageName;  // 파일 이름 반환
     }
-
 
     // 비밀번호 업데이트
     @Transactional
     public boolean updatePassword(Long userId, String currentPassword, String newPassword) {
         User user = userRepository.findById(userId).orElse(null);
-        if (user == null || !user.getPassword().equals(currentPassword)) {
+        if (user == null || !passwordEncoder.matches(currentPassword, user.getPassword())) {  // bcrypt 비교
             return false;  // 현재 비밀번호가 일치하지 않으면 실패
         }
-        user.setPassword(newPassword);  // 새 비밀번호로 업데이트
+        user.setPassword(passwordEncoder.encode(newPassword));  // 새 비밀번호로 업데이트
         userRepository.save(user);
         return true;
     }
@@ -132,5 +129,3 @@ public class MyPageService {
         return true;
     }
 }
-
-

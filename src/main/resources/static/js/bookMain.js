@@ -154,20 +154,7 @@ function updatePassword(type) {
     }, {once: true});
 }
 
-// 프로필 이미지 미리보기
-function previewProfileImage() {
-    const fileInput = document.getElementById("profileImageInput");
-    const profilePreview = document.getElementById("profilePreview");
 
-    if (fileInput.files && fileInput.files[0]) {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-            profilePreview.src = e.target.result;
-            profilePreview.style.display = "block";
-        };
-        reader.readAsDataURL(fileInput.files[0]);
-    }
-}
 
 // 변경 사항 제출
 function submitUserChanges() {
@@ -186,13 +173,6 @@ function submitUserChanges() {
         const reader = new FileReader();
         reader.onloadend = function () {
             profileImageBase64 = reader.result.split(',')[1]; // base64 부분만 추출
-            // 데이터를 콘솔에 출력
-            console.log("User Data to Send:");
-            console.log("User ID:", userId);
-            console.log("Introduction:", introduction);
-            console.log("Current Password:", currentPassword);
-            console.log("New Password:", newPassword);
-            console.log("Profile Image Base64:", profileImageBase64);
             sendRequest(profileImageBase64);  // base64 변환 후 서버에 요청 보내기
         };
         reader.readAsDataURL(profileImage);  // base64로 변환
@@ -201,7 +181,7 @@ function submitUserChanges() {
     }
 
     // 요청 보내는 함수
-    function sendRequest() {
+    function sendRequest(profileImageBase64) {
         const formData = {
             userId: userId,
             introduction: introduction,
@@ -211,22 +191,24 @@ function submitUserChanges() {
         };
 
         // 서버로 POST 요청
-        fetch("/mypage/update/" + userId, {
+        fetch(`/mypage/update/${userId}`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(formData)
+            body: JSON.stringify(formData)  // formData를 JSON으로 전송
         })
             .then(response => response.json())
             .then(data => {
                 console.log("Success:", data);
+                // 응답 데이터에 따라 추가 작업 수행
             })
             .catch(error => {
                 console.error("Error:", error);
             });
     }
 }
+
 
 
 function loadApp() {
