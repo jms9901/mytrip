@@ -31,10 +31,13 @@
     <div class="row align-items-center mb-4">
         <div class="col-md-8">
             <h2 class="fw-bold" id="packageTitle" th:text="${packagePost.packageTitle}">여행 목적지</h2>
+            <hr>
         </div>
         <div class="col-md-4 text-end">
 
             <button class="btn btn-danger">삭제</button>
+            <a id="backToList" href="#" class="btn btn-secondary">목록</a>
+            <hr>
         </div>
     </div>
 
@@ -56,7 +59,7 @@
             <div class="mb-3">
                 <label class="form-label">예약 인원</label>
                 <div class="d-flex align-items-center">
-                    <input type="number" id="peopleCount" class="form-control w-50 text-center" value="1" min="1" th:max="${packagePost.packageMaxpeople}">
+                    <input type="number" id="userCount" class="form-control w-50 text-center" value="1" min="1" th:max="${packagePost.packageMaxpeople}" readonly>
                     <button type="button" class="btn btn-primary mx-2" onclick="increaseCount()">Up</button>
                     <button type="button" class="btn btn-secondary" onclick="decreaseCount()">Down</button>
                 </div>
@@ -79,7 +82,6 @@
     </div>
 </main>
 
-<!-- Modal -->
 <div class="modal fade" id="reservationModal" tabindex="-1" aria-labelledby="reservationModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -90,31 +92,49 @@
             </div>
             <!-- Modal Body -->
             <div class="modal-body">
-                <form id="reservationForm" method="post" action="/reservation/submit">
-
+                <form id="reservationForm" method="post" action="/board/package/payment">
+                    <!-- 패키지 ID -->
                     <input type="hidden" name="packageId" th:value="${packagePost.packageId}">
+
+                    <!-- 패키지명 -->
                     <div class="mb-3">
                         <label class="form-label">패키지명</label>
                         <input type="text" class="form-control" name="packageTitle" th:value="${packagePost.packageTitle}" readonly>
                     </div>
+
+                    <!-- 인원수 -->
                     <div class="mb-3">
                         <label class="form-label">인원수</label>
-                        <input type="number" class="form-control" id="modalPeopleCount" name="peopleCount" value="1" readonly>
+                        <input type="number" class="form-control" id="modalPeopleCount" value="1" readonly>
+                        <!-- 실제 서버로 전달할 데이터 -->
+                        <input type="hidden" id="hiddenPeopleCount" name="userCount" value="1">
                     </div>
+
+                    <!-- 총 금액 -->
                     <div class="mb-3">
                         <label class="form-label">총 금액</label>
-                        <input type="text" class="form-control" id="modalTotalPrice" name="totalPrice" value="0" readonly>
+                        <input type="text" class="form-control" id="modalTotalPrice" value="0원" readonly>
+                        <!-- 실제 서버로 전달할 데이터 -->
+                        <input type="hidden" id="sanitizedTotalPrice" name="totalPrice" value="0">
                     </div>
+
+                    <!-- 가격 (name="price") -->
+                    <input type="hidden" name="price" th:value="${packagePost.packageCost}">
+
+                    <!-- 도시 ID -->
+                    <input type="hidden" name="cityId" th:value="${packagePost.cityId}">
                 </form>
             </div>
             <!-- Modal Footer -->
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-                <button type="submit" class="btn btn-success" form="reservationForm">결제</button>
+                <!-- Form Submit 버튼 -->
+                <button type="button" class="btn btn-success" id="submitBtn">결제</button>
             </div>
         </div>
     </div>
 </div>
+
 
 <!-- Footer -->
 <footer id="footer" class="text-center mt-4">
@@ -123,48 +143,85 @@
 
 <script>
     function increaseCount() {
-        const countInput = document.getElementById('peopleCount'); // 인원 수 입력 필드
-        const maxPeople = parseInt(countInput.getAttribute('max')); // 최대 인원
+        const countInput = document.getElementById('userCount'); // 메인 화면의 인원 수 입력 필드
+        const maxPeople = parseInt(countInput.getAttribute('max')); // 최대 인원 수
 
         if (parseInt(countInput.value) < maxPeople) {
             countInput.value = parseInt(countInput.value) + 1; // 인원 증가
-            updateTotalPrice(); // 총 금액 업데이트
+            syncModalValues(); // 값 동기화
         } else {
-            alert("최대 인원 수를 초과할 수 없습니다."); // 경고 메시지 표시
+            alert("최대 인원 수를 초과할 수 없습니다."); // 경고 메시지
         }
     }
 
     function decreaseCount() {
-        const countInput = document.getElementById('peopleCount');
+        const countInput = document.getElementById('userCount'); // 메인 화면의 인원 수 입력 필드
+
         if (parseInt(countInput.value) > 1) {
-            countInput.value = parseInt(countInput.value) - 1;
-            updateTotalPrice();
+            countInput.value = parseInt(countInput.value) - 1; // 인원 감소
+            syncModalValues(); // 값 동기화
+        } else {
+            alert("최소 인원은 1명이어야 합니다."); // 경고 메시지
         }
     }
 
-    function updateTotalPrice() {
-        const count = parseInt(document.getElementById('peopleCount').value); // 예약 인원 수
+    function syncModalValues() {
+        const userCount = parseInt(document.getElementById('userCount').value); // 메인 화면의 인원 수
         const pricePerPerson = parseInt(document.getElementById('totalPrice').getAttribute('data-price-per-person')); // 1인당 가격
 
-        console.log("인원 수:", count, "1인당 가격:", pricePerPerson); // 디버깅용 출력
+        if (!isNaN(userCount) && !isNaN(pricePerPerson)) {
+            const totalPrice = userCount * pricePerPerson; // 총 금액 계산
 
-        if (!isNaN(count) && !isNaN(pricePerPerson)) {
-            const totalPrice = count * pricePerPerson;
+            // 메인 화면 금액 업데이트
             document.getElementById('totalPrice').innerText = totalPrice.toLocaleString() + '원';
 
-            // 모달에도 반영
-            document.getElementById('modalPeopleCount').value = count;
-            document.getElementById('modalTotalPrice').value = totalPrice.toLocaleString() + '원';
+            // 모달 금액 업데이트
+            document.getElementById('modalPeopleCount').value = userCount; // 모달 창의 인원 수
+            document.getElementById('modalTotalPrice').value = totalPrice.toLocaleString() + '원'; // 모달 창의 총 금액
+
+            // 숨겨진 필드에 값 반영
+            document.getElementById('hiddenPeopleCount').value = userCount; // 서버로 전달할 인원 수
+            document.getElementById('sanitizedTotalPrice').value = totalPrice; // 서버로 전달할 총 금액
         } else {
-            console.error("총 금액 계산 실패: 데이터가 올바르지 않습니다.");
+            console.error("총 금액 계산 오류: 유효하지 않은 데이터입니다.");
         }
     }
 
+    // 모달 열릴 때 메인 화면 값 동기화
     document.getElementById('openModalBtn').addEventListener('click', function () {
         const reservationModal = new bootstrap.Modal(document.getElementById('reservationModal'));
+        syncModalValues(); // 모달 열기 전에 값 동기화
         reservationModal.show();
-        updateTotalPrice();
     });
+
+    // 결제 버튼 클릭 시 처리
+    document.getElementById('submitBtn').addEventListener('click', function () {
+        const userCount = document.getElementById('hiddenPeopleCount').value;
+        const totalPrice = document.getElementById('sanitizedTotalPrice').value;
+
+        // 디버깅용 데이터 확인
+        console.log('전송 데이터:', { userCount, totalPrice });
+
+        if (!userCount || parseInt(userCount) <= 0 || !totalPrice || parseInt(totalPrice) <= 0) {
+            alert("값이 올바르지 않습니다. 다시 확인해주세요.");
+            return;
+        }
+
+        // 폼 제출
+        document.getElementById('reservationForm').submit();
+    });
+
+    // 현재 URL에서 cityId 추출
+    const currentUrl = window.location.href;
+    const cityIdMatch = currentUrl.match(/\/city\/(\d+)/); // '/city/{cityId}' 추출
+
+    if (cityIdMatch) {
+        const cityId = cityIdMatch[1];
+        const backUrl = `/board/city/${cityId}`;
+        document.getElementById('backToList').href = backUrl; // "목록" 버튼 URL 설정
+    } else {
+        console.error('cityId를 URL에서 찾을 수 없습니다.');
+    }
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
