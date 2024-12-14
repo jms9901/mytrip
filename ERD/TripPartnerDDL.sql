@@ -144,14 +144,14 @@ CREATE TABLE package
     package_id        INT           NOT NULL AUTO_INCREMENT COMMENT '패키지 테이블 ID',
     city_id           INT           NOT NULL COMMENT '도시 ID',
     user_id           INT           NOT NULL COMMENT '사용자 테이블 ID',
-    package_status    VARCHAR(100)  NOT NULL COMMENT '패키지 허가 여부',
+    package_status    VARCHAR(100)  NOT NULL DEFAULT '대기' COMMENT '패키지 허가 여부',
     package_content   VARCHAR(1000) NOT NULL COMMENT '패키지 내용',
     package_regdate   DATETIME      NOT NULL DEFAULT NOW() COMMENT '패키지 게시일자',
     package_title     VARCHAR(100)  NOT NULL COMMENT '패키지 제목',
     package_cost      INT           NOT NULL COMMENT '패키지 비용',
     package_maxpeople INT           NOT NULL COMMENT '패키지 최대 인원',
-    package_start_day DATETIME      NOT NULL COMMENT '패키지 시작 일자',
-    package_end_day   DATETIME      NOT NULL COMMENT '패키지 종료 일자',
+    package_start_day DATE          NOT NULL COMMENT '패키지 시작 일자',
+    package_end_day   DATE          NOT NULL COMMENT '패키지 종료 일자',
     PRIMARY KEY (package_id)
 ) COMMENT '패키지';
 
