@@ -24,7 +24,7 @@ import java.util.UUID;
 
 @Slf4j
 @Service
-public class businessMypageService {
+public class BusinessMypageService {
 
     private final UserRepository userRepository;
     private final PackagePostRepository packagePostRepository;
@@ -33,7 +33,7 @@ public class businessMypageService {
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();    // 직전 인스턴스 생성
 
     @Autowired
-    public businessMypageService(UserRepository userRepository, PackagePostRepository packagePostRepository, PaymentsRepository paymentsRepository) throws IOException {
+    public BusinessMypageService(UserRepository userRepository, PackagePostRepository packagePostRepository, PaymentsRepository paymentsRepository) throws IOException {
         this.userRepository = userRepository;
         this.packagePostRepository = packagePostRepository;
         this.paymentsRepository = paymentsRepository;

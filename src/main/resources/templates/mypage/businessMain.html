@@ -14,7 +14,9 @@
 <body style="background-image: url(/img/mypageBackground.jpg)">
 
 <!-- 홈 버튼 -->
-<img src="/img/logo.png" alt="homeLogo-Button" type="button" class="homeLogo-Button">
+<button type="button" class="homeLogo-Button">
+    <img src="/img/logo.png" alt="homeLogo-Button" class="homeLogo-Button">
+</button>
 <div class="main-container">
     <div class="camera">
         <div class="camera-lens"></div>
@@ -23,7 +25,9 @@
     <div class="container">
         <div class="profile-section">
             <!-- 비즈니스 개인정보 수정 링크 연결  -->
-            <img src="/img/basicProfile.png" class="profile-icon-Button" type="button" id="profile-icon-Button" alt="profileUpdate-button">
+            <button type="button" class="profile-icon-Button" id="profile-icon-Button">
+                <img src="/img/basicProfile.png" class="profile-icon-Button"  alt="profileUpdate-button">
+            </button>
             <div class="business-name">[[${user.username}]]</div>
         </div>
 
@@ -35,13 +39,13 @@
 <!--                등록한 패키지 목록 동적으로 추가 -->
                 <div th:each="packagePost : ${packages}" class="package-item">
                     <div class="package-title">
-                        <div class="package-name">[[${packagePost.packageTitle}]]</div>
+                        <div class="package-name" th:value="${packagePost.packageTitle}">[[${packagePost.packageTitle}]]</div>
                     </div>
-                    <div class="package-content">[[${packagePost.packageContent}]]</div>
+                    <div class="package-content" th:value="${packagePost.packageContent}">[[${packagePost.packageContent}]]</div>
                     <div class="package-status ${getStatusClass(packages.packageStatus)}">${getStatusText(packages.packageStatus)}</div>
                     <div class="liked">
-                        <img src="/img/heart-icon-fill.png" alt="heart-icon-fill" id="liked-heart-icon" type="button">
-                        <span class="likedCnt">[[${packagePost.likedCount}]]</span>
+                        <img src="/img/heart-icon-fill.png" alt="heart-icon-fill" id="liked-heart-icon">
+                        <span class="likedCnt" th:value="${packagePost.likedCount}">[[${packagePost.likedCount}]]</span>
                     </div>
                 </div>
             </div>
@@ -49,22 +53,26 @@
 
         <!--  패키지 결제 모달  -->
         <!-- 패키지 결제 내역 리스트 버튼 -->
-        <img src="/img/paymentListIcon.png" alt="package-payment-button" id="package-payment-button" type="button"></img>
+        <button type="button" id="package-payment-button" class="package-payment-button">
+            <img src="/img/paymentListIcon.png" alt="package-payment-button">
+        </button>
 
         <!--  결제 리스트 모달   -->
-        <div id="payment-modal hidden" class="modal">
+        <div id="payment-modal" class="modal hidden">
             <div class="modal-content">
                 <div class="modal-header">
                     <span class="close-button">&times;</span>
                     <div class="modal-title">결제정보</div>
 
                     <!-- 결제 상태 필터링 -->
-                    <select class="pay-status-select">
-                        <option value="" disabled selected>결제 상태</option>
-                        <option value="" selected>전체</option>
-                        <option value="complete">결제 완료</option>
-                        <option value="cancel">결제 취소</option>
-                    </select>
+                    <label class="payment-status">
+                        <select class="pay-status-select">
+                            <option value="" disabled selected>결제 상태</option>
+                            <option value="" selected>전체</option>
+                            <option value="complete">결제 완료</option>
+                            <option value="cancel">결제 취소</option>
+                        </select>
+                    </label>
 
                     <table class="payment-table">
                         <thead>
@@ -77,10 +85,10 @@
                         </thead>
                         <tbody>
                         <!-- 서버에서 전달된 결제 데이터 동적 생성 -->
-                        <tr th:each="payment : ${list}">
+                        <tr th:each="payment : ${payments}">
                             <td>[[${payment.userName}]]</td>
                             <td>[[${payment.packageTitle}]]</td>
-                            <td>[[${payment.totalPrice]]원 </td>
+                            <td>[[${payment.totalPrice}]]원 </td>
                             <td class="pay-status ${getPaymentStatusClass(payment.paymentStatus)}">[[${getPaymentStatusText(payment.paymentStatus)}]]</td>
                         </tr>
                         </tbody>
@@ -90,49 +98,61 @@
         </div>
 
         <!--  개인정보 수정 모달   -->
-        <div class="modal" id="businessUpdate-modal hidden">
-            <div class="modal">
+        <div class="modal hidden" id="businessUpdate-modal">
                 <div class="header">
                     <span class="close-button">&times;</span>
-                    <h2 class="businessName">[[${user.name}</h2>
+                    <h2 class="businessName" th:value="${user.username}"></h2>
                     <span class="joinDate">가입일 : [[${user.regDate}]]</span>
                 </div>
                 <div class="profile">
-                    <img src="/img/basicProfile.png" alt="프로필" type="button">
+                    <img th:src="@{img/basicProfile.png}" alt="프로필">
                 </div>
                 <div class="businessInfo">
-                    <label>기업 ID</label>
-                    <input type="text" th:value="${user.username}" readonly>
+                    <label>
+                        <span>기업 ID</span>
+                        <input type="text" th:value="${user.username}" readonly>
+                    </label>
                 </div>
                 <div class="businessInfo">
-                    <label>기업 이메일</label>
-                    <input type="email" th:value="${user.email}" readonly>
+                    <label>
+                        <span>기업이메일</span>
+                        <input type="email" th:value="${user.email}" readonly>
+                    </label>
                 </div>
                 <div class="businessInfo">
-                    <label>비밀번호</label>
-                    <input type="password" th:value="${user.password}">
+                    <label>
+                        <span>비밀번호</span>
+                        <input type="password" th:value="${user.password}">
+                    </label>
                 </div>
                 <div class="businessInfo">
-                    <label>새비밀번호</label>
-                    <input type="re-password" placeholder="새 비밀번호를 입력하세요.">
+                    <label>
+                        <span>새 비밀번호</span>새비밀번호
+                        <input type="re-password" placeholder="새 비밀번호를 입력하세요.">
+                    </label>
                 </div>
                 <div class="businessInfo">
-                    <label>회사 사업자 번호</label>
-                    <input type="text" th:value="${user.companyNumber}">
+                    <label>
+                        <span>회사 사업자 번호</span>
+                        <input type="text" th:value="${user.companyNumber}">
+                    </label>
                 </div>
 
                 <div class="actions">
-                    <img src="/img/myPageUpdate.png" alt="update-button" class="update-button" id="update-button">
-                    <img src="/img/checkIcon.png" alt="submit-button" class="submit-button" type="button">
+                    <button type="button" class="update-button" id="update-button">
+                        <img src="/img/myPageUpdate.png" alt="update-button" class="update-button">
+                    </button>
+                    <button type="submit" class="submit-button">
+                        <img src="/img/checkIcon.png" alt="submit-button" class="submit-button">
+                    </button>
                 </div>
-            </div>
         </div>
 
 
 
         <!--  패키지 상세정보 모달  -->
-        <div id="package-modal hidden" class="modal">
-            <div class="modal-content">
+        <div id="package-modal" class="modal hidden">
+            <div class="modal-content" th:each="packagePost : ${packageDetail}">
                 <span class="close-button">&times;</span>
                 <h2 class="package-title">[[${packagePost.packageTitle}]]</h2>
                 <p class="package-regdate">게시일: [[${packagePost.packageRegDate}]]</p>
@@ -142,7 +162,7 @@
                         <div class="slideshow-container">
                             <!-- 해당 패키지 이미지 프리뷰 동적 생성 -->
                             <div class="slide fade">
-                                <img th:src="${packageAttachment.packagePostFile}" alt="package-image">
+                                <img th:src="${packagePost.packagePostFile}" alt="package-image" class="packageImage">
                             </div>
                         </div>
 
@@ -155,27 +175,27 @@
                     <div class="info-section">
                         <label>
                             <span>도시</span>
-                            <input type="text" th:value="${packagePost.cityName}">
+                            <input type="text" class="cityName" th:value="${packagePost.cityName}">
                         </label>
 
                         <label>
                             <span>시작일</span>
-                            <input type="date" th:value="${packagePost.packageStartDay}">
+                            <input type="date" class="packageStartDay" th:value="${packagePost.packageStartDay}">
                         </label>
 
                         <label>
                             <span>종료일</span>
-                            <input type="date" th:value="${packagePost.packageEndDay}">
+                            <input type="date" class="packageEndDay" th:value="${packagePost.packageEndDay}">
                         </label>
 
                         <label>
-
-                            <input type="text" th:value="${packagePost.packageCost}">
+                            <span>금액</span>
+                            <input type="text" class="packageCost" th:value="${packagePost.packageCost}">
                         </label>
 
                         <label>
                             <span>최대 인원</span>
-                            <input type="number" placeholder="000 People">
+                            <input type="number" class="packageMaxPeople" th:value="${packagePost.packageMaxPeople}">
                         </label>
                     </div>
                 </div>
@@ -183,7 +203,7 @@
                 <div class="package-details">
                     <label>
                         <span>패키지 내용</span>
-                        <textarea readonly>[[${packagePost.packageContent}]]</textarea>
+                        <textarea class="packageContent" th:text="${packagePost.packageContent}"></textarea>
                     </label>
                 </div>
 
@@ -193,15 +213,19 @@
                 <div class="attachmentInfo">해당 첨부파일 클릭 시 삭제됩니다.</div>
 
                 <div class="button-action">
-                    <img src="/img/myPageUpdate.png" alt="update-button" class="update-button" type="button">
-                    <img src="/img/checkIcon.png" alt="submit-button" class="submit-button" type="button">
-                    <img src="/img/mypageDeleteIcon.png" alt="delete-button" class="delete-button" type="button">
+                    <button type="button" class="update-button">
+                        <img src="/img/myPageUpdate.png" alt="update-button" class="update-button">
+                    </button>
+                    <button type="submit" class="submit-button">
+                        <img src="/img/checkIcon.png" alt="submit-button" class="submit-button">
+                    </button>
+                    <button type="button" class="delete-button">
+                        <img src="/img/mypageDeleteIcon.png" alt="delete-button" class="delete-button">
+                    </button>
                 </div>
             </div>
         </div>
 
-
-    </div>
 </div>
 
 </body>

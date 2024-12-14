@@ -24,6 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     })
         .then(response => {
+            console.log("메인 서버 응답:", response);
             //응답이 JSON인지 확인
             const contentType = response.headers.get('content-type');
             if(!contentType || !contentType.includes('application/json')) {
@@ -36,6 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
         })
 
         .then(data => {
+            console.log("데이터 확인: ", data);
             // 데이터 형식 확인
             if(!Array.isArray(data)) {
                 console.error('Unexpected data format: ', data);
@@ -98,6 +100,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         })
             .then(response => {
+                console.log("패키지 서버 응답: ", response)
                 const contentType = response.headers.get('content-type');
                 if (!contentType || !contentType.includes('application/json')) {
                     throw new TypeError("패키지 상세보기 데이터 : 서버 응답이 JSON 형식이 아닙니다.");
@@ -107,14 +110,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
                 return response.json();
             })
-            .then(packageDetails => {
+            .then(packageDetail => {
+                console.log("패키지 데이터 확인: ", packageDetail)
                 const packageModal = document.getElementById('modal');
                 const updateButton = packageModal.querySelector('#package-update-button');
                 const submitButton = packageModal.querySelector('#package-submit-button');
+                const updateImage = packageModal.querySelector('.package-image')
                 const inputs = packageModal.querySelectorAll('input, textarea');
 
                 // 패키지 상태에 따라 수정 버튼 표시 여부 결정
-                if (packageDetails.packageStatus === '승인') {
+                if (packageDetail.packageStatus === '승인') {
                     // 승인된 패키지는 수정 불가
                     updateButton.style.display = 'none';
                     submitButton.style.display = 'none';
@@ -148,29 +153,33 @@ document.addEventListener('DOMContentLoaded', function() {
                     submitButton.addEventListener('click', function() {
                         const updatedPackageData = {
                             packageId: packageId,
-                            packageTitle: packageModal.querySelector('input[placeholder="package-title"]').value,
-                            cityName: packageModal.querySelector('input[placeholder="cityName"]').value,
-                            packageStartDay: packageModal.querySelector('input[type="date"][placeholder="start"]').value,
-                            packageEndDay: packageModal.querySelector('input[type="date"][placeholder="end"]').value,
-                            packageCost: packageModal.querySelector('input[placeholder="cost"]').value,
-                            maxPeople: packageModal.querySelector('input[placeholder="000 People"]').value,
-                            packageContent: packageModal.querySelector('textarea').value
+                            packageTitle: packageModal.querySelector('.packageTitle').value,
+                            packageImage: packageModal.querySelector('.packageImage').value,
+                            cityName: packageModal.querySelector('.cityName').value,
+                            packageStartDay: packageModal.querySelector('.packageStartDay').value,
+                            packageEndDay: packageModal.querySelector('.packageEndDay').value,
+                            packageCost: packageModal.querySelector('.packageCost').value,
+                            maxPeople: packageModal.querySelector('.packageMaxPeople').value,
+                            packageContent: packageModal.querySelector('.packageContent').value
                         };
 
                         fetch(`/mypage/package/update/${packageId}`, {
                             method: 'POST',
                             headers: {
+                                'Accept' : 'application/json',
                                 'Content-Type': 'application/json'
                             },
                             body: JSON.stringify(updatedPackageData)
                         })
                             .then(response => {
+                                console.log("패키지 수정 서버 응답: ",response);
                                 if (!response.ok) {
                                     throw new Error('패키지 업데이트 실패');
                                 }
                                 return response.json();
                             })
                             .then(data => {
+                                console.log("패키지 수정 데이터: ", data)
                                 // 업데이트 성공 시 패키지 상태를 '대기'로 변경
                                 alert('패키지가 성공적으로 업데이트되었습니다. 관리자 승인 대기 상태입니다.');
                                 packageModal.querySelector('.package-status').textContent = '대기';
@@ -194,29 +203,29 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
 
                 // 기존 모달 내용 업데이트 로직 유지
-                packageModal.querySelector('.package-title').textContent = packageDetails.packageTitle;
-                packageModal.querySelector('.package-regdate').textContent = `게시일: ${packageDetails.packageRegDate}`;
+                packageModal.querySelector('.package-title').textContent = packageDetail.packageTitle;
+                packageModal.querySelector('.package-regdate').textContent = `게시일: ${packageDetail.packageRegDate}`;
 
                 // 이미지 슬라이드 업데이트
                 const slideshowContainer = packageModal.querySelector('.slideshow-container');
-                slideshowContainer.innerHTML = packageDetails.images.map((img, index) => `
+                slideshowContainer.innerHTML = packageDetail.images.map((img, index) => `
                 <div class="slide fade ${index === 0 ? 'active' : ''}">
                     <img src="${img}" alt="package-image">
                 </div>
             `).join('');
 
                 // 입력 필드 값 설정
-                packageModal.querySelector('input[placeholder="cityName"]').value = packageDetails.cityName;
-                packageModal.querySelector('input[type="date"][placeholder="start"]').value = packageDetails.packageStartDay;
-                packageModal.querySelector('input[type="date"][placeholder="end"]').value = packageDetails.packageEndDay;
-                packageModal.querySelector('input[placeholder="cost"]').value = packageDetails.packageCost;
-                packageModal.querySelector('input[placeholder="000 People"]').value = packageDetails.maxPeople;
-                packageModal.querySelector('textarea').value = packageDetails.packageContent;
+                packageModal.querySelector('.cityName').value = packageDetail.cityName;
+                packageModal.querySelector('.packageStartDay').value = packageDetail.packageStartDay;
+                packageModal.querySelector('.packageEndDay').value = packageDetail.packageEndDay;
+                packageModal.querySelector('.packageCost').value = packageDetail.packageCost;
+                packageModal.querySelector('.packageMaxPeople').value = packageDetail.packageMaxPeople;
+                packageModal.querySelector('.packageContent').value = packageDetail.packageContent;
 
                 // 패키지 상태 표시
                 const statusElement = packageModal.querySelector('.package-status');
-                statusElement.textContent = getStatusText(packageDetails.packageStatus);
-                statusElement.className = `package-status ${getStatusClass(packageDetails.packageStatus)}`;
+                statusElement.textContent = getStatusText(packageDetail.packageStatus);
+                statusElement.className = `package-status ${getStatusClass(packageDetail.packageStatus)}`;
 
                 // 모달 표시
                 packageModal.style.display = 'block';
@@ -274,16 +283,19 @@ document.addEventListener('DOMContentLoaded', function() {
             fetch(`mypage/payments`, {
                 method: 'GET',
                 headers: {
-                    'Accept' : 'application/json'
+                    'Accept' : 'application/json',
+                    'Content-Type': 'application/json'
                 }
             })
                 .then(response => {
+                    console.log("결제 내역 서버 응답: ", response);
                     if(!response.ok) {
                         throw new Error(`HTTP error! status: ${response.status} / 결제 정보를 불러올 수 없습니다.`);
                     }
                     return response.json();
                 })
                 .then(paymentData => {
+                    console.log("결제 내역 데이터: ", paymentData)
                     const paymentModal = document.getElementById('payment-modal');
                     const paymentTable = paymentModal.querySelector('.payment-table tbody');
 
@@ -387,14 +399,16 @@ document.addEventListener('DOMContentLoaded', function() {
             newPassword: profileUpdateModal.querySelector('input[type="re-password"]').value
         };
 
-        fetch(`/mypage/business/update`, {
+        fetch(`/mypage/business/profile/{userId}`, {
             method: 'POST',
             headers: {
+                'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(formData)
         })
             .then(response => {
+                console.log("프로필 수정 서버 응답: ", response);
                 if (!response.ok) {
                     throw new Error('프로필 업데이트 실패');
                 }

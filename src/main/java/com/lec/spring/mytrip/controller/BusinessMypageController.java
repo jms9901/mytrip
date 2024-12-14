@@ -5,9 +5,8 @@ import com.lec.spring.mytrip.domain.Payment;
 import com.lec.spring.mytrip.domain.User;
 import com.lec.spring.mytrip.repository.PackagePostRepository;
 import com.lec.spring.mytrip.service.PackagePostService;
-import com.lec.spring.mytrip.service.PackagePostServiceImpl;
 import com.lec.spring.mytrip.service.UserServiceImpl;
-import com.lec.spring.mytrip.service.businessMypageService;
+import com.lec.spring.mytrip.service.BusinessMypageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,7 +26,7 @@ import java.util.List;
 @RequestMapping("/mypage")
 public class BusinessMypageController {
 
-    private final businessMypageService businessMypageService;
+    private final BusinessMypageService businessMypageService;
     private final UserServiceImpl userService;
     private final PackagePostService packagePostService;
 
@@ -36,7 +35,8 @@ public class BusinessMypageController {
     @Autowired
     private PackagePostRepository packagePostRepository;
 
-    public BusinessMypageController(com.lec.spring.mytrip.service.businessMypageService businessMypageService, UserServiceImpl userService, PackagePostService packagePostService) {
+    public BusinessMypageController(BusinessMypageService businessMypageService, UserServiceImpl userService, PackagePostService packagePostService) {
+        System.out.println("BusinessMypageController() 작동");
         this.businessMypageService = businessMypageService;
         this.userService = userService;
         this.packagePostService = packagePostService;
@@ -47,6 +47,8 @@ public class BusinessMypageController {
     public String businessMypage(@PathVariable("userId") int userId, Model model) {
         try {
             User user = businessMypageService.getUserById(userId);
+            List<PackagePost> packagePost = packagePostService.getPackagesByUserId(userId);
+            List<Payment> payment = businessMypageService.getPaymentByCompanyId(userId);
 
             if(user == null) {
                 model.addAttribute("error", "해당 유저를 찾을 수 없습니다.");
@@ -59,6 +61,9 @@ public class BusinessMypageController {
             }
 
             model.addAttribute("user", user);
+            model.addAttribute("packagePost", packagePost);
+            model.addAttribute("payment", payment);
+
             return "mypage/businessMain";
         } catch (Exception e) {
             log.error("페이지 로드 중 오류 발생", e);
@@ -95,17 +100,25 @@ public class BusinessMypageController {
 
             // 패키지 목록 로드
             List<PackagePost> packages = businessMypageService.likeCntByPackage(userId);
-
             // 패키지 상세정보 로드
             List<PackagePost> packageDetail = packagePostRepository.findByUserId(userId);
-
             // 결제 내역 로드
             List<Payment> payments = businessMypageService.getPaymentByCompanyId(userId);
 
-            log.info("Business data: {}, Packages: {}", user, packages);
+            log.info("Business data: {}, Packages: {}, Payments: {}", user, packages, payments);
 
             // 패키지가 없는 경우 빈 배열 반환
             if (packages == null || packages.isEmpty()) {
+                return ResponseEntity.ok(Collections.emptyList());
+            }
+
+            // 패키지 상세정보가 없는 경우 빈 배열 반환
+            if(packageDetail == null || packageDetail.isEmpty()) {
+                return ResponseEntity.ok(Collections.emptyList());
+            }
+
+            // 결제 내역이 없는 경우 빈 배열 반환
+            if(payments == null || payments.isEmpty()) {
                 return ResponseEntity.ok(Collections.emptyList());
             }
 
@@ -120,6 +133,7 @@ public class BusinessMypageController {
     }
 
     // 기업 개인정보 수정 -> 모달
+    // JSON API 엔드포인트(js요청)
     // businessMain.html
     @GetMapping("/business/profile/{userId}")
     @ResponseBody
@@ -148,6 +162,8 @@ public class BusinessMypageController {
 
     // 기업이 등록한 모든 패키지에 관한 일반 유저의 결제 내역(사용자, 패키지 상품 제목, 결제 상태) -> 모달
     // 결제 리스트 데이터 반환
+    // JSON API 엔드포인트(js요청)
+    // businessMain.html main 에서 결제 버튼 클릭 시 해당 정보가 담긴 모달 출력
     @GetMapping("/payments")
     @ResponseBody
     public ResponseEntity<List<Payment>> getBusinessPayments(@AuthenticationPrincipal User user) {
@@ -162,6 +178,8 @@ public class BusinessMypageController {
 
     // 등록한 패키지 클릭 시 상세보기 -> 모달
     // 패키지 상세 정보 반환
+    // JSON API 엔드포인트(js요청)
+    // businessMain.html main 에서 패키지 클릭 시 해당 정보가 담긴 모달 출력
     @GetMapping("/business/package/{packageId}")
     @ResponseBody
     public ResponseEntity<?> getPackageDetails(@PathVariable("packageId") int packageId) {
@@ -179,6 +197,8 @@ public class BusinessMypageController {
     }
 
     // 상세보기에서 수정 -> 상태가 대기/미승인일 경우에만 가능
+    // JSON API 엔드포인트(js요청)
+    // businessMain.html main 에서 패키지 클릭 시 해당 정보가 담긴 모달 출력된 상태에서 수정 버튼 누르면 정보 update 가능
     @GetMapping("/package/update/{packageId}")
     public ResponseEntity<?> updatePackage(@PathVariable("packageId") int packageId, @RequestBody PackagePost updatedPackage) {
         try {
@@ -211,6 +231,7 @@ public class BusinessMypageController {
     }
 
     // 상세보기에서 삭제 -> 상태가 대기/미승인일 경우에만 가능
+    // JSON API 엔드포인트(js요청)
     @DeleteMapping("/package/delete/{packageId}")
     public ResponseEntity<?> deletePackage(@PathVariable("packageId") int packageId, @AuthenticationPrincipal int userId) {
         try {

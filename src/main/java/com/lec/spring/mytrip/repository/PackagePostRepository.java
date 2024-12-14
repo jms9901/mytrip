@@ -1,6 +1,7 @@
 package com.lec.spring.mytrip.repository;
 
 import com.lec.spring.mytrip.domain.PackagePost;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -12,7 +13,7 @@ public interface PackagePostRepository {
     List<PackagePost> findByCityId(int cityId);
 
     // 사용자별 패키지 조회
-    List<PackagePost> findByUserId(int userId);
+    List<PackagePost> findByUserId(@Param("userId")int userId);
 
     // 패키지 상태별 조회
     List<PackagePost> findByStatus(String status);

@@ -601,6 +601,8 @@ WHERE user_id = 11;
 SELECT * FROM user WHERE user_id = 10;
 SELECT * FROM user WHERE user_id = 11;;
 
+SELECT package_content FROM package  WHERE user_id = 9;
+
 SELECT * FROM package;
 
 INSERT INTO package (city_id, user_id, package_content, package_status, package_title, package_cost, package_maxpeople, package_start_day, package_end_day)
