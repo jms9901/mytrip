@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class CityServiceImpl implements CityService {
 
-    private CityRepository cityRepository;
+    private final CityRepository cityRepository;
 
     @Autowired
     public CityServiceImpl(SqlSession sqlSession) {
@@ -19,8 +19,12 @@ public class CityServiceImpl implements CityService {
     @Override
     public City findCityName(String cityName) {
         if(cityName == null){
+            System.out.println("도시 이름 null");
             return null;
         }
-        return cityRepository.findByCityName(cityName);
+        System.out.println("도시 이름 : " + cityName);
+        City city = cityRepository.findByCityName(cityName);
+        System.out.println("여기는 서비스, 도시 리포 불러왔냐 : " + city);
+        return city;
     }
 }

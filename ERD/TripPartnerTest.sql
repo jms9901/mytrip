@@ -40,6 +40,29 @@ delete from guest_book;
 delete from messageroom;
 delete from message;
 
+SET FOREIGN_KEY_CHECKS = 0;
+DROP TABLE IF EXISTS user;
+DROP TABLE IF EXISTS package;
+DROP TABLE IF EXISTS package_attachment;
+DROP TABLE IF EXISTS package_liked;
+DROP TABLE IF EXISTS payment_info;
+DROP TABLE IF EXISTS board;
+DROP TABLE IF EXISTS board_liked;
+DROP TABLE IF EXISTS board_comment;
+DROP TABLE IF EXISTS board_attachment;
+DROP TABLE IF EXISTS declaration;
+DROP TABLE IF EXISTS city;
+DROP TABLE IF EXISTS city_liked;
+DROP TABLE IF EXISTS user_city;
+DROP TABLE IF EXISTS question_answer;
+DROP TABLE IF EXISTS airport;
+DROP TABLE IF EXISTS search_history;
+DROP TABLE IF EXISTS friendship;
+DROP TABLE IF EXISTS guest_book;
+DROP TABLE IF EXISTS messageroom;
+DROP TABLE IF EXISTS message;
+
+
 insert into user_city
 values(19,3,'2024-12-10'),
       (19,5,'2024-12-10'),
