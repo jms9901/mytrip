@@ -416,4 +416,76 @@ function isChrome() {
     return navigator.userAgent.indexOf('Chrome') != -1;
 
 }
+// URL에서 toUserId 값 추출하는 함수
+function getToUserIdFromUrl() {
+    const pathParts = window.location.pathname.split('/');
+    const UserId = pathParts[pathParts.length - 1]; // 마지막 부분이 toUserId
+    return UserId;
+}
 
+// 페이지 로드 시 AJAX 호출
+$(document).ready(function() {
+    const userId = getToUserIdFromUrl();
+    const apiUrl = `/mypage/recentfeed/${userId}`; // API URL 설정
+
+    // 페이지 로드 시 AJAX 호출
+    function loadFeeds() {
+        $.ajax({
+            url: apiUrl,
+            type: 'GET',
+            dataType: 'json',
+            success: function(feeds) {
+                console.log("피드 데이터:", feeds);  // 데이터 확인
+                loadFeed(feeds);
+            },
+            error: function(xhr, status, error) {
+                console.error("피드 로딩 실패:", error);
+            }
+        });
+    }
+
+    // 피드를 페이지에 추가
+    function loadFeed(feeds) {
+        if (feeds && feeds.length > 0) {
+            let rowHtml = '';
+            let count = 0;
+
+            feeds.forEach((feed, index) => {
+                let attachmentHtml = '';
+
+                // 첨부파일이 있을 경우 처리
+                if (feed.attachmentFiles && feed.attachmentFiles.length > 0) {
+                    attachmentHtml = feed.attachmentFiles.map(file => {
+                        const filePath = `/uploads/${file}`; // 첨부파일 경로
+                        return `<img src="${filePath}" alt="첨부파일" class="feed-attachment">`;
+                    }).join('');
+                }
+
+                const entryHtml = `
+                    <div class="feed-entry" style="background-image: url(/img/postFrame.png)" data-index="${index}">
+                        ${attachmentHtml}
+                        <div>${feed.boardSubject}</div>
+                    </div>
+                `;
+
+                // 3개씩 묶어서 하나의 행으로 추가
+                rowHtml += entryHtml;
+                count++;
+
+                if (count % 3 === 0) {
+                    // 3개씩 묶어서 feedEntries div에 추가
+                    $('.feedEntries').append(`<div class="row" style="display:flex; gap:10px; justify-content:center;">${rowHtml}</div>`);
+                    rowHtml = ''; // rowHtml 초기화
+                }
+            });
+
+            // 남은 항목이 3개 미만일 경우 처리
+            if (rowHtml !== '') {
+                $('.feedEntries').append(`<div class="row" style="display:flex; gap:10px; justify-content:center;">${rowHtml}</div>`);
+            }
+        }
+    }
+
+    // 페이지 로드 시 피드 데이터 로드
+    loadFeeds();
+});

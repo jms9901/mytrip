@@ -2,6 +2,7 @@ package com.lec.spring.mytrip.controller;
 
 import ch.qos.logback.classic.Logger;
 import com.lec.spring.mytrip.domain.City;
+import com.lec.spring.mytrip.domain.Feed;
 import com.lec.spring.mytrip.domain.FriendshipUserResultMap;
 import com.lec.spring.mytrip.domain.User;
 import com.lec.spring.mytrip.repository.UserRepository;
@@ -42,6 +43,8 @@ public class MyPageController {
 
     @Autowired
     private UserServiceImpl userService;
+    @Autowired
+    private FeedService feedService;
 
     @Autowired
     public MyPageController(MyPageService myPageService, LikedService likeService, FriendshipService friendshipService, UserServiceImpl userService) {
@@ -77,6 +80,13 @@ public class MyPageController {
 
         model.addAttribute("user", user);  // user 객체를 모델에 추가
         return "mypage/bookMain"; // 템플릿 이름
+    }
+
+    @GetMapping("/recentfeed/{userId}")
+    @ResponseBody
+    public ResponseEntity<List<Feed>> getFeedfindRecentFeedsByUserId(@PathVariable int userId){
+        List<Feed> recentfeed = feedService.findRecentFeedsByUserId(userId);
+        return ResponseEntity.ok(recentfeed);
     }
 
     // 친구 목록조회

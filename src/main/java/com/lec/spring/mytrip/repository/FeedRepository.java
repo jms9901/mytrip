@@ -13,6 +13,8 @@ public interface FeedRepository {
     // 사용자 ID로 피드 게시글 조회
     List<Feed> findFeedByUserId(@Param("userId") int userId);
 
+    List<Feed> findRecentFeedsByUserId(@Param("userId") int userId);
+
     // 피드 등록
     void insertFeed(Feed feed);
 

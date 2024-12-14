@@ -13,6 +13,9 @@ public interface FeedService {
 
     List<Feed> getFeedByUserId(int userId);
 
+
+    public List<Feed> findRecentFeedsByUserId(int userId);
+
     void insertFeed(Feed feed,List<MultipartFile> files) throws IOException;
 
     void updateFeed(int boardId, int userId, String boardSubject, String boardContent, int cityId, List<MultipartFile> files) throws IOException;

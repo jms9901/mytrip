@@ -36,6 +36,10 @@ public class FeedServiceImpl implements FeedService{
         return feedRepository.findFeedByUserId(userId);
     }
 
+    public List<Feed> findRecentFeedsByUserId(int userId) {
+        return feedRepository.findRecentFeedsByUserId(userId);
+    }
+
     @Override
     @Transactional
     public void insertFeed(Feed feed, List<MultipartFile> files) throws IOException {
