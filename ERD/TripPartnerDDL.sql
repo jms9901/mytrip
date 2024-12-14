@@ -40,7 +40,7 @@ CREATE TABLE board_attachment
 (
     board_attachment_id   INT           NOT NULL AUTO_INCREMENT COMMENT '피드 게시물 테이블 ID',
     board_id              INT           NOT NULL COMMENT '피드. 소모임 ID',
-    board_attachment_file VARCHAR(1000) NOT NULL COMMENT '피드 첨부파일 명',
+    board_attachment_file LONGTEXT NOT NULL COMMENT '피드 첨부파일 명',
     PRIMARY KEY (board_attachment_id)
 ) COMMENT '피드 첨부파일';
 
@@ -163,7 +163,7 @@ CREATE TABLE package_attachment
 (
     package_attachment_id   INT           NOT NULL AUTO_INCREMENT COMMENT '패키지 첨부파일 테이블 ID',
     package_id              INT           NOT NULL COMMENT '패키지 ID',
-    package_attachment_file VARCHAR(1000) NOT NULL COMMENT '패키지 첨부파일 명',
+    package_attachment_file LONGTEXT NOT NULL COMMENT '패키지 첨부파일 명',
     PRIMARY KEY (package_attachment_id)
 ) COMMENT '패키지 첨부파일';
 
