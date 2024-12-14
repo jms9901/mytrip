@@ -1,6 +1,8 @@
 package com.lec.spring.mytrip.service;
 
 import com.lec.spring.mytrip.domain.PackagePost;
+import com.lec.spring.mytrip.domain.attachment.BoardAttachment;
+import com.lec.spring.mytrip.domain.attachment.PackagePostAttachment;
 import com.nimbusds.openid.connect.sdk.assurance.evidences.attachment.Attachment;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -10,7 +12,7 @@ public interface PackageAttachmentService {
     //첨부파일 저장
     int saveAttachments(List<MultipartFile> files, PackagePost packagePost);
     //첨부파일 불러오기
-    List<Attachment> getAttachmentsByPostId(int postId);
+    List<PackagePostAttachment> getAttachmentsByPostId(int postId);
     //첨부파일 삭제
     void deleteAttachment(int attachmentId);
     //파일 이름 중복 처리

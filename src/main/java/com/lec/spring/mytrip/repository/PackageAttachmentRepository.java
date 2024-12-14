@@ -9,10 +9,10 @@ public interface PackageAttachmentRepository {
     int insertAttachment(PackagePostAttachment attachment);
 
     // 패키지 ID로 첨부파일 목록 조회
-    List<PackagePostAttachment> findByPackageId(Long packageId);
+    List<PackagePostAttachment> findByPackageId(int packageId);
 
     // 첨부파일 ID로 첨부파일 조회. 일단 만들었는데 썸네일에 쓸 수 있나?
-    PackagePostAttachment findByAttachmentId(Long packageAttachmentId);
+    PackagePostAttachment findByAttachmentId(int packageAttachmentId);
 
     // 첨부파일 삭제
     int deleteAttachment(int packageAttachmentId);

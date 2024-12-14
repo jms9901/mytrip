@@ -2,7 +2,10 @@ package com.lec.spring.mytrip.controller;
 
 import com.lec.spring.mytrip.domain.City;
 import com.lec.spring.mytrip.domain.PackagePost;
+import com.lec.spring.mytrip.domain.attachment.BoardAttachment;
+import com.lec.spring.mytrip.domain.attachment.PackagePostAttachment;
 import com.lec.spring.mytrip.service.CityService;
+import com.lec.spring.mytrip.service.PackageAttachmentService;
 import com.lec.spring.mytrip.service.PackagePostService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,9 +20,11 @@ public class PackagePostController {
 
     private final PackagePostService packagePostService;
     private final CityService cityService;
+    private final PackageAttachmentService packageAttachmentService;
 
-    public PackagePostController(PackagePostService packagePostService, CityService cityService) {
+    public PackagePostController(PackagePostService packagePostService, CityService cityService, PackageAttachmentService packageAttachmentService) {
         System.out.println("PackagePostController() 시작");
+        this.packageAttachmentService = packageAttachmentService;
         this.cityService = cityService;
         this.packagePostService = packagePostService;
     }
@@ -69,8 +74,10 @@ public class PackagePostController {
                                   @PathVariable int packageId,
                                   Model model) {
         PackagePost packagePost = packagePostService.getPackageDetails(packageId);
+        List<PackagePostAttachment> boardAttachment = packageAttachmentService.getAttachmentsByPostId(packageId);
         model.addAttribute("packagePost", packagePost);
         model.addAttribute("packageId", packageId);
+        model.addAttribute("attachment", boardAttachment);
 
         return "board/city/package/detail";
     }

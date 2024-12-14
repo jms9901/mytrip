@@ -1,6 +1,7 @@
 package com.lec.spring.mytrip.service;
 
 import com.lec.spring.mytrip.domain.PackagePost;
+import com.lec.spring.mytrip.domain.attachment.BoardAttachment;
 import com.lec.spring.mytrip.domain.attachment.PackagePostAttachment;
 import com.lec.spring.mytrip.repository.PackageAttachmentRepository;
 import com.nimbusds.openid.connect.sdk.assurance.evidences.attachment.Attachment;
@@ -101,8 +102,8 @@ public class PackageAttachmentServiceImpl implements PackageAttachmentService {
 
     //첨부파일 불러오기
     @Override
-    public List<Attachment> getAttachmentsByPostId(int postId) {
-        return List.of();
+    public List<PackagePostAttachment> getAttachmentsByPostId(int postId) {
+        return packageAttachmentRepository.findByPackageId(postId);
     }
 
     //첨부파일 삭제
