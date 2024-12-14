@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
+import org.springframework.security.access.AccessDecisionManager;
+import org.springframework.security.access.vote.AffirmativeBased;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -13,6 +15,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
+
+import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
@@ -22,7 +27,7 @@ public class SecurityConfig {
     private PrincipalOauth2UserService principalOauth2UserService;
 
     @Autowired
-    private Environment env;
+    private UserStatusVoter userStatusVoter;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -35,27 +40,36 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-//        String redirectUri = env.getProperty("spring.security.oauth2.client.registration.kakao.redirect-uri");
-        return http
-                .csrf(csrf -> csrf.disable()) // CSRF 비활성화
+    public AccessDecisionManager accessDecisionManager() {
+        return new AffirmativeBased(Arrays.asList(userStatusVoter));
+    }
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, AccessDeniedHandler accessDeniedHandler) throws Exception {
+        http
+                .csrf(csrf -> csrf.disable())
                 .authorizeRequests(auth -> auth
-                        .requestMatchers("/", "/user/login", "/oauth2/**" ,"/css/**", "/js/**", "/img/**" ).permitAll() // 해당 URL에 대해 모두 접근 허용
-                        .requestMatchers("/aipage/**").authenticated()
-                        .anyRequest().permitAll()) // 그 밖의 모든 요청은 인증 필요
+                        .requestMatchers("/", "/user/login", "/oauth2/**", "/css/**", "/js/**", "/img/**", "/admin/adminLogin", "/admin/auth").permitAll()
+                        .requestMatchers("/user/home", "/user/login").hasAnyAuthority("ROLE_USER", "ROLE_DORMANT")
+                        .requestMatchers("/user/**").hasAnyAuthority("ROLE_USER", "ROLE_BUSINESS")
+                        .anyRequest().permitAll())
                 .formLogin(form -> form
-                        .loginPage("/user/login") // 로그인 페이지 설정
-                        .loginProcessingUrl("/user/login") // 로그인 처리 URL
-                        .defaultSuccessUrl("/main/mainpage", true)) // 로그인 성공 시 이동할 URL
+                        .loginPage("/user/login")
+                        .loginProcessingUrl("/user/login")
+                        .defaultSuccessUrl("/main/mainpage", true))
                 .logout(logout -> logout
-                        .logoutUrl("/user/logout") // 로그아웃 처리 URL
-                        .invalidateHttpSession(true)) // 세션 무효화
+                        .logoutUrl("/user/logout")
+                        .invalidateHttpSession(true))
                 .oauth2Login(oauth2 -> oauth2
-                        .loginPage("/user/login") // OAuth2 로그인 페이지 설정
-                        .defaultSuccessUrl("/main/mainpage", true)
-                        .userInfoEndpoint(userInfo -> userInfo
-                                .userService(principalOauth2UserService))) // OAuth2 UserService 설정
-                .build();
+                        .loginPage("/user/login")
+                        .defaultSuccessUrl("/main/mainpage", true))
+                // authorizeRequests에서 설정한 권한이 없는 유저가 접근할 경우 예외 발생
+                .exceptionHandling(exception -> exception
+                        .accessDeniedHandler(accessDeniedHandler))
+                .authorizeRequests()
+                .accessDecisionManager(accessDecisionManager()); // 커스텀 AccessDeniedHandler 추가
+
+        return http.build();
     }
 
 }

@@ -87,3 +87,7 @@ SELECT user_username, COUNT(*)
 FROM user
 GROUP BY user_username
 HAVING COUNT(*) > 1;
+
+update user
+set user_status = '거절'
+where user_id = 33;
