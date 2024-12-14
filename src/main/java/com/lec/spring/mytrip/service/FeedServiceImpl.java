@@ -92,7 +92,7 @@ public class FeedServiceImpl implements FeedService {
 
     @Override
     @Transactional
-    public Feed detail(Long id) {
+    public Feed detail(int id) {
         // 본인이 누를 시 조회수 증가 X
         // 조회수 증가
 //        feedRepository.viewCnt(id);
@@ -114,7 +114,7 @@ public class FeedServiceImpl implements FeedService {
     }
 
     @Override
-    public Feed findById(Long id) {
+    public Feed findById(int id) {
         Feed feed = feedRepository.findById(id);
         return feed;
     }
@@ -125,11 +125,11 @@ public class FeedServiceImpl implements FeedService {
     @Transactional
     public boolean update(Feed feed
             , Map<String, MultipartFile> files
-            , Long[] delFileIds
+            , int[] delFileIds
     ) {
         // 지정된 첨부파일 삭제
         if(delFileIds != null) {
-            for (Long boardAttachmentId : delFileIds) {
+            for (int boardAttachmentId : delFileIds) {
                 feedRepository.deleteAttachment(boardAttachmentId);
             }
         }
@@ -147,7 +147,7 @@ public class FeedServiceImpl implements FeedService {
     // 파일 삭제
     // postAttachment 다 만들고 수정
     @Override
-    public boolean deleteById(Long id) {
+    public boolean deleteById(int id) {
         Feed feed = new Feed();
         // 첨부파일 삭제
         feedRepository.deleteAttachmentByBoardId(id);

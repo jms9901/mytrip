@@ -11,22 +11,22 @@ public interface FeedRepository {
     int save(Feed feed);
 
     // 특정 피드 id 글 내용 읽기
-    Feed findById(Long id);
+    Feed findById(int id);
 
     // 특정 id 글 조회수 증가
-    int viewCnt(Long id);
+    int viewCnt(int id);
 
     // 전체 글 목록 : 최신순
     List<Feed> findAll();
 
     // 가장 최근 게시물 9개 개인정보 오른쪽 페이지에 배치
-    int findRecentFeedByUser(Long id);
+    int findRecentFeedByUser(int id);
 
     // 특정 피드 id 피드 수정 -> 모달에서 처리
     int update(Feed feed);
 
     // 특정 피드 id 피드 삭제 -> 모달에서 처리
-    int delete(Long id);
+    int delete(int id);
 
     // 전체 피드 개수
     int feedCountAll();
@@ -35,13 +35,13 @@ public interface FeedRepository {
     int saveAttachment(PostAttachment attachment);
 
     // 특정 피드 ID로 첨부파일 찾기
-    List<PostAttachment> findAttachmentByBoardId(Long boardId);
+    List<PostAttachment> findAttachmentByBoardId(int boardId);
 
     // 첨부파일 삭제
-    int deleteAttachment(Long boardAttachmentId);
+    int deleteAttachment(int boardAttachmentId);
 
     // 특정 피드 ID의 첨부파일 삭제
-    int deleteAttachmentByBoardId(Long boardId);
+    int deleteAttachmentByBoardId(int boardId);
 
     // 도시
     List<City> findAllCities();
