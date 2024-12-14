@@ -35,6 +35,7 @@
         <div class="col-md-4 text-end">
 
             <button class="btn btn-danger">삭제</button>
+            <a id="backToList" href="#" class="btn btn-secondary">목록</a>
         </div>
     </div>
 
@@ -56,7 +57,7 @@
             <div class="mb-3">
                 <label class="form-label">예약 인원</label>
                 <div class="d-flex align-items-center">
-                    <input type="number" id="peopleCount" class="form-control w-50 text-center" value="1" min="1" th:max="${packagePost.packageMaxpeople}">
+                    <input type="number" id="peopleCount" class="form-control w-50 text-center" value="1" min="1" th:max="${packagePost.packageMaxpeople}" readonly>
                     <button type="button" class="btn btn-primary mx-2" onclick="increaseCount()">Up</button>
                     <button type="button" class="btn btn-secondary" onclick="decreaseCount()">Down</button>
                 </div>
@@ -90,7 +91,7 @@
             </div>
             <!-- Modal Body -->
             <div class="modal-body">
-                <form id="reservationForm" method="post" action="/reservation/submit">
+                <form id="reservationForm" method="post" action="/board/package/payment">
 
                     <input type="hidden" name="packageId" th:value="${packagePost.packageId}">
                     <div class="mb-3">
@@ -165,6 +166,18 @@
         reservationModal.show();
         updateTotalPrice();
     });
+
+    // 현재 URL에서 cityId 추출
+    const currentUrl = window.location.href;
+    const cityIdMatch = currentUrl.match(/\/city\/(\d+)/); // 정규식으로 '/city/{cityId}' 추출
+
+    if (cityIdMatch) {
+        const cityId = cityIdMatch[1]; // 추출된 cityId
+        const backUrl = `/board/city/${cityId}`; // 이동할 URL
+        document.getElementById('backToList').href = backUrl;
+    } else {
+        console.error('cityId를 URL에서 찾을 수 없습니다.');
+    }
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
