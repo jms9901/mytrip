@@ -53,12 +53,13 @@
 <div class="menu5" id="5" style="background-image: url(/img/mypageMenu.png);"><h4 id="Invoice">&nbsp;GuestBook</h4>
 </div>
 
-<button id="open-modal" class="open-modal-btn">피드 작성</button>
-<div class="writeFeed" style="background-image: url(/img/feedDetailFrame.png);">
+<button id="open-modal" class="open-modal-btn" style="margin-top:5%;margin-left:85%;border-radius: 20px; background: cornflowerblue"><h4>Create!</h4></button>
+<div class="writeFeed" style="background-image: url(/img/feedDetailFrame.png); ">
     <form action="/mypage/feed/createFeed" method="post" enctype="multipart/form-data">
+        <br><br>
+            <label for="city" style="margin-top:150px; margin-left:100px">도시 선택:</label>
 
-            <label for="city">도시 선택:</label>
-            <select name="cityId" id="city" required>
+            <select name="cityId" id="city" style="margin-top:50px; margin-left:100px" required>
                 <option value="1">괌</option>
                 <option value="2">마닐라</option>
                 <option value="3">나트랑</option>
@@ -92,12 +93,16 @@
                 <option value="31">벤쿠버</option>
                 <option value="32">지린</option>
             </select>
+<br><br>
+       <h style="margin-left: 100px">피드 제목:</h>
+        <input type="text" name="boardSubject" placeholder="제목" style=" margin-left:100px; width:200px;height: 100px;" required>
+        <br><br>
 
-
-        <input type="text" name="boardSubject" placeholder="제목" required>
-        <textarea name="boardContent" placeholder="내용" required></textarea>
-        <input type="file" name="files" multiple>  <!-- 여러 파일을 선택 가능 -->
-        <button type="submit">피드 작성</button>
+        <textarea name="boardContent" placeholder="내용" style=" margin-left:100px; width: 600px;height: 200px" required></textarea>
+        <br><br>
+        <input type="file" name="files" style=" margin-left:100px" multiple>  <!-- 여러 파일을 선택 가능 -->
+        <br>
+        <button type="submit" style="margin-left:600px; margin-bottom: 20px">피드 작성</button>
         <!-- 모달 안에 닫기 버튼 추가 -->
         <button type="button" class="close-modal-btn" onclick="closeModal()">닫기</button>
     </form>
@@ -143,6 +148,34 @@
 
             // 모달을 숨김
             modal.css('display', 'none');
+        });
+        $('.myPageGoHome').on('click', function() {
+
+            window.location.href = '/mypage/' + userId;
+        });
+        $('.menu1').on('click', function() {
+
+            window.location.href = '/bookmain/payment/list/' + userId;
+        });
+        $('.menu2').on('click', function() {
+
+            window.location.href = '/mypage/feed/list/' + userId;
+        });
+        $('.menu3').on('click', function() {
+
+            window.location.href = '/mypage/feedliked/' + userId;
+        });
+        $('.menu4').on('click', function() {
+
+            window.location.href = '/mypage/packageliked/' + userId;
+        });
+        $('.menu5').on('click', function() {
+
+            window.location.href = '/bookMain/bookGuestBook/list/' + userId;
+        });
+        $('.goChat').on('click', function() {
+
+            window.location.href = '/chat';
         });
 
 
