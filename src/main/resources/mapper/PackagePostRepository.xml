@@ -75,7 +75,8 @@
     </select>
 
     <!-- 패키지 저장 -->
-    <insert id="save" parameterType="com.lec.spring.mytrip.domain.PackagePost" useGeneratedKeys="true" keyProperty="packageId">
+    <insert id="save" flushCache="true" parameterType="com.lec.spring.mytrip.domain.PackagePost"
+            useGeneratedKeys="true" keyProperty="packageId" keyColumn="package_id">
         INSERT INTO package (
             city_id, user_id, package_status, package_content,
             package_regdate, package_title, package_cost, package_maxpeople,
@@ -88,7 +89,7 @@
     </insert>
 
     <!-- 패키지 수정 -->
-    <update id="update" parameterType="com.lec.spring.mytrip.domain.PackagePost">
+    <update id="update" flushCache="true" parameterType="com.lec.spring.mytrip.domain.PackagePost">
         UPDATE package
         SET
             city_id = #{cityId},
@@ -102,7 +103,7 @@
     </update>
 
     <!-- 패키지 삭제 -->
-    <delete id="deleteById" parameterType="int">
+    <delete id="deleteById" flushCache="true" parameterType="int">
         DELETE FROM package
         WHERE package_id = #{packageId}
     </delete>

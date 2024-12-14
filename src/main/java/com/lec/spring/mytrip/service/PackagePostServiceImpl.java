@@ -82,7 +82,7 @@ public class PackagePostServiceImpl implements PackagePostService {
         }
 
         // 패키지 저장
-        int savedPackageId = packagePostRepository.save(pkg);
+        packagePostRepository.save(pkg);
 
         // 첨부파일 저장
         try {
@@ -91,7 +91,7 @@ public class PackagePostServiceImpl implements PackagePostService {
             throw new RuntimeException("첨부파일 저장 중 오류가 발생했습니다.", e);
         }
 
-        return savedPackageId; // 저장된 패키지 ID 반환
+        return pkg.getPackageId();
     }
 
     //패키지 수정

@@ -67,8 +67,8 @@ class PackagePostRepositoryTest {
                 .packageStatus("대기")
                 .packageCost(39800)
                 .packageMaxpeople(28)
-                .packageStartDay(LocalDateTime.parse("2025-01-01T00:00:00"))
-                .packageEndDay(LocalDateTime.parse("2025-01-01T00:00:00"))
+//                .packageStartDay(LocalDateTime.parse("2025-01-01T00:00:00"))
+//                .packageEndDay(LocalDateTime.parse("2025-01-01T00:00:00"))
                 .cityId(1)
                 .build();
 
@@ -94,8 +94,8 @@ class PackagePostRepositoryTest {
                 .packageStatus("대기")
                 .packageCost(398000)
                 .packageMaxpeople(280)
-                .packageStartDay(LocalDateTime.parse("2025-01-01T00:00:00"))
-                .packageEndDay(LocalDateTime.parse("2025-01-10T00:00:00"))
+//                .packageStartDay(LocalDateTime.parse("2025-01-01T00:00:00"))
+//                .packageEndDay(LocalDateTime.parse("2025-01-10T00:00:00"))
                 .cityId(1)
                 .build();
 

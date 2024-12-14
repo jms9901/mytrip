@@ -14,7 +14,7 @@ public interface PackageAttachmentService {
     //첨부파일 삭제
     void deleteAttachment(int attachmentId);
     //파일 이름 중복 처리
-    String generateUniqueFileName(String originalFileName);
+    String generateUniqueFileName(String originalFileName, int userId);
     //파일 형식 및 크기 검증
     boolean isValidFile(MultipartFile file);
 }
