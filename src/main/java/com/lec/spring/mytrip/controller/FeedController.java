@@ -68,7 +68,7 @@ public class FeedController {
 
     // 피드 상세 보기
     @GetMapping("/feedDetail/{id}")
-    public String feedDetail(@PathVariable Long id, Model model) {
+    public String feedDetail(@PathVariable int id, Model model) {
         Feed feed = feedService.detail(id);
         model.addAttribute("feed", feed);
         return "mypage/feedDetail";
@@ -83,7 +83,7 @@ public class FeedController {
 
     // 피드 수정 폼
     @GetMapping("/feedUpdate/{id}")
-    public String feedUpdate(@PathVariable Long id, Model model) {
+    public String feedUpdate(@PathVariable int id, Model model) {
         Feed feed = feedService.detail(id);
         List<City> cities = feedService.getAllCities();
 
@@ -96,7 +96,7 @@ public class FeedController {
     @PostMapping("/feedUpdate")
     public String feedUpdateOk(
             @RequestParam Map<String, MultipartFile> files,
-            @RequestParam(required = false) Long[] delfile,
+            @RequestParam(required = false) int[] delfile,
             @Valid Feed feed,
             BindingResult bindingResult,
             Model model,
@@ -124,7 +124,7 @@ public class FeedController {
 
     // 피드 삭제 처리
     @PostMapping("/feedDelete")
-    public String feedDeleteOk(Long id, Model model) {
+    public String feedDeleteOk(int id, Model model) {
         boolean result = feedService.deleteById(id);
         model.addAttribute("result", result);
         return "mypage/feedDeleteOk";

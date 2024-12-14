@@ -61,7 +61,7 @@ public class FeedValidator implements Validator {
         }
 
         // 피드 작성 폼 검증
-        if (feed.getBoardId() != null) { // 수정의 경우
+        if (feed.getBoardId() != 0) { // 수정의 경우
             Feed existingFeed = feedService.findById(feed.getBoardId());
             if (existingFeed == null) {
                 errors.reject("feed.notFound", "존재하지 않는 피드입니다.");
