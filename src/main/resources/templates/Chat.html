@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>채팅 애플리케이션</title>
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.5.1/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+    <style>
+        /* 메시지 영역 스타일 */
+        #messages { max-height: 300px; overflow-y: auto; }
+        .message { margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+
+<h1>Anonymity Commnity</h1>
+<div id="messages"></div> <!-- 메시지가 표시될 영역 -->
+<input type="text" id="messageInput" placeholder="메시지를 입력하세요" />
+<button onclick="sendMessage()">보내기</button>
+
+<script>
+    var stompClient = null;
+
+    // WebSocket 연결 함수
+    function connect() {
+        var socket = new SockJS('/chat');  // WebSocket 엔드포인트에 연결
+        stompClient = Stomp.over(socket);
+        stompClient.connect({}, function(frame) {
+            console.log('연결 성공: ' + frame);
+            // '/topic/messages'에서 메시지를 구독
+            stompClient.subscribe('/topic/messages', function(messageOutput) {
+                // 메시지 수신 시 화면에 출력
+                showMessage(JSON.parse(messageOutput.body).content);
+            });
+        });
+    }
+
+    // 메시지 화면에 표시하는 함수
+    function showMessage(message) {
+        var messagesDiv = document.getElementById('messages');
+        var messageElement = document.createElement('div');
+        messageElement.classList.add('message');
+        messageElement.textContent = message;
+        messagesDiv.appendChild(messageElement);  // 메시지를 메시지 영역에 추가
+    }
+
+    // 메시지 보내기 함수
+    function sendMessage() {
+        var messageContent = document.getElementById('messageInput').value;
+        var message = { sender: 'User1', content: messageContent };  // 메시지 내용 설정
+        stompClient.send('/app/chat', {}, JSON.stringify(message));  // 서버로 메시지 전송
+        document.getElementById('messageInput').value = '';  // 입력창 초기화
+    }
+
+    // 페이지 로드 시 WebSocket 연결
+    connect();
+</script>
+</body>
+</html>
