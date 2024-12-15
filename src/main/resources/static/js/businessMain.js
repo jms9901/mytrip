@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
+    // 패키지 리스트 동적 생성 부분
     const packageListContainer = document.querySelector('.package-list');
 
     // 현재 페이지의 경로에서 userId 추출하기
@@ -9,13 +10,21 @@ document.addEventListener("DOMContentLoaded", () => {
     const userId = segments[segments.length - 1]; // 마지막 세그먼트 추출
 
     console.log(userId); // 예: userId 확인
+    console.log(document.querySelector(".package-list"));
 
+    // 사용자 확인
     if (!userId || isNaN(userId)) {
         console.error('유효하지 않은 사용자 ID입니다.');
         packageListContainer.innerHTML = '<p>사용자 정보를 불러올 수 없습니다.</p>';
         return;
     }
+    if(!packageListContainer) {
+        console.error("등록한 패키지가 없습니다.");
+        packageListContainer.innerHTML = '<p>등록한 패키지가 없습니다.</p>';
+        return;
+    }
 
+    // 메인 페이지 정보 로드
     fetch(`/mypage/business/js/${userId}`, {
         // 명시적으로 JSON 요청 설정
         headers: {
@@ -51,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
-            // 데이터 렌더링
+            // 패키지 리스트 데이터 렌더링
             packageListContainer.innerHTML = data.map(packages => `
                 <div class="package-item" data-package-id="${packages.packageId}">
                     <div class="package-title">
@@ -66,7 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 </div>
             `).join('');
 
-            // 패키지 상세보기 모달 이벤트 리스너 추가
+            // 패키지 상세보기 모달 이벤트 리스너
             const packageItems = document.querySelectorAll('.package-item');
             const packageModal = document.getElementById('package-modal');
             const closeButton = packageModal.querySelector('.close-button');
@@ -77,6 +86,11 @@ document.addEventListener("DOMContentLoaded", () => {
                     loadPackageDetails(packageId);
                 });
             });
+
+            if (!closeButton) {
+                console.error('닫기 버튼을 찾을 수 없습니다.');
+                return;
+            }
 
             // 닫기 버튼 이벤트
             closeButton.addEventListener('click', function() {
@@ -90,7 +104,11 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 });
 
-document.addEventListener('DOMContentLoaded', function() {
+//  패키지 상세보기 모달
+document.addEventListener('click', function() {
+    const packageDetailData  = document.querySelector('.packageDetail');
+    packageModal.querySelector('.package-regdate').textContent = `게시일: ${#temporals.format(new Date(packagePost.packageRegdate), 'yyyy-MM-dd')}`;
+
     // 패키지 상세보기 모달 데이터 함수
     function loadPackageDetails(packageId) {
         fetch(`/mypage/business/package/${packageId}`, {
@@ -112,7 +130,78 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .then(packageDetail => {
                 console.log("패키지 데이터 확인: ", packageDetail)
-                const packageModal = document.getElementById('modal');
+
+                // 패키지 상세보기 데이터 렌더링
+                packageDetailData.innerHTML = packageDetail.map(packageInfo => `
+                    <div class="modal-content" data-package-id = "${packageInfo.packageId}">
+                        <span class="close-button">&times;</span>
+                        <div class="package-title">${packageInfo.packageTitle}</div>
+                        <div class="package-regdate"></div>
+                        
+                        <div class="modal-body">
+                            <div class="image-section">
+                                <div class="slideshow-container">
+                                    <div class="slide-fade">
+                                    <!--  이미지 첨부파일 동적 생성  -->
+                                    </div>
+                                </div>
+                                
+                                <!-- 슬라이드 이전/다음 버튼 -->
+                                <a class="prev">&#10094;</a>
+                                <a class="next">&#10095;</a>
+                            </div>
+                        </div>
+                        
+                        <div class="info-section">
+                            <label for="cityName">
+                                <span>도시</span>
+                                <input type="text" class="cityName" th:value="${packageInfo.cityName}">
+                            </label>
+                            <label for="packageStartDay" class="packageStartDay">
+                                <span>시작일</span>
+                                <input type="date" class="packageStartDay" th:value="${#temporals.format(packageInfo.packageStartDay, 'yyyy-MM-dd')}">
+                            </label>
+                            <label for="packageEndDay">
+                                <span>종료일</span>
+                                <input type="date" class="packageEndDay" th:value="${#temporals.format(packageInfo.packageEndDay, 'yyyy-MM-dd')}">
+                            </label>
+                            <label for="packageCost">
+                                <span>금액</span>
+                                <input type="text" class="packageCost" th:value="${packageInfo.packageCost}">
+                            </label>
+                            <label for="packageMaxpeople">
+                                <span>최대 인원</span>
+                                <input type="number" class="packageMaxpeople" th:value="${packageInfo.packageMaxpeople}">
+                            </label>
+                        </div>
+                        
+                        <div class="package-details">
+                            <label for="packageContent">
+                                <span>패키지 내용</span>
+                                <textarea class="package-content" th:value="${packageInfo.packageContent}"></textarea>
+                            </label>
+                        </div>
+                        
+                        <div class="file-attachments">
+                            <!-- 해당 패키지 이미지 첨부파일 리스트 동적 추가 -->
+                        </div>
+                        <div class="attachmentInfo">해당 첨부파일 클릭 시 삭제됩니다.</div>
+                        
+                        <div class="button-action" style="border: none;">
+                            <button type="button" class="update-button">
+                                <img src="/img/myPageUpdate.png" alt="update-button" class="update-button">
+                            </button>
+                            <button type="submit" class="submit-button">
+                                <img src="/img/checkIcon.png" alt="submit-button" class="submit-button">
+                            </button>
+                            <button type="button" class="delete-button">
+                                <img src="/img/mypageDeleteIcon.png" alt="delete-button" class="delete-button">
+                            </button>
+                        </div>
+                    </div>
+                `)
+
+                const packageModal = document.getElementById('#modal');
                 const updateButton = packageModal.querySelector('#package-update-button');
                 const submitButton = packageModal.querySelector('#package-submit-button');
                 const updateImage = packageModal.querySelector('.package-image')
@@ -208,7 +297,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 // 기존 모달 내용 업데이트 로직 유지
                 packageModal.querySelector('.package-title').textContent = packageDetail.packageTitle;
-                packageModal.querySelector('.package-regdate').textContent = `게시일: ${packageDetail.packageRegdate}`;
+                packageModal.querySelector('.package-regdate').textContent = `게시일: ${#temporals.format(new Date(packagePost.packageRegdate), 'yyyy-MM-dd')}`;
 
                 // 이미지 슬라이드 업데이트
                 const slideshowContainer = packageModal.querySelector('.slideshow-container');
@@ -217,6 +306,34 @@ document.addEventListener('DOMContentLoaded', function() {
                     <img src="${img}" alt="package-image">
                 </div>
             `).join('');
+
+                // 슬라이드 컨트롤 표시
+                let slideIndex = 1;
+                showSlide(slideIndex);
+
+                function showSlide(n) {
+                    const slides = packageModal.querySelector('.mySlides');
+                    const dots = packageModal.querySelector('.dot');
+
+                    if (n > slides.length) {slideIndex = 1}
+                    if (n < 1) {slideIndex = slides.length}
+
+                    slides.forEach((slide, i) => {
+                        slide.style.display = i === slideIndex - 1 ? 'block' : 'none';
+                    });
+
+                    dots.forEach((dot, i) => {
+                        dot.classList.remove('active');
+                        if (i === slideIndex - 1) {
+                            dot.classList.add('active');
+                        }
+                    });
+                    // 슬라이드 자동 전환
+                    setInterval(() => {
+                        slideIndex++;
+                        showSlides(slideIndex);
+                    }, 5000); // 5초마다 슬라이드 전환
+                }
 
                 // 입력 필드 값 설정
                 packageModal.querySelector('.cityName').value = packageDetail.cityName;
@@ -278,13 +395,13 @@ function getStatusClass(status) {
     }
 }
 
-// 결제 버튼 모달 JS
-document.addEventListener('DOMContentLoaded', function() {
+// 결제 버튼 모달
+document.addEventListener('click', function() {
     // 결제 버튼 이벤트 리스너
     var paymentButton = document.getElementById('package-payment-button');
     if (paymentButton) {
         paymentButton.addEventListener('click', function() {
-            fetch(`mypage/payments`, {
+            fetch(`mypage/payments/${userId}`, {
                 method: 'GET',
                 headers: {
                     'Accept' : 'application/json',
@@ -368,8 +485,8 @@ function getPaymentStatusClass(status) {
     }
 }
 
-// 개인정보 수정 모달 처리
-document.addEventListener('DOMContentLoaded', function() {
+// 개인정보 수정 모달
+document.getElementById('profile-icon-Button').addEventListener('click', function() {
     const profileUpdateModal = document.getElementById('modalOverlay');
     const profileUpdateButton = document.getElementById('update-button');
     const profileSubmitButton = profileUpdateModal.querySelector('.submit-button');
@@ -429,8 +546,9 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// 모달 외부 클릭 시 닫기
-document.addEventListener('DOMContentLoaded', function() {
+// 모달 외부 닫기
+document.addEventListener('DOMContentLoaded', function () {
+    // 모달 외부 닫기 공통
     const modals = document.querySelectorAll('.modal, .businessUpdate-modal, .package-modal');
 
     window.addEventListener('click', function(event) {
@@ -440,14 +558,16 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
-});
+})
 
-// 홈 로고 버튼 클릭 이벤트
-document.addEventListener('DOMContentLoaded', function() {
+// 홈버튼 클릭 시 이동
+document.addEventListener('DOMContentLoaded', function () {
+    // 홈버튼 클릭 시 해당 홈으로 이동 url
     const homeLogoButton = document.querySelector('.homeLogo-Button');
     if (homeLogoButton) {
         homeLogoButton.addEventListener('click', function() {
             window.location.href = '/'; // 홈페이지로 이동
         });
     }
-});
+})
+

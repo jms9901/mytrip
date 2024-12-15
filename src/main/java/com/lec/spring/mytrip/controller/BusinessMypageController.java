@@ -29,15 +29,16 @@ public class BusinessMypageController {
     private final BusinessMypageService businessMypageService;
     private final UserServiceImpl userService;
     private final PackagePostService packagePostService;
-
-    @Autowired
     private PackagePostRepository packagePostRepository;
 
+
+    @Autowired
     public BusinessMypageController(BusinessMypageService businessMypageService, UserServiceImpl userService, PackagePostService packagePostService) {
         System.out.println("BusinessMypageController() 작동");
         this.businessMypageService = businessMypageService;
         this.userService = userService;
         this.packagePostService = packagePostService;
+        this.packagePostRepository = packagePostRepository;
     }
 
     // 기업 마이페이지 메인
@@ -76,7 +77,7 @@ public class BusinessMypageController {
     // businessMain.html
     @GetMapping("/business/js/{userId}")
     @ResponseBody
-    public ResponseEntity<?> businessMypage(@PathVariable("userId") int userId, @RequestParam(required = true) int packageId) {
+    public ResponseEntity<?> businessMypage(@PathVariable("userId") int userId, @RequestParam(required = false) Integer packageId) {
         try {
             // 유저 정보 로드
             User user = businessMypageService.getUserById(userId);
@@ -153,7 +154,7 @@ public class BusinessMypageController {
     // 결제 리스트 데이터 반환
     // JSON API 엔드포인트(js요청)
     // businessMain.html main 에서 결제 버튼 클릭 시 해당 정보가 담긴 모달 출력
-    @GetMapping("/payments")
+    @GetMapping("/payments/{userId}")
     @ResponseBody
     public ResponseEntity<List<Payment>> getBusinessPayments(@AuthenticationPrincipal User user) {
         try {

@@ -38,6 +38,7 @@ body {
     border-bottom: #ddd 2px solid;
     width: 100%;
     display: flex;
+    flex-direction: column;
 }
 
 
@@ -46,6 +47,12 @@ body {
     font-weight: bold;
     flex: 3;
     padding-top: 38px;
+}
+
+.pay-status {
+    padding: 8px 15px;
+    border-radius: 5px;
+    font-size: 14px;
 }
 
 .pay-status-select {
@@ -72,12 +79,6 @@ body {
 
 .payment-table th {
     font-weight: bold;
-}
-
-.pay-status {
-    padding: 8px 15px;
-    border-radius: 5px;
-    font-size: 14px;
 }
 
 .payment-complete {
