@@ -18,4 +18,6 @@ public class Friendship {
     private int fromUserId;        // 발신자 ID
     private FriendshipStatus friendStatus;  // 친구 상태
     private LocalDateTime friendshipDate;   // 친구 관계 형성 일자
+    private String fromUserName;  // 발신자 이름
+    private String toUserName;    // 수신자 이름
 }

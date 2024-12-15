@@ -596,3 +596,10 @@ insert into package_liked (user_id,package_id,package_liked_date)
 values (1,9,now());
 insert into package_liked (user_id,package_id,package_liked_date)
 values (1,10,now());
+insert into  friendship(to_user_id, from_user_id)
+values (3,2);
+
+insert into  friendship(to_user_id, from_user_id)
+values (1,2);
+insert into  friendship(to_user_id, from_user_id)
+values (1,3);

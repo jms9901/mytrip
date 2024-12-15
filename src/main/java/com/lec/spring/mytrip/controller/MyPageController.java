@@ -87,6 +87,15 @@ public class MyPageController {
         return ResponseEntity.ok(friendList);
     }
 
+    @GetMapping("/requestList/{userId}")
+    @ResponseBody
+    public ResponseEntity<List<FriendshipUserResultMap>> getrequestist(@PathVariable("userId") Long userId) {
+        List<FriendshipUserResultMap> requestList = friendshipService.requestView(userId);
+        return ResponseEntity.ok(requestList);
+    }
+
+
+
     @PostMapping("/update/{userId}")
     public ResponseEntity<Map<String, String>> updateUser(
             @PathVariable("userId") Long userId,

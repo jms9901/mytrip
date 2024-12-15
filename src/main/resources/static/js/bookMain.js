@@ -114,8 +114,123 @@ document.getElementById('ConnectionsCnt').addEventListener('click', function () 
         })
         .catch(error => console.error('Error fetching friend list:', error));
 });
+// 친구 요청 수락/거절 처리 함수
+function handleFriendRequest(action, fromUserId, toUserId, requestItem) {
+    const params = new URLSearchParams({
+        fromUserId: fromUserId,  // 로그인 사용자 (fromUserId)
+        toUserId: toUserId       // 친구 요청을 받는 사용자 (toUserId)
+    });
+
+    fetch(`/friendship/${action}?${params}`, { method: "POST" })
+        .then(response => response.text())
+        .then(result => {
+            alert(result);  // 결과 메시지 출력
+
+            // 요청이 성공하면 해당 항목 삭제
+            if (action === "accept" || action === "reject") {
+                requestItem.remove();  // 해당 요청 항목 삭제
+            }
+        })
+        .catch(error => console.error(`Error processing ${action} request:`, error));
+}
 
 
+
+
+// 데이터 먼저 로드
+function loadFriendRequests() {
+    fetch(`/mypage/requestList/${userId}`)
+        .then(response => response.json())
+        .then(data => {
+            const requestView = document.getElementById('requestView');
+            const friendListElement = document.getElementById('friendList');
+            friendListElement.innerHTML = ''; // 기존 목록 초기화
+
+            if (data.length > 0) {
+                requestView.style.display = 'flex'; // 데이터가 있으면 표시
+
+                data.forEach(friendshipUserResultMap => {
+                    const li = document.createElement('li');
+
+                    // 프로필 이미지 경로 설정
+                    const profileImage = friendshipUserResultMap.user.profile
+                        ? `/uploads/profiles/${friendshipUserResultMap.user.profile}`
+                        : '/img/defaultProfile.jpg';
+
+                    // 이름 설정
+                    const userName = friendshipUserResultMap.user.user_name || 'Unknown';
+
+                    // 수락 버튼 생성
+                    const acceptButton = document.createElement('button');
+                    acceptButton.textContent = '수락';
+                    acceptButton.classList.add('accept-btn');
+                    acceptButton.onclick = () => {
+                        acceptFriendRequest(friendshipUserResultMap.fromUserId, friendshipUserResultMap.toUserId);
+                    };
+
+                    // 거절 버튼 생성
+                    const rejectButton = document.createElement('button');
+                    rejectButton.textContent = '거절';
+                    rejectButton.classList.add('reject-btn');
+                    rejectButton.onclick = () => {
+                        rejectFriendRequest(friendshipUserResultMap.fromUserId, friendshipUserResultMap.toUserId);
+                    };
+
+                    // 버튼들을 감싸는 컨테이너 생성
+                    const buttonContainer = document.createElement('div');
+                    buttonContainer.classList.add('button-container');
+                    buttonContainer.appendChild(acceptButton);
+                    buttonContainer.appendChild(rejectButton);
+
+                    // 목록 생성
+                    li.innerHTML = `
+                        <img src="${profileImage}" alt="Profile" class="friend-profile-img">
+                        <span class="friend-name">${userName}</span>
+                    `;
+
+                    // 수락/거절 버튼을 목록 항목에 추가
+                    li.appendChild(buttonContainer);
+
+                    // 버튼 추가 후 확인을 위해 로그 출력
+                    console.log("수락 버튼:", acceptButton);
+                    console.log("거절 버튼:", rejectButton);
+
+                    friendListElement.appendChild(li);
+                });
+            } else {
+                requestView.style.display = 'none'; // 데이터가 없으면 숨김
+            }
+        })
+        .catch(error => console.error('Error fetching friend list:', error));
+}
+
+
+// 친구 요청 수락
+function acceptFriendRequest(fromUserId, toUserId) {
+    const params = new URLSearchParams({
+        fromUserId: fromUserId, // 요청 보낸 사람
+        toUserId: toUserId, // 로그인 사용자
+    });
+
+    sendRequest("accept", params);
+}
+
+// 친구 요청 거절
+function rejectFriendRequest(fromUserId, toUserId) {
+    const params = new URLSearchParams({
+        fromUserId: fromUserId, // 요청 보낸 사람
+        toUserId: toUserId, // 로그인 사용자
+    });
+
+    sendRequest("reject", params);
+}
+// 클릭 이벤트 등록
+document.getElementById('requestView').addEventListener('click', function () {
+    document.getElementById('friendModal').style.display = 'block';
+});
+
+// 페이지 로드 시 데이터 로드
+window.onload = loadFriendRequests;
 
 
 function closeModal() {
@@ -505,4 +620,51 @@ $(document).ready(function() {
     });
 
 
+});
+const apiUrl = "http://localhost:8081/friendship";
+const UserId = pathParts[pathParts.length - 1];
+// 모달 열기 및 닫기
+const modal = document.getElementById("friendshipModal");
+document.getElementById("openModalBtn").addEventListener("click", () => {
+    modal.style.display = "block";
+});
+document.getElementById("closeModalBtn").addEventListener("click", () => {
+    modal.style.display = "none";
+});
+
+// API 요청 함수
+async function sendRequest(endpoint, params) {
+    const response = await fetch(`${apiUrl}/${endpoint}?${params}`, { method: "POST" });
+    const result = await response.text();
+    alert(result);
+}
+
+// 친구 요청 보내기
+document.getElementById("sendFriendRequestForm").addEventListener("submit", (event) => {
+    event.preventDefault();
+    const params = new URLSearchParams({
+        fromUserId: document.getElementById("fromUserId").value,    //로그인한 사용자
+        toUserId: UserId
+    });
+    sendRequest("send", params);
+});
+
+// 친구 요청 수락
+document.getElementById("acceptFriendRequestForm").addEventListener("submit", (event) => {
+    event.preventDefault();
+    const params = new URLSearchParams({
+        fromUserId: document.getElementById("acceptFromUserId").value,  //로그인 사용자
+        toUserId: UserId
+    });
+    sendRequest("accept", params);
+});
+
+// 친구 요청 거절
+document.getElementById("rejectFriendRequestForm").addEventListener("submit", (event) => {
+    event.preventDefault();
+    const params = new URLSearchParams({
+        fromUserId: document.getElementById("rejectFromUserId").value,  //로그인 사용자
+        toUserId: UserId
+    });
+    sendRequest("reject", params);
 });

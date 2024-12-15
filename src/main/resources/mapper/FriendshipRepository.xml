@@ -45,6 +45,14 @@
           and f.friend_status = '수락'
     </select>
 
+    <select id="requestView" resultMap="FriendshipUserResultMap">
+        select f.*, u.user_id, u.user_name, u.user_profile
+        from friendship f
+                 join user u on (u.user_id = f.to_user_id or u.user_id = f.from_user_id)
+        where (f.to_user_id = #{userId} or f.from_user_id = #{userId})
+          and f.friend_status = '대기'
+    </select>
+
     <!-- 결과 맵핑 -->
     <resultMap id="FriendshipUserResultMap" type="com.lec.spring.mytrip.domain.Friendship">
         <result property="requestFriendId" column="request_friend_id"/>

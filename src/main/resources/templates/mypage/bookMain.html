@@ -24,6 +24,7 @@
 <div class="logo">
     <div class="logo" style="background-image: url(/img/mypageLogo.png);"></div>
 </div>
+
 <div class="addGuestBookModal"></div>
 <div class="myPageGoHome" style="background-image: url(/img/myPageGoHome.png)"></div>
 
@@ -51,7 +52,12 @@
                 </div>
                 <div class="mypageUserIntroduce" th:text="${user.introduction}">자기소개</div>
                 <div class="mypageFreind">
-                    <div class="Connections">Connections.</div>
+
+
+
+                    <div class="requestView" id="requestView"></div>
+                    <button type="submit" class="btn" style="left: 330px;">친구 요청</button>
+                    <div class="Connections" id="openModalBtn">Connections.</div>
                     <div class="ConnectionsCnt" id="ConnectionsCnt">
                         <span th:text="${countAcceptedFriends}">0</span>
                     </div>
@@ -73,6 +79,11 @@
             <div style="background-image:url(/img/sample_right.png)">
                 <div class="recentPost">
                     <div class="feedEntries"></div>
+
+
+
+
+
                 </div>
             </div>
             <div style="background-image:url(/img/sample_left.png)"></div>
@@ -107,7 +118,7 @@
         <ul id="friendList">
             <!-- 친구 목록은 여기에 동적으로 추가됩니다 -->
         </ul>
-        <button onclick="closeModal()">Close</button>
+        <button onclick="closeModal()" class="closed">Close</button>
     </div>
 </div>
 <div class="updateUserModal">

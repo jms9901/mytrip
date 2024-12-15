@@ -519,9 +519,9 @@ body{
 	margin-left: 52%;
 	margin-top:8%;
 	z-index: 9999;
-	/*border: solid blue 1px;*/
+	border: solid black 1px;
 	background-color: white;
-	background-color: rgba(0, 0, 0, 0.5);
+
 	/*opacity: 50%;*/
 	border-radius: 10px;
 	display: none;
@@ -554,7 +554,7 @@ body{
 	display: flex;  /* 이미지와 텍스트가 가로로 정렬되도록 설정 */
 	align-items: center;  /* 세로 가운데 정렬 */
 	padding: 10px;  /* 항목의 패딩 */
-	border-bottom: 1px solid #ddd;  /* 항목 간 구분선 */
+	border-bottom: 1px solid cyan;  /* 항목 간 구분선 */
 }
 
 .CityLikedImg {
@@ -673,4 +673,146 @@ button.next {
 	justify-content: center;  /* 가로 기준 가운데 정렬 (필요시 추가) */
 	align-items: center;      /* 세로 기준 가운데 정렬 */
 
+}
+
+/* 모달 스타일 */
+.modal-overlay {
+	display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: white;
+	z-index: 1000;
+}
+
+.modal {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 60%;
+	background: white;
+	padding: 20px;
+	border-radius: 8px;
+	z-index: 1001;
+}
+
+.modal-header, .modal-body {
+	margin-bottom: 10px;
+}
+
+.close-btn {
+	float: right;
+	cursor: pointer;
+	font-size: 20px;
+	font-weight: bold;
+}
+
+#openModalBtn{
+	cursor: pointer;
+}
+
+.btn-danger {
+	background: #dc3545;
+}
+
+.btn-close {
+	background: #6c757d;
+}
+
+.requestView {
+	width: 10px;      /* 너비 설정 */
+	height: 10px;     /* 높이 설정 (정사각형) */
+	background-color: orange;  /* 배경색 주황색 */
+	border-radius: 50%; /* 동그라미 모양 */
+	display: flex;
+	justify-content: center; /* 내용 가로 정렬 */
+	align-items: center;     /* 내용 세로 정렬 */
+	color: black;      /* 텍스트 색상 */
+	font-weight: bold; /* 텍스트 두께 */
+	font-size: 16px;   /* 텍스트 크기 */
+	text-align: center;
+	cursor: pointer;   /* 클릭 시 포인터 커서 */
+	margin-bottom: 30px;
+}
+
+li {
+	display: flex;
+	align-items: center; /* 수직 정렬 */
+	margin-bottom: 10px;
+	margin-right: 10px;
+	justify-content: space-between; /* 아이템들을 양쪽 끝으로 배치 */
+}
+
+/* 프로필 이미지 */
+.friend-profile-img {
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	margin-right: 10px;
+}
+
+/* 이름 */
+.friend-name {
+	margin-right: 10px;
+	flex-grow: 1;
+}
+
+/* 버튼 컨테이너 */
+/* 버튼들을 감싸는 컨테이너 스타일 */
+.button-container {
+	display: flex;
+	gap: 10px; /* 버튼 사이의 간격 */
+	justify-content: flex-start; /* 왼쪽 정렬 */
+	align-items: center;
+}
+
+/* 버튼 기본 스타일 */
+button {
+	padding: 5px 10px;
+	cursor: pointer;
+	border: none;
+	border-radius: 5px;
+	font-size: 14px;
+	min-width: 70px; /* 버튼 최소 크기 */
+}
+
+/* 수락 버튼 스타일 */
+.accept-btn {
+	background-color: green;
+	color: white;
+	padding: 5px 10px;
+	cursor: pointer;
+	border-radius: 5px;
+	min-width: 70px;
+	display: inline-block; /* 버튼이 화면에 표시되도록 설정 */
+	z-index: 9999;
+	right: 100px;
+}
+
+/* 거절 버튼 스타일 */
+.reject-btn {
+	background-color: red;
+	color: white;
+	padding: 5px 10px;
+	cursor: pointer;
+	border-radius: 5px;
+	min-width: 70px;
+	display: inline-block; /* 버튼이 화면에 표시되도록 설정 */
+	right: 20px;
+}
+li {
+	overflow: visible;
+}
+.closed{
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	background: none;
+	border: none;
+	font-size: 20px;
+	cursor: pointer;
+	color: black;
 }
