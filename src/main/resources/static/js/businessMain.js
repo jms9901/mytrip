@@ -206,6 +206,12 @@ document.addEventListener('click', function() {
                 const submitButton = packageModal.querySelector('#package-submit-button');
                 const updateImage = packageModal.querySelector('.package-image')
                 const inputs = packageModal.querySelectorAll('input, textarea');
+                const packageCloseButton = packageModal.querySelector('.close-button');
+
+                // 패키지 모달 닫기
+                packageCloseButton.querySelector('.close-button').addEventListener('click', function() {
+                    packageCloseButton.style.display = 'none';
+                });
 
                 // 패키지 상태에 따라 수정 버튼 표시 여부 결정
                 if (packageDetail.packageStatus === '승인') {
@@ -398,7 +404,11 @@ function getStatusClass(status) {
 // 결제 버튼 모달
 document.addEventListener('click', function() {
     // 결제 버튼 이벤트 리스너
-    var paymentButton = document.getElementById('package-payment-button');
+    const paymentButton = document.getElementById('package-payment-button');
+    const paymentCloseButton = document.querySelector('.close-button');
+
+
+
     if (paymentButton) {
         paymentButton.addEventListener('click', function() {
             fetch(`mypage/payments/${userId}`, {
@@ -434,6 +444,13 @@ document.addEventListener('click', function() {
 
                     // 모달 표시
                     paymentModal.style.display = 'block';
+
+                    // 모달 닫기
+                    paymentCloseButton.querySelector('.close-button').addEventListener('click', function () {
+                        paymentButton.style.display = 'none';
+                    })
+
+
                 })
                 .catch(error => {
                     console.error("결제 정보 로딩 중 오류 발생", error);
