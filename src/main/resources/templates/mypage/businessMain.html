@@ -61,46 +61,10 @@
             <!--  결제 리스트 동적 생성  -->
         </div>
 
-        <div id="payment-modal" class="modal hidden">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <span class="close-button">&times;</span>
-                    <div class="modal-title">결제정보</div>
-
-                    <!-- 결제 상태 필터링 -->
-                    <label class="payment-status">
-                        <select class="pay-status-select">
-                            <option value="" disabled selected>결제 상태</option>
-                            <option value="" selected>전체</option>
-                            <option value="complete">결제 완료</option>
-                            <option value="cancel">결제 취소</option>
-                        </select>
-                    </label>
-
-                    <table class="payment-table">
-                        <thead>
-                        <tr class="table-header">
-                            <th>사용자명</th>
-                            <th>패키지명</th>
-                            <th>금액</th>
-                            <th>결제상태</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <!-- 서버에서 전달된 결제 데이터 동적 생성 -->
-                        <tr th:each="payment : ${payments}">
-                            <td>[[${payment.userName}]]</td>
-                            <td>[[${payment.packageTitle}]]</td>
-                            <td>[[${payment.totalPrice}]]원 </td>
-                            <td class="pay-status ${getPaymentStatusClass(payment.paymentStatus)}">[[${getPaymentStatusText(payment.paymentStatus)}]]</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
         <!--  개인정보 수정 모달   -->
+        <div class="userInfo">
+            <!--   개인정보 수정 모달 동적 생성   -->
+        </div>
         <div class="modal hidden" id="businessUpdate-modal">
             <form th:action="@{/business/profile/{userId}(userId=${user.id})}">
                 <div class="header">

@@ -407,7 +407,7 @@ document.addEventListener('click', function() {
     const paymentButton = document.getElementById('package-payment-button');
     const paymentCloseButton = document.querySelector('.close-button');
 
-
+    const payments  = document.querySelector('.paymentList');
 
     if (paymentButton) {
         paymentButton.addEventListener('click', function() {
@@ -428,18 +428,45 @@ document.addEventListener('click', function() {
                 .then(paymentData => {
                     console.log("결제 내역 데이터: ", paymentData)
                     const paymentModal = document.getElementById('payment-modal');
-                    const paymentTable = paymentModal.querySelector('.payment-table tbody');
 
                     // 결제 데이터로 테이블 업데이트
-                    paymentTable.innerHTML = paymentData.map(payment => `
-                    <tr>
-                        <td>${payment.userName}</td>
-                        <td>${payment.packageTitle}</td>
-                        <td>${payment.totalPrice}원</td>
-                        <td class="pay-status ${getPaymentStatusClass(payment.paymentStatus)}">
-                            ${getPaymentStatusText(payment.paymentStatus)}
-                        </td>
-                    </tr>
+                    payments.innerHTML = paymentData.map(payment => `
+                    <div id="payment-modal" class="modal hidden">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <span class="close-button">&times;</span>
+                                <div class="modal-title">결제 정보</div>
+                                
+                                <label for="payment-select" id="payment-status">
+                                    <select name="payment-select" id="payment-status" class="pay-status-select">
+                                        <option value="" selected>전체</option>
+                                        <option value="complete">결제 완료</option>
+                                        <option value="cancel">결제 취소</option>
+                                    </select>
+                                </label>
+                                
+                                <table class="payment-table">
+                                    <thead>
+                                        <tr class="table-header">
+                                            <th>사용자명</th>
+                                            <th>패키지명</th>
+                                            <th>결제 금액</th>
+                                            <th>결제 상태</th>
+                                        </tr>
+                                    </thead>
+                                    
+                                    <tbody>
+                                        <tr>
+                                            <td>[[${payment.username}]]</td>
+                                            <td>[[${payment.packageTitle}]]</td>
+                                            <td>[[${payment.totalCost}]]</td>
+                                            <td class="pay-status ${getPaymentStatusClass(payment.paymentStatus)}">[[${getPaymentStatusText(payment.paymentStatus)}]]</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                 `).join('');
 
                     // 모달 표시
@@ -507,6 +534,7 @@ document.getElementById('profile-icon-Button').addEventListener('click', functio
     const profileUpdateModal = document.getElementById('modalOverlay');
     const profileUpdateButton = document.getElementById('update-button');
     const profileSubmitButton = profileUpdateModal.querySelector('.submit-button');
+    const userInfo = document.querySelector('.userInfo');
 
     // 프로필 수정 모달 열기
     document.getElementById('profile-icon-Button').addEventListener('click', function() {
