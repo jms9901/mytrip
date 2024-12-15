@@ -18,6 +18,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
@@ -80,6 +81,10 @@ public class AdminController {
                     // 현재 Http 요청과 연결된 사용자의 정보를 세션에 저장
                     request.getSession().setAttribute("loggedInUser", details.getUser());
                 }
+
+                // 컨텍스트에서 사용자 정보를 업데이트하고 저장
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+                request.getSession().setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext());
 
                 System.out.println("Session ID : " + request.getSession().getId());
                 System.out.println("Logged User: " + request.getSession().getAttribute("loggedInUser"));
