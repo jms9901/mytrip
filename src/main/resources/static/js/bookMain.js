@@ -497,7 +497,7 @@ $(document).ready(function() {
     });
     $('.menu5').on('click', function() {
 
-        window.location.href = '/bookMain/bookGuestBook/' + userId;
+        window.location.href = '/mypage/bookMain/bookGuestBook/' + userId;
     });
     $('.goChat').on('click', function() {
 

@@ -74,7 +74,7 @@
 <script type="text/javascript">
     $(document).ready(function () {
         const userId = getToUserIdFromUrl();
-        const apiUrl = `/bookMain/bookGuestBook/${userId}`; // API URL 설정
+        const apiUrl =  `/bookMain/bookGuestBook`; // API URL 설정
 
         // 앱 로드 및 초기화
         initializeApp();
@@ -119,7 +119,7 @@
             });
             $('.menu5').on('click', function() {
 
-                window.location.href = '/bookMain/bookGuestBook/' + userId;
+                window.location.href = '/mypage/bookMain/bookGuestBook/' + userId;
             });
             $('.goChat').on('click', function() {
 
@@ -151,13 +151,6 @@
             });
         }
 
-        // CSS Transform 지원 여부 확인
-        function isCSSTransformSupported() {
-            const testElement = document.createElement('div');
-            const transformProperties = ['transform', 'WebkitTransform', 'MozTransform', 'OTransform', 'msTransform'];
-            return transformProperties.some(prop => testElement.style[prop] !== undefined);
-        }
-
         // URL에서 toUserId 값 추출하는 함수
         function getToUserIdFromUrl() {
             const pathParts = window.location.pathname.split('/');
@@ -165,28 +158,36 @@
             return toUserId;
         }
 
-        // 방명록 불러오기
+        let addedGuestBooks = []; // 이미 추가된 방명록 ID를 추적하는 배열
+        // 항목을 페이지에 추가
+        const entriesPerPage = 3; // 페이지당 항목 개수
+        let currentPage = 1;      // 현재 페이지 번호
+        let pages = { 1: 0 }; // 각 페이지 항목 개수
+
         function loadGuestBooks() {
-            console.log("loadGuestBooks 작동");
+            $.get(`${apiUrl}/list/${userId}`, function (data) {
+                resetFlipbook();  // 페이지 초기화
 
-            const toUserId = getToUserIdFromUrl();
-
-            $.get(`${apiUrl}/list/${toUserId}`, function (data) {
-                console.log("Loaded guestbooks:", data);
-
-                // 기존 페이지 삭제 및 초기화
-                resetFlipbook();
-
-                // 데이터를 페이지에 추가
-                data.forEach((guestBook, index) => {
-                    const entryHtml = `
-                        <div class="guestbook-entry">
+                data.forEach((guestBook) => {
+                    // 이미 추가된 방명록인지 확인
+                    if (!addedGuestBooks.includes(guestBook.guestBookId)) {
+                        const entryHtml = `
+                        <div class="guestbook-entry" data-id="${guestBook.guestBookId}">
                             <h4>From: ${guestBook.fromUserId}</h4>
                             <p>${guestBook.guestBookContent}</p>
                         </div>`;
-                    addEntryToPage(entryHtml, index + 1); // index + 1을 이용하여 페이지에 추가
-                    console.log(`Guestbook Entry ${index + 1} added to page ${currentPage}`);
+
+                        addEntryToPage(entryHtml);  // 비동기적으로 항목을 페이지에 추가
+
+                        // 추가된 방명록 ID 추적
+                        addedGuestBooks.push(guestBook.guestBookId);
+                    }
                 });
+
+                // turn.js에 페이지 갱신을 알리고 크기를 조정
+                setTimeout(function() {
+                    $('.flipbook').turn('resize');
+                }, 100);
             });
         }
 
@@ -199,9 +200,7 @@
             pages = { 1: 0 }; // 각 페이지 항목 개수 초기화
         }
 
-        // 방명록 추가
         function submitGuestBook() {
-            console.log("submit 작동");
             const name = $('#guestName').val();
             const message = $('#guestMessage').val();
 
@@ -213,14 +212,19 @@
                 };
 
                 $.ajax({
-                    url: `${apiUrl}/add`,
+                    url: `${apiUrl}/add/${userId}`,
                     method: 'POST',
                     contentType: 'application/json',
                     data: JSON.stringify(guestBookData),
                     success: function () {
-                        console.log("succes 진입")
-                        loadGuestBooks(); // 추가된 방명록 반영
-                        resetGuestBookForm();
+                        const entryHtml = `
+                <div class="guestbook-entry" data-id="${guestBookData.toUserId}">
+                    <h4>From: ${guestBookData.fromUserId}</h4>
+                    <p>${guestBookData.guestBookContent}</p>
+                </div>`;
+
+                        addEntryToPage(entryHtml);  // 비동기적으로 항목을 페이지에 추가
+                        resetGuestBookForm();  // 폼 초기화
                     },
                     error: function () {
                         alert("Failed to add the guest book entry.");
@@ -231,6 +235,16 @@
             }
         }
 
+        // CSS Transform 지원 여부 확인
+        function isCSSTransformSupported() {
+            const testElement = document.createElement('div');
+            const transformProperties = ['transform', 'WebkitTransform', 'MozTransform', 'OTransform', 'msTransform'];
+            return transformProperties.some(prop => testElement.style[prop] !== undefined);
+        }
+
+
+
+
         // 방명록 입력 필드 초기화
         function resetGuestBookForm() {
             console.log("폼 초기화 작동");
@@ -240,74 +254,49 @@
             $('.addGuestBookModal').hide();
         }
 
-        // 항목을 페이지에 추가
-        const entriesPerPage = 3; // 페이지당 항목 개수
-        let currentPage = 1;      // 현재 페이지 번호
-        let pages = { 1: 0 }; // 각 페이지 항목 개수
 
-        function addEntryToPage(entry, index) {
-            console.log("addEntry 작동");
-
+        // 항목을 페이지에 비동기적으로 추가하는 함수
+        function addEntryToPage(entry) {
             // 랜덤 배경 이미지 설정
             const entryWithBackground = setRandomBackgroundImage(entry);
 
-            // 현재 페이지가 없으면 새 페이지 생성
-            if (!$(`#page${currentPage}`).length) {
-                createNewPage(); // 첫 페이지 생성
+            // 첫 페이지가 표지 페이지라면, 두 번째 페이지부터 시작
+            if (currentPage === 1 && pages[currentPage] === 0) {
+                currentPage++;  // 두 번째 페이지로 이동
+                createNewPage(); // 새 페이지 생성
             }
 
-
             // 현재 페이지에 추가 가능한 경우
-            if (pages[currentPage] < entriesPerPage) {
+            if (pages[currentPage] < 3) {
+                // 현재 페이지에 추가
                 $(`#page${currentPage}`).append(entryWithBackground);
-                pages[currentPage]++;
-                console.log(`Entry added to Page ${currentPage}, Position: ${pages[currentPage]}`);
+                pages[currentPage]++;  // 현재 페이지 항목 수 증가
             } else {
                 // 현재 페이지가 가득 찼으면 새 페이지 생성 후 추가
                 currentPage++; // 새로운 페이지 번호
                 createNewPage();
                 $(`#page${currentPage}`).append(entryWithBackground);
                 pages[currentPage] = 1; // 새 페이지 첫 번째 항목
-                console.log(`Entry added to new Page ${currentPage}, Position: ${pages[currentPage]}`);
             }
+            // 페이지 추가 후 resize
+            setTimeout(function() {
+                $('.flipbook').turn('resize');
+            }, 100);
         }
 
-        // 현재 페이지가 꽉 차지 않았다면 항목 추가
-        //     if (pages[currentPage] < entriesPerPage) {
-        //         $(`#page${currentPage}`).append(entryWithBackground);
-        //         pages[currentPage]++;
-        //         console.log(`Entry added to Page ${currentPage}, Position: ${pages[currentPage]}`);
-        //     } else {
-        //         // 이곳 부터 TODO
-        //         currentPage++; // 새로운 페이지로 이동
-        //         createNewPage(entryWithBackground);
-        //         console.log(`Page ${currentPage} created due to overflow`);
-        //     }
-        // }
 
-        // 새 페이지 생성 및 항목 추가
-        function createNewPage(entry) {
-            console.log("createpage 작동");
+
+// 새 페이지 생성 및 항목 추가
+        function createNewPage() {
             const totalPages = $('.flipbook').turn('pages');
-            currentPage = totalPages + 1; // 페이지 번호 계산
-
-            console.log(`New page created. Total Pages: ${totalPages}, Current Page: ${currentPage}`);
+            currentPage = totalPages + 1;  // 새 페이지 번호 계산
 
             // 새 페이지를 flipbook에 추가
             const newPage = `<div class="page" id="page${currentPage}" style="background-image:url(/img/addBook.png)"></div>`;
             $('.flipbook').turn('addPage', $(newPage)[0], currentPage);
 
-
-            pages[currentPage] = 0;
-            console.log(`New Page ${currentPage} created`);
-
-            // 새 페이지에 항목 추가
-            // $(`#page${currentPage}`).append(entry);
-            // pages[currentPage] = 1;  // 새 페이지 첫 번째 항목
-            // console.log(`Entry added to new Page ${currentPage}, Position: ${pages[currentPage]}`);
-            // $('.flipbook').turn('resize');  // 페이지 크기 조정
+            pages[currentPage] = 0;  // 새 페이지 항목 수 초기화
         }
-
         // 랜덤 배경 이미지 설정
         function setRandomBackgroundImage(entry) {
             const images = [

@@ -22,8 +22,11 @@ public class GuestBookController {
     }
 
 
+
+
+
     // 방명록 추가
-    @PostMapping("/add")
+    @PostMapping("/add/{userId}")
     public Map<String, Object> addGuestBook(@RequestBody GuestBook guestBook) {
         guestBookService.addGuestBook(guestBook);
         Map<String,Object> response = new HashMap<>();
