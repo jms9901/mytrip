@@ -54,14 +54,15 @@
 <div class="goChat" style="background-image: url(/img/mypageChat.png);"></div>
 
 <div class="writeGuestBook" style="background-image: url(/img/addbutton.png)"></div>
-<div class="addGuestBookModal">
-    <div class="modalContent">
-        <button class="closeModal">Close</button>
+<div class="addGuestBookModal" style="background: white; height: 30%">
+    <div class="modalContent" >
+        <button class="closeModal" style="background: none; border: none; font-size: 20px; margin-left: 93%; ">x</button>
         <h3>Write Your Guestbook</h3>
         <label for="guestName">Name:</label>
-        <input type="text" id="guestName" placeholder="Enter your name">
-        <label for="guestMessage">Message:</label>
-        <textarea id="guestMessage" placeholder="Write a message"></textarea>
+        <input type="text" id="guestName" placeholder="Enter your name" style="height: 30px">
+        <br>
+        <label for="guestMessage" style="margin-top: -10px" >Message:</label>
+        <textarea id="guestMessage" placeholder="Write a message" style="margin-top: 20px; height: 30px"></textarea>
         <button id="submitGuestBook">Submit</button>
     </div>
 </div>
