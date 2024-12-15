@@ -125,6 +125,41 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     };
 
+        const sliderContainer = document.getElementById('sliderContainer');
+        const imageContainer = document.getElementById('imageContainer');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        let currentIndex = 0;
+
+        // 슬라이드 표시 함수
+        function showSlide(index) {
+            const images = imageContainer.querySelectorAll('img');
+
+            if (index < 0) {
+                currentIndex = images.length - 1;
+            } else if (index >= images.length) {
+                currentIndex = 0;
+            } else {
+                currentIndex = index;
+            }
+
+            const offset = -currentIndex * sliderContainer.clientWidth;
+            imageContainer.style.transform = `translateX(${offset}px)`;
+        }
+
+        // 이전 버튼 클릭 이벤트
+        prevBtn.addEventListener('click', function () {
+            showSlide(currentIndex - 1);
+        });
+
+        // 다음 버튼 클릭 이벤트
+        nextBtn.addEventListener('click', function () {
+            showSlide(currentIndex + 1);
+        });
+
+        // 첫 번째 슬라이드 표시
+        showSlide(currentIndex);
+
     function reloadTable() {
         location.reload();
     }

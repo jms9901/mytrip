@@ -677,3 +677,6 @@ values
            '',
            'ROLE_USER'
        );
+
+insert into board_attachment (board_id, board_attachment_file)
+values (4, 'BangkokImg.jpg'), (4, 'BailImg.jpg');
