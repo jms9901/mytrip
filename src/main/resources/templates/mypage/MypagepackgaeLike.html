@@ -185,7 +185,7 @@
                     const entryHtml = `
                 <div class="feed-entry" style="background-image: url(/img/postFrame.png)" data-index="${index}">
                     ${attachmentHtml} <!-- 첨부파일 이미지 추가 -->
-                    <div>${feed.subject}</div>
+                    <div>${feed.packageTitle}</div>
                 </div>
             `;
 
@@ -274,6 +274,34 @@
 
         }
         $('.goChat').hover(() => hoverChat());
+        $('.myPageGoHome').on('click', function() {
+
+            window.location.href = '/mypage/' + userId;
+        });
+        $('.menu1').on('click', function() {
+
+            window.location.href = '/bookmain/payment/list/' + userId;
+        });
+        $('.menu2').on('click', function() {
+
+            window.location.href = '/mypage/feed/list/' + userId;
+        });
+        $('.menu3').on('click', function() {
+
+            window.location.href = '/mypage/feedliked/' + userId;
+        });
+        $('.menu4').on('click', function() {
+
+            window.location.href = '/mypage/packageliked/' + userId;
+        });
+        $('.menu5').on('click', function() {
+
+            window.location.href = '/bookMain/bookGuestBook/' + userId;
+        });
+        $('.goChat').on('click', function() {
+
+            window.location.href = '/chat';
+        });
 
         // 채팅 hover 효과
         function hoverChat() {

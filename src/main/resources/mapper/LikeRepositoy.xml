@@ -128,7 +128,9 @@
     <select id="getLikedPackageDetails" resultType="com.lec.spring.mytrip.domain.PackagePost">
         SELECT
             p.package_title AS packageTitle,
-            pa.package_attachment_file AS packageAttachmentFile
+            pa.package_attachment_file AS packageAttachmentFile,
+        p.package_id as packageId,
+        p.city_id as cityId
         FROM
             package_liked pl
                 JOIN

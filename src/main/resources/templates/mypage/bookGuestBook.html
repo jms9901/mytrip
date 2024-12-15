@@ -73,8 +73,8 @@
 </div>
 <script type="text/javascript">
     $(document).ready(function () {
-
-        const apiUrl = "/bookMain/bookGuestBook"; // API URL 설정
+        const userId = getToUserIdFromUrl();
+        const apiUrl = `/bookMain/bookGuestBook/${userId}`; // API URL 설정
 
         // 앱 로드 및 초기화
         initializeApp();
@@ -119,7 +119,7 @@
             });
             $('.menu5').on('click', function() {
 
-                window.location.href = '/bookMain/bookGuestBook/list/' + userId;
+                window.location.href = '/bookMain/bookGuestBook/' + userId;
             });
             $('.goChat').on('click', function() {
 

@@ -25,7 +25,7 @@
 <div class="logo">
     <div class="logo" style="background-image: url(/img/mypageLogo.png);"></div>
 </div>
-<div class="myPageGoHome" style="background-image: url(/img/myPageGoHome.png)" onclick="window.location.href='/mypage/bookMain';"></div>
+<div class="myPageGoHome" style="background-image: url(/img/myPageGoHome.png)" ></div>
 <div class="backgroundGuestBook" style="background-image: url(/img/addBook.png);"></div>
 
 <div id="feedEntries" style="margin-top: 20px;">
@@ -171,7 +171,7 @@
         });
         $('.menu5').on('click', function() {
 
-            window.location.href = '/bookMain/bookGuestBook/list/' + userId;
+            window.location.href = '/bookMain/bookGuestBook/' + userId;
         });
         $('.goChat').on('click', function() {
 
@@ -295,14 +295,15 @@
                  <!-- 각 피드 항목에 대한 모달 (보이지 않음) -->
                 <div class="feed-modal" id="feed-modal-${index}" style="display: none;">
                     <div class="modal-content">
+                    <button class="close-modal" style="background: none; margin-left: 480px; margin-top: -10px; font-size: 20px; border: none" >x</button>
                         <h2>${feed.boardSubject}</h2>
-                        <p>${feed.boardContent}</p>
                         <p>${feed.city.cityName}</p>
+                        <div class="attachmentContainer" style="width: 200px;height: 200px;">${attachmentHtml}</div> <!-- 첨부파일 이미지 추가 -->
+                        <p>${feed.boardContent}</p>
                         <p>${feed.boardDate}</p>
-                        <div>${attachmentHtml}</div> <!-- 첨부파일 이미지 추가 -->
-                        <button class="close-modal">닫기</button>
                         <button class="edit-feed-modal" data-feed-id="${feed.boardId}" data-index="${index}">수정</button>
                         <button class="delete-feed-modal" data-feed-id="${feed.boardId}" data-index="${index}">삭제</button>
+
                     </div>
                 </div>
             `;

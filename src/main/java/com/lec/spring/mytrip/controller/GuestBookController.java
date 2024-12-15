@@ -21,6 +21,7 @@ public class GuestBookController {
         this.guestBookService = guestBookService;
     }
 
+
     // 방명록 추가
     @PostMapping("/add")
     public Map<String, Object> addGuestBook(@RequestBody GuestBook guestBook) {
