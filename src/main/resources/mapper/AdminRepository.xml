@@ -155,7 +155,7 @@
     <!-- TODO -->
     <!-- 유저 삭제 -->
     <update id="deleteUser">
-        UPDATE user SET user_authorization = 'ROLE_DORMANT' WHERE user_id = #{userId}
+        UPDATE user SET user_authorization = 'ROLE_DORMANT', user_status = '거절' WHERE user_id = #{userId}
     </update>
 
     <select id="viewBusinessUser">
