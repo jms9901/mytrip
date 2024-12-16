@@ -26,7 +26,7 @@ public interface PackagePostService {
     int savePackage(PackagePost pkg, List<MultipartFile> files);
 
     // 패키지 수정
-    int updatePackage(PackagePost pkg);
+    int updatePackage(PackagePost pkg, List<MultipartFile> files);
 
     // 패키지 삭제
     int deletePackage(int packageId, int userId);

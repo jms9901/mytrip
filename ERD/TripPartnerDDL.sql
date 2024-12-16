@@ -395,3 +395,15 @@ ALTER TABLE package
             REFERENCES user (user_id);
 
 ALTER TABLE user MODIFY user_profile BLOB;
+ALTER TABLE board
+    MODIFY COLUMN board_category ENUM('피드', '소모임') NOT NULL COMMENT '피드 카테고리';
+
+ALTER TABLE board_attachment
+    DROP FOREIGN KEY FK_board_TO_board_attachment;
+
+
+ALTER TABLE board_attachment
+    ADD CONSTRAINT FK_board_TO_board_attachment
+        FOREIGN KEY (board_id)
+            REFERENCES board (board_id)
+            ON DELETE CASCADE;

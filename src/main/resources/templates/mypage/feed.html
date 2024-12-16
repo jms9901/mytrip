@@ -1,190 +1,616 @@
 <!doctype html>
-<!--[if lt IE 7 ]> <html lang="en" class="ie6" xmlns:th="http://www.thymeleaf.org"> <![endif]-->
-<!--[if IE 7 ]>    <html lang="en" class="ie7" xmlns:th="http://www.thymeleaf.org"> <![endif]-->
-<!--[if IE 8 ]>    <html lang="en" class="ie8" xmlns:th="http://www.thymeleaf.org"> <![endif]-->
-<!--[if IE 9 ]>    <html lang="en" class="ie9" xmlns:th="http://www.thymeleaf.org"> <![endif]-->
-<!--[if !IE]><!--> <html lang="en" xmlns:th="http://www.thymeleaf.org"> <!--<![endif]-->
+<!--[if lt IE 7 ]>
+<html lang="en" class="ie6"> <![endif]-->
+<!--[if IE 7 ]>
+<html lang="en" class="ie7"> <![endif]-->
+<!--[if IE 8 ]>
+<html lang="en" class="ie8"> <![endif]-->
+<!--[if IE 9 ]>
+<html lang="en" class="ie9"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en"> <!--<![endif]-->
 <head>
-    <meta name="viewport" content="width = 1050, user-scalable = no" />	<!--전체 섹션 규격 & 유저 크기 조정 가능여부-->
-    <script type="text/javascript" th:src ="@{/static/lib/JQuery/jquery.min.1.7.js}"></script>	<!--경로 & 실제 파일 존재여부 반드시 확인-->
-    <script type="text/javascript" th:src="@{/static/lib/JQuery/modernizr.2.5.3.min.js}"></script>	<!--경로 & 실제 파일 존재여부 반드시 확인-->
+    <meta name="viewport" content="width = 1050, user-scalable = no"/>    <!--전체 섹션 규격 & 유저 크기 조정 가능여부-->
+    <script type="text/javascript" src="/lib/JQuery/jquery.min.1.7.js"></script>    <!--경로 & 실제 파일 존재여부 반드시 확인-->
+    <script type="text/javascript" src="/lib/JQuery/modernizr.2.5.3.min.js"></script>    <!--경로 & 실제 파일 존재여부 반드시 확인-->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!--	<script type="text/javascript" src="../lib/JQuery/yepnope.js"></script>-->
     <!--	<script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/3.11.2/modernizr.min.js"></script>-->
-    <link rel="stylesheet" th:href="@{/css/bookMain.css}">
-    <link rel="stylesheet" th:href="@{/css/feedList.css}">
+    <link rel="stylesheet" type="text/css" href="/css/bookGuestBook.css">
     <link href='https://fonts.googleapis.com/css?family=Kaushan Script' rel='stylesheet'>
 
 </head>
-<body style="background-image: url(/static/img/mypageBackground.jpg); background-repeat: no-repeat ; background-size: cover;">
-<div class="logo">
-    <div class="logo" style="background-image: url(/static/img/mypageLogo.png);" th:href="@{/user/home.html}"></div>
-</div>
-<div class="addGuestBookModal"></div>
-<div class="myPageGoHome" style="background-image: url(/static/img/myPageGoHome.png)"></div>
 
+<body style="background-image: url(/img/mypageBackground.jpg); background-repeat: no-repeat ; background-size: cover;">
+<div class="logo">
+    <div class="logo" style="background-image: url(/img/mypageLogo.png);"></div>
+</div>
+<div class="myPageGoHome" style="background-image: url(/img/myPageGoHome.png)" ></div>
+<div class="backgroundGuestBook" style="background-image: url(/img/addBook.png);"></div>
+
+<div id="feedEntries" style="margin-top: 20px;">
+    <!-- feedEntries 동적 생성 영역 -->
+</div>
 <div class="flipbook-viewport">
+
+
 
     <div class="container">
         <div class="flipbook">
-            <div style="background-image:url(/static/img/mypageTitle.png)"></div>	<!--배경이미지 설정 부분 (여권사진 홀수번 우측, 짝수번 좌측 화면 표시 예정)-->
-            <div style="background-image:url(/static/img/sample_left.png)">
-                <div style="background-image:url(/static/img/sample_left.png)"></div>
-                <img src="/static/img/addbutton.png" alt="feedAdd-Button" id="feedAdd-Button" class="feedAdd-Button" th:href="@{/mypage/feedWrite.html}" th:type="button">
+            <div class="titleBook" style="background-image:url(/img/myPageFeedTitle.png)"></div>
+            <!--배경이미지 설정 부분 (여권사진 홀수번 우측, 짝수번 좌측 화면 표시 예정)-->
+            <!--            <div class="leftBook" id="leftBookPage1" style="background-image:url(/img/sample_left.png)"></div>-->
+            <!--            <div class="rightBook" id="leftBookPage2" style="background-image:url(/img/sample_right.png)"></div>-->
 
-
-                <div class="feed-List hidden" id="feed-List">
-<!--                    동적으로 생성되는 카드(피드 리스트)가 들어갈 영역-->
-<!--                    피드 예시 -->
-                    <div class="feed-card">
-                        <div class="photo-container">
-                            <img th:src="@{/static/img/postEx3.jpg}" alt="postThumbnail" class="post-thumbnail">
-                        </div>
-                        <div class="feed-title">
-                            <h4><b>In. Paris</b></h4>
-                        </div>
-                    </div>
-                </div>
-
-
-                <div style="background-image:url(/static/img/sample_right.png)"></div>
-                <div style="background-image:url(/static/img/sample_left.png)"></div>
-                <div style="background-image:url(/static/img/sample_right.png)"></div>
-                <div style="background-image:url(/static/img/sample_left.png)"></div>
-                <div style="background-image:url(/static/img/sample_right.png)"></div>
-                <div style="background-image:url(/static/img/sample_left.png)"></div>
-                <div style="background-image:url(/static/img/sample_right.png)"></div>
-            </div>
         </div>
     </div>
+</div>
+<div class="menu1" id="1" style="background-image: url(/img/mypageMenu.png);"><h4 id="Post">&nbsp;Invoice</h4></div>
+<div class="menu2" id="2" style="background-image: url(/img/mypageMenu.png);"><h4 id="PostLiked">&nbsp;Post</h4></div>
+<div class="menu3" id="3" style="background-image: url(/img/mypageMenu.png);"><h4 id="GuestBook">&nbsp;Post♥</h4></div>
+<div class="menu4" id="4" style="background-image: url(/img/mypageMenu.png);"><h4 id="PackageLiked">&nbsp;Package♥</h4>
+</div>
+<div class="menu5" id="5" style="background-image: url(/img/mypageMenu.png);"><h4 id="Invoice">&nbsp;GuestBook</h4>
+</div>
 
-    <!-- 메뉴바 -->
-    <div class="menu1" id="1" style="background-image: url(/static/img/mypageMenu.png);"><h4 id="Invoice">&nbsp;Invoice</h4></div>
-    <div class="menu2" id="2" style="background-image: url(/static/img/mypageMenu.png);"><h4 id="post">&nbsp;Post</h4></div>
-    <div class="menu3" id="3" style="background-image: url(/static/img/mypageMenu.png);"><h4 id="PostLiked">&nbsp;Post♥</h4></div>
-    <div class="menu4" id="4" style="background-image: url(/static/img/mypageMenu.png);"><h4 id="PackageLiked">&nbsp;Package♥</h4></div>
-    <div class="menu5" id="5" style="background-image: url(/static/img/mypageMenu.png);" ><h4 id="GuestBook" onclick="window.location.href='/templates/mypage/bookGuestBook';">&nbsp;GuestBook</h4></div>
-    <div class="goChat" style="background-image: url(/static/img/mypageChat.png);"></div>
+<button id="open-modal" class="open-modal-btn" style="margin-top:5%;margin-left:85%;border-radius: 20px; background: cornflowerblue"><h4>Create!</h4></button>
+<div class="writeFeed" style="background-image: url(/img/feedDetailFrame.png); ">
+    <form action="/mypage/feed/createFeed" method="post" enctype="multipart/form-data">
+        <br><br>
+            <label for="city" style="margin-top:150px; margin-left:100px">도시 선택:</label>
 
+            <select name="cityId" id="city" style="margin-top:50px; margin-left:100px" required>
+                <option value="1">괌</option>
+                <option value="2">마닐라</option>
+                <option value="3">나트랑</option>
+                <option value="4">세부</option>
+                <option value="5">방콕</option>
+                <option value="6">파리</option>
+                <option value="7">홍콩</option>
+                <option value="8">상하이</option>
+                <option value="9">하와이</option>
+                <option value="10">다낭</option>
+                <option value="11">울란바토르</option>
+                <option value="12">발리</option>
+                <option value="13">로스엔젤레스</option>
+                <option value="14">두바이</option>
+                <option value="15">도쿄</option>
+                <option value="16">런던</option>
+                <option value="17">삿포로</option>
+                <option value="18">사이판</option>
+                <option value="19">이스탄불</option>
+                <option value="20">로마</option>
+                <option value="21">뉴욕</option>
+                <option value="22">하얼빈</option>
+                <option value="23">오사카</option>
+                <option value="24">마카오</option>
+                <option value="25">델리</option>
+                <option value="26">프랑크푸르트</option>
+                <option value="27">시드니</option>
+                <option value="28">호쿠오카</option>
+                <option value="29">오키나와</option>
+                <option value="30">타이베이</option>
+                <option value="31">벤쿠버</option>
+                <option value="32">지린</option>
+            </select>
+<br><br>
+       <h style="margin-left: 100px">피드 제목:</h>
+        <input type="text" name="boardSubject" placeholder="제목" style=" margin-left:100px; width:200px;height: 100px;" required>
+        <br><br>
 
-
+        <textarea name="boardContent" placeholder="내용" style=" margin-left:100px; width: 600px;height: 200px" required></textarea>
+        <br><br>
+        <input type="file" name="files" style=" margin-left:100px" multiple>  <!-- 여러 파일을 선택 가능 -->
+        <br>
+        <button type="submit" style="margin-left:600px; margin-bottom: 20px">피드 작성</button>
+        <!-- 모달 안에 닫기 버튼 추가 -->
+        <button type="button" class="close-modal-btn" onclick="closeModal()">닫기</button>
+    </form>
 </div>
 
 
+    <div>
+    <div>
+<div class="goChat" style="background-image: url(/img/mypageChat.png);"></div>
+</div>
+</div>
+</div>
+
 <script type="text/javascript">
+    function closeModal() {
+        $('.writeFeed').hide();  // 모달 숨기기
+    }
 
-    function loadApp() {
 
-        // Create the flipbook
 
-        $('.flipbook').turn({
-            // Width
-
-            width:922,
-
-            // Height
-
-            height:600,
-
-            // Elevation
-
-            elevation: 50,
-
-            // Enable gradients
-
-            gradients: true,
-
-            // Auto center this flipbook
-
-            autoCenter: true
-
+    $(document).ready(function () {
+        $('#open-modal').click(function (){
+            $('.writeFeed').show();
         });
-        $('.flipbook').bind('turning', function(event, page) {
-            if (page === 2) {
-                $('.menu1').show(); // Show menu after the first page turn
-                $('.menu2').show();
-                $('.menu3').show();
-                $('.menu4').show();
-                $('.menu5').show();
-            }else if (page ===1){
-                $('.menu1').hide();
-                $('.menu2').hide();
-                $('.menu3').hide();
-                $('.menu4').hide();
-                $('.menu5').hide();
+
+
+        // 피드 항목 클릭 시 DetailModal을 열도록 이벤트 위임 추가
+        $(document).on('click', '.feed-entry', function() {
+            const index = $(this).data('index');
+            const feed = feeds[index];
+            console.log(feed);
+
+            // 각 피드 항목에 대한 모달 표시
+            const modal = $(`#feed-modal-${index}`);
+
+            // 모달을 표시
+            modal.css('display', 'block');
+        });
+
+        // 모달 닫기 버튼 클릭 이벤트 처리
+        $(document).on('click', '.close-modal', function() {
+            const modal = $(this).closest('.feed-modal');
+
+            // 모달을 숨김
+            modal.css('display', 'none');
+        });
+        $('.myPageGoHome').on('click', function() {
+
+            window.location.href = '/mypage/' + userId;
+        });
+        $('.menu1').on('click', function() {
+
+            window.location.href = '/bookmain/payment/list/' + userId;
+        });
+        $('.menu2').on('click', function() {
+
+            window.location.href = '/mypage/feed/list/' + userId;
+        });
+        $('.menu3').on('click', function() {
+
+            window.location.href = '/mypage/feedliked/' + userId;
+        });
+        $('.menu4').on('click', function() {
+
+            window.location.href = '/mypage/packageliked/' + userId;
+        });
+        $('.menu5').on('click', function() {
+
+            window.location.href = '/bookMain/bookGuestBook/' + userId;
+        });
+        $('.goChat').on('click', function() {
+
+            window.location.href = '/chat';
+        });
+
+
+        $('.writeFeed form').submit(function(event) {
+            event.preventDefault();  // 페이지 새로 고침 방지
+            const formData = new FormData(this);  // 폼 데이터 가져오기
+
+            $.ajax({
+                url: `/mypage/feed/create/${userId}`,  // 제출할 URL
+                type: 'POST',
+                data: formData,
+                contentType: false,  // 파일 업로드를 위한 설정
+                processData: false,  // jQuery에서 데이터 처리 방지
+                success: function(response) {
+                    console.log('피드 작성 성공:', response);
+                    closeModal();  // 피드 작성 후 모달 닫기
+                    loadFeedPages();  // 새로운 피드 목록 로드
+                },
+                error: function(error) {
+                    console.log('에러 발생:', error);
+                }
+            });
+        });
+
+
+        const userId = getToUserIdFromUrl();
+        const apiUrl = `/mypage/feed/list/${userId}`; // API URL 설정
+        let initialPageCount = $('.flipbook .page').length;
+        window.feedList =[];
+
+        // 앱 로드 및 초기화
+        initializeApp();
+
+        let currentPage = 1; // 현재 페이지 번호
+        const entriesPerPage = 9; // 한 페이지에 출력할 항목 수
+        let pages = {}; // 각 페이지에 추가된 항목 수를 저장
+        let currentRow=0;
+
+        function initializeApp() {
+            checkAndLoadFlipbook();
+            // loadFeedPages();
+
+            // 채팅 hover 효과
+            $('.goChat').hover(() => hoverChat());
+        }
+
+
+        // Flipbook 초기화
+        function checkAndLoadFlipbook(callback) {
+            if (isCSSTransformSupported()) {
+                $.getScript('/lib/animationjs/turn.js', () => {
+                    loadApp();
+                    callback(); // Flipbook 로딩 후 콜백 호출
+                });
+            } else {
+                $.getScript('../../lib/JQuery/turn.html4.min.js', () => {
+                    loadApp();
+                    callback();
+                });
+            }
+        }
+
+        function loadApp() {
+            $('.flipbook').turn({
+                width: 922,
+                height: 600,
+                elevation: 50,
+                gradients: true,
+                autoCenter: false,
+                display: 'double',
+                first: true
+            });
+        }
+
+        // CSS Transform 지원 여부 확인
+        function isCSSTransformSupported() {
+            const testElement = document.createElement('div');
+            const transformProperties = ['transform', 'WebkitTransform', 'MozTransform', 'OTransform', 'msTransform'];
+            return transformProperties.some(prop => testElement.style[prop] !== undefined);
+        }
+        let feeds = [];
+        // 피드 리스트을 요청
+        $.ajax({
+            url: `/mypage/feed/data/${userId}`,  // 사용자 ID로 API 호출
+            type: 'GET',
+            dataType: 'json',  // JSON 응답을 받기 위한 설정
+
+            success: function (data) {
+                console.log("피드 로드 완료:", data);
+                feeds=data;
+                loadFeed(data);  // 받은 데이터를 바탕으로 결제 내역을 로딩
+            },
+            error: function (error) {
+                console.log("에러 발생:", error);
             }
         });
-        $('.goChat').hover(function(){
-            hoverChat();
+        // 결제 내역을 출력하는 함수
+        function loadFeed(feeds) {
+            if (feeds && feeds.length > 0) {
+                feeds.forEach((feed, index) => {
+                    let attachmentHtml = '';
+
+                    // 첨부파일이 있을 경우 처리
+                    if (feed.attachmentFiles && feed.attachmentFiles.length > 0) {
+                        attachmentHtml = feed.attachmentFiles.map(file => {
+                            const filePath = `/uploads/${file}`; // 첨부파일의 경로
+                            return `<img src="${filePath}" alt="첨부파일" class="feed-attachment">`;
+                        }).join('');
+                    }
+
+                    const entryHtml = `
+                <div class="feed-entry" style="background-image: url(/img/postFrame.png)" data-index="${index}">
+                    ${attachmentHtml} <!-- 첨부파일 이미지 추가 -->
+                    <div>${feed.boardSubject}</div>
+
+                </div>
+                 <!-- 각 피드 항목에 대한 모달 (보이지 않음) -->
+                <div class="feed-modal" id="feed-modal-${index}" style="display: none;">
+                    <div class="modal-content">
+                    <button class="close-modal" style="background: none; margin-left: 480px; margin-top: -10px; font-size: 20px; border: none" >x</button>
+                        <h2>${feed.boardSubject}</h2>
+                        <p>${feed.city.cityName}</p>
+                        <div class="attachmentContainer" style="width: 200px;height: 200px;">${attachmentHtml}</div> <!-- 첨부파일 이미지 추가 -->
+                        <p>${feed.boardContent}</p>
+                        <p>${feed.boardDate}</p>
+                        <button class="edit-feed-modal" data-feed-id="${feed.boardId}" data-index="${index}">수정</button>
+                        <button class="delete-feed-modal" data-feed-id="${feed.boardId}" data-index="${index}">삭제</button>
+
+                    </div>
+                </div>
+            `;
+
+                    // 항목을 페이지에 추가
+                    addEntryToPage(entryHtml, index + 1);
+                    console.log(`feed Entry ${index + 1} added to page`);
+                });
+
+                // 모달 내 수정 버튼 클릭 이벤트
+                $('.edit-feed-modal').on('click', function() {
+                    const feedId = $(this).data('feed-id');
+                    const feedIndex = $(this).data('index');
+                    openEditModal(feedId, feedIndex);  // 수정 모달 열기
+                });
+
+                // 모달 내 삭제 버튼 클릭 이벤트
+                $('.delete-feed-modal').on('click', function() {
+                    const feedId = $(this).data('feed-id');
+                    const feedIndex = $(this).data('index');
+                    deleteFeed(feedId, feedIndex);  // 피드 삭제 요청
+                });
+            } else {
+                $('#feedEntries').append('<p>피드가 없습니다.</p>');
+            }
+        }
+        // 수정 모달을 여는 함수
+        function openEditModal(feedId, feedIndex) {
+            const feed = feeds[feedIndex];
+            const modal = $(`#feed-modal-${feedIndex}`);
+
+            // 수정할 피드 정보로 모달 내용을 채운 후 표시
+            modal.find('h2').text(feed.boardSubject);
+            modal.find('p').text(feed.boardContent);
+            modal.find('.edit-feed-modal').hide();  // 수정 버튼 숨기기
+            modal.find('.delete-feed-modal').hide();  // 삭제 버튼 숨기기
+
+            // 수정할 수 있도록 텍스트 필드와 제출 버튼을 추가
+            modal.find('.modal-content').append(`
+                <form class="edit-feed-form" enctype="multipart/form-data">
+                    <input type="text" name="boardSubject" value="${feed.boardSubject}" required>
+                    <textarea name="boardContent" required>${feed.boardContent}</textarea>
+<label for="city">도시 선택:</label>
+            <select name="cityId" id="city" required>
+                <option value="1" ${feed.cityId === 1 ? 'selected' : ''}>괌</option>
+<option value="2" ${feed.cityId === 2 ? 'selected' : ''}>마닐라</option>
+<option value="3" ${feed.cityId === 3 ? 'selected' : ''}>나트랑</option>
+<option value="4" ${feed.cityId === 4 ? 'selected' : ''}>세부</option>
+<option value="5" ${feed.cityId === 5 ? 'selected' : ''}>방콕</option>
+<option value="6" ${feed.cityId === 6 ? 'selected' : ''}>파리</option>
+<option value="7" ${feed.cityId === 7 ? 'selected' : ''}>홍콩</option>
+<option value="8" ${feed.cityId === 8 ? 'selected' : ''}>상하이</option>
+<option value="9" ${feed.cityId === 9 ? 'selected' : ''}>하와이</option>
+<option value="10" ${feed.cityId === 10 ? 'selected' : ''}>다낭</option>
+<option value="11" ${feed.cityId === 11 ? 'selected' : ''}>울란바토르</option>
+<option value="12" ${feed.cityId === 12 ? 'selected' : ''}>발리</option>
+<option value="13" ${feed.cityId === 13 ? 'selected' : ''}>로스엔젤레스</option>
+<option value="14" ${feed.cityId === 14 ? 'selected' : ''}>두바이</option>
+<option value="15" ${feed.cityId === 15 ? 'selected' : ''}>도쿄</option>
+<option value="16" ${feed.cityId === 16 ? 'selected' : ''}>런던</option>
+<option value="17" ${feed.cityId === 17 ? 'selected' : ''}>삿포로</option>
+<option value="18" ${feed.cityId === 18 ? 'selected' : ''}>사이판</option>
+<option value="19" ${feed.cityId === 19 ? 'selected' : ''}>이스탄불</option>
+<option value="20" ${feed.cityId === 20 ? 'selected' : ''}>로마</option>
+<option value="21" ${feed.cityId === 21 ? 'selected' : ''}>뉴욕</option>
+<option value="22" ${feed.cityId === 22 ? 'selected' : ''}>하얼빈</option>
+<option value="23" ${feed.cityId === 23 ? 'selected' : ''}>오사카</option>
+<option value="24" ${feed.cityId === 24 ? 'selected' : ''}>마카오</option>
+<option value="25" ${feed.cityId === 25 ? 'selected' : ''}>델리</option>
+<option value="26" ${feed.cityId === 26 ? 'selected' : ''}>프랑크푸르트</option>
+<option value="27" ${feed.cityId === 27 ? 'selected' : ''}>시드니</option>
+<option value="28" ${feed.cityId === 28 ? 'selected' : ''}>호쿠오카</option>
+<option value="29" ${feed.cityId === 29 ? 'selected' : ''}>오키나와</option>
+<option value="30" ${feed.cityId === 30 ? 'selected' : ''}>타이베이</option>
+<option value="31" ${feed.cityId === 31 ? 'selected' : ''}>벤쿠버</option>
+<option value="32" ${feed.cityId === 32 ? 'selected' : ''}>지린</option>
+
+            </select>
+            <label for="feedImage">피드 이미지:</label>
+            <input type="file" name="files" id="feedImage" multiple/>
+                    <button type="submit">수정 완료</button>
+                </form>
+            `);
+
+            // 수정 완료 버튼 클릭 시 수정된 정보 서버에 전송
+            modal.find('.edit-feed-form').submit(function(event) {
+                event.preventDefault();
+
+                const form = $(this);
+                const formData = new FormData();
+                formData.append('boardSubject', form.find('[name="boardSubject"]').val());
+                formData.append('boardContent', form.find('[name="boardContent"]').val());
+                formData.append('cityId', form.find('[name="cityId"]').val());
+// 파일 데이터가 있을 경우 추가
+
+                const files = $(this).find('[name="files"]')[0].files;
+                for (let i = 0; i < files.length; i++) {
+                    formData.append('attachmentFiles', files[i]);
+                }
+                console.log(formData);
+                $.ajax({
+                    url: `/mypage/feed/update/${userId}/${feedId}`,
+                    type: 'PUT',
+                    data: formData,
+                    processData:false,
+                    contentType: false,
+                    success: function(response) {
+                        console.log('피드 수정 성공:', response);
+                        modal.find('.edit-feed-form').remove();  // 수정 폼 제거
+                        modal.find('.edit-feed-modal').show();  // 수정 버튼 다시 보이기
+                        modal.find('.delete-feed-modal').show();  // 삭제 버튼 다시 보이기
+                        loadFeedPages();  // 피드 목록 갱신
+                    },
+                    error: function(error) {
+                        console.log('수정 실패:', error);
+                    }
+                });
+            });
+
+            // 모달 열기
+            modal.show();
+        }
+
+// 피드를 삭제하는 함수
+        function deleteFeed(feedId, feedIndex) {
+            if (confirm("정말로 이 피드를 삭제하시겠습니까?")) {
+                $.ajax({
+                    url: `/mypage/feed/delete/${userId}/${feedId}`,  // 사용자 ID로 피드 삭제 요청
+                    type: 'DELETE',
+                    data: {
+                        boardId: feedId
+                    },
+                    success: function(response) {
+                        console.log("피드 삭제 성공:", response);
+                        $(`.feed-entry[data-index="${feedIndex}"]`).remove();  // 삭제된 피드 항목 제거
+                        $('#feed-modal-' + feedIndex).hide();  // 모달 숨기기
+                    },
+                    error: function(error) {
+                        console.log("삭제 실패:", error);
+                    }
+                });
+            }
+        }
+
+
+        // URL에서 toUserId 값 추출하는 함수
+        function getToUserIdFromUrl() {
+            const pathParts = window.location.pathname.split('/');
+            const UserId = pathParts[pathParts.length - 1]; // 마지막 부분이 toUserId
+            return UserId;
+        }
+
+        // 피드 항목 클릭 이벤트 처리
+        $(document).on('click', '.feed-entry', function() {
+            const index = $(this).data('index');
+            // const modal = $(`#feed-modal-${index}`);
+            const feed=feeds[index];
+            if (feed) {  // feed가 존재하는지 확인
+                console.log(feed);
+
+                $('#feedDetailModal .modal-title').text(feed.boardSubject);
+                $('#feedDetailModal .modal-body').html(`
+                <p><strong>내용:</strong> ${feed.boardContent}</p>
+                <p><strong>작성일:</strong> $(feed.boardDate}</p>
+
+
+                <p><strong>도시:</strong> ${city.cityName}</p>
+                <div>${feed.attachmentFiles.map(file => `<img src="/uploads/${file}" alt="첨부파일" class="feed-attachment">`).join('')}</div>
+            `);
+
+                // 모달 열기 (예시로 Bootstrap을 사용한 경우)
+                $('#feedDetailModal').modal('show');
+            } else {
+                console.error('해당 피드를 찾을 수 없습니다.');
+            }
         });
 
+        // 모달 닫기 버튼 클릭 이벤트 처리
+        $(document).on('click', '.close-modal', function() {
+            const modal = $(this).closest('.feed-modal');
+
+            // 모달을 숨김
+            modal.css('display', 'none');
+        });
+
+
+        // 방명록 불러오기
+        function loadFeedPages() {
+            console.log("loadGuestBooks 작동");
+
+            // const toUserId = getToUserIdFromUrl();
+
+            $.get(apiUrl, function (data) {
+                console.log("Loaded feedpages:", data);
+
+                // 기존 페이지 삭제 및 초기화
+                resetFlipbook();
+
+                // 데이터를 페이지에 추가
+                data.forEach((feeds, index) => {
+                    // 첨부파일이 있을 경우
+                    let attachmentHtml = '';
+                    if (feeds.attachmentFiles && feeds.attachmentFiles.length > 0) {
+                        attachmentHtml = feeds.attachmentFiles.map(file => {
+                            const filePath = `/uploads/${file}`; // 첨부파일의 경로
+                            console.log('Image path: ' + filePath);  // /uploads/japan.jpg 경로가 올바르게 출력되는지 확인
+                            return `<img src="${filePath}" alt="첨부파일" class="feed-attachment">`;
+                        }).join('');
+                    }
+
+                    const entryHtml = `
+                        <div class="feed-entry" style="background-image: url(/img/postFrame.png)">
+                        ${attachmentHtml} <!-- 첨부파일 이미지 추가 -->
+                        <div>${feeds.boardSubject}</div>
+                    </div>
+                    `;
+                    addEntryToPage(entryHtml, index + 1); // 항목을 페이지에 추가
+                    console.log(`feed Entry ${index + 1} added to page ${currentPage}`);
+                });
+            });
+        }
+
+        // 기존 페이지 삭제
+        function resetFlipbook() {
+            console.log("resetFlipbook 작동");
+            // 첫 번째 페이지는 유지하고 나머지를 초기화
+            // 페이지를 초기화할 때, 기존 페이지를 모두 제거
+            $('.flipbook').turn('destroy').html('');
+            // 첫 번째 페이지 유지 및 나머지 페이지 제거
+            $('.flipbook').turn('addPage', $('<div class="page" style="background-image:url(/img/titleGuestBook.png)">')[0]);
+            $('#guestbookEntries').empty();  // 데이터 초기화
+            currentPage = 2;  // 두 번째 페이지부터 시작
+            pages = { 2: 0 };  // 첫 페이지 제외 초기화
+        }
+
+        // 항목을 페이지에 추가
+        function addEntryToPage(entry, index) {
+            console.log("addEntry 작동");
+            const pageNumber = Math.floor((index - 1) / entriesPerPage) + 2;
+            const adjustedPage = pageNumber;
+
+
+            // 페이지 생성 여부 확인 후 생성
+            if (!$(`#page${adjustedPage}`).length) {
+                createNewPage(adjustedPage);
+            }
+
+            // 현재 페이지에 새 행 생성 여부 확인
+            if (pages[adjustedPage] % 3 === 0) {
+                createNewRow(adjustedPage);
+            }
+
+
+            $(`#page${adjustedPage} .row:last`).append(entry);
+          pages[adjustedPage]++;
+        }
+
+        // 행 추가
+        function createNewRow(pageNumber){
+            console.log("현재 페이지, 행",pageNumber,currentRow)
+            const rowHtml = `<div class="row" style="display:flex; gap:10px; justify-content:center;"></div>`;
+            $(`#page${pageNumber}`).append(rowHtml);
+        }
+
+
+
+        // 새 페이지 생성
+        function createNewPage(pageNumber) {
+            console.log("createpage 작동",pageNumber);
+            // const totalPages = $('.flipbook').turn('pages')+1;
+            // // currentPage = totalPages + 1; // 페이지 번호 계산
+            // const adjustedPage = totalPages +1;
+            // console.log(`전체페이지:`,totalPages);
+
+            let newPage;
+            let newPageHtml;
+
+            // 첫 번째 페이지는 이미지 전용으로 설정
+            if (pageNumber === 1) {
+                newPageHtml = `<div class="page" id="page${pageNumber}" style="background-image:url(/img/myPageFeedTitle.png)"></div>`;
+            } else {
+                // 나머지 페이지는 결제 내역을 위한 기본 배경 이미지로 설정
+                newPageHtml = `<div class="page" id="page${pageNumber}" style="background-image:url(/img/addBook.png)"></div>`;
+            }
+
+            // 새 페이지를 flipbook에 추가
+
+                $('.flipbook').turn('addPage', $(newPageHtml)[0], pageNumber);
+                pages[pageNumber] = 0;  // 새 페이지 항목 수 초기화
+                console.log(`새 페이지 생성: #page${pageNumber}`);
+
+        }
+
+
+        // 채팅 hover 효과
         function hoverChat() {
             let angle = 0;
-            clearInterval(shakeInterval);
-            $('.goChat').css('transform', 'rotateY(0deg)');  // 초기 상태 설정
-            let shakeInterval = setInterval(function() {
-                angle += 10;  // 한 번에 10도씩 증가
-                $('.goChat').css('transform', `rotateY(${angle}deg)`);  // Y축을 중심으로 회전
-                if (angle >= 35) {  // 35도까지 회전
+            let shakeInterval = setInterval(() => {
+                angle += 10;
+                $('.goChat').css('transform', `rotateY(${angle}deg)`);
+                if (angle >= 35) {
                     clearInterval(shakeInterval);
-                    $('.goChat').css('transform', 'rotateY(0deg)');  // 원래 위치로 돌아가게 설정
+                    $('.goChat').css('transform', 'rotateY(0deg)');
                 }
-            }, 100);  // 0.1초마다 회전
+            }, 100);
         }
-
-    }
-
-    // $('.myPageUpdate').click(function (){
-    //     $('.updateUserModal').show();
-    // });
-    // $('.closeUpdateModal').click(function(){
-    //     $('.updateUserModal').hide();
-    // });
-
-    // Load the HTML4 version if there's not CSS transform
-
-    function isCSSTransformSupported() {
-        var testElement = document.createElement('div');
-        var transformProperties = ['transform', 'WebkitTransform', 'MozTransform', 'OTransform', 'msTransform'];
-
-        for (var i = 0; i < transformProperties.length; i++) {
-            if (testElement.style[transformProperties[i]] !== undefined) {
-                return true; // CSS transform이 지원됩니다.
-            }
-        }
-
-        return false; // CSS transform이 지원되지 않습니다.
-    }
-
-    if (isCSSTransformSupported()) {
-        // transform 지원 시
-        $.getScript('../static/lib/animationjs/turn.js', function() {
-            loadApp();
-        });
-    } else {
-        // transform 미지원 시
-        $.getScript('../static/lib/JQuery/turn.html4.min.js', function() {
-            loadApp();
-        });
-    }
-
-    // if (Modernizr.csstransforms) {
-    // 	$.getScript('../../lib/animationjs/turn.js', function() {
-    // 		loadApp();
-    // 	});
-    // } else {
-    // 	$.getScript('../../lib/JQuery/turn.html4.min.js', function() {
-    // 		loadApp();
-    // 	});
-    // }
-
-    // yepnope({
-    // 	test : Modernizr.csstransforms,
-    // 	yep: ['../../lib/animationjs/turn.js'],				//경로 & 실제 파일 존재여부 반드시 확인
-    // 	nope: ['../../lib/JQuery/turn.html4.min.js'],	//경로 & 실제 파일 존재여부 반드시 확인
-    // 	both: ['css/basic.css'],				//경로 & 실제 파일 존재여부 반드시 확인
-    // 	complete: loadApp
-    // });
-
+    });
 </script>
 </body>
 </html>

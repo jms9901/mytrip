@@ -10,12 +10,26 @@
         VALUES (#{packageId}, #{packageAttachmentFile})
     </insert>
 
+    <insert id="insertPostAttachment"
+            parameterType="com.lec.spring.mytrip.domain.attachment.BoardAttachment">
+        INSERT INTO board_attachment (board_id, board_attachment_file)
+        VALUES (#{boardId}, #{boardAttachmentFile})
+    </insert>
+
     <!-- 패키지 ID로 첨부파일 목록 조회 -->
     <select id="findByPackageId" parameterType="int"
             resultType="com.lec.spring.mytrip.domain.attachment.PackagePostAttachment">
         SELECT package_id, package_attachment_file
         FROM package_attachment
         WHERE package_id = #{packageId}
+    </select>
+
+    <!-- 보드 ID로 첨부파일 목록 조회 -->
+    <select id="findByBoardId" parameterType="int"
+            resultType="com.lec.spring.mytrip.domain.attachment.BoardAttachment">
+        SELECT board_id, board_attachment_file
+        FROM board_attachment
+        WHERE board_id = #{boardId}
     </select>
 
     <!-- 첨부파일 ID로 첨부파일 조회 -->

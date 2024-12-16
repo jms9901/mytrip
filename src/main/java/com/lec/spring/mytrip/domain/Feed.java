@@ -18,9 +18,14 @@ public class Feed {
     private int boardViewCount;                // 게시물 조회수
     private LocalDateTime boardDate;            // 게시물 작성일
     private String boardCategory;               // 게시물 카테고리 ("소모임" / "피드")
-    private User user;                          // 사용자
+    private int userId;
+    private User user;
     private City city;                          // 도시
     private List<PostAttachment> attachments;   // 첨부파일
+    private List<String> attachmentFiles;
+    @Getter
+    @Setter
+    private int cityId;
 
     // 파일 업로드를 위한 임시 필드
     private transient List<MultipartFile> uploadFiles;

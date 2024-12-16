@@ -121,16 +121,20 @@ public class PackagePostController {
                                   Model model) {
         // 패키지 수정 페이지로 이동
         model.addAttribute("packagePost", packagePostService.getPackageDetails(packageId));
-        return "package/edit";
+        return "/board/city/package/edit";
     }
 
     // 패키지 수정 저장 안써
     @PostMapping("{cityId}/package/update")
     public String updatePackage(@PathVariable int cityId,
-                                @ModelAttribute PackagePost packagePost) {
+                                @PathVariable int packageId,
+                                @ModelAttribute PackagePost packagePost,
+                                @RequestParam("files") List<MultipartFile> files) {
+        packagePost.setPackageId(packageId);
+        System.out.println(packagePost.toString());
         // 패키지 수정 저장 처리
         // 패키지 저장 처리 후 저장된 ID 반환
-        int id = packagePostService.updatePackage(packagePost);
+        int id = packagePostService.updatePackage(packagePost, files);
 
         // 저장 후 상세 페이지로 리다이렉트
         return "redirect:" + cityId + "/package/detail/" + id;
@@ -181,8 +185,12 @@ public class PackagePostController {
     @PostMapping("{cityId}/group/save")
     public String saveGroup(@PathVariable int cityId,
                             @ModelAttribute Feed feed,
-                            @RequestParam Map<String, MultipartFile> files) {
+                            @RequestParam List<MultipartFile> files) {
+        System.out.println("일단 저장 들어옴");
+        feed.setBoardCategory("소모임");
+        System.out.println(feed.toString());
         boolean isSaved = feedService.write(feed, files);
+        System.out.println(isSaved + " 저장");
 
         if (!isSaved) {
             return "redirect:/error"; // 저장 실패 시 에러 페이지
@@ -208,19 +216,21 @@ public class PackagePostController {
     @PostMapping("{cityId}/group/update")
     public String updateGroup(@PathVariable int cityId,
                               @ModelAttribute Feed feed,
-                              @RequestParam Map<String, MultipartFile> files,
+                              @RequestParam List<MultipartFile> files,
                               @RequestParam(value = "delfile", required = false) int[] delfile) {
-        boolean isUpdated = feedService.update(feed, files, delfile);
+        System.out.println("수정 : " + feed.toString());
+
+        boolean isUpdated = feedService.update(feed, files);
 
         if (!isUpdated) {
             return "redirect:/error"; // 수정 실패 시 에러 페이지
         }
 
-        return "redirect:/board/city/" + cityId + "/group/edit/" + feed.getBoardId();
+        return "redirect:/board/city/" + cityId + "/group/detail/" + feed.getBoardId();
     }
 
     // 소모임 삭제
-    @DeleteMapping("{cityId}/group/delete/{groupId}")
+    @GetMapping("{cityId}/group/delete/{groupId}")
     public String deleteGroup(@PathVariable int cityId,
                               @PathVariable int groupId) {
         boolean isDeleted = feedService.deleteById(groupId);
@@ -229,7 +239,7 @@ public class PackagePostController {
             return "redirect:/error"; // 삭제 실패 시 에러 페이지
         }
 
-        return "redirect:/board";
+        return "redirect:/board/city/" + cityId;
     }
 
 

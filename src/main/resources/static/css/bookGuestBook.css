@@ -74,7 +74,7 @@ body{
     height: 250px;
     z-index: -6;
     background-repeat: no-repeat ;
-    display: none;
+
     transition: top 0.3s ease;
 }
 
@@ -86,7 +86,7 @@ body{
     height: 250px;
     z-index: -5;
     background-repeat: no-repeat ;
-    display: none;
+
     transition: top 0.3s ease;
 }
 
@@ -98,7 +98,7 @@ body{
     height: 250px;
     z-index: -4;
     background-repeat: no-repeat ;
-    display: none;
+
     transition: top 0.3s ease;
 }
 
@@ -110,7 +110,7 @@ body{
     height: 250px;
     z-index: -3;
     background-repeat: no-repeat ;
-    display: none;
+
     text-align: center;
     transition: top 0.3s ease;
 }
@@ -122,7 +122,7 @@ body{
     height: 250px;
     z-index: -2;
     background-repeat: no-repeat ;
-    display: none;
+
     text-align: center;
     transition: top 0.3s ease;
 }
@@ -296,6 +296,192 @@ body{
     top: 82px;
 
 }
+.feed-entry {
+    display: flex;
+    width: 140px;
+    height: 180px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    left:50%;
+    top:20px;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+
+}
 
 
+.writeFeed{
+    background-repeat:no-repeat;
+    height:600px;
+    width:1500px;
+    z-index: 9999;
+    display: none;
+    position: fixed;
+    left: 350px;
+    /*transform: translate(-50%, -50%);*/
+    background-size: contain;
+    flex-direction: column;
+    align-items: center;
+}
+.feed-attachment {
 
+    width: 90px; /* 필요한 크기로 조정 */
+    height: 90px; /* 필요한 크기로 조정 */
+    object-fit: cover; /* 이미지 왜곡 없이 잘라냄 */
+    align-items: center;
+}
+
+.feed-entry{
+    padding-top: 20px;
+    flex-direction: column;
+    align-items: center;
+}
+
+.feed-entry div{
+    margin-top: 10px;
+    text-align: center;
+    font-size:10px;
+}
+.Detailmodal {
+    background-size: inherit;
+    background-position: center;
+    position: absolute;
+    background-repeat: no-repeat;
+    display: none;
+    width: 1000px;
+    height: 60%;
+    z-index: 9999;
+    padding-left: 230px;
+}
+
+.modal-content {
+    background-image: url(/img/feedDetailFrame.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 1000px;
+    height: 500px;
+    position: relative;
+    left: 200px;
+    /*border: solid 1px #ccc;*/
+    padding: 20px;
+}
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.post-image {
+    width: 400px;
+    height: 400px;
+    background-color: #f0f0f0;
+    border: solid 1px #ccc;
+    position: absolute;
+    left: 30px;
+    top: 30px;
+}
+
+.post-title {
+    position: absolute;
+    top: 30px;
+    left: 470px;
+    font-size: 24px;
+    font-weight: bold;
+    width: 460px;
+}
+
+.post-date {
+    position: absolute;
+    top: 80px;
+    left: 470px;
+    font-size: 14px;
+    color: #777;
+}
+
+.like-area {
+    position: absolute;
+    top: 120px;
+    left: 470px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.post-city {
+    position: absolute;
+    top: 160px;
+    left: 470px;
+    font-size: 16px;
+    color: #555;
+}
+
+.post-content {
+    position: absolute;
+    top: 200px;
+    left: 30px;
+    width: 940px;
+    height: 300px;
+    overflow-y: auto;
+    border: solid 1px #ccc;
+    padding: 10px;
+}
+
+.edit-button {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+}
+
+.feed-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);  /* 배경을 어둡게 */
+    display: none;  /* 기본적으로 보이지 않음 */
+    justify-content: center;
+    align-items: center;
+}
+
+/* 모달 내용 */
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    width: 80%;
+    max-width: 500px;
+}
+
+.close-modal {
+    background-color: #ccc;
+    padding: 10px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+.writeFeed{
+    top:40px;
+}
+.attachmentContainer{
+    width: 200px;
+    height: 200px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.attachmentContainer img{
+    width: 100%;
+    height: 100%;
+    /*object-fit: cover;*/
+}

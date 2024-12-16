@@ -1,6 +1,7 @@
 $().ready(function (){
     // flatpickr 초기화
     const today = new Date();
+    console.log("아아아아ㅏ아아ㅏㅇ")
 
     flatpickr("#start-date-btn", {
     minDate: today,

@@ -3,10 +3,14 @@ package com.lec.spring.mytrip.repository;
 import com.lec.spring.mytrip.domain.City;
 import com.lec.spring.mytrip.domain.Feed;
 import com.lec.spring.mytrip.domain.PostAttachment;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 public interface FeedRepository {
+    // 사용자 ID로 피드 게시글 조회
+    List<Feed> findFeedByUserId(@Param("userId") int userId);
     // 새 피드 작성 INSERT
     int save(Feed feed);
 
@@ -31,22 +35,36 @@ public interface FeedRepository {
     // 전체 피드 개수
     int feedCountAll();
 
-    // 첨부파일 저장
-    int saveAttachment(PostAttachment attachment);
+    List<Feed> findRecentFeedsByUserId(@Param("userId") int userId);
 
+    // 피드 등록
+    void insertFeed(Feed feed);
     // 특정 피드 ID로 첨부파일 찾기
     List<PostAttachment> findAttachmentByBoardId(int boardId);
+
+    // 피드 수정
+    void updateFeed(Feed feed);
+
+    // 첨부파일 저장
+    int saveAttachment(PostAttachment attachment);
 
     // 첨부파일 삭제
     int deleteAttachment(int boardAttachmentId);
 
+    // 피드 삭제
+    void deleteFeed(@Param("boardId") int boardId, @Param("userId") int userId);
     // 특정 피드 ID의 첨부파일 삭제
     int deleteAttachmentByBoardId(int boardId);
+
+    // 첨부파일 등록
+    void insertAttachments(PostAttachment attachment);
 
     // 도시
     List<City> findAllCities();
 
     City findCityById(Long id);
+
+    void deleteAttachmentsByBoardId(int boardId);
 
     //도시와 카테고리 별 피드
     List<Feed> findByCityAndCategory(int cityId, String category);

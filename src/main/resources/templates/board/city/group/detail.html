@@ -23,9 +23,8 @@
                 <p>작성 시간: <span id="createdAt" th:text="${feed.boardDate}"></span></p>
             </div>
             <div>
-                <a class="btn btn-warning btn-sm">수정</a>
-                <a class="btn btn-danger btn-sm">삭제</a>
-
+                <a th:href="@{|/board/city/${cityId}/group/edit/${feed.boardId}|}" class="btn btn-warning btn-sm">수정</a>
+                <a th:href="@{|/board/city/${cityId}/group/delete/${feed.boardId}|}" class="btn btn-danger">삭제</a>
             </div>
         </div>
     </section>

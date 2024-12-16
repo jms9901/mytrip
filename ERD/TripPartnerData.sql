@@ -556,3 +556,52 @@ values(1,2);INSERT INTO package (city_id, user_id, package_content, package_stat
                 (1, 2, '보온무운', '대기', '제에에ㅔ목', 123456, 10, '2024-12-01', '2024-12-12');
 insert into city_liked (user_id,city_id)
 values(1,3);
+insert into payment_info (user_id, package_id, user_count, payment_status)
+values(1,1,1,'결제완료');
+insert into payment_info (user_id, package_id, user_count, payment_status)
+values(1,2,1,'결제완료');
+insert into payment_info (user_id, package_id, user_count, payment_status)
+values(1,3,1,'결제완료');
+insert into payment_info (user_id, package_id, user_count, payment_status)
+values(1,4,1,'결제완료');
+insert into payment_info (user_id, package_id, user_count, payment_status)
+values(1,5,1,'결제완료');
+insert into payment_info (user_id, package_id, user_count, payment_status)
+                     values(1,6,1,'결제완료');
+insert into payment_info (user_id, package_id, user_count, payment_status)
+                                          values(1,7,1,'결제완료');
+insert into board_liked(user_id,board_id,board_liked_date)
+values  (1,126,now());
+insert into board_liked(user_id,board_id,board_liked_date)
+values  (1,127,now());
+insert into board_liked(user_id,board_id,board_liked_date)
+values  (1,129,now());
+insert into package_liked (user_id,package_id,package_liked_date)
+values (1,1,now());
+insert into package_liked (user_id,package_id,package_liked_date)
+values (1,2,now());
+insert into package_attachment (package_id, package_attachment_file)
+values(1,'bus.jpg');
+insert into package_liked (user_id,package_id,package_liked_date)
+values (1,3,now());
+insert into package_liked (user_id,package_id,package_liked_date)
+values (1,4,now());
+insert into package_liked (user_id,package_id,package_liked_date)
+values (1,5,now());
+insert into package_liked (user_id,package_id,package_liked_date)
+values (1,6,now());
+insert into package_liked (user_id,package_id,package_liked_date)
+values (1,7,now());
+insert into package_liked (user_id,package_id,package_liked_date)
+values (1,8,now());
+insert into package_liked (user_id,package_id,package_liked_date)
+values (1,9,now());
+insert into package_liked (user_id,package_id,package_liked_date)
+values (1,10,now());
+insert into  friendship(to_user_id, from_user_id)
+values (3,2);
+
+insert into  friendship(to_user_id, from_user_id)
+values (1,2);
+insert into  friendship(to_user_id, from_user_id)
+values (1,3);
