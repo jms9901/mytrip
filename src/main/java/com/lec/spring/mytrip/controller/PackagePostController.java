@@ -154,7 +154,7 @@ public class PackagePostController {
     // 소모임 상세 이동
     // board.group.detail.html
     @GetMapping("{cityId}/group/detail/{groupId}")
-    public void getGroupDetails(@PathVariable int cityId,
+    public String getGroupDetails(@PathVariable int cityId,
                                 @PathVariable int groupId,
                                 Model model) {
         // 소모임 상세 페이지로 이동
@@ -165,6 +165,8 @@ public class PackagePostController {
         model.addAttribute("feed", feed);
         model.addAttribute("cityId", cityId);
         model.addAttribute("groupId", groupId);
+
+        return "board/city/group/detail";
     }
 
     // 소모임 글쓰기 페이지 이동

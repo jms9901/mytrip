@@ -31,7 +31,7 @@
     <!-- 특정 피드 id로 글 찾기 -->
     <select id="findById" parameterType="int" resultType="com.lec.spring.mytrip.domain.Feed">
         <include refid="SELECT_BOARD"/>
-        WHERE board_id = #{id}
+        AND board_id = #{id}
     </select>
 
     <!-- 특정 피드 id 글 조회수 증가 -->
