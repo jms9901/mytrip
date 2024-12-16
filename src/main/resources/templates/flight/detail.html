@@ -111,7 +111,13 @@
         <p>위로 밀어 더 보기</p>
     </div>
 
+
 <div class="price-container" th:if="${details}">
+
+    <!-- 뒤로가기 버튼 -->
+    <button id="back-button" class="btn btn-secondary btn-sm position-absolute back-button" onclick="location.href='/flight/search'">
+        뒤로가기
+    </button>
     <div th:each="detail : ${details}" class="price-item">
         <div class="site-info">
             <span class="site-name" th:text="${detail.siteName}"></span>
