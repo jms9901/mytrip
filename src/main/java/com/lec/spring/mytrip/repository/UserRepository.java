@@ -21,8 +21,8 @@ public interface UserRepository {
     int save (User user);
 
     // 특정 고유번호 유저 리턴
-    Optional<User> findById(Long userId);
+    Optional<User> findListById(int userId);
 
     // user 정보를 업데이트 (비밀번호, 자기소개, 프로필 이미지)
-    int updateUser(Long userId, String password, String introduction, String profile);
+    int updateUser(int userId, String password, String introduction, String profile);
 }

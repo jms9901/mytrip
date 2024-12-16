@@ -33,7 +33,7 @@ public interface LikeRepository {
     int findAllPeedLike(int userId);
 
     // 피드 좋아요 리스트 출력
-    List<Board> findLikedPostsByUser(Long userId);
+    List<Board> findLikedPostsByUser(int userId);
 
     //패키지
     //내가 좋아요를 했는가?

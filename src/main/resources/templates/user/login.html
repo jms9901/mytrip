@@ -25,7 +25,7 @@
       <a th:href="@{/flight/search}" class="top-menu">항공권 조회</a>
     </sec:authorize>
     <a sec:authorize="isAnonymous()" th:href="@{/user/login}" class="top-menu">login</a>
-    <form th:action="@{/user/mypage}" method="GET" sec:authorize="isAuthenticated()">
+    <form th:action="@{/mypage/${user.id}}" method="GET" sec:authorize="isAuthenticated()">
       <button type="submit" class="mypage ">Mypage</button></form>
     <!--                <form th:action="@{/user/logout}" method="POST" sec:authorize="isAuthenticated()" th:with="user=${#authentication.getPrincipal()}">-->
     <!--                    <button type="submit" class="">logout</button></form>-->
@@ -98,8 +98,7 @@
             <input type="date" name="birthday" required th:value="${user?.birthday}"/>
           </label>
           <div class="row mt-5">
-            <div class="col-12 text-danger" th:text="${error}">
-            </div>
+            <div class="col-12 text-danger" th:text="${error}"></div>
           </div>
           <button id="submit2" type="submit" class="submit">Sign Up</button>
         </div>

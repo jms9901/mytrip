@@ -42,7 +42,7 @@ public class likedController {
     }
     @GetMapping("/likedCity")
     @ResponseBody
-    public List<City> getLikedCity(@RequestParam("userId") Long userId) {
+    public List<City> getLikedCity(@RequestParam("userId") int userId) {
         return likedService.getLikedCityByUserId(userId);
     }
 

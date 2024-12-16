@@ -216,7 +216,6 @@ CREATE TABLE user
     user_password          VARCHAR(100)  NOT NULL COMMENT '사용자 비밀번호',
     user_username          VARCHAR(20)   NOT NULL COMMENT '사용자 ID',
     user_name              VARCHAR(20)   NOT NULL COMMENT '사용자 실제 이름',
-    user_phonenumber       VARCHAR(20)   NOT NULL COMMENT '사용자 핸드폰 번호',
     user_regdate           DATETIME      NOT NULL DEFAULT NOW() COMMENT '사용자 계정 생성 일자',
     user_birthday          VARCHAR(20)   NULL     COMMENT '사용자 생년월일',
     user_profile           VARCHAR(1000) NULL     COMMENT '사용자 프로필 사진',

@@ -31,14 +31,14 @@ public class MyPageService {
     }
 
     // 사용자 정보 가져오기
-    public User getUserById(Long userId) {
-        return userRepository.findById(userId).orElse(null);
+    public User getUserById(int userId) {
+        return userRepository.findById(userId);
     }
 
     @Transactional
-    public boolean updateUser(Long userId, String introduction, String currentPassword, String newPassword, MultipartFile profileImage, String profileImageFileName) {
+    public boolean updateUser(int userId, String introduction, String currentPassword, String newPassword, MultipartFile profileImage, String profileImageFileName) {
         // 사용자 정보를 가져옴
-        User user = userRepository.findById(userId).orElse(null);
+        User user = userRepository.findById(userId);
         if (user == null) {
             return false; // 사용자 정보가 없으면 실패
         }
@@ -93,8 +93,8 @@ public class MyPageService {
 
     // 비밀번호 업데이트
     @Transactional
-    public boolean updatePassword(Long userId, String currentPassword, String newPassword) {
-        User user = userRepository.findById(userId).orElse(null);
+    public boolean updatePassword(int userId, String currentPassword, String newPassword) {
+        User user = userRepository.findById(userId);
         if (user == null || !passwordEncoder.matches(currentPassword, user.getPassword())) {  // bcrypt 비교
             return false;  // 현재 비밀번호가 일치하지 않으면 실패
         }
@@ -105,8 +105,8 @@ public class MyPageService {
 
     // 자기소개 업데이트
     @Transactional
-    public boolean updateIntroduction(Long userId, String introduction) {
-        User user = userRepository.findById(userId).orElse(null);
+    public boolean updateIntroduction(int userId, String introduction) {
+        User user = userRepository.findById(userId);
         if (user == null) {
             return false;
         }
@@ -117,8 +117,9 @@ public class MyPageService {
 
     // 프로필 이미지 업데이트
     @Transactional
-    public boolean updateProfileImage(Long userId, MultipartFile file) throws IOException {
-        User user = userRepository.findById(userId).orElse(null);
+    public boolean updateProfileImage(int userId, MultipartFile file) throws IOException {
+        User user = userRepository.findById(userId);
+//                .orElse(null);
         if (user == null) {
             return false;
         }

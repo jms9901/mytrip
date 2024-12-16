@@ -53,6 +53,7 @@ public class UserController {
         return "user/home";
     }
 
+
     // 로그인 페이지
     @GetMapping("/login")
     public String login(Model model, @RequestParam(value = "username", required = false) String username,
@@ -68,6 +69,8 @@ public class UserController {
     public Authentication auth(){
         return SecurityContextHolder.getContext().getAuthentication();
     }
+
+
 
     // 회원가입 처리
     @PostMapping("/register")
@@ -163,6 +166,8 @@ public class UserController {
         model.addAttribute("user", user); // 사용자 정보를 모델에 추가
         return "user/editUser"; // 사용자 정보 수정 페이지 반환
     }
+
+
 
 
     }

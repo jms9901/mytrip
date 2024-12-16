@@ -26,7 +26,7 @@ public class MypageLikeController {
 
     @GetMapping("/likedposts/{userId}")
     @ResponseBody
-    public ResponseEntity<List<Board>> showLikedPosts(@PathVariable Long userId) {
+    public ResponseEntity<List<Board>> showLikedPosts(@PathVariable int userId) {
         System.out.println("userId = " + userId);
         List<Board> likedPosts = likedService.getLikedPosts(userId);
 

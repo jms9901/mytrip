@@ -83,12 +83,12 @@ public class LikedServiceImpl implements LikedService {
     }
 
     @Override
-    public List<City> getLikedCityByUserId(Long userId) {
+    public List<City> getLikedCityByUserId(int userId) {
         return cityRepository.findLikedCitiesByUserId(userId);
     }
 
 
-    public List<Board> getLikedPosts(Long userId) {
+    public List<Board> getLikedPosts(int userId) {
         System.out.println(likeRepository.findLikedPostsByUser(userId));
         return likeRepository.findLikedPostsByUser(userId);
     }

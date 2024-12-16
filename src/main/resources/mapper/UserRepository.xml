@@ -54,6 +54,11 @@
         WHERE user_id = #{userid}
     </update>
 
+    <select id="findListById" resultType="com.lec.spring.mytrip.domain.User">
+        <include refid="SELECT_USER"/>
+        and user_id = #{id}
+    </select>
+
     <!-- 사용자 업데이트 -->
     <update id="updateUser" parameterType="map">
         UPDATE user

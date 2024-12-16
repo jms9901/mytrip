@@ -17,5 +17,5 @@ public interface CityRepository {
     );
 
     City findByCityName(String cityName);
-    List<City> findLikedCitiesByUserId(Long userId);
+    List<City> findLikedCitiesByUserId(int userId);
 }

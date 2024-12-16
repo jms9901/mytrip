@@ -651,3 +651,7 @@ insert into  friendship(to_user_id, from_user_id)
 values (1,2);
 insert into  friendship(to_user_id, from_user_id)
 values (1,3);
+insert into  friendship(to_user_id, from_user_id)
+values (2,3);
+insert into  friendship(to_user_id, from_user_id)
+values (2,3);

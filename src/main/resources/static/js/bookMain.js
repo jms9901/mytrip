@@ -16,6 +16,29 @@ document.addEventListener('DOMContentLoaded', function () {
         window.location.href = url;
     }
 
+    let loguser;  // 전역 변수로 선언
+// Fetch the user ID after login
+    fetch('loginuserid')
+        .then(response => response.json())
+        .then(data => {
+            loguser = data.userId;  // Assign the userId to loguser
+            console.log('User ID:', loguser); // Output the loguser value
+
+            // Add event listener to the form after loguser is set
+            document.getElementById("sendFriendRequestForm").addEventListener("submit", (event) => {
+                event.preventDefault();
+                const params = new URLSearchParams({
+                    fromUserId: loguser,  // Use the fetched loguser here
+                    toUserId: userId      // Make sure UserId is available in the scope
+                });
+                sendRequest("send", params);
+            });
+
+        })
+        .catch(error => console.error('Error:', error));
+
+
+
     // 도시 좋아요 목록을 가져오는 API 호출
     fetch(`/likey/likedCity?userId=${userId}`)
         .then(response => response.json())
@@ -117,7 +140,7 @@ document.getElementById('ConnectionsCnt').addEventListener('click', function () 
 // 친구 요청 수락/거절 처리 함수
 function handleFriendRequest(action, fromUserId, toUserId, requestItem) {
     const params = new URLSearchParams({
-        fromUserId: fromUserId,  // 로그인 사용자 (fromUserId)
+        fromUserId: loguser,  // 로그인 사용자 (fromUserId)
         toUserId: toUserId       // 친구 요청을 받는 사용자 (toUserId)
     });
 
@@ -639,15 +662,15 @@ async function sendRequest(endpoint, params) {
     alert(result);
 }
 
-// 친구 요청 보내기
-document.getElementById("sendFriendRequestForm").addEventListener("submit", (event) => {
-    event.preventDefault();
-    const params = new URLSearchParams({
-        fromUserId: document.getElementById("fromUserId").value,    //로그인한 사용자
-        toUserId: UserId
-    });
-    sendRequest("send", params);
-});
+// // 친구 요청 보내기
+// document.getElementById("sendFriendRequestForm").addEventListener("submit", (event) => {
+//     event.preventDefault();
+//     const params = new URLSearchParams({
+//         fromUserId: loguser,    //로그인한 사용자
+//         toUserId: UserId
+//     });
+//     sendRequest("send", params);
+// });
 
 // 친구 요청 수락
 document.getElementById("acceptFriendRequestForm").addEventListener("submit", (event) => {

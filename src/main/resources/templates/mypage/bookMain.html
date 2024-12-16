@@ -56,7 +56,9 @@
 
 
                     <div class="requestView" id="requestView"></div>
-                    <button type="submit" class="btn" style="left: 330px;">친구 요청</button>
+                    <form id="sendFriendRequestForm">
+                        <button type="submit" class="btn" style="left: 330px;">친구 요청</button>
+                    </form>
                     <div class="Connections" id="openModalBtn">Connections.</div>
                     <div class="ConnectionsCnt" id="ConnectionsCnt">
                         <span th:text="${countAcceptedFriends}">0</span>

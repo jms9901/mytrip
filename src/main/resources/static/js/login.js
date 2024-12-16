@@ -70,7 +70,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById("loginForm2");  // ID 수정
     const inputs = form.querySelectorAll("input");
     let check = true;
-    if(document.querySelector('.text-danger') !== null){
+    if(document.querySelector('.text-danger') === null){
       form.submit();
       alert(`회원 가입 중 오류가 발생했습니다.`);
       href.location='/user/login;'

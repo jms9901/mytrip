@@ -1,10 +1,13 @@
 package com.lec.spring.mytrip.controller;
 
+import com.lec.spring.mytrip.config.PrincipalDetails;
 import com.lec.spring.mytrip.domain.City;
 import com.lec.spring.mytrip.domain.Feed;
 import com.lec.spring.mytrip.domain.FriendshipUserResultMap;
 import com.lec.spring.mytrip.domain.User;
 import com.lec.spring.mytrip.service.*;
+import com.lec.spring.mytrip.util.U;
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
@@ -12,6 +15,8 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -48,14 +53,28 @@ public class MyPageController {
         this.feedService = feedService;
     }
 
+
+    @GetMapping("/loginuserid")
+    @ResponseBody
+    public Map<String, Integer> loginUserId(HttpSession session) {
+        User loggedUser = U.getLoggedUser();  // 사용자 정보 가져오기
+        int currentLogger = loggedUser.getId();
+        System.out.println(currentLogger);
+        // JSON 응답 형식으로 반환
+        return Map.of("userId", currentLogger);
+    }
+
+
+
     @GetMapping("/{userId}/likedCity")
-    public List<City> getLikedCity(@PathVariable("userId") Long userId) {
+    public List<City> getLikedCity(@PathVariable("userId") int userId) {
         return likeService.getLikedCityByUserId(userId);
     }
 
     @GetMapping("/{userId}")
-    public String getMyPage(@PathVariable("userId") Long userId, Model model) {
+    public String getMyPage(@PathVariable("userId") int userId, Model model) {
         log.info("userId: {}", userId);
+
 
         User user = myPageService.getUserById(userId);
         if (user == null) {
@@ -63,7 +82,7 @@ public class MyPageController {
             user.setProfile("/img/defaultProfile.jpg");
         }
 
-        int countAcceptedFriends = friendshipService.countAcceptedFriends(userId.intValue());
+        int countAcceptedFriends = friendshipService.countAcceptedFriends(userId);
         model.addAttribute("countAcceptedFriends", countAcceptedFriends);
 
         List<City> likedCities = likeService.getLikedCityByUserId(userId);
@@ -98,7 +117,7 @@ public class MyPageController {
 
     @PostMapping("/update/{userId}")
     public ResponseEntity<Map<String, String>> updateUser(
-            @PathVariable("userId") Long userId,
+            @PathVariable("userId") int userId,
             @RequestBody Map<String, String> updateRequest,
             @RequestParam(required = false) MultipartFile profileImage) {
 
@@ -150,7 +169,7 @@ public class MyPageController {
 
     @GetMapping("/profile/{userId}")
     @ResponseBody
-    public ResponseEntity<Resource> getProfileImage(@PathVariable("userId") Long userId) {
+    public ResponseEntity<Resource> getProfileImage(@PathVariable("userId") int userId) {
         User user = myPageService.getUserById(userId);
         Path imagePath = (user != null && user.getProfile() != null)
                 ? Paths.get("static/uploads/profiles/", user.getProfile())
@@ -171,14 +190,14 @@ public class MyPageController {
     }
 
     @GetMapping("/bookMain/bookGuestBook/{userId}")
-    public String myPageGuestBook(@PathVariable("userId") Long userId, Model model) {
+    public String myPageGuestBook(@PathVariable("userId") int userId, Model model) {
         User user = myPageService.getUserById(userId);
         model.addAttribute("user", user);
         return "mypage/bookGuestBook";
     }
 
     @RequestMapping("/updatePassword")
-    public String updatePassword(@RequestParam("userId") Long userId,
+    public String updatePassword(@RequestParam("userId") int userId,
                                  @RequestParam("currentPassword") String currentPassword,
                                  @RequestParam("newPassword") String newPassword) {
         boolean result = myPageService.updatePassword(userId, currentPassword, newPassword);
@@ -186,14 +205,14 @@ public class MyPageController {
     }
 
     @RequestMapping("/updateIntroduction")
-    public String updateIntroduction(@RequestParam("userId") Long userId,
+    public String updateIntroduction(@RequestParam("userId") int userId,
                                      @RequestParam("introduction") String introduction) {
         boolean result = myPageService.updateIntroduction(userId, introduction);
         return result ? "introductionUpdated" : "introductionUpdateFailed";
     }
 
     @RequestMapping("/updateProfileImage")
-    public String updateProfileImage(@RequestParam("userId") Long userId,
+    public String updateProfileImage(@RequestParam("userId") int userId,
                                      @RequestParam("file") MultipartFile file,
                                      RedirectAttributes redirectAttributes) throws IOException {
         boolean profile = myPageService.updateProfileImage(userId, file);

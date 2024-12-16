@@ -25,6 +25,7 @@ public class FriendshipController {
     // 친구 요청 수락
     @PostMapping("/accept")
     public String acceptFriendRequest(@RequestParam int fromUserId, @RequestParam int toUserId) {
+        System.out.println(fromUserId + " " + toUserId);
         return friendshipService.acceptFriendRequest(fromUserId, toUserId);
     }
 

@@ -12,10 +12,10 @@ public interface LikedService {
     int changeLikeStatus(int target, int id);
 
     // 특정 유저의 좋아요한 도시
-    List<City> getLikedCityByUserId(Long userId);
+    List<City> getLikedCityByUserId(int userId);
 
     // 좋아요한 피드 리스트
-   List<Board> getLikedPosts(Long userId);
+   List<Board> getLikedPosts(int userId);
 
     List<PackagePost> getLikedPackageDetails(int userId);
 }
