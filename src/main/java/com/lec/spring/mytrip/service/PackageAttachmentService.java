@@ -2,6 +2,7 @@ package com.lec.spring.mytrip.service;
 
 import com.lec.spring.mytrip.domain.Feed;
 import com.lec.spring.mytrip.domain.PackagePost;
+import com.lec.spring.mytrip.domain.attachment.BoardAttachment;
 import com.lec.spring.mytrip.domain.attachment.PackagePostAttachment;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -11,7 +12,7 @@ public interface PackageAttachmentService {
     //첨부파일 저장
     int savePackageAttachments(List<MultipartFile> files, PackagePost packagePost);
     //첨부파일 불러오기
-    List<PackagePostAttachment> getAttachmentsByPostId(int postId);
+    List<PackagePostAttachment> getAttachmentsByPackageId(int postId);
     //첨부파일 삭제
     void deletePackageAttachment(int attachmentId);
 
@@ -27,4 +28,6 @@ public interface PackageAttachmentService {
 
     //이 게시글에 첨부파일이 있는가
     List<PackagePostAttachment> findByPackageId(int Id);
+
+    List<BoardAttachment> getAttachmentsByBoardId(int boardId);
 }

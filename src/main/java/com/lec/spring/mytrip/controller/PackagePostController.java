@@ -103,6 +103,8 @@ public class PackagePostController {
                               @ModelAttribute PackagePost packagePost){
         System.out.println("컨트롤러 들어옴");
 
+        files.forEach(System.out::println);
+
         System.out.println("저장할 파일" + packagePost);
 
         // 패키지 저장 처리
@@ -125,7 +127,7 @@ public class PackagePostController {
     }
 
     // 패키지 수정 저장 안써
-    @PostMapping("{cityId}/package/update")
+    @PostMapping("{cityId}/package/update/{packageId}")
     public String updatePackage(@PathVariable int cityId,
                                 @PathVariable int packageId,
                                 @ModelAttribute PackagePost packagePost,
@@ -137,7 +139,7 @@ public class PackagePostController {
         int id = packagePostService.updatePackage(packagePost, files);
 
         // 저장 후 상세 페이지로 리다이렉트
-        return "redirect:" + cityId + "/package/detail/" + id;
+        return "redirect:/board/city/" + cityId + "/package/detail/" + packageId;
     }
 
     // 패키지 삭제
@@ -216,8 +218,8 @@ public class PackagePostController {
     @PostMapping("{cityId}/group/update")
     public String updateGroup(@PathVariable int cityId,
                               @ModelAttribute Feed feed,
-                              @RequestParam List<MultipartFile> files,
-                              @RequestParam(value = "delfile", required = false) int[] delfile) {
+                              @RequestParam List<MultipartFile> files) {
+
         System.out.println("수정 : " + feed.toString());
 
         boolean isUpdated = feedService.update(feed, files);

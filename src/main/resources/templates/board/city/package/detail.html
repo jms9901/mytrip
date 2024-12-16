@@ -47,7 +47,7 @@
     <div class="row mb-5">
         <!-- Thumbnail -->
         <div class="col-md-6" th:each="attachment : ${attachments}">
-            <img th:src="@{'/uploads/package/' + ${attachment.packageAttachmentFile}}" alt="썸네일 이미지" class="img-fluid">
+            <img th:src="@{/uploads/package/{file}(file=${attachment.packageAttachmentFile})}" alt="썸네일 이미지" class="img-fluid">
         </div>
         <!-- Details -->
         <div class="col-md-6">

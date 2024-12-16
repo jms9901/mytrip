@@ -39,16 +39,12 @@ public class PackageAttachmentServiceImpl implements PackageAttachmentService {
     @Transactional
     public int savePackageAttachments(List<MultipartFile> files, PackagePost packagePost) {
         // 절대 경로로 설정하기, 시스템의 특정 디렉토리에서 생성
-        String uploadPath = System.getProperty("user.dir") + File.separator + "uploads/package"; // 현재 작업 디렉토리 기준
+        String uploadDir = System.getProperty("user.dir") + File.separator + "uploads/package"; // 현재 작업 디렉토리 기준
 
-        File uploadDir = new File(uploadPath);
-//        System.out.println("첨부파일 저장 디렉토리: " + uploadPath); // 경로 출력
-
-        String fileName = ""; //파일 이름
-
+        File uploadDirectory = new File(uploadDir);
         // 디렉토리가 존재하지 않으면 생성
-        if (!uploadDir.exists()) {
-            boolean created = uploadDir.mkdirs();  // 'upload' 디렉토리 생성
+        if (!uploadDirectory.exists()) {
+            boolean created = uploadDirectory.mkdirs();  // 'uploads/post' 디렉토리 생성
             if (created) {
                 System.out.println("디렉토리가 성공적으로 생성되었습니다.");
             } else {
@@ -70,8 +66,9 @@ public class PackageAttachmentServiceImpl implements PackageAttachmentService {
                     }
 
                     // 2. 파일 이름 생성
-                    fileName = generateUniqueFileName(
-                            file.getOriginalFilename(), packagePost.getUser().getId());
+                    String fileName = generateUniqueFileName(file.getOriginalFilename(), packagePost.getUser().getId());
+
+                    System.out.println("파일 이름 - " + fileName);
 
                     // 3. DB에 첨부파일 정보 저장
                     PackagePostAttachment packagePostAttachment = new PackagePostAttachment();
@@ -81,28 +78,8 @@ public class PackageAttachmentServiceImpl implements PackageAttachmentService {
                     savedAttachments.add(packagePostAttachment);
 
                     // 4. 파일 저장
-                    Path filePath = Paths.get(uploadDir.getPath(), fileName);
+                    Path filePath = Paths.get(uploadDir, fileName);
                     file.transferTo(filePath.toFile());
-
-                    // 5. 파일을 static 경로로 복사
-                    try {
-                        // 스태틱 디렉토리 경로 설정
-                        Path staticPath = Paths.get("src/main/resources/static/uploads/package", fileName);
-
-                        // static 디렉토리가 존재하지 않으면 생성
-                        if (!Files.exists(staticPath.getParent())) {
-                            Files.createDirectories(staticPath.getParent());
-                        }
-
-                        // 파일 복사
-                        Files.copy(filePath, staticPath, StandardCopyOption.REPLACE_EXISTING);
-
-                    } catch (IOException e) {
-                        System.err.println("스태틱 경로로 파일 복사 실패: " + e.getMessage());
-                        // 복사 실패 시에도 필요하면 예외를 던져 트랜잭션 롤백 가능
-                        throw new RuntimeException("스태틱 경로로 파일 복사 중 오류가 발생했습니다.", e);
-                    }
-
 
                 } catch (IOException e) {
                     // 파일 저장 실패 시 DB에서 해당 첨부파일 레코드 삭제
@@ -127,8 +104,13 @@ public class PackageAttachmentServiceImpl implements PackageAttachmentService {
 
     //첨부파일 불러오기
     @Override
-    public List<PackagePostAttachment> getAttachmentsByPostId(int postId) {
-        return packageAttachmentRepository.findByPackageId(postId);
+    public List<PackagePostAttachment> getAttachmentsByPackageId(int packageId) {
+        return packageAttachmentRepository.findByPackageId(packageId);
+    }
+
+    @Override
+    public List<BoardAttachment> getAttachmentsByBoardId(int boardId) {
+        return packageAttachmentRepository.findByBoardId(boardId);
     }
 
     //첨부파일 삭제
@@ -142,21 +124,16 @@ public class PackageAttachmentServiceImpl implements PackageAttachmentService {
         packageAttachmentRepository.deleteBoardAttachment(attachmentId);
     }
 
-    // 패키지 첨부파일 저장
+    // 소모임 첨부파일 저장
     @Override
     @Transactional
     public int savePostAttachments(List<MultipartFile> files, Feed feed) {
-        // 절대 경로로 설정하기, 시스템의 특정 디렉토리에서 생성
-        String uploadPath = System.getProperty("user.dir") + File.separator + "uploads/post"; // 현재 작업 디렉토리 기준
+        String uploadDir = System.getProperty("user.dir") + File.separator + "uploads/post"; // 현재 작업 디렉토리 기준
 
-        File uploadDir = new File(uploadPath);
-//        System.out.println("첨부파일 저장 디렉토리: " + uploadPath); // 경로 출력
-
-        String fileName = ""; //파일 이름
-
+        File uploadDirectory = new File(uploadDir);
         // 디렉토리가 존재하지 않으면 생성
-        if (!uploadDir.exists()) {
-            boolean created = uploadDir.mkdirs();  // 'upload' 디렉토리 생성
+        if (!uploadDirectory.exists()) {
+            boolean created = uploadDirectory.mkdirs();  // 'uploads/post' 디렉토리 생성
             if (created) {
                 System.out.println("디렉토리가 성공적으로 생성되었습니다.");
             } else {
@@ -170,7 +147,9 @@ public class PackageAttachmentServiceImpl implements PackageAttachmentService {
         List<BoardAttachment> savedAttachments = new ArrayList<>();
 
         for (MultipartFile file : files) {
+            System.out.println("반복문 " + file.getOriginalFilename());
             if (!file.isEmpty()) {
+                System.out.println("if문");
                 try {
                     // 1. 파일 검증
                     if (!isValidFile(file)) {
@@ -178,8 +157,8 @@ public class PackageAttachmentServiceImpl implements PackageAttachmentService {
                     }
 
                     // 2. 파일 이름 생성
-                    fileName = generateUniqueFileName(
-                            file.getOriginalFilename(), feed.getUser().getId());
+                    String fileName = generateUniqueFileName(file.getOriginalFilename(), feed.getUserId());
+                    System.out.println(fileName);
 
                     // 3. DB에 첨부파일 정보 저장
                     BoardAttachment boardAttachment = new BoardAttachment();
@@ -188,29 +167,9 @@ public class PackageAttachmentServiceImpl implements PackageAttachmentService {
                     packageAttachmentRepository.insertPostAttachment(boardAttachment);
                     savedAttachments.add(boardAttachment);
 
-                    // 4. 파일 저장
-                    Path filePath = Paths.get(uploadDir.getPath(), fileName);
+                    // 4. 파일 저장 (절대 경로를 이용하여 저장)
+                    Path filePath = Paths.get(uploadDir, fileName);  // File.separator를 이용해 경로 결합
                     file.transferTo(filePath.toFile());
-
-                    // 5. 파일을 static 경로로 복사
-                    try {
-                        // 스태틱 디렉토리 경로 설정
-                        Path staticPath = Paths.get("src/main/resources/static/uploads/package", fileName);
-
-                        // static 디렉토리가 존재하지 않으면 생성
-                        if (!Files.exists(staticPath.getParent())) {
-                            Files.createDirectories(staticPath.getParent());
-                        }
-
-                        // 파일 복사
-                        Files.copy(filePath, staticPath, StandardCopyOption.REPLACE_EXISTING);
-
-                    } catch (IOException e) {
-                        System.err.println("스태틱 경로로 파일 복사 실패: " + e.getMessage());
-                        // 복사 실패 시에도 필요하면 예외를 던져 트랜잭션 롤백 가능
-                        throw new RuntimeException("스태틱 경로로 파일 복사 중 오류가 발생했습니다.", e);
-                    }
-
 
                 } catch (IOException e) {
                     // 파일 저장 실패 시 DB에서 해당 첨부파일 레코드 삭제
@@ -242,7 +201,8 @@ public class PackageAttachmentServiceImpl implements PackageAttachmentService {
 
             // 파일 이름 생성
             String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
-            String baseFileName = userId + "_" + encodedFileName.replaceAll("[^a-zA-Z0-9._-]", "_") + timeStamp;
+            String baseFileName
+                    = userId + "_" + timeStamp + "_" + encodedFileName.replaceAll("[^a-zA-Z0-9._-]", "_");
             File uploadDir = new File("upload");
 
             String uniqueFileName = baseFileName;

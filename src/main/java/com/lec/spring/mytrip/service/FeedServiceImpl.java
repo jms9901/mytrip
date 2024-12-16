@@ -51,7 +51,7 @@ public class FeedServiceImpl implements FeedService{
     @Override
     @Transactional
     public boolean write(Feed feed, List<MultipartFile> files) {
-
+        System.out.println("난ㄴ는 직금 피드 서비스에 싸라이써");
 //        int userId = U.getLoggedUser().getId();
 
         int userId = 1;
@@ -145,18 +145,26 @@ public class FeedServiceImpl implements FeedService{
 
     @Override
     public boolean update(Feed feed, List<MultipartFile> files) {
+        System.out.println("피드 서비스 왓서요");
 
         // 기존 첨부파일 삭제
-        List<PackagePostAttachment> attachments = packageAttachmentService.findByPackageId(feed.getBoardId());
+        List<BoardAttachment> attachments = packageAttachmentService.getAttachmentsByBoardId(feed.getBoardId());
+        System.out.println("소모임 삭제될 이미지" + attachments);
 
         if(!attachments.isEmpty()) {
             attachments.forEach(e ->
-                    packageAttachmentService.deleteBoardAttachment(e.getPackageAttachmentId()));
+                    packageAttachmentService.deleteBoardAttachment(e.getBoardAttachmentId()));
         }
+
+//        feed.setUserId(U.getLoggedUser().getId());
+        feed.setUserId(1);
 
         // 첨부파일 저장
         if (feedRepository.update(feed) > 0) {
-            if(files != null) packageAttachmentService.savePostAttachments(files, feed);
+            if(files != null) {
+                System.out.println("파일 저장 하라고오오오");
+                packageAttachmentService.savePostAttachments(files, feed);
+            }
             return true;
         }
         return false;

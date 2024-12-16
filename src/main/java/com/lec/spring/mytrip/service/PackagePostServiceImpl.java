@@ -30,14 +30,14 @@ public class PackagePostServiceImpl implements PackagePostService {
         PackagePostAndAttachment postAndAttachment = new PackagePostAndAttachment();
         // 패키지 ID 검증
         if (packageId <= 0) {
-            throw new IllegalArgumentException("유효하지 않은 패키지 ID입니다.");
+            throw new IllegalArgumentException("유효하지 않은 패키지 ID 입니다.");
         }
         // 패키지 데이터 조회
         postAndAttachment.setPackagePost(packagePostRepository.findById(packageId));
         if (postAndAttachment.getPackagePost() == null) {
             throw new IllegalArgumentException("ID가 " + packageId + "인 패키지를 찾을 수 없습니다.");
         }
-        postAndAttachment.setPackagePostAttachment(packageAttachmentService.getAttachmentsByPostId(packageId));
+        postAndAttachment.setPackagePostAttachment(packageAttachmentService.getAttachmentsByPackageId(packageId));
         if (postAndAttachment.getPackagePost() == null) {
             throw new IllegalArgumentException("ID가 " + packageId + "인 패키지를 찾을 수 없습니다.");
         }
@@ -89,6 +89,7 @@ public class PackagePostServiceImpl implements PackagePostService {
 
         // 패키지 저장
         packagePostRepository.save(pkg);
+        System.out.println("패키지 저장 완. 이건 이미지 " + files);
 
         // 첨부파일 저장
         try {
@@ -112,11 +113,13 @@ public class PackagePostServiceImpl implements PackagePostService {
         if (existingPackage == null) {
             throw new IllegalArgumentException("ID가 " + pkg.getPackageId() + "인 패키지를 찾을 수 없습니다.");
         }
-        if (existingPackage.getUser().getId() != pkg.getUser().getId()) {
-            throw new SecurityException("이 패키지를 수정할 권한이 없습니다.");
-        }
+//        if (existingPackage.getUser().getId() != pkg.getUser().getId()) {
+//            throw new SecurityException("이 패키지를 수정할 권한이 없습니다.");
+//        }
 
         List<PackagePostAttachment> attachments = packageAttachmentService.findByPackageId(pkg.getPackageId());
+        System.out.println("수정할 글 " + pkg.getPackageId());
+        System.out.println("삭제될 첨부파일 " + attachments.toString());
         if(!attachments.isEmpty()){
             attachments.forEach(e ->
                     packageAttachmentService.deletePackageAttachment(e.getPackageAttachmentId())
@@ -128,6 +131,8 @@ public class PackagePostServiceImpl implements PackagePostService {
         } catch (Exception e) {
             throw new RuntimeException("첨부파일 저장 중 오류가 발생했습니다.", e);
         }
+
+        System.out.println(pkg.toString());
 
 
         return packagePostRepository.update(pkg);
@@ -150,7 +155,8 @@ public class PackagePostServiceImpl implements PackagePostService {
             throw new SecurityException("이 패키지를 삭제할 권한이 없습니다.");
         }
 
-        List<PackagePostAttachment> attachments = packageAttachmentService.findByPackageId(pkg.getPackageId());
+        List<PackagePostAttachment> attachments = packageAttachmentService.findByPackageId(packageId);
+        attachments.forEach(System.out::println);
 
         if(!attachments.isEmpty()){
             attachments.forEach(e ->
