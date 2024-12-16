@@ -122,7 +122,7 @@
     <select id="findByAccessPackage" resultMap="PackagePostResultMap">
         SELECT p.*, u.user_name
         FROM package p
-        JOIN user u on p.user_id = u.user_id
+                 JOIN user u on p.user_id = u.user_id
         WHERE package_status = #{packageStatus}
         ORDER BY p.package_id ASC
     </select>
@@ -131,7 +131,7 @@
     <select id="findByStandByPackage" resultMap="PackagePostResultMap">
         SELECT p.*, u.user_name
         FROM package p
-        JOIN user u on p.user_id = u.user_id
+                 JOIN user u on p.user_id = u.user_id
         WHERE package_status = #{param1} OR package_status = #{param2}
     </select>
 

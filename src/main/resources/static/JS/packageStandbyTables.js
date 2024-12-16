@@ -170,15 +170,31 @@ document.addEventListener('DOMContentLoaded', function () {
     showSlide(currentIndex);
 
     // 패키지 상태 업데이트 요청
-    function updatePackageStatus(modalPackageId, newStatus) {
+    function updatePackageStatus(packageId, newStatus) {
+        if (!packageId || !newStatus) {
+            console.error('Invalid data for update:', { packageId, newStatus });
+            alert('올바르지 않은 데이터입니다.');
+            return;
+        }
+
+        console.log('Request Body:', new URLSearchParams({ packageId: packageId, newStatus }).toString());
+
         fetch('/admin/updatePackageStatus', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
-            body: new URLSearchParams({ modalPackageId, newStatus }),
+            body: new URLSearchParams({
+                packageId: packageId,  // 서버에서 요구하는 키
+                newStatus: newStatus, // 상태 값
+            }),
         })
-            .then(response => response.text())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.text();
+            })
             .then(data => {
                 alert(data);
                 location.reload();
@@ -189,15 +205,17 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     }
 
+
+
     // 패키지 삭제 요청
-    function deletePackage(modalPackageId) {
+    function deletePackage(packageId) {
         if (confirm('정말로 이 패키지를 삭제하시겠습니까?')) {
             fetch('/admin/deletePackage', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
                 },
-                body: new URLSearchParams({ modalPackageId }),
+                body: new URLSearchParams({ packageId }),
             })
                 .then(response => response.text())
                 .then(data => {

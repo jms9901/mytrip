@@ -85,41 +85,36 @@ document.addEventListener('DOMContentLoaded', function () {
                     console.error('Error fetching attachments:', error);
                     alert('첨부파일 정보를 불러오는 중 오류가 발생했습니다.');
                 });
+
+            deleteButton.onclick = function () {
+                deletePackage(modalPackageId);
+            };
         }
     });
 
-    // 삭제 버튼 클릭 이벤트 추가
-    deleteButton.addEventListener('click', function () {
-        if (!modalPackageId) {
-            alert('삭제하려는 패키지 ID를 찾을 수 없습니다.');
-            console.error('No package ID found for deletion.');
-            return;
-        }
-
+    // 패키지 삭제 요청
+    function deletePackage(packageId) {
         if (confirm('정말로 이 패키지를 삭제하시겠습니까?')) {
             fetch('/admin/deletePackage', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
                 },
-                body: new URLSearchParams({ packageId: modalPackageId }),
+                body: new URLSearchParams({ packageId }),
             })
-                .then((response) => {
-                    if (!response.ok) {
-                        throw new Error(`파일 삭제 실패: ${response.status}`);
-                    }
-                    return response.text();
-                })
-                .then((data) => {
+                .then(response => response.text())
+                .then(data => {
                     alert(data);
                     location.reload();
                 })
-                .catch((error) => {
-                    console.error('파일 삭제시 에러:', error);
+                .catch(error => {
+                    console.error('Error deleting package:', error);
                     alert('패키지 삭제 중 오류가 발생했습니다.');
                 });
         }
-    });
+    }
+
+
 
     // 슬라이더 표시 함수
     function showSlide(index) {

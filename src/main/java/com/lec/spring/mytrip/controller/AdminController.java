@@ -270,7 +270,7 @@ public class AdminController {
     // 패키지 상태 변경하기
     @PostMapping("/updatePackageStatus")
     public ResponseEntity<String> updatePackageStatus(@RequestParam("packageId") int packageId,
-                                                       @RequestParam("newStatus") String newStatus) {
+                                                      @RequestParam("newStatus") String newStatus) {
         try {
             adminService.updatePackageStatus(packageId, newStatus);
             return ResponseEntity.ok("사용자 상태가 성공적으로 업데이트되었습니다.");

@@ -58,11 +58,11 @@
                         <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                         결제 관리 메뉴
                     </a>
-<!--                    <div class="sb-sidenav-menu-heading">Addons</div>-->
-<!--                    <a class="nav-link" th:href="@{/admin/charts}">-->
-<!--                        <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>-->
-<!--                        Charts-->
-<!--                    </a>-->
+                    <!--                    <div class="sb-sidenav-menu-heading">Addons</div>-->
+                    <!--                    <a class="nav-link" th:href="@{/admin/charts}">-->
+                    <!--                        <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>-->
+                    <!--                        Charts-->
+                    <!--                    </a>-->
                 </div>
             </div>
             <div class="sb-sidenav-footer">
@@ -107,7 +107,7 @@
                                 <td th:text="${AccessPackages.userName}"></td>
                                 <td th:text="${AccessPackages.title}"></td>
                                 <td th:text="${AccessPackages.regDate}"></td>
-<!--                                <td th:text="${AccessPackages.status}"></td>-->
+                                <!--                                <td th:text="${AccessPackages.status}"></td>-->
                                 <td>
                                     <button type="button" class="btn btn-primary package-details-button"
                                             th:attr="data-bs-toggle='modal',
@@ -124,7 +124,7 @@
                                                          data-packagestatus=${AccessPackages.status}
                                                         "
                                             th:text="${AccessPackages.status ?: '상세 없음'}">
-                                        </button>
+                                    </button>
                                 </td>
                             </tr>
                             </tbody>
