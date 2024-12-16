@@ -53,6 +53,22 @@
 <script type="text/javascript">
 
     $(document).ready(function () {
+        fetch('../loginuserid')
+            .then(response => response.json())
+            .then(data => {
+                const currentUrl = window.location.pathname;  // 예시: "/mypage/1"
+                const userId = parseInt(currentUrl.substring(currentUrl.lastIndexOf('/') + 1)); // 문자열을 숫자로 변환
+                loguser = data.userId;
+                ownUser = (loguser === userId);
+                console.log(ownUser);
+                console.log((userId));
+                console.log(loguser);
+                if(!ownUser){$('.menu1').hide();
+                }
+                else {$('.menu1').show();
+                }
+            });
+
 
 
         const userId = getToUserIdFromUrl();
