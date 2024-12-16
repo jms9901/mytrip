@@ -67,19 +67,20 @@ document.addEventListener('DOMContentLoaded', function () {
                     alert("첨부파일 정보를 불러오지 못했습니다.");
                 });
 
-            // 기타 모달 데이터 설정 (이전 코드 유지)
+            // 기타 모달 데이터 설정
             const regDate = event.target.getAttribute('data-date')?.split('T')[0] || '[데이터 없음]';
             const boardSubject = event.target.getAttribute('data-subject') || '[데이터 없음]';
             const boardContent = event.target.getAttribute('data-content') || '[데이터 없음]';
             const boardViewCount = event.target.getAttribute('data-viewCount') || '[데이터 없음]';
-            const boardCityId = event.target.getAttribute('data-cityId') || '[데이터 없음]';
+            const boardCityName = event.target.getAttribute('data-cityName') || '[데이터 없음]';
+            const boardUserName = event.target.getAttribute('data-userName') || '[데이터 없음]';
 
             document.getElementById('modalRegDate').textContent = regDate;
             document.getElementById('modalBoardSubject').textContent = boardSubject;
             document.getElementById('modalBoardContent').textContent = boardContent;
             document.getElementById('modalBoardViewCount').textContent = boardViewCount;
-            document.getElementById('modalBoardCityId').textContent = boardCityId;
-            document.getElementById('modalBoardId').textContent = boardId;
+            document.getElementById('modalBoardCityName').textContent = boardCityName;
+            document.getElementById('modalBoardUserName').textContent = boardUserName;
         }
     });
 
