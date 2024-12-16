@@ -121,9 +121,19 @@
         $('.writeFeed').hide();  // 모달 숨기기
     }
 
+    function checkown(){
 
+        const currentUrl = window.location.pathname;  // 예시: "/mypage/1"
+        const userId = parseInt(currentUrl.substring(currentUrl.lastIndexOf('/') + 1)); // 문자열을 숫자로 변환
+
+
+        return ownUser;
+    }
 
     $(document).ready(function () {
+
+
+
         $('#open-modal').click(function (){
             $('.writeFeed').show();
         });
@@ -149,6 +159,22 @@
             // 모달을 숨김
             modal.css('display', 'none');
         });
+        fetch('../../loginuserid')
+            .then(response => response.json())
+            .then(data => {
+                const currentUrl = window.location.pathname;  // 예시: "/mypage/1"
+                const userId = parseInt(currentUrl.substring(currentUrl.lastIndexOf('/') + 1)); // 문자열을 숫자로 변환
+                loguser = data.userId;
+                ownUser = (loguser === userId);
+                console.log(ownUser);
+                console.log((userId));
+                console.log(loguser);
+                if(!ownUser){$('.menu1').hide();
+                $('.open-modal-btn').hide();}
+                else {$('.menu1').show();
+                $('.open-modal-btn').show();}
+            });
+
         $('.myPageGoHome').on('click', function() {
 
             window.location.href = '/mypage/' + userId;
@@ -308,24 +334,39 @@
                 </div>
             `;
 
+
                     // 항목을 페이지에 추가
                     addEntryToPage(entryHtml, index + 1);
                     console.log(`feed Entry ${index + 1} added to page`);
+
                 });
+                fetch('../../loginuserid')
+                    .then(response => response.json())
+                    .then(data => {
+                        const currentUrl = window.location.pathname;  // 예시: "/mypage/1"
+                        const userId = parseInt(currentUrl.substring(currentUrl.lastIndexOf('/') + 1)); // 문자열을 숫자로 변환
+                        loguser = data.userId;
+                        ownUser = (loguser === userId);
+                        console.log(ownUser);
+                        console.log((userId));
+                        console.log(loguser);
+                        if(ownUser){ $('.edit-feed-modal').on('click', function() {
+                            const feedId = $(this).data('feed-id');
+                            const feedIndex = $(this).data('index');
+                            openEditModal(feedId, feedIndex);  // 수정 모달 열기
+                        });
+
+                            // 모달 내 삭제 버튼 클릭 이벤트
+                            $('.delete-feed-modal').on('click', function() {
+                                const feedId = $(this).data('feed-id');
+                                const feedIndex = $(this).data('index');
+                                deleteFeed(feedId, feedIndex);  // 피드 삭제 요청
+                            });}
+
+                    });
 
                 // 모달 내 수정 버튼 클릭 이벤트
-                $('.edit-feed-modal').on('click', function() {
-                    const feedId = $(this).data('feed-id');
-                    const feedIndex = $(this).data('index');
-                    openEditModal(feedId, feedIndex);  // 수정 모달 열기
-                });
 
-                // 모달 내 삭제 버튼 클릭 이벤트
-                $('.delete-feed-modal').on('click', function() {
-                    const feedId = $(this).data('feed-id');
-                    const feedIndex = $(this).data('index');
-                    deleteFeed(feedId, feedIndex);  // 피드 삭제 요청
-                });
             } else {
                 $('#feedEntries').append('<p>피드가 없습니다.</p>');
             }
