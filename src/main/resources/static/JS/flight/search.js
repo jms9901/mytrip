@@ -188,6 +188,8 @@ $(document).ready(function () {
 
         $("#loading-text").html(`${fromAirportId}에서 ${toAirportId}까지<br>왕복 여정을 찾고 있습니다`);
         $("#loading-overlay").removeClass("d-none");
+        $("#loading-overlay").css("display", "flex"); // display 속성을 flex로 변경하여 표시
+
 
         progress = 0;
         const loadingBar = $(".loading-bar");
@@ -234,7 +236,10 @@ $(document).ready(function () {
 
 
 
-// 슬라이더 이미지 변경
+
+});
+
+document.addEventListener("DOMContentLoaded", function () {
     const images = document.querySelectorAll("#background-slider .slider-image");
     let currentIndex = 0;
 
@@ -247,4 +252,3 @@ $(document).ready(function () {
     setInterval(changeImage, 5000);
     images[currentIndex].classList.add("active");
 });
-

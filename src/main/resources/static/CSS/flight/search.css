@@ -265,6 +265,7 @@ i.fa-plane {
 }
 /* 로딩 화면 스타일 */
 #loading-overlay {
+    display: none; /* 페이지 초기 로딩 시 완전히 숨김 */
     position: fixed;
     top: 0;
     left: 10%; /* 좌우에 여백 */
@@ -272,7 +273,6 @@ i.fa-plane {
     height: 100%; /* 위아래 여백 없이 전체 화면 */
     background-color: rgba(0, 0, 0, 0.6);
     z-index: 9999;
-    display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
