@@ -11,6 +11,10 @@ document.addEventListener('DOMContentLoaded', function () {
     const nextButton = cityLikedContainer.querySelector('.next');
 
     let currentSlide = 0;
+    function goToPage() {
+        var url = '/mypage/bookMain/' + userId;
+        window.location.href = url;
+    }
 
     // 도시 좋아요 목록을 가져오는 API 호출
     fetch(`/likey/likedCity?userId=${userId}`)
@@ -110,8 +114,123 @@ document.getElementById('ConnectionsCnt').addEventListener('click', function () 
         })
         .catch(error => console.error('Error fetching friend list:', error));
 });
+// 친구 요청 수락/거절 처리 함수
+function handleFriendRequest(action, fromUserId, toUserId, requestItem) {
+    const params = new URLSearchParams({
+        fromUserId: fromUserId,  // 로그인 사용자 (fromUserId)
+        toUserId: toUserId       // 친구 요청을 받는 사용자 (toUserId)
+    });
+
+    fetch(`/friendship/${action}?${params}`, { method: "POST" })
+        .then(response => response.text())
+        .then(result => {
+            alert(result);  // 결과 메시지 출력
+
+            // 요청이 성공하면 해당 항목 삭제
+            if (action === "accept" || action === "reject") {
+                requestItem.remove();  // 해당 요청 항목 삭제
+            }
+        })
+        .catch(error => console.error(`Error processing ${action} request:`, error));
+}
 
 
+
+
+// 데이터 먼저 로드
+function loadFriendRequests() {
+    fetch(`/mypage/requestList/${userId}`)
+        .then(response => response.json())
+        .then(data => {
+            const requestView = document.getElementById('requestView');
+            const friendListElement = document.getElementById('friendList');
+            friendListElement.innerHTML = ''; // 기존 목록 초기화
+
+            if (data.length > 0) {
+                requestView.style.display = 'flex'; // 데이터가 있으면 표시
+
+                data.forEach(friendshipUserResultMap => {
+                    const li = document.createElement('li');
+
+                    // 프로필 이미지 경로 설정
+                    const profileImage = friendshipUserResultMap.user.profile
+                        ? `/uploads/profiles/${friendshipUserResultMap.user.profile}`
+                        : '/img/defaultProfile.jpg';
+
+                    // 이름 설정
+                    const userName = friendshipUserResultMap.user.user_name || 'Unknown';
+
+                    // 수락 버튼 생성
+                    const acceptButton = document.createElement('button');
+                    acceptButton.textContent = '수락';
+                    acceptButton.classList.add('accept-btn');
+                    acceptButton.onclick = () => {
+                        acceptFriendRequest(friendshipUserResultMap.fromUserId, friendshipUserResultMap.toUserId);
+                    };
+
+                    // 거절 버튼 생성
+                    const rejectButton = document.createElement('button');
+                    rejectButton.textContent = '거절';
+                    rejectButton.classList.add('reject-btn');
+                    rejectButton.onclick = () => {
+                        rejectFriendRequest(friendshipUserResultMap.fromUserId, friendshipUserResultMap.toUserId);
+                    };
+
+                    // 버튼들을 감싸는 컨테이너 생성
+                    const buttonContainer = document.createElement('div');
+                    buttonContainer.classList.add('button-container');
+                    buttonContainer.appendChild(acceptButton);
+                    buttonContainer.appendChild(rejectButton);
+
+                    // 목록 생성
+                    li.innerHTML = `
+                        <img src="${profileImage}" alt="Profile" class="friend-profile-img">
+                        <span class="friend-name">${userName}</span>
+                    `;
+
+                    // 수락/거절 버튼을 목록 항목에 추가
+                    li.appendChild(buttonContainer);
+
+                    // 버튼 추가 후 확인을 위해 로그 출력
+                    console.log("수락 버튼:", acceptButton);
+                    console.log("거절 버튼:", rejectButton);
+
+                    friendListElement.appendChild(li);
+                });
+            } else {
+                requestView.style.display = 'none'; // 데이터가 없으면 숨김
+            }
+        })
+        .catch(error => console.error('Error fetching friend list:', error));
+}
+
+
+// 친구 요청 수락
+function acceptFriendRequest(fromUserId, toUserId) {
+    const params = new URLSearchParams({
+        fromUserId: fromUserId, // 요청 보낸 사람
+        toUserId: toUserId, // 로그인 사용자
+    });
+
+    sendRequest("accept", params);
+}
+
+// 친구 요청 거절
+function rejectFriendRequest(fromUserId, toUserId) {
+    const params = new URLSearchParams({
+        fromUserId: fromUserId, // 요청 보낸 사람
+        toUserId: toUserId, // 로그인 사용자
+    });
+
+    sendRequest("reject", params);
+}
+// 클릭 이벤트 등록
+document.getElementById('requestView').addEventListener('click', function () {
+    document.getElementById('friendModal').style.display = 'block';
+});
+
+// 페이지 로드 시 데이터 로드
+window.onload = loadFriendRequests;
 
 
 function closeModal() {
@@ -154,20 +273,7 @@ function updatePassword(type) {
     }, {once: true});
 }
 
-// 프로필 이미지 미리보기
-function previewProfileImage() {
-    const fileInput = document.getElementById("profileImageInput");
-    const profilePreview = document.getElementById("profilePreview");
 
-    if (fileInput.files && fileInput.files[0]) {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-            profilePreview.src = e.target.result;
-            profilePreview.style.display = "block";
-        };
-        reader.readAsDataURL(fileInput.files[0]);
-    }
-}
 
 // 변경 사항 제출
 function submitUserChanges() {
@@ -186,13 +292,6 @@ function submitUserChanges() {
         const reader = new FileReader();
         reader.onloadend = function () {
             profileImageBase64 = reader.result.split(',')[1]; // base64 부분만 추출
-            // 데이터를 콘솔에 출력
-            console.log("User Data to Send:");
-            console.log("User ID:", userId);
-            console.log("Introduction:", introduction);
-            console.log("Current Password:", currentPassword);
-            console.log("New Password:", newPassword);
-            console.log("Profile Image Base64:", profileImageBase64);
             sendRequest(profileImageBase64);  // base64 변환 후 서버에 요청 보내기
         };
         reader.readAsDataURL(profileImage);  // base64로 변환
@@ -201,7 +300,7 @@ function submitUserChanges() {
     }
 
     // 요청 보내는 함수
-    function sendRequest() {
+    function sendRequest(profileImageBase64) {
         const formData = {
             userId: userId,
             introduction: introduction,
@@ -211,22 +310,24 @@ function submitUserChanges() {
         };
 
         // 서버로 POST 요청
-        fetch("/mypage/update/" + userId, {
+        fetch(`/mypage/update/${userId}`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(formData)
+            body: JSON.stringify(formData)  // formData를 JSON으로 전송
         })
             .then(response => response.json())
             .then(data => {
                 console.log("Success:", data);
+                // 응답 데이터에 따라 추가 작업 수행
             })
             .catch(error => {
                 console.error("Error:", error);
             });
     }
 }
+
 
 
 function loadApp() {
@@ -416,4 +517,154 @@ function isChrome() {
     return navigator.userAgent.indexOf('Chrome') != -1;
 
 }
+// URL에서 toUserId 값 추출하는 함수
+function getToUserIdFromUrl() {
+    const pathParts = window.location.pathname.split('/');
+    const UserId = pathParts[pathParts.length - 1]; // 마지막 부분이 toUserId
+    return UserId;
+}
 
+// 페이지 로드 시 AJAX 호출
+$(document).ready(function() {
+    const userId = getToUserIdFromUrl();
+    const apiUrl = `/mypage/recentfeed/${userId}`; // API URL 설정
+
+    // 페이지 로드 시 AJAX 호출
+    function loadFeeds() {
+        $.ajax({
+            url: apiUrl,
+            type: 'GET',
+            dataType: 'json',
+            success: function(feeds) {
+                console.log("피드 데이터:", feeds);  // 데이터 확인
+                loadFeed(feeds);
+            },
+            error: function(xhr, status, error) {
+                console.error("피드 로딩 실패:", error);
+            }
+        });
+    }
+
+    // 피드를 페이지에 추가
+    function loadFeed(feeds) {
+        if (feeds && feeds.length > 0) {
+            let rowHtml = '';
+            let count = 0;
+
+            feeds.forEach((feed, index) => {
+                let attachmentHtml = '';
+
+                // 첨부파일이 있을 경우 처리
+                if (feed.attachmentFiles && feed.attachmentFiles.length > 0) {
+                    attachmentHtml = feed.attachmentFiles.map(file => {
+                        const filePath = `/uploads/${file}`; // 첨부파일 경로
+                        return `<img src="${filePath}" alt="첨부파일" class="feed-attachment">`;
+                    }).join('');
+                }
+
+                const entryHtml = `
+                    <div class="feed-entry" style="background-image: url(/img/postFrame.png)" data-index="${index}">
+                        ${attachmentHtml}
+                        <div>${feed.boardSubject}</div>
+                    </div>
+                `;
+
+                // 3개씩 묶어서 하나의 행으로 추가
+                rowHtml += entryHtml;
+                count++;
+
+                if (count % 3 === 0) {
+                    // 3개씩 묶어서 feedEntries div에 추가
+                    $('.feedEntries').append(`<div class="row" style="display:flex; gap:10px; justify-content:center;">${rowHtml}</div>`);
+                    rowHtml = ''; // rowHtml 초기화
+                }
+            });
+
+            // 남은 항목이 3개 미만일 경우 처리
+            if (rowHtml !== '') {
+                $('.feedEntries').append(`<div class="row" style="display:flex; gap:10px; justify-content:center;">${rowHtml}</div>`);
+            }
+        }
+    }
+
+    // 페이지 로드 시 피드 데이터 로드
+    loadFeeds();
+
+    $('.myPageGoHome').on('click', function() {
+
+        window.location.href = '/mypage/' + userId;
+    });
+    $('.menu1').on('click', function() {
+
+        window.location.href = '/bookmain/payment/list/' + userId;
+    });
+    $('.menu2').on('click', function() {
+
+        window.location.href = '/mypage/feed/list/' + userId;
+    });
+    $('.menu3').on('click', function() {
+
+        window.location.href = '/mypage/feedliked/' + userId;
+    });
+    $('.menu4').on('click', function() {
+
+        window.location.href = '/mypage/packageliked/' + userId;
+    });
+    $('.menu5').on('click', function() {
+
+        window.location.href = '/mypage/bookMain/bookGuestBook/' + userId;
+    });
+    $('.goChat').on('click', function() {
+
+        window.location.href = '/chat';
+    });
+
+
+});
+const apiUrl = "http://localhost:8081/friendship";
+const UserId = pathParts[pathParts.length - 1];
+// 모달 열기 및 닫기
+const modal = document.getElementById("friendshipModal");
+document.getElementById("openModalBtn").addEventListener("click", () => {
+    modal.style.display = "block";
+});
+document.getElementById("closeModalBtn").addEventListener("click", () => {
+    modal.style.display = "none";
+});
+
+// API 요청 함수
+async function sendRequest(endpoint, params) {
+    const response = await fetch(`${apiUrl}/${endpoint}?${params}`, { method: "POST" });
+    const result = await response.text();
+    alert(result);
+}
+
+// 친구 요청 보내기
+document.getElementById("sendFriendRequestForm").addEventListener("submit", (event) => {
+    event.preventDefault();
+    const params = new URLSearchParams({
+        fromUserId: document.getElementById("fromUserId").value,    //로그인한 사용자
+        toUserId: UserId
+    });
+    sendRequest("send", params);
+});
+
+// 친구 요청 수락
+document.getElementById("acceptFriendRequestForm").addEventListener("submit", (event) => {
+    event.preventDefault();
+    const params = new URLSearchParams({
+        fromUserId: document.getElementById("acceptFromUserId").value,  //로그인 사용자
+        toUserId: UserId
+    });
+    sendRequest("accept", params);
+});
+
+// 친구 요청 거절
+document.getElementById("rejectFriendRequestForm").addEventListener("submit", (event) => {
+    event.preventDefault();
+    const params = new URLSearchParams({
+        fromUserId: document.getElementById("rejectFromUserId").value,  //로그인 사용자
+        toUserId: UserId
+    });
+    sendRequest("reject", params);
+});

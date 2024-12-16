@@ -63,19 +63,10 @@ public class PaymentServiceImpl implements PaymentService {
     }
     //마이/기업페이지 결제 출력
     @Override
-    public List<Payment> getPaymentDetails() {
-//      현재 접속한 유저 확인. 없으면 nullpointE 던짐
-        int userId = Objects.requireNonNull(U.getLoggedUser()).getId();
-        List<Payment> paypay = paymentsRepository.getPaymentsByUserId(userId);
+    public List<Payment> getPaymentDetails(int userId) {
 
-        paypay.forEach(e -> {
-            e.setTotalPrice(e.getPrice() * e.getUserCount());
-            System.out.println(e.getUserCount());
-            System.out.println(e.getPrice());
-            System.out.println(e.getTotalPrice());
-        });
 
-        return paypay;
+        return paymentsRepository.getPaymentsByUserId(userId);
     }
 
 

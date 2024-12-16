@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString
 public class PackagePost {
     private int packageId;         // 패키지 ID
     private int cityId;            // 도시 ID
@@ -22,4 +21,6 @@ public class PackagePost {
     private int packageMaxpeople;          // 최대 참여 가능 인원
     private LocalDate packageStartDay; // 패키지 시작 날짜
     private LocalDate packageEndDay;   // 패키지 종료 날짜
+    private String packageTitle;        // 패키지 제목
+    private String packageAttachmentFile; // 패키지 첨부 파일
 }

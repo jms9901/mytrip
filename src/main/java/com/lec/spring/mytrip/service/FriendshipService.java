@@ -73,4 +73,10 @@ public class FriendshipService {
         return friendshipRepository.AcceptedFriends(userId);
     }
 
+    //친구 목록 조회
+    public List<FriendshipUserResultMap> requestView(Long userId){
+        return friendshipRepository.requestView(userId);
+    }
+
+
 }

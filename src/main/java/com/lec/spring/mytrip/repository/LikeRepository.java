@@ -1,9 +1,12 @@
 package com.lec.spring.mytrip.repository;
 
+import com.lec.spring.mytrip.domain.Board;
 import com.lec.spring.mytrip.domain.City;
+import com.lec.spring.mytrip.domain.PackagePost;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 public interface LikeRepository {
     //도시
@@ -29,6 +32,9 @@ public interface LikeRepository {
 
     int findAllPeedLike(int userId);
 
+    // 피드 좋아요 리스트 출력
+    List<Board> findLikedPostsByUser(Long userId);
+
     //패키지
     //내가 좋아요를 했는가?
     boolean checkIfPackageLiked(int userId, int packageId);
@@ -38,4 +44,6 @@ public interface LikeRepository {
     int decrementPackageLike(int userId, int packageId);
 
     int findAllPackageLike(int userId);
+
+    List<PackagePost> getLikedPackageDetails(int userId);
 }

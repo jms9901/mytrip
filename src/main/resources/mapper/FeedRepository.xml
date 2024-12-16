@@ -5,6 +5,14 @@
 
 <mapper namespace="com.lec.spring.mytrip.repository.FeedRepository">
 
+    <resultMap id="FeedResultMap" type="com.lec.spring.mytrip.domain.Feed">
+        <result property="boardId" column="board_id"/>
+        <result property="boardSubject" column="board_subject"/>
+        <result property="boardContent" column="board_content"/>
+        <result property="boardViewCount" column="board_view_count"/>
+        <result property="boardDate" column="board_date"/>
+        <result property="boardCategory" column="board_category"/>
+        <result property="userId" column="user_id"/>
     <sql id="SELECT_BOARD">
         select
             board_id "board_id",
@@ -18,6 +26,12 @@
         from board
         where 1=1
     </sql>
+
+    <!-- City 객체 매핑 -->
+    <association property="city" javaType="com.lec.spring.mytrip.domain.City">
+        <result property="cityId" column="city_id"/>
+        <result property="cityName" column="city_name"/>
+    </association>
 
     <!-- 피드 저장 -->
     <insert id="save" flushCache="true" parameterType="com.lec.spring.mytrip.domain.Feed"
@@ -33,6 +47,11 @@
         <include refid="SELECT_BOARD"/>
         AND board_id = #{id}
     </select>
+        <!-- 첨부파일 리스트 매핑 -->
+        <collection property="attachmentFiles" ofType="string">
+            <result column="board_attachment_file"/>
+        </collection>
+    </resultMap>
 
     <!-- 특정 피드 id 글 조회수 증가 -->
     <update id="viewCnt" parameterType="int">
@@ -45,6 +64,26 @@
     <select id="findAll" resultType="com.lec.spring.mytrip.domain.Feed">
         <include refid="SELECT_BOARD" />
         ORDER BY board_date DESC
+    <select id="findFeedByUserId" parameterType="int" resultMap="FeedResultMap">
+        SELECT
+        b.board_id,
+        b.board_subject,
+        b.board_content,
+        b.board_view_count,
+        b.board_date,
+        b.board_category,
+        b.user_id,
+        c.city_name ,
+        c.city_id,
+        ba.board_attachment_file
+        FROM
+        board b
+        LEFT JOIN
+        city c ON b.city_id = c.city_id  <!-- city 테이블과 JOIN -->
+        left join
+            board_attachment ba on b.board_id = ba.board_id
+        WHERE
+        b.user_id = #{userId} AND b.board_category = '피드'
     </select>
 
     <!-- 특정 사용자의 최신 게시물 9개 가져오기 -->
@@ -52,6 +91,30 @@
         <include refid="SELECT_BOARD" />
         WHERE user_id = #{user_id}
         ORDER BY board_date DESC
+
+    <!--최신순 9개조회 -->
+    <select id="findRecentFeedsByUserId" parameterType="int" resultMap="FeedResultMap">
+        SELECT
+        b.board_id,
+        b.board_subject,
+        b.board_content,
+        b.board_view_count,
+        b.board_date,
+        b.board_category,
+        b.user_id,
+        c.city_name,
+        c.city_id,
+        ba.board_attachment_file
+        FROM
+        board b
+        LEFT JOIN
+        city c ON b.city_id = c.city_id  <!-- city 테이블과 JOIN -->
+        LEFT JOIN
+        board_attachment ba ON b.board_id = ba.board_id
+        WHERE
+        b.user_id = #{userId} AND b.board_category = '피드'
+        ORDER BY
+        b.board_date DESC
         LIMIT 9
     </select>
 
@@ -59,16 +122,57 @@
     <update id="update" flushCache="true" parameterType="com.lec.spring.mytrip.domain.Feed">
         UPDATE board
         SET board_subject = #{boardSubject},
-            board_content = #{boardContent},
-            board_category = #{boardCategory},
-            city_id = #{cityId}
+        board_content = #{boardContent},
+        board_category = #{boardCategory},
+        city_id = #{cityId}
         WHERE board_id = #{boardId}
+    </update>
+
+    <!--게시글 작성-->
+    <insert id="insertFeed" parameterType="com.lec.spring.mytrip.domain.Feed" useGeneratedKeys="true" keyProperty="boardId">
+        insert into board(user_id,city_id,board_subject,board_content,board_category)
+        VALUES (#{userId}, #{cityId}, #{boardSubject}, #{boardContent}, #{boardCategory})
+    </insert>
+
+    <!-- 첨부파일 삽입 -->
+    <insert id="insertAttachments" parameterType="com.lec.spring.mytrip.domain.PostAttachment">
+        insert into board_attachment(board_id, board_attachment_file)
+        values(#{boardId}, #{fileName})
+    </insert>
+
+    <update id="updateFeed" parameterType="com.lec.spring.mytrip.domain.Feed">
+        <!-- 게시물 수정 -->
+        update board
+        SET
+        city_id = #{cityId},
+        board_subject = #{boardSubject},
+        board_content = #{boardContent},
+        board_category = '피드'
+        WHERE
+        board_id = #{boardId} AND user_id = #{userId};
+
+        <!-- 기존 첨부파일 삭제 (업데이트 성공 시에만) -->
+        <if test="_databaseId == 'MYSQL'">
+            DELETE FROM board_attachment WHERE board_id = #{boardId};
+        </if>
+
+        <!-- 새로운 첨부파일 추가 -->
+        <if test="attachmentFiles != null and attachmentFiles.size() > 0">
+            <foreach collection="attachmentFiles" item="file" index="index" open="INSERT INTO board_attachment(board_id, board_attachment_file) VALUES" separator=",">
+                (#{boardId}, #{file})
+            </foreach>
+        </if>
     </update>
 
     <!-- 특정 피드 id로 피드 삭제  -->
     <delete id="delete" parameterType="int">
         DELETE FROM board
         WHERE board_id = #{id}
+    </delete>
+
+    <!--게시물 삭제 -->
+    <delete id="deleteFeed" parameterType="int">
+        delete from board where board_id=#{boardId} and user_id=#{userId}
     </delete>
 
     <!-- 전체 피드 개수 -->
@@ -98,6 +202,8 @@
     </delete>
 
     <delete id="deleteAttachmentByBoardId" parameterType="int">
+    <!-- 기존 첨부파일 삭제 -->
+    <delete id="deleteAttachmentsByBoardId" parameterType="int">
         DELETE FROM board_attachment WHERE board_id = #{boardId}
     </delete>
 

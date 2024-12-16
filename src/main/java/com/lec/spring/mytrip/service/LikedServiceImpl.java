@@ -1,19 +1,27 @@
 package com.lec.spring.mytrip.service;
 
+import com.lec.spring.mytrip.domain.Board;
 import com.lec.spring.mytrip.domain.City;
+import com.lec.spring.mytrip.domain.PackagePost;
 import com.lec.spring.mytrip.domain.User;
 import com.lec.spring.mytrip.repository.CityRepository;
 import com.lec.spring.mytrip.repository.LikeRepository;
 import com.lec.spring.mytrip.util.LikeUtil;
 import com.lec.spring.mytrip.util.U;
+import org.apache.ibatis.session.SqlSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class LikedServiceImpl implements LikedService {
   private final  LikeRepository likeRepository;
   private final CityRepository cityRepository;
+
+    @Autowired
+    private SqlSession sqlSession;
 
 
     public LikedServiceImpl(LikeRepository likeRepository, CityRepository cityRepository) {
@@ -80,4 +88,15 @@ public class LikedServiceImpl implements LikedService {
         return cityRepository.findLikedCitiesByUserId(userId);
     }
 
+
+    public List<Board> getLikedPosts(Long userId) {
+        System.out.println(likeRepository.findLikedPostsByUser(userId));
+        return likeRepository.findLikedPostsByUser(userId);
+    }
+    // 좋아요한 패키지 리스트
+    public List<PackagePost> getLikedPackageDetails(int userId) {
+        return likeRepository.getLikedPackageDetails(userId);
+    }
 }
+
+
