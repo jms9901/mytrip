@@ -24,4 +24,5 @@ public class PackagePost {
     private LocalDateTime startDay; // 패키지 시작 날짜
     private LocalDateTime endDay;   // 패키지 종료 날짜
     private String packageAttachmentFile;
+    private String userName;
 }

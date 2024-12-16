@@ -8,7 +8,7 @@ values ('fullstackK08@naver.com',
         '',
         '',
         '',
-        'admin'
+        'ROLE_ADMIN'
         ),
         (
          'wonwon123123@naver.com',
@@ -19,10 +19,52 @@ values ('fullstackK08@naver.com',
          '',
          '',
          '',
-         'user'
-        );
-
-
+         'ROLE_USER'
+        ),
+        (
+         'business1@naver.com',
+         '1234',
+         'business1',
+         'business1',
+         '2000-11-11',
+         '',
+         '',
+         '',
+         'ROLE_BUSINESS'
+       ),
+       (
+           'business2@naver.com',
+           '1234',
+           'business2',
+           'business2',
+           '2000-11-11',
+           '',
+           '',
+           '',
+           'ROLE_BUSINESS'
+       ),
+       (
+           'business3@naver.com',
+           '1234',
+           'business3',
+           'business3',
+           '2000-11-11',
+           '',
+           '',
+           '',
+           'ROLE_BUSINESS'
+       ),
+       (
+           'business4@naver.com',
+           '1234',
+           'business4',
+           'business4',
+           '2000-11-11',
+           '',
+           '',
+           '',
+           'ROLE_BUSINESS'
+       );
 
 # business 데이터
 insert into user (user_email, user_password,user_username,user_name,user_authorization,business_companynumber)
@@ -452,6 +494,8 @@ values(
         'B',
         'B'
         );
+
+
 INSERT INTO user_city (user_id, city_id, created_date)
 VALUES
     (1, 5, DATE_SUB(NOW(), INTERVAL 1 DAY)),
@@ -505,21 +549,73 @@ VALUES
      (60, '/img/GuamImg.jpg');
 
 
-INSERT INTO user_city (user_id, city_id, created_date)
+
+INSERT INTO payment_info (user_id, package_id, user_count, payment_status)
 VALUES
-    (1, 5, DATE_SUB(NOW(), INTERVAL 1 DAY)),
-    (2, 5, DATE_SUB(NOW(), INTERVAL 1 DAY)),
-    (2, 5, DATE_SUB(NOW(), INTERVAL 1 DAY)),
-    (1, 7, DATE_SUB(NOW(), INTERVAL 1 DAY)),
-    (1, 7, DATE_SUB(NOW(), INTERVAL 1 DAY)),
-    (2, 7, DATE_SUB(NOW(), INTERVAL 1 DAY)),
-    (2, 9, DATE_SUB(NOW(), INTERVAL 1 DAY)),
-    (1, 9, DATE_SUB(NOW(), INTERVAL 1 DAY)),
-    (2, 9, DATE_SUB(NOW(), INTERVAL 1 DAY)),
-    (2, 9, DATE_SUB(NOW(), INTERVAL 1 DAY)),
-    (1, 9, DATE_SUB(NOW(), INTERVAL 1 DAY)),
-    (2, 9, DATE_SUB(NOW(), INTERVAL 1 DAY)),
-    (2, 9, DATE_SUB(NOW(), INTERVAL 1 DAY));
+    (1, 21, 2, '결제완료'),
+    (3, 22, 1, '결제취소'),
+    (3, 23, 3, '결제완료'),
+    (3, 24, 4, '결제취소'),
+    (2, 25, 2, '결제완료'),
+    (2, 26, 1, '결제취소'),
+    (2, 27, 3, '결제완료'),
+    (1, 28, 4, '결제취소'),
+    (1, 29, 2, '결제완료'),
+    (4, 30, 1, '결제취소'),
+    (4, 31, 3, '결제완료'),
+    (4, 32, 4, '결제취소'),
+    (4, 33, 2, '결제완료'),
+    (4, 34, 1, '결제취소'),
+    (1, 35, 3, '결제완료'),
+    (1, 36, 4, '결제취소'),
+    (1, 37, 2, '결제완료'),
+    (1, 38, 1, '결제취소'),
+    (2, 39, 3, '결제완료'),
+    (2, 40, 4, '결제취소'),
+    (2, 21, 2, '결제완료'),
+    (1, 22, 1, '결제취소'),
+    (1, 23, 3, '결제완료'),
+    (1, 24, 4, '결제취소'),
+    (1, 25, 2, '결제완료'),
+    (2, 26, 1, '결제취소'),
+    (7, 27, 3, '결제완료'),
+    (7, 28, 4, '결제취소'),
+    (7, 29, 2, '결제완료'),
+    (7, 30, 1, '결제취소');
+
+INSERT INTO board (user_id, city_id, board_subject, board_content, board_view_count, board_category)
+VALUES
+    (1, 1, 'Subject 1', 'Content 1', 0, '피드'),
+    (3, 2, 'Subject 2', 'Content 2', 0, '소모임'),
+    (3, 3, 'Subject 3', 'Content 3', 0, '피드'),
+    (3, 4, 'Subject 4', 'Content 4', 0, '소모임'),
+    (2, 5, 'Subject 5', 'Content 5', 0, '피드'),
+    (2, 6, 'Subject 6', 'Content 6', 0, '소모임'),
+    (2, 7, 'Subject 7', 'Content 7', 0, '피드'),
+    (1, 8, 'Subject 8', 'Content 8', 0, '소모임'),
+    (1, 9, 'Subject 9', 'Content 9', 0, '피드'),
+    (4, 10, 'Subject 10', 'Content 10', 0, '소모임'),
+    (4, 11, 'Subject 11', 'Content 11', 0, '피드'),
+    (4, 12, 'Subject 12', 'Content 12', 0, '소모임'),
+    (4, 13, 'Subject 13', 'Content 13', 0, '피드'),
+    (4, 14, 'Subject 14', 'Content 14', 0, '소모임'),
+    (1, 15, 'Subject 15', 'Content 15', 0, '피드'),
+    (1, 16, 'Subject 16', 'Content 16', 0, '소모임'),
+    (1, 17, 'Subject 17', 'Content 17', 0, '피드'),
+    (1, 18, 'Subject 18', 'Content 18', 0, '소모임'),
+    (2, 19, 'Subject 19', 'Content 19', 0, '피드'),
+    (2, 20, 'Subject 20', 'Content 20', 0, '소모임'),
+    (2, 21, 'Subject 21', 'Content 21', 0, '피드'),
+    (1, 22, 'Subject 22', 'Content 22', 0, '소모임'),
+    (1, 23, 'Subject 23', 'Content 23', 0, '피드'),
+    (1, 24, 'Subject 24', 'Content 24', 0, '소모임'),
+    (1, 25, 'Subject 25', 'Content 25', 0, '피드'),
+    (2, 26, 'Subject 26', 'Content 26', 0, '소모임'),
+    (7, 27, 'Subject 27', 'Content 27', 0, '피드'),
+    (7, 28, 'Subject 28', 'Content 28', 0, '소모임'),
+    (7, 29, 'Subject 29', 'Content 29', 0, '피드'),
+    (7, 30, 'Subject 30', 'Content 30', 0, '소모임');
+
 
 # 공항 정보 테이블
 INSERT INTO airport (airport_code, airport_name, airport_city, airport_country)
@@ -558,3 +654,83 @@ VALUES
     ('SPN', '사이판 국제공항', '사이판', '미국'),
     ('SYD', '시드니 공항', '시드니', '호주')
 ;
+
+
+INSERT INTO user_city (user_id, city_id, created_date)
+VALUES
+    (1, 5, DATE_SUB(NOW(), INTERVAL 1 DAY)),
+    (2, 5, DATE_SUB(NOW(), INTERVAL 1 DAY)),
+    (2, 5, DATE_SUB(NOW(), INTERVAL 1 DAY)),
+    (1, 7, DATE_SUB(NOW(), INTERVAL 1 DAY)),
+    (1, 7, DATE_SUB(NOW(), INTERVAL 1 DAY)),
+    (2, 7, DATE_SUB(NOW(), INTERVAL 1 DAY)),
+    (2, 9, DATE_SUB(NOW(), INTERVAL 1 DAY)),
+    (1, 9, DATE_SUB(NOW(), INTERVAL 1 DAY)),
+    (2, 9, DATE_SUB(NOW(), INTERVAL 1 DAY)),
+    (2, 9, DATE_SUB(NOW(), INTERVAL 1 DAY)),
+    (1, 9, DATE_SUB(NOW(), INTERVAL 1 DAY)),
+    (2, 9, DATE_SUB(NOW(), INTERVAL 1 DAY)),
+    (2, 9, DATE_SUB(NOW(), INTERVAL 1 DAY));
+
+INSERT INTO package (city_id, user_id, package_status, package_content, package_regdate, package_title, package_cost, package_maxpeople, package_start_day, package_end_day)
+VALUES
+    (1, 1, '승인', 'This is a sample package content.', NOW(), 'Sample Package 1', 1000, 10, '2023-05-01 00:00:00', '2023-05-10 00:00:00'),
+    (2, 1, '대기', 'Another sample package content.', NOW(), 'Sample Package 2', 2000, 20, '2023-06-01 00:00:00', '2023-06-10 00:00:00'),
+    (3, 1, '승인', 'Yet another sample package content.', NOW(), 'Sample Package 3', 1500, 15, '2023-07-01 00:00:00', '2023-07-10 00:00:00'),
+    (4, 1, '승인', 'Fourth sample package content.', NOW(), 'Sample Package 4', 2500, 25, '2023-08-01 00:00:00', '2023-08-10 00:00:00'),
+    (5, 1, '승인', 'Fifth sample package content.', NOW(), 'Sample Package 5', 3000, 30, '2023-09-01 00:00:00', '2023-09-10 00:00:00'),
+    (1, 1, '대기', 'Sixth sample package content.', NOW(), 'Sample Package 6', 3500, 35, '2023-10-01 00:00:00', '2023-10-10 00:00:00'),
+    (2, 1, '승인', 'Seventh sample package content.', NOW(), 'Sample Package 7', 4000, 40, '2023-11-01 00:00:00', '2023-11-10 00:00:00'),
+    (3, 1, '미승인', 'Eighth sample package content.', NOW(), 'Sample Package 8', 4500, 45, '2023-12-01 00:00:00', '2023-12-10 00:00:00'),
+    (4, 1, '승인', 'Ninth sample package content.', NOW(), 'Sample Package 9', 5000, 50, '2024-01-01 00:00:00', '2024-01-10 00:00:00'),
+    (5, 1, '승인', 'Tenth sample package content.', NOW(), 'Sample Package 10', 5500, 55, '2024-02-01 00:00:00', '2024-02-10 00:00:00'),
+    (1, 1, '승인', 'Eleventh sample package content.', NOW(), 'Sample Package 11', 6000, 60, '2024-03-01 00:00:00', '2024-03-10 00:00:00'),
+    (2, 1, '승인', 'Twelfth sample package content.', NOW(), 'Sample Package 12', 6500, 65, '2024-04-01 00:00:00', '2024-04-10 00:00:00'),
+    (3, 1, '대기', 'Thirteenth sample package content.', NOW(), 'Sample Package 13', 7000, 70, '2024-05-01 00:00:00', '2024-05-10 00:00:00'),
+    (4, 1, '승인', 'Fourteenth sample package content.', NOW(), 'Sample Package 14', 7500, 75, '2024-06-01 00:00:00', '2024-06-10 00:00:00'),
+    (5, 1, '미승인', 'Fifteenth sample package content.', NOW(), 'Sample Package 15', 8000, 80, '2024-07-01 00:00:00', '2024-07-10 00:00:00'),
+    (1, 1, '승인', 'Sixteenth sample package content.', NOW(), 'Sample Package 16', 8500, 85, '2024-08-01 00:00:00', '2024-08-10 00:00:00'),
+    (2, 1, '승인', 'Seventeenth sample package content.', NOW(), 'Sample Package 17', 9000, 90, '2024-09-01 00:00:00', '2024-09-10 00:00:00'),
+    (3, 1, '대기', 'Eighteenth sample package content.', NOW(), 'Sample Package 18', 9500, 95, '2024-10-01 00:00:00', '2024-10-10 00:00:00'),
+    (4, 1, '승인', 'Nineteenth sample package content.', NOW(), 'Sample Package 19', 10000, 100, '2024-11-01 00:00:00', '2024-11-10 00:00:00'),
+    (5, 1, '승인', 'Twentieth sample package content.', NOW(), 'Sample Package 20', 10500, 105, '2024-12-01 00:00:00', '2024-12-10 00:00:00');
+
+INSERT INTO package_attachment (package_id, package_attachment_file)
+VALUES
+    (51, '/img/BailImg.jpg'),
+    (52, '/img/BangkokImg.jpg'),
+    (53, '/img/BarcelonaImg.jpg'),
+    (54, '/img/CebuImg.jpg'),
+    (55, '/img/DanangImg.jpg'),
+    (56, '/img/DelhiImg.jpg'),
+    (57, '/img/DubaiImg.jpg'),
+    (58, '/img/FranceImg.jpg'),
+    (59, '/img/FukuokaImg.jpg'),
+    (60, '/img/GuamImg.jpg');
+
+INSERT INTO board_attachment (board_id, board_attachment_file)
+VALUES
+    (32,'/img/BailImg.jpg');
+
+
+update user
+set user_password = '$2a$10$y54jausXmoCMgc4wKgAAc.L2VQsLbk0vCDZ33mMKw4UrG/SXSPlxW'
+where user_id = 1;
+
+
+insert into user (user_email, user_password, user_username, user_name, user_birthday, user_profile, user_provider, user_introdution, user_authorization)
+values
+       (
+           'jeolmi9@naver.com',
+           '1234',
+           'jjeol_mii9',
+           '절미9',
+           '2023-01-16',
+           '',
+           '',
+           '',
+           'ROLE_USER'
+       );
+
+insert into board_attachment (board_id, board_attachment_file)
+values (31, 'BangkokImg.jpg');

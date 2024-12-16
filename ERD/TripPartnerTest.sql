@@ -80,6 +80,10 @@ values(19,3,'2024-12-10'),
       (19,3,'2024-12-10'),
       (19,3,'2024-12-10')
 ;
+update user
+set user_password = '$2a$10$y54jausXmoCMgc4wKgAAc.L2VQsLbk0vCDZ33mMKw4UrG/SXSPlxW'
+where user_id = 34;
+
 
 update city set q5_id = 'B' where city_id=12;
 
