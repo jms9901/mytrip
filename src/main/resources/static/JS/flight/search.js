@@ -5,6 +5,13 @@ $(document).ready(function () {
     const today = new Date();
     let progress = 0;
     let interval;
+    // 랜덤 이미지 경로 배열
+    const image = [
+        '../../img/flight/loading2.jpg',
+        '../../img/flight/loading3.jpg',
+        '../../img/flight/loading4.jpg',
+        '../../img/flight/loading5.jpg'
+    ];
 
     flatpickr("#start-date-btn", {
         minDate: today,
@@ -209,6 +216,21 @@ $(document).ready(function () {
     });
 
 
+
+    // 랜덤 이미지 선택
+    const randomImage = image[Math.floor(Math.random() * image.length)];
+
+    // 선택된 이미지를 "loading-overlay"에 적용
+    const loadingOverlay = document.getElementById('loading-overlay');
+    loadingOverlay.style.backgroundImage = `url('${randomImage}')`;
+    // 중복 방지를 위해 background 요소의 스타일 한 번만 설정
+    const backgroundDiv = document.querySelector('.background');
+    if (backgroundDiv) {
+        backgroundDiv.style.backgroundImage = `url('${randomImage}')`;
+    }
+
+    // 로딩 화면 표시 (클래스 제어)
+    loadingOverlay.classList.remove('d-none'); // 로딩 화면 보이기
 
 
 
