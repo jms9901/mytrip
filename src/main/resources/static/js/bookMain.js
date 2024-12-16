@@ -1,7 +1,6 @@
 const currentUrl = window.location.pathname;  // 예시: "/mypage/1"
 const userId = parseInt(currentUrl.substring(currentUrl.lastIndexOf('/') + 1)); // 문자열을 숫자로 변환
 let ownUser =false;
-
 document.addEventListener('DOMContentLoaded', function () {
     const currentUrl = window.location.pathname;
     const userId = parseInt(currentUrl.substring(currentUrl.lastIndexOf('/') + 1));
@@ -174,7 +173,7 @@ function loadFriendRequests() {
             const friendListElement = document.getElementById('friendList');
             friendListElement.innerHTML = ''; // 기존 목록 초기화
 
-            if (data.length > 0) {
+            if (data.length > 0 && ownUser) {
                 requestView.style.display = 'flex'; // 데이터가 있으면 표시
 
                 data.forEach(friendshipUserResultMap => {
@@ -359,7 +358,7 @@ function submitUserChanges() {
 
 
 function loadApp() {
-    console.log(ownUser);
+
 
     // Create the flipbook
 
@@ -385,22 +384,45 @@ function loadApp() {
         autoCenter: true
 
     });
-    $('.flipbook').bind('turning', function (event, page) {
-        if (page === 2) {
-            $('.menu1').show(); // Show menu after the first page turn
-            $('.menu2').show();
-            $('.menu3').show();
-            $('.menu4').show();
-            $('.menu5').show();
-        } else if (page === 1) {
 
-            $('.menu1').hide();
-            $('.menu2').hide();
-            $('.menu3').hide();
-            $('.menu4').hide();
-            $('.menu5').hide();
-        }
-    });
+    let loguser;  // 전역 변수로 선언
+    const currentUrl = window.location.pathname;  // 예시: "/mypage/1"
+    const userId = parseInt(currentUrl.substring(currentUrl.lastIndexOf('/') + 1)); // 문자열을 숫자로 변환
+
+
+    fetch('loginuserid')
+        .then(response => response.json())
+        .then(data => {
+            loguser = data.userId;
+            ownUser = (loguser === userId);
+            console.log(ownUser);
+
+            $('.flipbook').bind('turning', function (event, page) {
+                if (page === 2) {
+                    $('.menu2').show();
+                    $('.menu3').show();
+                    $('.menu4').show();
+                    $('.menu5').show();
+                    if (ownUser) {
+                        $('.menu1').show(); // Show menu after the first page turn
+                    }
+                } else if (page === 1) {
+                    $('.menu1').hide();
+                    $('.menu2').hide();
+                    $('.menu3').hide();
+                    $('.menu4').hide();
+                    $('.menu5').hide();
+                }
+            });
+
+            if(!ownUser){
+                $('.requestView').hide();
+                $('.myPageUpdate').hide();
+            }else{
+                $('#freindrequestbtn').hide();
+            }
+        })
+        .catch(error => console.error('Error:', error));
     $('.goChat').hover(function () {
         hoverChat();
     });
