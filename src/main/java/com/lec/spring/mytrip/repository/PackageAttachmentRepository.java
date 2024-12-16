@@ -1,12 +1,15 @@
 package com.lec.spring.mytrip.repository;
 
+import com.lec.spring.mytrip.domain.attachment.BoardAttachment;
 import com.lec.spring.mytrip.domain.attachment.PackagePostAttachment;
 
 import java.util.List;
 
 public interface PackageAttachmentRepository {
     // 첨부파일 저장
-    int insertAttachment(PackagePostAttachment attachment);
+    int insertPackageAttachment(PackagePostAttachment attachment);
+
+    int insertPostAttachment(BoardAttachment attachment);
 
     // 패키지 ID로 첨부파일 목록 조회
     List<PackagePostAttachment> findByPackageId(int packageId);

@@ -13,6 +13,17 @@
         <result property="boardDate" column="board_date"/>
         <result property="boardCategory" column="board_category"/>
         <result property="userId" column="user_id"/>
+        <!-- City 객체 매핑 -->
+        <association property="city" javaType="com.lec.spring.mytrip.domain.City">
+            <result property="cityId" column="city_id"/>
+            <result property="cityName" column="city_name"/>
+        </association>
+        <!-- 첨부파일 리스트 매핑 -->
+        <collection property="attachmentFiles" ofType="string">
+            <result column="board_attachment_file"/>
+        </collection>
+    </resultMap>
+
     <sql id="SELECT_BOARD">
         select
             board_id "board_id",
@@ -27,19 +38,13 @@
         where 1=1
     </sql>
 
-    <!-- City 객체 매핑 -->
-    <association property="city" javaType="com.lec.spring.mytrip.domain.City">
-        <result property="cityId" column="city_id"/>
-        <result property="cityName" column="city_name"/>
-    </association>
-
     <!-- 피드 저장 -->
     <insert id="save" flushCache="true" parameterType="com.lec.spring.mytrip.domain.Feed"
-        useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        useGeneratedKeys="true" keyColumn="board_id" keyProperty="boardId">
         INSERT INTO board
             (user_id, city_id, board_subject, board_content, board_view_count, board_date, board_category)
         VALUES
-            (#{userId}, #{cityId}, #{boardSubject}, #{boardContent}, #{boardViewCount}, #{boardDate}, #{boardCategory})
+            (#{userId}, #{cityId}, #{boardSubject}, #{boardContent}, #{boardViewCount}, now(), #{boardCategory})
     </insert>
 
     <!-- 특정 피드 id로 글 찾기 -->
@@ -47,11 +52,7 @@
         <include refid="SELECT_BOARD"/>
         AND board_id = #{id}
     </select>
-        <!-- 첨부파일 리스트 매핑 -->
-        <collection property="attachmentFiles" ofType="string">
-            <result column="board_attachment_file"/>
-        </collection>
-    </resultMap>
+
 
     <!-- 특정 피드 id 글 조회수 증가 -->
     <update id="viewCnt" parameterType="int">
@@ -64,6 +65,8 @@
     <select id="findAll" resultType="com.lec.spring.mytrip.domain.Feed">
         <include refid="SELECT_BOARD" />
         ORDER BY board_date DESC
+    </select>
+
     <select id="findFeedByUserId" parameterType="int" resultMap="FeedResultMap">
         SELECT
         b.board_id,
@@ -91,6 +94,7 @@
         <include refid="SELECT_BOARD" />
         WHERE user_id = #{user_id}
         ORDER BY board_date DESC
+    </select>
 
     <!--최신순 9개조회 -->
     <select id="findRecentFeedsByUserId" parameterType="int" resultMap="FeedResultMap">
@@ -122,9 +126,7 @@
     <update id="update" flushCache="true" parameterType="com.lec.spring.mytrip.domain.Feed">
         UPDATE board
         SET board_subject = #{boardSubject},
-        board_content = #{boardContent},
-        board_category = #{boardCategory},
-        city_id = #{cityId}
+        board_content = #{boardContent}
         WHERE board_id = #{boardId}
     </update>
 
@@ -201,7 +203,6 @@
                WHERE board_attachment_id = #{boardAttachmentId}
     </delete>
 
-    <delete id="deleteAttachmentByBoardId" parameterType="int">
     <!-- 기존 첨부파일 삭제 -->
     <delete id="deleteAttachmentsByBoardId" parameterType="int">
         DELETE FROM board_attachment WHERE board_id = #{boardId}

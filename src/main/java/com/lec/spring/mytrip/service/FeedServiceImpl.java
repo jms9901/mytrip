@@ -4,6 +4,8 @@ import com.lec.spring.mytrip.domain.City;
 import com.lec.spring.mytrip.domain.Feed;
 import com.lec.spring.mytrip.domain.PostAttachment;
 import com.lec.spring.mytrip.domain.User;
+import com.lec.spring.mytrip.domain.attachment.BoardAttachment;
+import com.lec.spring.mytrip.domain.attachment.PackagePostAttachment;
 import com.lec.spring.mytrip.repository.FeedRepository;
 import com.lec.spring.mytrip.repository.UserRepository;
 import com.lec.spring.mytrip.util.U;
@@ -18,34 +20,50 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 @Service
 public class FeedServiceImpl implements FeedService{
 
+    private final PackageAttachmentService packageAttachmentService;
     private final FeedRepository feedRepository;
     private final UserRepository userRepository;
 
-    public FeedServiceImpl(SqlSession sqlSession) {
+    public FeedServiceImpl(SqlSession sqlSession, PackageAttachmentService packageAttachmentService) {
+        this.packageAttachmentService = packageAttachmentService;
         feedRepository = sqlSession.getMapper(FeedRepository.class);
         userRepository = sqlSession.getMapper(UserRepository.class);
         System.out.println("FeedService() 생성");
     }
+//    public FeedServiceImpl(FeedRepository feedRepository, UserRepository userRepository) {
+//        this.feedRepository = feedRepository;
+//        this.userRepository = userRepository;
+//    }
+
 
 
     // 작성
     // postAttachment 다 만들고 수정
     @Override
     @Transactional
-    public boolean write(Feed feed, Map<String, MultipartFile> files) {
+    public boolean write(Feed feed, List<MultipartFile> files) {
+
+//        int userId = U.getLoggedUser().getId();
+
+        int userId = 1;
+
+        feed.setUserId(userId);
+
         // 새 피드 저장
         int result = feedRepository.save(feed);
 
         // 첨부파일 저장
         if (result > 0 && files != null) {
-            saveAttachment(feed, files);
+            packageAttachmentService.savePostAttachments(files, feed);
         }
         return result > 0;
     }
@@ -60,6 +78,7 @@ public class FeedServiceImpl implements FeedService{
                 try{
                     // 업로드 파일 만들기
                     String categoryDir = UPLOAD_DIR + File.separator + feed.getBoardCategory();
+                    String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
                     File uploadDir = new File(categoryDir);
                     if (!uploadDir.exists()) {
                         uploadDir.mkdirs();
@@ -74,8 +93,8 @@ public class FeedServiceImpl implements FeedService{
                     // 첨부파일 생성
                     PostAttachment postAttachment = new PostAttachment();
                     postAttachment.setFeed(feed);
-                    postAttachment.setBoardAttachmentFile(boardAttachmentFile);
-                    postAttachment.setFilepath(filePath.toString());
+//                    postAttachment.setBoardAttachmentFile(boardAttachmentFile);
+//                    postAttachment.setFilepath(filePath.toString());
 
                     // 첨부파일 정보 저장
                     feedRepository.saveAttachment(postAttachment);
@@ -86,7 +105,6 @@ public class FeedServiceImpl implements FeedService{
             }
         }
     }
-
 
     // 물리적 서버 파일에 저장
     // 파일 이름
@@ -113,11 +131,6 @@ public class FeedServiceImpl implements FeedService{
         }
         return null;
     }
-
-    public FeedServiceImpl(FeedRepository feedRepository) {
-        this.feedRepository = feedRepository;
-    }
-
     @Override
     public Feed findById(int id) {
         Feed feed = feedRepository.findById(id);
@@ -128,6 +141,16 @@ public class FeedServiceImpl implements FeedService{
     public List<Feed> getFeedByUserId(int userId) {
         System.out.println("DB 조회 결과: " + feedRepository.findFeedByUserId(userId));  // 로그 추가
         return feedRepository.findFeedByUserId(userId);
+    }
+
+    @Override
+    public boolean update(Feed feed, List<MultipartFile> files) {
+        // 첨부파일 저장
+        if (feedRepository.update(feed) > 0) {
+            if(files != null) packageAttachmentService.savePostAttachments(files, feed);
+            return true;
+        }
+        return false;
     }
 
     public List<Feed> findRecentFeedsByUserId(int userId) {
@@ -200,10 +223,14 @@ public class FeedServiceImpl implements FeedService{
             }
         }
     }
+
     @Override
     public boolean deleteById(int id) {
         Feed feed = new Feed();
         // 첨부파일 삭제
+
+        List<PackagePostAttachment> attachments = packageAttachmentService.findByPackageId(id);
+
         feedRepository.deleteAttachmentByBoardId(id);
 
         // 피드 삭제
