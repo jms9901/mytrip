@@ -33,11 +33,7 @@
     color: #f8f9fa; /* 링크 hover 시 밝은 색 */
 }
 
-/* 메인 피드 카드 스타일 */
-.card {
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1); /* 부드러운 그림자 */
-}
+
 
 /* 본문 텍스트 스타일 */
 .card-text {
@@ -55,4 +51,32 @@
 
 .btn-outline-danger:hover {
     color: darkred;
+}
+
+body {
+    background-color: #000;
+    color: #fff;
+}
+.card {
+    background-color: #181818;
+    border: none;
+    color: #fff;
+}
+.feed-image {
+    width: 100%;
+    height: 300px; /* 이미지 높이 지정 */
+    object-fit: cover; /* 비율 유지 및 잘림 */
+    border-radius: 5px;
+}
+.like-button {
+    background-color: transparent;
+    border: none;
+    color: red;
+}
+.card-body {
+    padding: 1rem;
+}
+.text-muted {
+    font-size: 0.9rem !important;
+    color: #4a90e2 !important; /* 밝은 파란색 */
 }

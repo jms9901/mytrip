@@ -41,6 +41,12 @@
                         작성자: <span th:text="${feed.user.name}">유저명</span> |
                         날짜: <span th:text="${#temporals.format(feed.boardDate, 'yyyy-MM-dd')}">2024-12-12</span>
                     </p>
+                    <!-- 이미지 -->
+                    <div class="mb-2">
+                        <img th:if="${feed.attachments != null and not #lists.isEmpty(feed.attachments)}"
+                             th:src="@{/uploads/{fileName}(fileName=${feed.attachments[0].filePath})}"
+                             alt="피드 이미지" class="feed-image">
+                    </div>
                     <!-- 본문 -->
                     <p class="card-text" th:text="${feed.boardContent}">내 내용</p>
                     <!-- 좋아요 버튼 -->
