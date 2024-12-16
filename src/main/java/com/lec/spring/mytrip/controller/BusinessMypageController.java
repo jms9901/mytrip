@@ -16,9 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.View;
 
-import java.util.Collections;
 import java.util.List;
 
 @Slf4j
@@ -29,11 +27,10 @@ public class BusinessMypageController {
     private final BusinessMypageService businessMypageService;
     private final UserServiceImpl userService;
     private final PackagePostService packagePostService;
-    private PackagePostRepository packagePostRepository;
-
+    private final PackagePostRepository packagePostRepository;
 
     @Autowired
-    public BusinessMypageController(BusinessMypageService businessMypageService, UserServiceImpl userService, PackagePostService packagePostService) {
+    public BusinessMypageController(BusinessMypageService businessMypageService, UserServiceImpl userService, PackagePostService packagePostService, PackagePostRepository packagePostRepository) {
         System.out.println("BusinessMypageController() 작동");
         this.businessMypageService = businessMypageService;
         this.userService = userService;
@@ -77,7 +74,7 @@ public class BusinessMypageController {
     // businessMain.html
     @GetMapping("/business/js/{userId}")
     @ResponseBody
-    public ResponseEntity<?> businessMypage(@PathVariable("userId") int userId, @RequestParam(required = false) Integer packageId) {
+    public ResponseEntity<?> businessMypage(@PathVariable("userId") int userId) {
         try {
             // 유저 정보 로드
             User user = businessMypageService.getUserById(userId);
@@ -100,17 +97,16 @@ public class BusinessMypageController {
             // 패키지 목록 로드
             List<PackagePost> packages = businessMypageService.likeCntByPackage(userId);
             // 패키지 상세정보 로드
-            PackagePost packageDetail = packagePostService.getPackageDetails(packageId);
+//            PackagePost packageDetail = packagePostService.getPackageDetails(packageId);
             // 결제 내역 로드
             List<Payment> payments = businessMypageService.getPaymentByCompanyId(userId);
 
             log.info("Business data: {}, Packages: {}, Payments: {}", user, packages, payments);
 
             // 패키지, 패키지 상세정보, 결제 내역이 없는 경우 빈 배열 반환
-            if (packages == null || packages.isEmpty() || packageDetail == null || payments == null || payments.isEmpty()) {
-                return ResponseEntity.ok(Collections.emptyList());
-            }
-
+//            if (packages == null || packages.isEmpty() || payments == null || payments.isEmpty()) {
+//                return ResponseEntity.ok(Collections.emptyList());
+//            }
 
             return ResponseEntity.ok(packages);
 
@@ -154,11 +150,13 @@ public class BusinessMypageController {
     // 결제 리스트 데이터 반환
     // JSON API 엔드포인트(js요청)
     // businessMain.html main 에서 결제 버튼 클릭 시 해당 정보가 담긴 모달 출력
-    @GetMapping("/payments/{userId}")
+    @GetMapping("/business/payments/{userId}")
     @ResponseBody
     public ResponseEntity<List<Payment>> getBusinessPayments(@AuthenticationPrincipal User user) {
         try {
             List<Payment> payments = businessMypageService.getPaymentByCompanyId(user.getId());
+            log.info("Business data: {}", payments);
+            log.info("userId found: {}", user.getId());
             return ResponseEntity.ok(payments);
         } catch (Exception e) {
             log.error("결제 정보 조회 중 오류 발생", e);
@@ -189,76 +187,76 @@ public class BusinessMypageController {
     // 상세보기에서 수정 -> 상태가 대기/미승인일 경우에만 가능
     // JSON API 엔드포인트(js요청)
     // businessMain.html main 에서 패키지 클릭 시 해당 정보가 담긴 모달 출력된 상태에서 수정 버튼 누르면 정보 update 가능
-    @GetMapping("/package/update/{packageId}")
-    public ResponseEntity<?> updatePackage(
-            @PathVariable("packageId") int packageId,
-            @RequestBody PackagePost updatedPackage,
-            @AuthenticationPrincipal User user) {
-        try {
-            // 패키지 데이터 조회
-            PackagePost existingPackage = packagePostService.getPackageDetails(packageId);
-            if (existingPackage == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("해당 ID의 패키지를 찾을 수 없습니다.");
-            }
-
-            // 상태 확인 (대기/미승인 상태만 수정 가능)
-            if (!"대기".equals(existingPackage.getPackageStatus()) && !"미승인".equals(existingPackage.getPackageStatus())) {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("해당 패키지는 대기/미승인 상태에서만 수정할 수 있습니다.");
-            }
-
-            // 권한 확인
-            if (user.getId() != existingPackage.getUserId()) {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("해당 패키지를 수정할 수 있는 권한이 없습니다.");
-            }
-
-            // 수정 수행
-            updatedPackage.setPackageId(packageId); // ID 설정
-            int result = packagePostService.updatePackage(updatedPackage);
-
-            // 수정 결과 반환
-            if (result > 0) {
-                return ResponseEntity.ok("패키지가 성공적으로 수정되었습니다.");
-            } else {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("패키지 수정 중 문제가 발생했습니다.");
-            }
-        } catch (IllegalArgumentException | SecurityException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 에러가 발생했습니다.");
-        }
-    }
+//    @GetMapping("/package/update/{packageId}")
+//    public ResponseEntity<?> updatePackage(
+//            @PathVariable("packageId") int packageId,
+//            @RequestBody PackagePost updatedPackage,
+//            @AuthenticationPrincipal User user) {
+//        try {
+//            // 패키지 데이터 조회
+//            PackagePost existingPackage = packagePostService.getPackageDetails(packageId);
+//            if (existingPackage == null) {
+//                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("해당 ID의 패키지를 찾을 수 없습니다.");
+//            }
+//
+//            // 상태 확인 (대기/미승인 상태만 수정 가능)
+//            if (!"대기".equals(existingPackage.getPackageStatus()) && !"미승인".equals(existingPackage.getPackageStatus())) {
+//                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("해당 패키지는 대기/미승인 상태에서만 수정할 수 있습니다.");
+//            }
+//
+//            // 권한 확인
+//            if (user.getId() != existingPackage.getUserId()) {
+//                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("해당 패키지를 수정할 수 있는 권한이 없습니다.");
+//            }
+//
+//            // 수정 수행
+//            updatedPackage.setPackageId(packageId); // ID 설정
+//            int result = packagePostService.updatePackage(updatedPackage);
+//
+//            // 수정 결과 반환
+//            if (result > 0) {
+//                return ResponseEntity.ok("패키지가 성공적으로 수정되었습니다.");
+//            } else {
+//                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("패키지 수정 중 문제가 발생했습니다.");
+//            }
+//        } catch (IllegalArgumentException | SecurityException e) {
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 에러가 발생했습니다.");
+//        }
+//    }
 
     // 상세보기에서 삭제 -> 상태가 대기/미승인일 경우에만 가능
     // JSON API 엔드포인트(js요청)
-    @DeleteMapping("/package/delete/{packageId}")
-    public ResponseEntity<?> deletePackage(@PathVariable("packageId") int packageId, @AuthenticationPrincipal int userId) {
-        try {
-            // 패키지 데이터 조회
-            PackagePost existingPackage = packagePostService.getPackageDetails(packageId);
-            if (existingPackage == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("해당 ID의 패키지를 찾을 수 없습니다.");
-            }
-
-            // 상태 확인 (대기/미승인 상태만 삭제 가능)
-            if (!"대기".equals(existingPackage.getPackageStatus()) && !"미승인".equals(existingPackage.getPackageStatus())) {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("해당 패키지는 대기/미승인 상태에서만 삭제할 수 있습니다.");
-            }
-
-            // 삭제 수행
-            int result = packagePostService.deletePackage(packageId, userId);
-
-            // 삭제 결과 반환
-            if (result > 0) {
-                return ResponseEntity.ok("패키지가 성공적으로 삭제되었습니다.");
-            } else {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("패키지 삭제 중 문제가 발생했습니다.");
-            }
-        } catch (IllegalArgumentException | SecurityException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 에러가 발생했습니다.");
-        }
-    }
+//    @DeleteMapping("/package/delete/{packageId}")
+//    public ResponseEntity<?> deletePackage(@PathVariable("packageId") int packageId, @AuthenticationPrincipal int userId) {
+//        try {
+//            // 패키지 데이터 조회
+//            PackagePost existingPackage = packagePostService.getPackageDetails(packageId);
+//            if (existingPackage == null) {
+//                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("해당 ID의 패키지를 찾을 수 없습니다.");
+//            }
+//
+//            // 상태 확인 (대기/미승인 상태만 삭제 가능)
+//            if (!"대기".equals(existingPackage.getPackageStatus()) && !"미승인".equals(existingPackage.getPackageStatus())) {
+//                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("해당 패키지는 대기/미승인 상태에서만 삭제할 수 있습니다.");
+//            }
+//
+//            // 삭제 수행
+//            int result = packagePostService.deletePackage(packageId, userId);
+//
+//            // 삭제 결과 반환
+//            if (result > 0) {
+//                return ResponseEntity.ok("패키지가 성공적으로 삭제되었습니다.");
+//            } else {
+//                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("패키지 삭제 중 문제가 발생했습니다.");
+//            }
+//        } catch (IllegalArgumentException | SecurityException e) {
+//            return ResponseEntity.badRequest().body(e.getMessage());
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 에러가 발생했습니다.");
+//        }
+//    }
 }
 
 

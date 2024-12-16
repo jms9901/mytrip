@@ -25,7 +25,7 @@
     <div class="container">
         <div class="profile-section">
             <!-- 비즈니스 개인정보 수정 링크 연결  -->
-            <button type="button" style="border: none;">
+            <button type="button" style="border: none; background-color: #e9eefb;">
                 <img src="/img/basicProfile.png" class="profile-icon-Button"  alt="profileUpdate-button" id="profile-icon-Button">
             </button>
             <div class="business-name">[[${user.username}]]</div>
@@ -51,70 +51,19 @@
             </div>
         </div>
 
+        <!--  개인정보 수정 모달   -->
+        <div class="userInfo">
+            <!--   개인정보 수정 모달 동적 생성   -->
+        </div>
+
         <!-- 패키지 결제 내역 리스트 버튼 -->
-        <button type="button" style="border: none;">
+        <button type="button" style="border: none;" class="package-payment">
             <img src="/img/paymentListIcon.png" alt="package-payment-button" id="package-payment-button" class="package-payment-button">
         </button>
 
         <!--  결제 리스트 모달   -->
         <div class="paymentList">
             <!--  결제 리스트 동적 생성  -->
-        </div>
-
-        <!--  개인정보 수정 모달   -->
-        <div class="userInfo">
-            <!--   개인정보 수정 모달 동적 생성   -->
-        </div>
-        <div class="modal hidden" id="businessUpdate-modal">
-            <form th:action="@{/business/profile/{userId}(userId=${user.id})}">
-                <div class="header">
-                    <span class="close-button">&times;</span>
-                    <h2 class="businessName" th:value="${user.username}"></h2>
-                    <span class="joinDate">가입일 :  [[${#temporals.format(user.regDate, 'yyyy-MM-dd HH:mm')}]]</span>
-                </div>
-                <div class="profile">
-                    <img th:src="@{/img/basicProfile.png}" alt="프로필">
-                </div>
-                <div class="businessInfo">
-                    <label>
-                        <span>기업 ID</span>
-                        <input type="text" th:value="${user.username}" readonly>
-                    </label>
-                </div>
-                <div class="businessInfo">
-                    <label>
-                        <span>기업이메일</span>
-                        <input type="email" th:value="${user.email}" readonly>
-                    </label>
-                </div>
-                <div class="businessInfo">
-                    <label>
-                        <span>비밀번호</span>
-                        <input type="password" th:utext="${user.password}">
-                    </label>
-                </div>
-                <div class="businessInfo">
-                    <label>
-                        <span>새 비밀번호</span>새비밀번호
-                        <input type="re-password" placeholder="새 비밀번호를 입력하세요.">
-                    </label>
-                </div>
-                <div class="businessInfo">
-                    <label>
-                        <span>회사 사업자 번호</span>
-                        <input type="text" th:value="${user.companyNumber}">
-                    </label>
-                </div>
-
-                <div class="actions">
-                    <button type="button" class="update-button" id="update-button">
-                        <img src="/img/myPageUpdate.png" alt="update-button" class="update-button">
-                    </button>
-                    <button type="submit" class="submit-button">
-                        <img src="/img/checkIcon.png" alt="submit-button" class="submit-button">
-                    </button>
-                </div>
-            </form>
         </div>
 
         <!--  패키지 상세정보 모달  -->

@@ -120,8 +120,6 @@ public class BusinessMypageService {
         return packagePostRepository.likeCntByPackage(userId);
     }
 
-    // 패키지 수정
-    // 패키지 전체 내용 수정 가능 -> 패키지 포스트 서비스로직 사용
 
     // 모든 패키지에 관한 일반 유저가 결제한 결제 내역 -> 결제 상태 조회
     @Transactional

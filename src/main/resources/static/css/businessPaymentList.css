@@ -101,3 +101,16 @@ body {
     justify-content: center;
     align-items: center;
 }
+
+.package-payment {
+    border: none;
+    color: white;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    position: absolute;
+    right: 8%;
+    top: 23%;
+    transform: translateY(-50%);
+    background-color: white;
+}
