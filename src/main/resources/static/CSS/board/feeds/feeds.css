@@ -1,0 +1,58 @@
+/* Scroll to Top 버튼 스타일 */
+#scrollToTop {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: none;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+#scrollToTop:hover {
+    background-color: #0056b3;
+}
+/* 전체 레이아웃 스타일 */
+.container-fluid {
+    background-color: #000; /* 뒷배경 검은색 */
+}
+
+/* 사이드 메뉴 스타일 */
+.sidebar {
+    background-color: #343a40; /* 사이드바 배경색 (짙은 회색) */
+}
+
+.sidebar a:hover {
+    color: #f8f9fa; /* 링크 hover 시 밝은 색 */
+}
+
+/* 메인 피드 카드 스타일 */
+.card {
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1); /* 부드러운 그림자 */
+}
+
+/* 본문 텍스트 스타일 */
+.card-text {
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* 좋아요 버튼 */
+.btn-outline-danger {
+    border: none;
+    font-size: 1.5rem;
+    color: red;
+    background-color: transparent;
+}
+
+.btn-outline-danger:hover {
+    color: darkred;
+}

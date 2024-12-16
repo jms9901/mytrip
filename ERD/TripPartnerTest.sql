@@ -72,3 +72,6 @@ DROP TABLE IF EXISTS friendship;
 DROP TABLE IF EXISTS guest_book;
 DROP TABLE IF EXISTS messageroom;
 DROP TABLE IF EXISTS message;
+
+
+

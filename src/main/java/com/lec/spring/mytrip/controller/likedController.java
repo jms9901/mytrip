@@ -31,7 +31,7 @@ public class likedController {
     @ResponseBody
     public int changePeedLikeStatus(@RequestParam("postId") int postId) {
         int target = 2;
-        System.out.println("컨트롤러는 옴");
+        System.out.println("컨트롤러는 옴, postId = " + postId);
         return likedService.changeLikeStatus(target, postId);
     }
 

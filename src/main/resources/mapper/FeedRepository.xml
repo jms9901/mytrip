@@ -219,9 +219,21 @@
 <!--    도시 및 카테고리 별 불러오기-->
 
     <select id="findByCityAndCategory" resultType="com.lec.spring.mytrip.domain.Feed">
-        <include refid="SELECT_BOARD"/>
-        AND city_id = #{cityId}
-        AND board_category = #{category}
+        SELECT
+        b.board_id AS "boardId",
+        b.user_id AS "user.id",
+        b.city_id AS "city.cityId",
+        b.board_subject AS "boardSubject",
+        b.board_content AS "boardContent",
+        b.board_view_count AS "boardViewCount",
+        b.board_date AS "boardDate",
+        b.board_category AS "boardCategory",
+        u.user_username AS "user.username",
+        u.user_name AS "user.name"
+        FROM board b
+        JOIN user u ON b.user_id = u.user_id  <!-- 수정된 부분 -->
+        WHERE b.city_id = #{cityId}
+        AND b.board_category = #{category}
     </select>
 
 </mapper>

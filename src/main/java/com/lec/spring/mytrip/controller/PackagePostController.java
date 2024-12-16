@@ -239,12 +239,32 @@ public class PackagePostController {
     }
 
 
-    // 도시별 피드 모음 페이지 이동
-    // board.feeds.html
     @GetMapping("{cityId}/feeds")
-    public void cityFeedsPage(@PathVariable int cityId,
-                              Model model) {
-        // 도시별 피드 모음 페이지로 이동
+    public String cityFeedsPage(
+            @PathVariable int cityId,
+            @RequestParam(required = false) Integer groupId,
+            @RequestParam(required = false) String category,
+            Model model) {
+        // 도시와 카테고리에 따른 피드 가져오기
+        List<Feed> feeds = feedService.findByCityAndCategory(cityId, "피드");
+
+        // 그룹 ID 관련 데이터 추가 로직 필요시 구현
+        if (groupId != null) {
+            model.addAttribute("groupId", groupId);
+        }
+
+
+        List<City> sideCities = cityService.findCitiesByContinentOfThisCity(cityId);
+        model.addAttribute("cities", sideCities);
+
+
+        // 모델에 데이터 추가
+        model.addAttribute("feeds", feeds); // 피드 목록
+        model.addAttribute("cityId", cityId); // 현재 도시 ID
+        model.addAttribute("category", category); // 현재 카테고리
+
+        // "board/feeds"는 templates/board/feeds.html을 가리킴
+        return "board/city/feeds";
     }
 
     //상대방 마이페이지로 이동
