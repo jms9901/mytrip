@@ -121,16 +121,20 @@ public class PackagePostController {
                                   Model model) {
         // 패키지 수정 페이지로 이동
         model.addAttribute("packagePost", packagePostService.getPackageDetails(packageId));
-        return "package/edit";
+        return "/board/city/package/edit";
     }
 
     // 패키지 수정 저장 안써
     @PostMapping("{cityId}/package/update")
     public String updatePackage(@PathVariable int cityId,
-                                @ModelAttribute PackagePost packagePost) {
+                                @PathVariable int packageId,
+                                @ModelAttribute PackagePost packagePost,
+                                @RequestParam("files") List<MultipartFile> files) {
+        packagePost.setPackageId(packageId);
+        System.out.println(packagePost.toString());
         // 패키지 수정 저장 처리
         // 패키지 저장 처리 후 저장된 ID 반환
-        int id = packagePostService.updatePackage(packagePost);
+        int id = packagePostService.updatePackage(packagePost, files);
 
         // 저장 후 상세 페이지로 리다이렉트
         return "redirect:" + cityId + "/package/detail/" + id;
@@ -235,7 +239,7 @@ public class PackagePostController {
             return "redirect:/error"; // 삭제 실패 시 에러 페이지
         }
 
-        return "redirect:/board/city" + cityId;
+        return "redirect:/board/city/" + cityId;
     }
 
 

@@ -3,6 +3,7 @@ package com.lec.spring.mytrip.service;
 import com.lec.spring.mytrip.domain.PackagePost;
 import com.lec.spring.mytrip.domain.User;
 import com.lec.spring.mytrip.domain.attachment.PackagePostAndAttachment;
+import com.lec.spring.mytrip.domain.attachment.PackagePostAttachment;
 import com.lec.spring.mytrip.repository.PackagePostRepository;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -101,7 +102,7 @@ public class PackagePostServiceImpl implements PackagePostService {
 
     //패키지 수정
     @Override
-    public int updatePackage(PackagePost pkg) {
+    public int updatePackage(PackagePost pkg, List<MultipartFile> files) {
         // 패키지 데이터 검증
         if (pkg == null || pkg.getPackageId() <= 0) {
             throw new IllegalArgumentException("패키지 또는 패키지 ID가 null일 수 없습니다.");
@@ -114,6 +115,21 @@ public class PackagePostServiceImpl implements PackagePostService {
         if (existingPackage.getUser().getId() != pkg.getUser().getId()) {
             throw new SecurityException("이 패키지를 수정할 권한이 없습니다.");
         }
+
+        List<PackagePostAttachment> attachments = packageAttachmentService.findByPackageId(pkg.getPackageId());
+        if(!attachments.isEmpty()){
+            attachments.forEach(e ->
+                    packageAttachmentService.deletePackageAttachment(e.getPackageAttachmentId())
+            );
+        }
+
+        try {
+            packageAttachmentService.savePackageAttachments(files, pkg);
+        } catch (Exception e) {
+            throw new RuntimeException("첨부파일 저장 중 오류가 발생했습니다.", e);
+        }
+
+
         return packagePostRepository.update(pkg);
     }
 
@@ -133,6 +149,16 @@ public class PackagePostServiceImpl implements PackagePostService {
         if (pkg.getUser().getId() != userId) {
             throw new SecurityException("이 패키지를 삭제할 권한이 없습니다.");
         }
+
+        List<PackagePostAttachment> attachments = packageAttachmentService.findByPackageId(pkg.getPackageId());
+
+        if(!attachments.isEmpty()){
+            attachments.forEach(e ->
+                    packageAttachmentService.deletePackageAttachment(e.getPackageAttachmentId())
+            );
+        }
+
+
         return packagePostRepository.deleteById(packageId);
     }
 

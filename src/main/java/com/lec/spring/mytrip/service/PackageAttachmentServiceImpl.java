@@ -107,7 +107,7 @@ public class PackageAttachmentServiceImpl implements PackageAttachmentService {
                 } catch (IOException e) {
                     // 파일 저장 실패 시 DB에서 해당 첨부파일 레코드 삭제
                     for (PackagePostAttachment attachment : savedAttachments) {
-                        packageAttachmentRepository.deleteAttachment(attachment.getPackageAttachmentId());
+                        packageAttachmentRepository.deletePackageAttachment(attachment.getPackageAttachmentId());
                     }
 
                     // 트랜잭션 롤백을 위해 예외 발생
@@ -133,8 +133,13 @@ public class PackageAttachmentServiceImpl implements PackageAttachmentService {
 
     //첨부파일 삭제
     @Override
-    public void deleteAttachment(int attachmentId) {
-        // 삭제 로직
+    public void deletePackageAttachment(int attachmentId) {
+        packageAttachmentRepository.deletePackageAttachment(attachmentId);
+    }
+
+    @Override
+    public void deleteBoardAttachment(int attachmentId){
+        packageAttachmentRepository.deleteBoardAttachment(attachmentId);
     }
 
     // 패키지 첨부파일 저장
@@ -210,7 +215,7 @@ public class PackageAttachmentServiceImpl implements PackageAttachmentService {
                 } catch (IOException e) {
                     // 파일 저장 실패 시 DB에서 해당 첨부파일 레코드 삭제
                     for (BoardAttachment attachment : savedAttachments) {
-                        packageAttachmentRepository.deleteAttachment(attachment.getBoardAttachmentId());
+                        packageAttachmentRepository.deleteBoardAttachment(attachment.getBoardAttachmentId());
                     }
 
                     // 트랜잭션 롤백을 위해 예외 발생

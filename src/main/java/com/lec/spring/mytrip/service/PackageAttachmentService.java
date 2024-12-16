@@ -13,7 +13,10 @@ public interface PackageAttachmentService {
     //첨부파일 불러오기
     List<PackagePostAttachment> getAttachmentsByPostId(int postId);
     //첨부파일 삭제
-    void deleteAttachment(int attachmentId);
+    void deletePackageAttachment(int attachmentId);
+
+    //첨부파일 삭제
+    void deleteBoardAttachment(int attachmentId);
 
     int savePostAttachments(List<MultipartFile> files, Feed feed);
 

@@ -145,6 +145,15 @@ public class FeedServiceImpl implements FeedService{
 
     @Override
     public boolean update(Feed feed, List<MultipartFile> files) {
+
+        // 기존 첨부파일 삭제
+        List<PackagePostAttachment> attachments = packageAttachmentService.findByPackageId(feed.getBoardId());
+
+        if(!attachments.isEmpty()) {
+            attachments.forEach(e ->
+                    packageAttachmentService.deleteBoardAttachment(e.getPackageAttachmentId()));
+        }
+
         // 첨부파일 저장
         if (feedRepository.update(feed) > 0) {
             if(files != null) packageAttachmentService.savePostAttachments(files, feed);
@@ -227,11 +236,14 @@ public class FeedServiceImpl implements FeedService{
     @Override
     public boolean deleteById(int id) {
         Feed feed = new Feed();
-        // 첨부파일 삭제
 
+        // 첨부파일 삭제
         List<PackagePostAttachment> attachments = packageAttachmentService.findByPackageId(id);
 
-        feedRepository.deleteAttachmentByBoardId(id);
+        if(!attachments.isEmpty()) {
+            attachments.forEach(e ->
+                    packageAttachmentService.deleteBoardAttachment(e.getPackageAttachmentId()));
+        }
 
         // 피드 삭제
         return feedRepository.delete(id) > 0;
