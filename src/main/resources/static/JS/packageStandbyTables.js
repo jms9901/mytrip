@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     console.log("JavaScript Loaded");
 
-    let previouslyFocusedElement = null; // 이전 포커스된 요소 저장
+
 
     // 모달 요소 및 버튼 가져오기
     const modal = document.getElementById('exampleModal');
@@ -14,6 +14,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
     let currentIndex = 0;
+
+    let modalPackageId = null; // 패키지 ID 저장
+    let previouslyFocusedElement = null; // 이전 포커스된 요소 저장
 
     // 모달 열기 이벤트
     modal.addEventListener('show.bs.modal', () => {
@@ -34,6 +37,8 @@ document.addEventListener('DOMContentLoaded', function () {
         if (previouslyFocusedElement) {
             previouslyFocusedElement.focus();
         }
+
+        modalPackageId = null;
     });
 
     // 테이블 내 버튼 클릭 이벤트 처리
@@ -42,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function () {
             console.log("Package details button clicked:", event.target);
 
             // 데이터 가져오기
-            const packageId = event.target.getAttribute('data-packageid') || '[데이터 없음]';
+            const modalPackageId = event.target.getAttribute('data-packageid') || '[데이터 없음]';
             const userName = event.target.getAttribute('data-username') || '[데이터 없음]';
             const packageTitle = event.target.getAttribute('data-packagetitle') || '[데이터 없음]';
             const packageContent = event.target.getAttribute('data-packagecontent') || '[데이터 없음]';
@@ -53,6 +58,8 @@ document.addEventListener('DOMContentLoaded', function () {
             const packageRegDate = event.target.getAttribute('data-packageregdate') || '[데이터 없음]';
             const packageStatus = event.target.getAttribute('data-packagestatus') || '';
 
+            console.log("Package ID:", modalPackageId);
+
             // 모달 데이터 업데이트
             document.getElementById('modalUsername').textContent = userName;
             document.getElementById('modalPackageTitle').textContent = packageTitle;
@@ -62,31 +69,49 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('modalPackageStartDay').textContent = packageStartDay;
             document.getElementById('modalPackageEndDay').textContent = packageEndDay;
             document.getElementById('modalPackageRegDate').textContent = packageRegDate;
-            document.getElementById('modalPackageId').textContent = packageId;
 
             // 슬라이더 초기화
-            fetch(`/admin/packageAttachments/${packageId}`)
-                .then(response => response.json())
+            fetch(`/admin/packageAttachments/${modalPackageId}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
                 .then(attachments => {
-                    imageContainer.innerHTML = ''; // 기존 이미지 제거
+                    imageContainer.innerHTML = ''; // 기존 이미지 초기화
+                    console.log("Attachments received:", attachments); // 디버깅
+
                     if (attachments && attachments.length > 0) {
                         attachments.forEach(attachment => {
-                            const img = document.createElement('img');
-                            img.src = `/img/${attachment.fileName.trim()}`; // 서버의 업로드 디렉토리 경로
-                            img.alt = '첨부 이미지';
-                            img.style.width = '100%';
-                            img.style.flexShrink = '0';
-                            imageContainer.appendChild(img);
+                            try {
+                                const img = document.createElement('img');
+                                const imagePath = `/img/${attachment.fileName.trim()}`;
+                                img.src = imagePath;
+                                img.alt = '첨부 이미지';
+                                img.style.width = '100%';
+                                img.style.flexShrink = '0';
+
+                                img.onload = () => console.log(`Image loaded: ${img.src}`);
+                                img.onerror = () => console.error(`Image failed to load: ${img.src}`);
+
+                                imageContainer.appendChild(img);
+                            } catch (error) {
+                                console.error("Error adding image to container:", error);
+                            }
                         });
-                        showSlide(0); // 슬라이더 초기화
                     } else {
+                        console.warn("No attachments found.");
                         imageContainer.innerHTML = '<p>첨부파일이 없습니다.</p>';
                     }
+
+                    console.log("Final imageContainer HTML:", imageContainer.innerHTML); // 확인
                 })
                 .catch(error => {
-                    console.error('Error fetching attachments:', error);
-                    alert('첨부파일 정보를 불러오는 중 오류가 발생했습니다.');
+                    console.error("Error in fetch or DOM update:", error);
                 });
+
+
 
             // 버튼 초기화
             approveButton.style.display = 'none';
@@ -103,13 +128,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // 버튼 클릭 이벤트 추가
             approveButton.onclick = function () {
-                updatePackageStatus(packageId, '승인');
+                updatePackageStatus(modalPackageId, '승인');
             };
             rejectButton.onclick = function () {
-                updatePackageStatus(packageId, '미승인');
+                updatePackageStatus(modalPackageId, '미승인');
             };
             deleteButton.onclick = function () {
-                deletePackage(packageId);
+                deletePackage(modalPackageId);
             };
         }
     });
@@ -145,13 +170,13 @@ document.addEventListener('DOMContentLoaded', function () {
     showSlide(currentIndex);
 
     // 패키지 상태 업데이트 요청
-    function updatePackageStatus(packageId, newStatus) {
+    function updatePackageStatus(modalPackageId, newStatus) {
         fetch('/admin/updatePackageStatus', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
-            body: new URLSearchParams({ packageId, newStatus }),
+            body: new URLSearchParams({ modalPackageId, newStatus }),
         })
             .then(response => response.text())
             .then(data => {
@@ -165,14 +190,14 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // 패키지 삭제 요청
-    function deletePackage(packageId) {
+    function deletePackage(modalPackageId) {
         if (confirm('정말로 이 패키지를 삭제하시겠습니까?')) {
             fetch('/admin/deletePackage', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
                 },
-                body: new URLSearchParams({ packageId }),
+                body: new URLSearchParams({ modalPackageId }),
             })
                 .then(response => response.text())
                 .then(data => {
