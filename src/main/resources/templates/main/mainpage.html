@@ -36,7 +36,7 @@
                 <sec:authorize access="isAuthenticated()">
                     <a th:href="@{/flight/search}" class="top-menu">항공권 조회</a>
                 </sec:authorize>
-                <a sec:authorize="isAnonymous()" th:href="@{/user/login}" class="top-menu">login</a>
+                <a sec:authorize="isAnonymous()" th:href="@{/user/login}" class="top-menu" style="margin-left: 600px;">login</a>
                 <form th:action="@{/user/mypage}" method="GET" sec:authorize="isAuthenticated()">
                     <button type="submit" class="mypage ">Mypage</button></form>
                 <!--                <form th:action="@{/user/logout}" method="POST" sec:authorize="isAuthenticated()" th:with="user=${#authentication.getPrincipal()}">-->
