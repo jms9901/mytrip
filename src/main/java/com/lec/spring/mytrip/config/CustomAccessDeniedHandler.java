@@ -37,6 +37,8 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
                 response.getWriter().write("<script>alert('관리자의 승인이 필요합니다. 관리자에게 문의 바랍니다.'); window.location='/user/logout';</script>");
             } else if ("거절 ".equals(user.getStatus())) {
                 response.getWriter().write("<script>alert('관리자의 승인이 거절되었습니다. 관리자에게 문의 바랍니다.'); window.location='/user/logout';</script>");
+            }  else if ("ROLE_DORMANT".equals(user.getAuthorization())) {
+                response.getWriter().write("<script>alert('ROLE_DORMANT 권한으로 접근할 수 없습니다. 관리자에게 문의 바랍니다.'); window.location='/user/logout';</script>");
             }
             else {
                 response.getWriter().write("<script>alert('접근 권한이 없습니다. 로그인 페이지로 이동합니다.'); window.location='/user/logout';</script>");

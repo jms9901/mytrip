@@ -27,7 +27,7 @@ public class UserStatusVoter implements AccessDecisionVoter<Object> {
             User user =  principalDetails.getUser();
 
             // 사용자 상태에 따른 접근 제한 로직 추가
-            if (("ROLE_BUSINESS".equals(user.getAuthorization()) && "대기".equals(user.getStatus())) || ("ROLE_BUSINESS".equals(user.getAuthorization()) && "거절".equals(user.getStatus()))) {
+            if (("ROLE_BUSINESS".equals(user.getAuthorization()) && "대기".equals(user.getStatus())) || ("ROLE_BUSINESS".equals(user.getAuthorization()) && "거절".equals(user.getStatus())) || "ROLE_DORMANT".equals(user.getAuthorization())) {
                 return ACCESS_DENIED;
             }
         }
