@@ -50,8 +50,18 @@ public class UserController {
 
         System.out.println("Session ID : " + session.getId());
         System.out.println("Logged User: " + loggedUser);
+
+        // 세션에서 사용자 ID 가져오기
+        if (loggedUser != null) {
+            System.out.println("Logged User ID: " + loggedUser.getId());
+            System.out.println("Logged User Name: " + loggedUser.getName());
+        } else {
+            System.out.println("No logged user found in session.");
+        }
+
         return "user/home";
     }
+
 
 
     // 로그인 페이지

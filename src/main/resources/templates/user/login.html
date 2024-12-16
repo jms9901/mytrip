@@ -98,7 +98,8 @@
             <input type="date" name="birthday" required th:value="${user?.birthday}"/>
           </label>
           <div class="row mt-5">
-            <div class="col-12 text-danger" th:text="${error}"></div>
+            <div class="col-12 text-danger" th:text="${error}">
+            </div>
           </div>
           <button id="submit2" type="submit" class="submit">Sign Up</button>
         </div>

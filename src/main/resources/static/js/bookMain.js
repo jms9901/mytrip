@@ -1,5 +1,6 @@
 const currentUrl = window.location.pathname;  // 예시: "/mypage/1"
 const userId = parseInt(currentUrl.substring(currentUrl.lastIndexOf('/') + 1)); // 문자열을 숫자로 변환
+let ownUser =false;
 
 document.addEventListener('DOMContentLoaded', function () {
     const currentUrl = window.location.pathname;
@@ -17,13 +18,16 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     let loguser;  // 전역 변수로 선언
-// Fetch the user ID after login
+
+
+
     fetch('loginuserid')
         .then(response => response.json())
         .then(data => {
             loguser = data.userId;  // Assign the userId to loguser
-            console.log('User ID:', loguser); // Output the loguser value
 
+            console.log('User ID:', loguser); // Output the loguser value
+            let ownUser = (loguser === userId);
             // Add event listener to the form after loguser is set
             document.getElementById("sendFriendRequestForm").addEventListener("submit", (event) => {
                 event.preventDefault();
@@ -31,12 +35,13 @@ document.addEventListener('DOMContentLoaded', function () {
                     fromUserId: loguser,  // Use the fetched loguser here
                     toUserId: userId      // Make sure UserId is available in the scope
                 });
+                ownUser = (loguser===userId);
+                console.log(ownUser);
                 sendRequest("send", params);
             });
 
         })
         .catch(error => console.error('Error:', error));
-
 
 
     // 도시 좋아요 목록을 가져오는 API 호출
@@ -354,6 +359,7 @@ function submitUserChanges() {
 
 
 function loadApp() {
+    console.log(ownUser);
 
     // Create the flipbook
 
@@ -387,6 +393,7 @@ function loadApp() {
             $('.menu4').show();
             $('.menu5').show();
         } else if (page === 1) {
+
             $('.menu1').hide();
             $('.menu2').hide();
             $('.menu3').hide();
