@@ -30,8 +30,8 @@
         <result column="board_date" property="date" />
         <result column="board_category" property="category" />
         <result column="user_name" property="userName" />
+        <result column="city_name" property="cityName" />
     </resultMap>
-
 
 
     <resultMap id="PackagePostResultMap" type="com.lec.spring.mytrip.domain.PackagePost">

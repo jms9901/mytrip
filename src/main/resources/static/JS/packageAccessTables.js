@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function () {
             console.log("Package details button clicked:", event.target);
 
             // 데이터 가져오기
-            modalPackageId = event.target.getAttribute('data-packageid');
+            const modalPackageId = event.target.getAttribute('data-packageid');
             const userName = event.target.getAttribute('data-username') || '[데이터 없음]';
             const packageTitle = event.target.getAttribute('data-packagetitle') || '[데이터 없음]';
             const packageContent = event.target.getAttribute('data-packagecontent') || '[데이터 없음]';
