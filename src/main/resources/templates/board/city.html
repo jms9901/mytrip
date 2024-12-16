@@ -107,13 +107,14 @@
             </div>
 
             <h2 class="mt-4">Groups</h2>
+            <div id="groupWrite"><a th:href="@{|/borad/city/${cityId}/group/write|}" class="btn btn-primary">Write</a></div>
             <div class="slider-container">
                 <button class="slider-btn prev-btn" onclick="moveSlide('groups', -1)">&#10094;</button>
                 <div class="slider" id="groups">
                     <div class="slider-item" th:each="feed : ${feeds}">
                         <div class="card package-card">
                             <div class="card-body">
-                                <a th:href="@{|${cityId}/group/detail/${feed.boardId}|}" th:text="${feed.boardSubject}"></a>
+                                <a th:href="@{|/board/city/${cityId}/group/detail/${feed.boardId}|}" th:text="${feed.boardSubject}"></a>
                                 <br><br><br><br><br>
                                 <button class="packageLikeButton btn" type="button" th:data-package-id="${feed.boardId}">
                                     <i class="bi bi-heart"></i>

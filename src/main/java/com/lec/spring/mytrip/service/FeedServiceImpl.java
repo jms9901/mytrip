@@ -6,6 +6,7 @@ import com.lec.spring.mytrip.domain.PostAttachment;
 import com.lec.spring.mytrip.domain.User;
 import com.lec.spring.mytrip.repository.FeedRepository;
 import com.lec.spring.mytrip.repository.UserRepository;
+import com.lec.spring.mytrip.util.U;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -99,8 +100,16 @@ public class FeedServiceImpl implements FeedService {
         Feed feed = feedRepository.findById(id);
         if (feed != null) {
             feed.setAttachments(feedRepository.findAttachmentByBoardId(id));
-        }
+//            User user = U.getLoggedUser();
+            User user = User.builder()
+                    .id(1)
+                    .name("이경원")
+                    .email("wonwon123123@naver.com")
+                    .build();
+            feed.setUser(user);
         return feed;
+        }
+        return null;
     }
 
 

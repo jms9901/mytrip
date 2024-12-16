@@ -16,23 +16,23 @@
 <main class="container my-4">
     <!-- 게시글 상단 -->
     <section class="border p-3 mb-4">
-        <h2 id="title">제목</h2>
+        <h2 id="title" th:text="${feed.boardSubject}"></h2>
         <div class="d-flex justify-content-between">
             <div>
-                <p>작성자: <span id="author">작성자 이름</span></p>
-                <p>작성 시간: <span id="createdAt">2024-12-12</span></p>
+                <p>작성자: <span id="author" th:text="${feed.user.name}"></span></p>
+                <p>작성 시간: <span id="createdAt" th:text="${feed.boardDate}"></span></p>
             </div>
             <div>
-                <button class="btn btn-warning btn-sm">수정</button>
-                <button class="btn btn-danger btn-sm">삭제</button>
-                <button class="btn btn-secondary btn-sm">신고</button>
+                <a class="btn btn-warning btn-sm">수정</a>
+                <a class="btn btn-danger btn-sm">삭제</a>
+                <a class="btn btn-secondary btn-sm">신고</a>
             </div>
         </div>
     </section>
 
     <!-- 본문 -->
     <section class="border p-3 mb-4">
-        <p id="content">본문 내용이 여기에 표시됩니다.</p>
+        <p id="content" th:utext="${feed.boardContent}"></p>
     </section>
 
     <!-- 댓글 섹션 -->
@@ -59,17 +59,17 @@
     </section>
 
     <!-- 하단 이미지 슬라이더 -->
-    <section class="border p-3 mt-4">
-        <h3>첨부 사진</h3>
-        <div class="d-flex justify-content-center">
-            <button class="btn btn-secondary">〈</button>
-            <div class="d-flex overflow-hidden mx-2" style="width: 300px;">
-                <img src="sample1.jpg" alt="Sample 1" class="img-fluid mx-1">
-                <img src="sample2.jpg" alt="Sample 2" class="img-fluid mx-1">
-            </div>
-            <button class="btn btn-secondary">〉</button>
-        </div>
-    </section>
+<!--    <section class="border p-3 mt-4">-->
+<!--        <h3>첨부 사진</h3>-->
+<!--        <div class="d-flex justify-content-center">-->
+<!--            <button class="btn btn-secondary">〈</button>-->
+<!--            <div class="d-flex overflow-hidden mx-2" style="width: 300px;">-->
+<!--                <img src="sample1.jpg" alt="Sample 1" class="img-fluid mx-1">-->
+<!--                <img src="sample2.jpg" alt="Sample 2" class="img-fluid mx-1">-->
+<!--            </div>-->
+<!--            <button class="btn btn-secondary">〉</button>-->
+<!--        </div>-->
+<!--    </section>-->
 </main>
 
 <!-- Footer -->
