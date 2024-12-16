@@ -124,7 +124,7 @@ public class BusinessMypageController {
     @GetMapping("/business/profile/{userId}")
     @ResponseBody
     public ResponseEntity<?> updateCompanyProfile(
-            @AuthenticationPrincipal User user,
+            @PathVariable("id") int id,
             @RequestParam(required = false) String currentPassword,
             @RequestParam(required = false) String newPassword,
             @RequestParam(required = false)MultipartFile profileImage
@@ -132,7 +132,7 @@ public class BusinessMypageController {
          try {
              String profileImageFilename = profileImage != null ? profileImage.getOriginalFilename() : null;
             User result = businessMypageService.updateCompany(
-                    user.getId(),
+                    id,
                     currentPassword,
                     newPassword,
                     profileImage,

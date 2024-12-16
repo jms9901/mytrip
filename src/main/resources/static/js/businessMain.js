@@ -230,113 +230,113 @@ function getStatusClass(status) {
 }
 
 // 결제 버튼 모달
-    document.addEventListener('DOMContentLoaded', function() {
-        // 결제 버튼 이벤트 리스너
-        const paymentButton = document.getElementById('package-payment-button');
-        const payments = document.querySelector('.paymentList');
+document.addEventListener('DOMContentLoaded', function() {
+    const paymentButton = document.getElementById('package-payment-button');
+    const payments = document.querySelector('.paymentList');
 
-        if (paymentButton) {
-            paymentButton.addEventListener('click', function () {
-                fetch(`payments/${userId}`, {
-                    method: 'GET',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
+    if (paymentButton) {
+        paymentButton.addEventListener('click', function () {
+            fetch(`/mypage/business/payments/${userId}`, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => {
+                    console.log("결제 내역 서버 응답: ", response);
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status} / 결제 정보를 불러올 수 없습니다.`);
+                    }
+                    return response.json();
+                })
+                .then(paymentData => {
+                    console.log("결제 내역 데이터: ", paymentData);
+                    const paymentModal = document.getElementById('payment-modal');
+
+                    // 항상 테이블을 초기화하고 기본 구조를 유지
+                    payments.innerHTML = `
+                        <div class="modal hidden" id="payment-modal">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <span class="close-button">&times;</span>
+                                    <div class="modal-title">결제 정보</div>
+
+                                    <label for="payment-select" id="payment-status">
+                                        <select name="payment-select" id="payment-status" class="pay-status-select">
+                                            <option value="" selected>전체</option>
+                                            <option value="complete">결제 완료</option>
+                                            <option value="cancel">결제 취소</option>
+                                        </select>
+                                    </label>
+
+                                    <table class="payment-table">
+                                        <thead>
+                                            <tr class="table-header">
+                                                <th>사용자명</th>
+                                                <th>패키지명</th>
+                                                <th>결제 금액</th>
+                                                <th>결제 상태</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            ${paymentData.length === 0
+                        ? `<tr><td colspan="4" style="text-align:center;">결제 내역이 없습니다.</td></tr>`
+                        : paymentData.map(payments => `
+                                                    <tr>
+                                                        <td>${payments.username}</td>
+                                                        <td>${payments.packageTitle}</td>
+                                                        <td>${payments.totalCost}</td>
+                                                        <td class="pay-status ${getPaymentStatusClass(payments.paymentStatus)}">
+                                                            ${getPaymentStatusText(payments.paymentStatus)}
+                                                        </td>
+                                                    </tr>
+                                                `).join('')}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+
+                    // 모달 표시
+                    if (paymentModal) {
+                        paymentModal.style.display = 'block';
+
+                        // 닫기 버튼 이벤트 등록
+                        const paymentClose = paymentModal.querySelector('.close-button');
+                        paymentClose.addEventListener('click', function () {
+                            paymentModal.style.display = 'none';
+                        });
                     }
                 })
-                    .then(response => {
-                        console.log("결제 내역 서버 응답: ", response);
-                        if (!response.ok) {
-                            throw new Error(`HTTP error! status: ${response.status} / 결제 정보를 불러올 수 없습니다.`);
-                        }
-                        return response.json();
-                    })
-                    .then(paymentData => {
-                        console.log("결제 내역 데이터: ", paymentData)
-                        const paymentModal = document.getElementById('payment-modal');
-
-                        if(paymentData.length === 0) {
-                            payments.innerHTML = '<p>결제 내역이 없습니다.</p>'
-                        } else {
-                            // 결제 데이터로 테이블 업데이트
-                            payments.innerHTML = paymentData.map(payments => `
-                                <div id="payment-modal" class="modal hidden">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <span class="close-button">&times;</span>
-                                            <div class="modal-title">결제 정보</div>
-
-                                            <label for="payment-select" id="payment-status">
-                                                <select name="payment-select" id="payment-status" class="pay-status-select">
-                                                    <option value="" selected>전체</option>
-                                                    <option value="complete">결제 완료</option>
-                                                    <option value="cancel">결제 취소</option>
-                                                </select>
-                                            </label>
-
-                                            <table class="payment-table">
-                                                <thead>
-                                                    <tr class="table-header">
-                                                        <th>사용자명</th>
-                                                        <th>패키지명</th>
-                                                        <th>결제 금액</th>
-                                                        <th>결제 상태</th>
-                                                    </tr>
-                                                </thead>
-
-                                                <tbody>
-                                                    <tr>
-                                                        <td>[[${payments.username}]]</td>
-                                                        <td>[[${payments.packageTitle}]]</td>
-                                                        <td>[[${payments.totalCost}]]</td>
-                                                        <td class="pay-status ${getPaymentStatusClass(payments.paymentStatus)}">[[${getPaymentStatusText(payments.paymentStatus)}]]</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                                `).join('');
-                            }
-
-                        // 모달 표시
-                        if(paymentModal) {
-                            paymentModal.style.display = 'block';
-
-                            // 닫기 버튼 이벤트 등록
-                            const paymentClose = paymentModal.querySelector('.close-button');
-                            paymentClose.addEventListener('click', function () {
-                                paymentModal.style.display = 'none';
-                            });
-                        }
-
-                    })
-                    .catch(error => {
-                        console.error("결제 정보 로딩 중 오류 발생", error);
-                        if(!payments.innerHTML) {
-                            payments.innerHTML = '<p>결제 정보를 불러오는 중 오류가 발생했습니다.</p>';
-                        }
-                    });
-            });
-        }
-
-// 결제 상태 필터링
-        const payStatusSelect = document.querySelector('.pay-status-select');
-        if (payStatusSelect) {
-            payStatusSelect.addEventListener('change', function () {
-                const selectedStatus = this.value;
-                const paymentRows = document.querySelectorAll('.payment-table tbody tr');
-
-                paymentRows.forEach(row => {
-                    const statusCell = row.querySelector('.pay-status');
-                    if (selectedStatus === '' || statusCell.textContent.trim() === selectedStatus) {
-                        row.style.display = '';
-                    } else {
-                        row.style.display = 'none';
+                .catch(error => {
+                    console.error("결제 정보 로딩 중 오류 발생", error);
+                    if (!payments.innerHTML) {
+                        payments.innerHTML = '<p>결제 정보를 불러오는 중 오류가 발생했습니다.</p>';
                     }
                 });
+        });
+    }
+
+    // 결제 상태 필터링
+    const payStatusSelect = document.querySelector('.pay-status-select');
+    if (payStatusSelect) {
+        payStatusSelect.addEventListener('change', function () {
+            const selectedStatus = this.value;
+            const paymentRows = document.querySelectorAll('.payment-table tbody tr');
+
+            paymentRows.forEach(row => {
+                const statusCell = row.querySelector('.pay-status');
+                if (selectedStatus === '' || statusCell.textContent.trim() === selectedStatus) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
             });
-        }
+        });
+    }
+});
 
 // 상태에 따른 한국어 텍스트 반환하는 함수 추가 -> 결제 상태
         function getPaymentStatusText(status) {
@@ -368,6 +368,8 @@ function getStatusClass(status) {
             const profileUpdateModal = document.getElementById('modalOverlay');
             const userInfo = document.querySelector('.userInfo');
 
+            console.log("userId 추출: ", userId);
+
             // 날짜 포맷팅 함수
             function formatDate(dateString) {
                 const date = new Date(dateString);
@@ -383,7 +385,7 @@ function getStatusClass(status) {
             // 프로필 수정 모달 열기
             userProfile.addEventListener('click', function () {
                 // 사용자 프로필 정보 불러오기
-                fetch(`profile/${userId}`, {
+                fetch(`/mypage/business/profile/${userId}`, {
                     method: 'GET',
                     headers: {
                         'Accept': 'application/json',
@@ -474,14 +476,15 @@ function getStatusClass(status) {
                         // 프로필 제출 버튼 이벤트
                         submitButton.addEventListener('click', function (event) {
                             event.preventDefault();
-                            const currentPassword = profileUpdateModal.querySelector('input[type="password"]').value;
+                            const currentPassword = profileUpdateModal.querySelector('#password').value;
                             const newPassword = newPasswordInput.value;
+
 
                             const formData = new FormData();
                             formData.append('currentPassword', currentPassword);
                             formData.append('newPassword', newPassword);
 
-                            fetch(`profile/${userId}`, {
+                            fetch(`/mypage/business/profile/${userId}`, {
                                 method: 'POST',
                                 headers: {
                                     'Accept': 'application/json',
@@ -528,14 +531,13 @@ function getStatusClass(status) {
         })
 
 // 홈버튼 클릭 시 이동
-        document.addEventListener('DOMContentLoaded', function () {
-            // 홈버튼 클릭 시 해당 홈으로 이동 url
-            const homeLogoButton = document.querySelector('.homeLogo-Button');
-            if (homeLogoButton) {
-                homeLogoButton.addEventListener('click', function () {
-                    window.location.href = '/'; // 홈페이지로 이동
-                });
-            }
-        })
-    })
+document.addEventListener('DOMContentLoaded', function () {
+    // 홈버튼 클릭 시 해당 홈으로 이동 url
+    const homeLogoButton = document.querySelector('.homeLogo-Button');
+    if (homeLogoButton) {
+        homeLogoButton.addEventListener('click', function () {
+            window.location.href = '/'; // 홈페이지로 이동
+        });
+    }
+})
 

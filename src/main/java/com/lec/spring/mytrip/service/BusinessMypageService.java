@@ -41,7 +41,7 @@ public class BusinessMypageService {
     }
 
     // 사용자 정보 가져오기
-    public User getUserById(int userId) {return userRepository.findById(userId);}
+    public User getUserById(int id) {return userRepository.findById(id);}
 
     // 개인정보 수정
     // 비밀번호, 프로필 수정
