@@ -62,6 +62,9 @@ DROP TABLE IF EXISTS guest_book;
 DROP TABLE IF EXISTS messageroom;
 DROP TABLE IF EXISTS message;
 
+SELECT * FROM guest_book WHERE to_user_id = 1;
+alter table user
+add column user_status varchar(20);
 
 insert into user_city
 values(19,3,'2024-12-10'),
@@ -91,3 +94,8 @@ HAVING COUNT(*) > 1;
 update user
 set user_status = '거절'
 where user_id = 33;
+ALTER TABLE user MODIFY COLUMN user_authorization VARCHAR(255) DEFAULT 'ROLE_USER';
+SELECT user_name, user_username, user_profile FROM user WHERE user_id = 3;
+select * from friendship;
+SELECT * FROM board WHERE board_id = 121;
+ALTER TABLE board AUTO_INCREMENT = 119;

@@ -7,7 +7,7 @@ values ('fullstackK08@naver.com',
         '2000-04-24',
         '',
         '',
-        '',
+        '나는 이경원이다',
         'admin'
         ),
         (
@@ -21,8 +21,6 @@ values ('fullstackK08@naver.com',
          '',
          'user'
         );
-
-
 
 # business 데이터
 insert into user (user_email, user_password,user_username,user_name,user_authorization,business_companynumber)
@@ -505,22 +503,6 @@ VALUES
      (60, '/img/GuamImg.jpg');
 
 
-INSERT INTO user_city (user_id, city_id, created_date)
-VALUES
-    (1, 5, DATE_SUB(NOW(), INTERVAL 1 DAY)),
-    (2, 5, DATE_SUB(NOW(), INTERVAL 1 DAY)),
-    (2, 5, DATE_SUB(NOW(), INTERVAL 1 DAY)),
-    (1, 7, DATE_SUB(NOW(), INTERVAL 1 DAY)),
-    (1, 7, DATE_SUB(NOW(), INTERVAL 1 DAY)),
-    (2, 7, DATE_SUB(NOW(), INTERVAL 1 DAY)),
-    (2, 9, DATE_SUB(NOW(), INTERVAL 1 DAY)),
-    (1, 9, DATE_SUB(NOW(), INTERVAL 1 DAY)),
-    (2, 9, DATE_SUB(NOW(), INTERVAL 1 DAY)),
-    (2, 9, DATE_SUB(NOW(), INTERVAL 1 DAY)),
-    (1, 9, DATE_SUB(NOW(), INTERVAL 1 DAY)),
-    (2, 9, DATE_SUB(NOW(), INTERVAL 1 DAY)),
-    (2, 9, DATE_SUB(NOW(), INTERVAL 1 DAY));
-
 # 공항 정보 테이블
 INSERT INTO airport (airport_code, airport_name, airport_city, airport_country)
 VALUES
@@ -558,3 +540,114 @@ VALUES
     ('SPN', '사이판 국제공항', '사이판', '미국'),
     ('SYD', '시드니 공항', '시드니', '호주')
 ;
+
+# 피드 더미
+INSERT INTO board (user_id, city_id, board_subject, board_content, board_category)
+VALUES
+    (1, 2, '제목', '내애용', '피드'),
+    (2, 5, '제목', '내애용', '피드'),
+    (1, 10, '제목', '내애용', '피드'),
+    (3, 23, '제목', '내애용', '소모임'),
+    (1, 2, '제목', '내애용', '소모임'),
+    (2, 2, '제목', '내애용', '소모임'),
+    (2, 22, '제목', '내애용', '피드'),
+    (2, 5, '제목', '내애용', '피드'),
+    (1, 10, '제목', '내애용', '피드'),
+    (3, 23, '제목', '내애용', '소모임'),
+    (1, 2, '제목', '내애용', '피드'),
+    (2, 16, '제목', '내애용', '소모임'),
+    (2, 30, '제목', '내애용', '소모임'),
+    (2, 5, '제목', '내애용', '소모임'),
+    (1, 10, '제목', '내애용', '피드'),
+    (3, 19, '제목', '내애용', '소모임'),
+    (1, 2, '제목', '내애용', '소모임'),
+    (2, 26, '제목', '내애용', '피드'),
+    (2, 30, '제목', '내애용', '피드'),
+    (2, 5, '제목', '내애용', '피드'),
+    (1, 10, '제목', '내애용', '소모임'),
+    (3, 23, '제목', '내애용', '피드'),
+    (1, 29, '제목', '내애용', '피드'),
+    (2, 2, '제목', '내애용', '피드'),
+    (2, 30, '제목', '내애용', '피드'),
+    (3, 31, '제목', '내애용', '소모임'),
+    (3, 23, '제목', '내애용', '피드'),
+    (3, 4, '제목', '내애용', '피드')
+;
+
+INSERT INTO package (city_id, user_id, package_content, package_status, package_title, package_cost, package_maxpeople, package_start_day, package_end_day)
+VALUES
+    (1, 3, '보온무운', '대기', '제에에ㅔ목', 123456, 10, '2024-12-01', '2024-12-12'),
+    (1, 3, '보온무운', '대기', '제에에ㅔ목', 123456, 10, '2024-12-02', '2024-12-12'),
+    (1, 3, '보온무운', '대기', '제에에ㅔ목', 6578657, 10, '2024-12-03', '2024-12-12'),
+    (1, 3, '보온무운', '대기', '제에에ㅔ목', 435376, 10, '2024-12-04', '2024-12-12'),
+    (1, 3, '보온무운', '대기', '제에에ㅔ목', 2345755, 10, '2024-12-05', '2024-12-12'),
+    (1, 3, '보온무운', '대기', '제에에ㅔ목', 3246, 10, '2024-12-06', '2024-12-12'),
+    (1, 3, '보온무운', '대기', '제에에ㅔ목', 34226, 10, '2024-12-07', '2024-12-12'),
+    (1, 3, '보온무운', '대기', '제에에ㅔ목', 34225, 10, '2024-12-08', '2024-12-12'),
+    (1, 3, '보온무운', '대기', '제에에ㅔ목', 123456, 10, '2024-12-09', '2024-12-12'),
+    (1, 3, '보온무운', '대기', '제에에ㅔ목', 123456, 10, '2024-12-10', '2024-12-12'),
+    (1, 3, '보온무운', '대기', '제에에ㅔ목', 123456, 10, '2024-12-11', '2025-01-12'),
+    (1, 3, '보온무운', '대기', '제에에ㅔ목', 213424, 10, '2024-04-12', '2024-12-12'),
+    (1, 3, '보온무운', '대기', '제에에ㅔ목', 1234544356, 10, '2024-12-13', '2024-12-12'),
+    (1, 3, '보온무운', '대기', '제에에ㅔ목', 12531234, 10, '2024-12-14', '2024-12-12'),
+    (1, 3, '보온무운', '대기', '제에에ㅔ목', 123456, 10, '2024-12-15', '2024-12-12'),
+    (1, 3, '보온무운', '대기', '제에에ㅔ목', 123456, 10, '2024-12-16', '2024-12-12'),
+    (1, 3, '보온무운', '대기', '제에에ㅔ목', 123456, 10, '2024-12-17', '2024-12-12'),
+    (1, 3, '보온무운', '대기', '제에에ㅔ목', 123456, 10, '2024-12-18', '2024-12-12')
+;
+
+insert into city_liked (user_id,city_id)
+values(1,1);
+insert into city_liked (user_id,city_id)
+values(1,2);
+insert into city_liked (user_id,city_id)
+values(1,3);
+insert into payment_info (user_id, package_id, user_count, payment_status)
+values(1,1,1,'결제완료');
+insert into payment_info (user_id, package_id, user_count, payment_status)
+values(1,2,1,'결제완료');
+insert into payment_info (user_id, package_id, user_count, payment_status)
+values(1,3,1,'결제완료');
+insert into payment_info (user_id, package_id, user_count, payment_status)
+values(1,4,1,'결제완료');
+insert into payment_info (user_id, package_id, user_count, payment_status)
+values(1,5,1,'결제완료');
+insert into payment_info (user_id, package_id, user_count, payment_status)
+                     values(1,6,1,'결제완료');
+insert into payment_info (user_id, package_id, user_count, payment_status)
+                                          values(1,7,1,'결제완료');
+insert into board_liked(user_id,board_id,board_liked_date)
+values  (1,126,now());
+insert into board_liked(user_id,board_id,board_liked_date)
+values  (1,127,now());
+insert into board_liked(user_id,board_id,board_liked_date)
+values  (1,129,now());
+insert into package_liked (user_id,package_id,package_liked_date)
+values (1,1,now());
+insert into package_liked (user_id,package_id,package_liked_date)
+values (1,2,now());
+insert into package_attachment (package_id, package_attachment_file)
+values(1,'bus.jpg');
+insert into package_liked (user_id,package_id,package_liked_date)
+values (1,3,now());
+insert into package_liked (user_id,package_id,package_liked_date)
+values (1,4,now());
+insert into package_liked (user_id,package_id,package_liked_date)
+values (1,5,now());
+insert into package_liked (user_id,package_id,package_liked_date)
+values (1,6,now());
+insert into package_liked (user_id,package_id,package_liked_date)
+values (1,7,now());
+insert into package_liked (user_id,package_id,package_liked_date)
+values (1,8,now());
+insert into package_liked (user_id,package_id,package_liked_date)
+values (1,9,now());
+insert into package_liked (user_id,package_id,package_liked_date)
+values (1,10,now());
+insert into  friendship(to_user_id, from_user_id)
+values (3,2);
+
+insert into  friendship(to_user_id, from_user_id)
+values (1,2);
+insert into  friendship(to_user_id, from_user_id)
+values (1,3);

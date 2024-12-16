@@ -2,9 +2,12 @@ package com.lec.spring.mytrip.service;
 
 import com.lec.spring.mytrip.domain.City;
 import com.lec.spring.mytrip.repository.CityRepository;
+import com.lec.spring.mytrip.repository.AipageRepository;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class CityServiceImpl implements CityService {
@@ -26,5 +29,13 @@ public class CityServiceImpl implements CityService {
         City city = cityRepository.findByCityName(cityName);
         System.out.println("여기는 서비스, 도시 리포 불러왔냐 : " + city);
         return city;
+    }
+    public List<City> findCitiesByContinentOfThisCity(int cityId) {
+        return List.of();
+    }
+
+    @Override
+    public City findCityById(int cityId) {
+        return null;
     }
 }

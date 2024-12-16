@@ -48,5 +48,22 @@
         and user_email = #{email}
     </select>
 
+    <update id="updateIntroduction">
+        UPDATE user
+        SET user_introdution = #{introduction}
+        WHERE user_id = #{userid}
+    </update>
+
+    <!-- 사용자 업데이트 -->
+    <update id="updateUser" parameterType="map">
+        UPDATE user
+        SET user_password = #{password},
+            user_introdution = #{introduction},
+            user_profile = #{profile}
+        WHERE user_id = #{userId}
+    </update>
+
+
+
+
 </mapper>
-<!--// git push를 위한 주석 241210 10:45-->
