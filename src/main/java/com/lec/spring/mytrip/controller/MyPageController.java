@@ -64,6 +64,16 @@ public class MyPageController {
         return Map.of("userId", currentLogger);
     }
 
+    @GetMapping("/loginusername")
+    @ResponseBody
+    public Map<String, String> loginUserName(HttpSession session) {
+        User loggedUserName = U.getLoggedUser();  // 사용자 정보 가져오기
+        String currentLoggerName = loggedUserName.getName();
+        System.out.println(currentLoggerName);
+        // JSON 응답 형식으로 반환
+        return Map.of("userName", currentLoggerName);
+    }
+
 
 
     @GetMapping("/{userId}/likedCity")

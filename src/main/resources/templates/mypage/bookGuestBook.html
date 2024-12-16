@@ -58,8 +58,8 @@
     <div class="modalContent" >
         <button class="closeModal" style="background: none; border: none; font-size: 20px; margin-left: 93%; ">x</button>
         <h3>Write Your Guestbook</h3>
-        <label for="guestName">Name:</label>
-        <input type="text" id="guestName" placeholder="Enter your name" style="height: 30px">
+<!--        <label for="guestName">Name:</label>-->
+<!--        <input type="text" id="guestName" placeholder="Enter your name" style="height: 30px">-->
         <br>
         <label for="guestMessage" style="margin-top: -10px" >Message:</label>
         <textarea id="guestMessage" placeholder="Write a message" style="margin-top: 20px; height: 30px"></textarea>
@@ -77,6 +77,23 @@
         const userId = getToUserIdFromUrl();
         const apiUrl =  `/bookMain/bookGuestBook`; // API URL 설정
 
+
+        fetch('../../loginuserid')
+            .then(response => response.json())
+            .then(data => {
+                const currentUrl = window.location.pathname;  // 예시: "/mypage/1"
+                const userId = parseInt(currentUrl.substring(currentUrl.lastIndexOf('/') + 1)); // 문자열을 숫자로 변환
+                loguser = data.userId;
+                ownUser = (loguser === userId);
+                console.log(ownUser);
+                console.log((userId));
+                console.log(loguser);
+                if(!ownUser){$('.menu1').hide();
+                    $('.writeGuestBook').show();
+                }
+                else {$('.menu1').show();
+                $('.writeGuestBook').hide();}
+            });
         // 앱 로드 및 초기화
         initializeApp();
 
@@ -202,13 +219,21 @@
         }
 
         function submitGuestBook() {
-            const name = $('#guestName').val();
+            // const name = $('#guestName').val();
             const message = $('#guestMessage').val();
 
-            if (name && message) {
+
+            if ( message) {
+                fetch('../../loginuserid')
+                    .then(response => response.json())
+                    .then(data => {
+                        loguser = data.userId;
+                    });
+               ownerGuestBook =  getToUserIdFromUrl();
+
                 const guestBookData = {
-                    toUserId: getToUserIdFromUrl(),
-                    fromUserId: 2,
+                    toUserId: ownerGuestBook,
+                    fromUserId: loguser,
                     guestBookContent: message
                 };
 
