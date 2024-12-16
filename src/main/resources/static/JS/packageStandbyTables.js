@@ -9,6 +9,11 @@ document.addEventListener('DOMContentLoaded', function () {
     const rejectButton = document.getElementById('rejectButton');
     const deleteButton = document.getElementById('deleteButton');
     const tableBody = document.querySelector('#datatablesSimple tbody');
+    const sliderContainer = document.getElementById('sliderContainer');
+    const imageContainer = document.getElementById('imageContainer');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    let currentIndex = 0;
 
     // 모달 열기 이벤트
     modal.addEventListener('show.bs.modal', () => {
@@ -16,12 +21,6 @@ document.addEventListener('DOMContentLoaded', function () {
         previouslyFocusedElement = document.activeElement; // 현재 포커스된 요소 저장
         modal.removeAttribute('aria-hidden'); // aria-hidden 제거
         modal.removeAttribute('inert'); // inert 제거
-
-        // 모달 내부의 첫 번째 포커스 가능한 요소로 이동
-        const focusableElement = modal.querySelector('input, [href], select, textarea, [tabindex]:not([tabindex="-1"])');
-        if (focusableElement) {
-            focusableElement.focus();
-        }
     });
 
     // 모달 닫기 이벤트
@@ -29,6 +28,7 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log("Modal is closing...");
         modal.setAttribute('aria-hidden', 'true'); // aria-hidden 추가
         modal.setAttribute('inert', ''); // inert 추가
+        imageContainer.innerHTML = ''; // 슬라이더 이미지 초기화
 
         // 이전 포커스된 요소로 복원
         if (previouslyFocusedElement) {
@@ -64,6 +64,30 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('modalPackageRegDate').textContent = packageRegDate;
             document.getElementById('modalPackageId').textContent = packageId;
 
+            // 슬라이더 초기화
+            fetch(`/admin/packageAttachments/${packageId}`)
+                .then(response => response.json())
+                .then(attachments => {
+                    imageContainer.innerHTML = ''; // 기존 이미지 제거
+                    if (attachments && attachments.length > 0) {
+                        attachments.forEach(attachment => {
+                            const img = document.createElement('img');
+                            img.src = `/img/${attachment.fileName.trim()}`; // 서버의 업로드 디렉토리 경로
+                            img.alt = '첨부 이미지';
+                            img.style.width = '100%';
+                            img.style.flexShrink = '0';
+                            imageContainer.appendChild(img);
+                        });
+                        showSlide(0); // 슬라이더 초기화
+                    } else {
+                        imageContainer.innerHTML = '<p>첨부파일이 없습니다.</p>';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching attachments:', error);
+                    alert('첨부파일 정보를 불러오는 중 오류가 발생했습니다.');
+                });
+
             // 버튼 초기화
             approveButton.style.display = 'none';
             rejectButton.style.display = 'none';
@@ -90,6 +114,36 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
+    // 슬라이더 표시 함수
+    function showSlide(index) {
+        const images = imageContainer.querySelectorAll('img');
+        if (images.length === 0) return;
+
+        if (index < 0) {
+            currentIndex = images.length - 1;
+        } else if (index >= images.length) {
+            currentIndex = 0;
+        } else {
+            currentIndex = index;
+        }
+
+        const offset = -currentIndex * sliderContainer.clientWidth;
+        imageContainer.style.transform = `translateX(${offset}px)`;
+    }
+
+    // 이전 버튼 클릭 이벤트
+    prevBtn.addEventListener('click', function () {
+        showSlide(currentIndex - 1);
+    });
+
+    // 다음 버튼 클릭 이벤트
+    nextBtn.addEventListener('click', function () {
+        showSlide(currentIndex + 1);
+    });
+
+    // 첫 번째 슬라이드 표시
+    showSlide(currentIndex);
+
     // 패키지 상태 업데이트 요청
     function updatePackageStatus(packageId, newStatus) {
         fetch('/admin/updatePackageStatus', {
@@ -97,14 +151,14 @@ document.addEventListener('DOMContentLoaded', function () {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
-            body: new URLSearchParams({ packageId: packageId, newStatus: newStatus }),
+            body: new URLSearchParams({ packageId, newStatus }),
         })
-            .then((response) => response.text())
-            .then((data) => {
+            .then(response => response.text())
+            .then(data => {
                 alert(data);
                 location.reload();
             })
-            .catch((error) => {
+            .catch(error => {
                 console.error('Error updating status:', error);
                 alert('상태 변경 중 오류가 발생했습니다.');
             });
@@ -118,14 +172,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
                 },
-                body: new URLSearchParams({ packageId: packageId }),
+                body: new URLSearchParams({ packageId }),
             })
-                .then((response) => response.text())
-                .then((data) => {
+                .then(response => response.text())
+                .then(data => {
                     alert(data);
                     location.reload();
                 })
-                .catch((error) => {
+                .catch(error => {
                     console.error('Error deleting package:', error);
                     alert('패키지 삭제 중 오류가 발생했습니다.');
                 });

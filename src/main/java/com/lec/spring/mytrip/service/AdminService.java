@@ -25,6 +25,7 @@ public interface AdminService {
     void updatePackageStatus(int packageId, String status);
     List<PackagePostAttachment> findPackageAttachments(int packageId);
 
+
     List<BoardAttachment> findBoardAttachments(int boardId);
 
 

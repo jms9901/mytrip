@@ -231,6 +231,9 @@ public class AdminController {
     }
 
 
+
+
+
     // NOTE : 패키지
 
     // 승인 처리된 package 정보 가져오기
@@ -254,14 +257,15 @@ public class AdminController {
     @ResponseBody
     public ResponseEntity<String> deletePackage(@RequestParam("packageId") int packageId) {
         try {
-            adminService.deleteBoard(packageId); // 서비스 메서드 호출
-            System.out.println("Board with ID " + packageId + " deleted successfully.");
-            return ResponseEntity.ok("Board deleted successfully!");
+            adminService.deletePackage(packageId); // 올바른 메서드 호출
+            System.out.println("Package ID " + packageId + " 삭제 성공");
+            return ResponseEntity.ok("패키지 삭제 성공");
         } catch (Exception e) {
-            System.err.println("Error deleting board: " + e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to delete board.");
+            System.err.println("패키지 삭제 도중 오류 : " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("패키지 삭제 실패 ");
         }
     }
+
 
     // 패키지 상태 변경하기
     @PostMapping("/updatePackageStatus")

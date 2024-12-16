@@ -136,6 +136,12 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+                <div id="sliderContainer" style="position: relative; width: 100%; max-width: 600px; overflow: hidden;">
+                    <div id="imageContainer" style="display: flex; transition: transform 0.5s ease-in-out;" th:href="@{/admin/boardAttachments/{boardId}}"></div>
+                    <button id="prevBtn" class="slideBtn" style="position: absolute; top: 50%; left: 10px; transform: translateY(-50%); background-color: rgba(0, 0, 0, 0.5); color: white; border: none; padding: 10px; cursor: pointer;">&#9664;</button>
+                    <button id="nextBtn" class="slideBtn" style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%); background-color: rgba(0, 0, 0, 0.5); color: white; border: none; padding: 10px; cursor: pointer;">&#9654;</button>
+                </div>
+                <p><strong></strong></p>
                 <p><strong>게시일자:</strong> <span id="modalRegDate">[데이터 없음]</span></p>
                 <p><strong>피드 제목:</strong> <span id="modalBoardSubject">[데이터 없음]</span></p> <!-- user_username 표시 -->
                 <p><strong>피드 내용:</strong> <span id="modalBoardContent">[데이터 없음]</span></p>

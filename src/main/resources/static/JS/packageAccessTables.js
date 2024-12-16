@@ -1,10 +1,16 @@
 document.addEventListener('DOMContentLoaded', function () {
-    console.log("JavaScript Loaded");
+    console.log("PackageAccessTables JavaScript Loaded");
 
-    let previouslyFocusedElement = null; // 이전 포커스된 요소 저장
-
-    // 모달 요소 가져오기
     const modal = document.getElementById('exampleModal');
+    const sliderContainer = document.getElementById('sliderContainer');
+    const imageContainer = document.getElementById('imageContainer');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const deleteButton = document.getElementById('deleteButton'); // 삭제 버튼
+    let currentIndex = 0;
+
+    let modalPackageId = null; // 패키지 ID 저장
+    let previouslyFocusedElement = null; // 이전 포커스된 요소 저장
 
     // 모달 열기 이벤트
     modal.addEventListener('show.bs.modal', () => {
@@ -12,12 +18,6 @@ document.addEventListener('DOMContentLoaded', function () {
         previouslyFocusedElement = document.activeElement; // 현재 포커스된 요소 저장
         modal.removeAttribute('aria-hidden'); // aria-hidden 제거
         modal.removeAttribute('inert'); // inert 제거
-
-        // 모달 내부의 첫 번째 포커스 가능한 요소로 이동
-        const focusableElement = modal.querySelector('input, [href], select, textarea, [tabindex]:not([tabindex="-1"])');
-        if (focusableElement) {
-            focusableElement.focus();
-        }
     });
 
     // 모달 닫기 이벤트
@@ -25,11 +25,13 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log("Modal is closing...");
         modal.setAttribute('aria-hidden', 'true'); // aria-hidden 추가
         modal.setAttribute('inert', ''); // inert 추가
+        imageContainer.innerHTML = ''; // 슬라이더 이미지 초기화
 
-        // 이전 포커스된 요소로 복원
         if (previouslyFocusedElement) {
             previouslyFocusedElement.focus();
         }
+
+        modalPackageId = null; // 모달이 닫힐 때 ID 초기화
     });
 
     // 테이블 내 버튼 클릭 이벤트 처리
@@ -38,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function () {
             console.log("Package details button clicked:", event.target);
 
             // 데이터 가져오기
-            const packageId = event.target.getAttribute('data-packageid') || '[데이터 없음]';
+            modalPackageId = event.target.getAttribute('data-packageid');
             const userName = event.target.getAttribute('data-username') || '[데이터 없음]';
             const packageTitle = event.target.getAttribute('data-packagetitle') || '[데이터 없음]';
             const packageContent = event.target.getAttribute('data-packagecontent') || '[데이터 없음]';
@@ -47,11 +49,8 @@ document.addEventListener('DOMContentLoaded', function () {
             const packageStartDay = event.target.getAttribute('data-packagestartday') || '[데이터 없음]';
             const packageEndDay = event.target.getAttribute('data-packageendday') || '[데이터 없음]';
             const packageRegDate = event.target.getAttribute('data-packageregdate') || '[데이터 없음]';
-            const packageStatus = event.target.getAttribute('data-packagestatus')
 
-            console.log("Package ID:", packageId);
-            console.log("User Name:", userName);
-            console.log("Package Title:", packageTitle);
+            console.log("Package ID:", modalPackageId);
 
             // 모달 데이터 업데이트
             document.getElementById('modalUsername').textContent = userName;
@@ -62,65 +61,38 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('modalPackageStartDay').textContent = packageStartDay;
             document.getElementById('modalPackageEndDay').textContent = packageEndDay;
             document.getElementById('modalPackageRegDate').textContent = packageRegDate;
-            document.getElementById('modalPackageId').textContent = packageId;
 
-            // 패키지 ID를 숨겨진 데이터로 저장 (삭제 시 사용)
-            document.getElementById('modalPackageId').setAttribute('data-packageid', packageId);
-
-            // 버튼 초기화
-            approveButton.style.display = 'none';
-            rejectButton.style.display = 'none';
-            deleteButton.style.display = 'none';
-
-            // 상태에 따라 버튼 표시
-            if (userStatus === '대기') {
-                approveButton.style.display = 'inline-block';
-                rejectButton.style.display = 'inline-block';
-            } else if (packageStatus === '승인' || packageStatus === '미승인') {
-                deleteButton.style.display = 'inline-block';
-            }
-
-            // 버튼 클릭 이벤트 추가
-            approveButton.onclick = function () {
-                updatePackageStatus(packageId, '승인');
-            };
-            rejectButton.onclick = function () {
-                updatePackageStatus(packageId, '미승인');
-            };
-            deleteButton.onclick = function () {
-                deleteUser(packageId);
-            };
+            // 첨부파일 가져오기 및 슬라이더 초기화
+            fetch(`/admin/packageAttachments/${modalPackageId}`)
+                .then((response) => response.json())
+                .then((attachments) => {
+                    imageContainer.innerHTML = ''; // 기존 이미지 제거
+                    if (attachments && attachments.length > 0) {
+                        attachments.forEach((attachment) => {
+                            const img = document.createElement('img');
+                            img.src = `/img/${attachment.fileName.trim()}`; // 서버의 업로드 디렉토리 경로
+                            img.alt = '첨부 이미지';
+                            img.style.width = '100%';
+                            img.style.flexShrink = '0';
+                            imageContainer.appendChild(img);
+                        });
+                        showSlide(0); // 슬라이더 초기화
+                    } else {
+                        imageContainer.innerHTML = '<p>첨부파일이 없습니다.</p>';
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error fetching attachments:', error);
+                    alert('첨부파일 정보를 불러오는 중 오류가 발생했습니다.');
+                });
         }
     });
 
-    // 패키지  상태 업데이트 요청
-    function updatePackageStatus(packageId, newStatus) {
-        fetch('/admin/updatePackageStatus', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: new URLSearchParams({ packageId: packageId, newStatus: newStatus }),
-        })
-            .then((response) => response.text())
-            .then((data) => {
-                alert(data);
-                location.reload();
-            })
-            .catch((error) => {
-                console.error('Error updating status:', error);
-                alert('상태 변경 중 오류가 발생했습니다.');
-            });
-    }
-
-    // 패키지 삭제
-    window.deletePackage = function () {
-        // 삭제를 위한 packageId를 가져오기
-        const packageId = document.getElementById('modalPackageId').getAttribute('data-packageid');
-
-        if (!packageId) {
-            console.error("Package ID not found.");
-            alert("삭제하려는 패키지 ID를 찾을 수 없습니다.");
+    // 삭제 버튼 클릭 이벤트 추가
+    deleteButton.addEventListener('click', function () {
+        if (!modalPackageId) {
+            alert('삭제하려는 패키지 ID를 찾을 수 없습니다.');
+            console.error('No package ID found for deletion.');
             return;
         }
 
@@ -130,33 +102,52 @@ document.addEventListener('DOMContentLoaded', function () {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
                 },
-                body: new URLSearchParams({
-                    packageId: packageId, // 서버로 전달할 packageId
-                }),
+                body: new URLSearchParams({ packageId: modalPackageId }),
             })
                 .then((response) => {
-                    if (response.ok) {
-                        return response.text();
+                    if (!response.ok) {
+                        throw new Error(`파일 삭제 실패: ${response.status}`);
                     }
-                    throw new Error('Failed to delete package.');
+                    return response.text();
                 })
                 .then((data) => {
                     alert(data);
-                    const modalInstance = bootstrap.Modal.getInstance(document.getElementById('exampleModal'));
-                    if (modalInstance) {
-                        modalInstance.hide(); // 모달 닫기
-                    }
-                    reloadTable(); // 테이블 리로드
+                    location.reload();
                 })
                 .catch((error) => {
-                    console.error('Error deleting package:', error);
+                    console.error('파일 삭제시 에러:', error);
                     alert('패키지 삭제 중 오류가 발생했습니다.');
                 });
         }
-    };
+    });
 
-    // 테이블 리로드
-    function reloadTable() {
-        location.reload();
+    // 슬라이더 표시 함수
+    function showSlide(index) {
+        const images = imageContainer.querySelectorAll('img');
+        if (images.length === 0) return;
+
+        if (index < 0) {
+            currentIndex = images.length - 1;
+        } else if (index >= images.length) {
+            currentIndex = 0;
+        } else {
+            currentIndex = index;
+        }
+
+        const offset = -currentIndex * sliderContainer.clientWidth;
+        imageContainer.style.transform = `translateX(${offset}px)`;
     }
+
+    // 이전 버튼 클릭 이벤트
+    prevBtn.addEventListener('click', function () {
+        showSlide(currentIndex - 1);
+    });
+
+    // 다음 버튼 클릭 이벤트
+    nextBtn.addEventListener('click', function () {
+        showSlide(currentIndex + 1);
+    });
+
+    // 첫 번째 슬라이드 표시
+    showSlide(currentIndex);
 });
