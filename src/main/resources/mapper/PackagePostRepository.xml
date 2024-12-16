@@ -111,4 +111,22 @@
         ORDER BY pk.package_id DESC
     </select>
 
+    <!-- 도시 이름과 함께 패키지 상세정보 조회 -->
+    <select id="mypagePackageDetail" resultType="com.lec.spring.mytrip.domain.PackagePost">
+        SELECT
+            p.package_id,
+            p.package_title,
+            p.package_content,
+            p.package_cost,
+            p.package_maxpeople,
+            p.package_regdate,
+            p.package_start_day,
+            p.package_end_day,
+            c.city_name
+        FROM
+            package p
+        JOIN city c
+        ON p.city_id = c.city_id
+    </select>
+
 </mapper>

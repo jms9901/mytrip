@@ -32,4 +32,7 @@ public interface PackagePostRepository {
 
     // 기업 회원이 등록한 패키지 리스트와 그에 해당 패키지의 좋아요 수
     List<PackagePost> likeCntByPackage (int userId);
+
+    // 도시 이름과 함께 패키지 상세정보 조회
+    List<PackagePost> mypagePackageDetail (int packageId);
 }

@@ -601,7 +601,7 @@ WHERE user_id = 11;
 SELECT * FROM user WHERE user_id = 10;
 SELECT * FROM user WHERE user_id = 11;;
 
-SELECT * FROM package  WHERE user_id = 9;
+SELECT city_id FROM package  WHERE user_id = 9;
 
 SELECT * FROM package;
 

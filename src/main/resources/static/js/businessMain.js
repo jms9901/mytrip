@@ -3,7 +3,10 @@ const path = window.location.pathname; // 예: "/mypage/business/123"
 const segments = path.split('/'); // 예: ["", "mypage", "business", "123"]
 
 // userId가 마지막 segment에 있다고 가정
-const userId = segments[segments.length - 1]; // 마지막 세그먼트 추출
+let userId = null;
+if (segments.length > 2) {
+    userId = segments[segments.length - 1];
+}
 
 document.addEventListener("DOMContentLoaded", function () {
     // 패키지 리스트 동적 생성 부분
@@ -65,13 +68,15 @@ document.addEventListener("DOMContentLoaded", function () {
     const packageDetailContainer = document.querySelector('.packageDetail');
     let selectedPackageId = null;   // 선택된 패키지 ID 저장
 
-    // 패키지 아이템들에 이벤트 리스너 추가
-    // const packageItems = document.querySelectorAll('.package-item');
-    // packageItems.forEach(item => {
-    //     item.addEventListener('click', function() {
-    //         selectedPackageId = this.dataset.packageId; // 선택된 패키지 ID 저장
-    //     });
-    // });
+    // ISO 8601 형식의 날짜를 yyyy-MM-dd 형식으로 변환하는 함수
+    function formatDate(dateString) {
+        if (!dateString) return ''; // 날짜가 없으면 빈 문자열 반환
+        const date = new Date(dateString);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // 월을 두 자리로 변환
+        const day = String(date.getDate()).padStart(2, '0'); // 일을 두 자리로 변환
+        return `${year}-${month}-${day}`;
+    }
 
     // 이벤트 위임으로 동적 요소 처리
     document.body.addEventListener('click', function (event) {
@@ -108,12 +113,23 @@ document.addEventListener("DOMContentLoaded", function () {
                 .then(packages => {
                     console.log("패키지 데이터 확인: ", packages);
 
+                    // 리스트 초기화
+                    packageDetailContainer.innerHTML = '';
+
+                    // 선택된 패키지 정보만 찾기
+                    const selectedPackage =  packages.find(pkg => pkg.packageId === Number(selectedPackageId));
+
+                    if (!selectedPackage) {
+                        alert('선택된 패키지 정보를 찾을 수 없습니다.');
+                        return;
+                    }
+
                     // 패키지 상세보기 데이터 렌더링
-                    packageDetailContainer.innerHTML = packages.map(packageDetail => `
-                        <div class="modal-content" data-package-id="${packageDetail.selectedPackageId}">
+                    packageDetailContainer.innerHTML = `
+                        <div class="modal-content" data-package-id="${selectedPackage.selectedPackageId}">
                             <span class="close-button">&times;</span>
-                            <div class="package-title">${packageDetail.packageTitle}</div>
-                            <div class="package-regdate"></div>
+                            <div class="package-title">${selectedPackage.packageTitle}</div>
+                            <div class="package-regdate">${formatDate(selectedPackage.packageRegdate)}</div>
 
                             <div class="modal-body">
                                 <div class="image-section">
@@ -128,49 +144,48 @@ document.addEventListener("DOMContentLoaded", function () {
                             <div class="info-section">
                                 <label for="cityName">
                                     <span>도시</span>
-                                    <input type="text" class="cityName" value="${packageDetail.cityName}">
+                                    <input type="text" id="cityName" class="cityName" value="${selectedPackage.cityName}">
                                 </label>
                                 <label for="packageStartDay" class="packageStartDay">
                                     <span>시작일</span>
-                                    <input type="date" class="packageStartDay" value="${packageDetail.packageStartDay}">
+                                    <input type="date" id="packageStartDay" class="packageStartDay" value="${formatDate(selectedPackage.packageStartDay)}">
                                 </label>
                                 <label for="packageEndDay">
                                     <span>종료일</span>
-                                    <input type="date" class="packageEndDay" value="${packageDetail.packageEndDay}">
+                                    <input type="date" id="packageEndDay" class="packageEndDay" value="${formatDate(selectedPackage.packageEndDay)}">
                                 </label>
                                 <label for="packageCost">
                                     <span>금액</span>
-                                    <input type="text" class="packageCost" value="${packageDetail.packageCost}">
+                                    <input type="text" id="packageCost" class="packageCost" value="${selectedPackage.packageCost}">
                                 </label>
                                 <label for="packageMaxpeople">
                                     <span>최대 인원</span>
-                                    <input type="number" class="packageMaxpeople" value="${packageDetail.packageMaxpeople}">
+                                    <input type="number" id="packageMaxpeople" class="packageMaxpeople" value="${selectedPackage.packageMaxpeople}">
                                 </label>
                             </div>
 
                             <div class="package-details">
                                 <label for="packageContent">
                                     <span>패키지 내용</span>
-                                    <textarea class="package-content">${packageDetail.packageContent}</textarea>
+                                    <textarea class="package-content" id="packageContent">${selectedPackage.packageContent}</textarea>
                                 </label>
                             </div>
 
                             <div class="file-attachments">
                                 <!-- 해당 패키지 이미지 첨부파일 리스트 동적 추가 -->
                             </div>
-                            <div class="attachmentInfo">해당 첨부파일 클릭 시 삭제됩니다.</div>
 
                             <form class="button-action" style="border: none;">
-                                <input type="hidden" name="cityId" value="${packageDetail.cityId}">
-                                <input type="hidden" name="packageId" value="${packageDetail.packageId}">
-                                <button type="button" class="update-button">
-                                    <img src="/img/myPageUpdate.png" alt="board-button" class="board-button">
-                                </button>
+                                <input type="hidden" name="cityId" value="${selectedPackage.cityId}">
+                                <input type="hidden" name="packageId" value="${selectedPackage.packageId}">
                             </form>
                         </div>
-                    `);
+                    `;
 
                     const packageCloseButton = packageDetailContainer.querySelector('.close-button');
+
+                    // 모달 표시
+                    packageDetailContainer.style.display = 'block';
 
                     // 패키지 모달 닫기
                     packageCloseButton.addEventListener('click', function() {
@@ -202,6 +217,7 @@ function getStatusText(status) {
 
 function getStatusClass(status) {
     switch (status) {
+
         case '승인':
             return 'status-approved';
         case '대기':
@@ -241,47 +257,47 @@ function getStatusClass(status) {
 
                         if(paymentData.length === 0) {
                             payments.innerHTML = '<p>결제 내역이 없습니다.</p>'
-                        }
+                        } else {
+                            // 결제 데이터로 테이블 업데이트
+                            payments.innerHTML = paymentData.map(payments => `
+                                <div id="payment-modal" class="modal hidden">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <span class="close-button">&times;</span>
+                                            <div class="modal-title">결제 정보</div>
 
-                        // 결제 데이터로 테이블 업데이트
-                        payments.innerHTML = paymentData.map(payments => `
-                    <div id="payment-modal" class="modal hidden">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <span class="close-button">&times;</span>
-                                <div class="modal-title">결제 정보</div>
+                                            <label for="payment-select" id="payment-status">
+                                                <select name="payment-select" id="payment-status" class="pay-status-select">
+                                                    <option value="" selected>전체</option>
+                                                    <option value="complete">결제 완료</option>
+                                                    <option value="cancel">결제 취소</option>
+                                                </select>
+                                            </label>
 
-                                <label for="payment-select" id="payment-status">
-                                    <select name="payment-select" id="payment-status" class="pay-status-select">
-                                        <option value="" selected>전체</option>
-                                        <option value="complete">결제 완료</option>
-                                        <option value="cancel">결제 취소</option>
-                                    </select>
-                                </label>
+                                            <table class="payment-table">
+                                                <thead>
+                                                    <tr class="table-header">
+                                                        <th>사용자명</th>
+                                                        <th>패키지명</th>
+                                                        <th>결제 금액</th>
+                                                        <th>결제 상태</th>
+                                                    </tr>
+                                                </thead>
 
-                                <table class="payment-table">
-                                    <thead>
-                                        <tr class="table-header">
-                                            <th>사용자명</th>
-                                            <th>패키지명</th>
-                                            <th>결제 금액</th>
-                                            <th>결제 상태</th>
-                                        </tr>
-                                    </thead>
-
-                                    <tbody>
-                                        <tr>
-                                            <td>[[${payments.username}]]</td>
-                                            <td>[[${payments.packageTitle}]]</td>
-                                            <td>[[${payments.totalCost}]]</td>
-                                            <td class="pay-status ${getPaymentStatusClass(payments.paymentStatus)}">[[${getPaymentStatusText(payments.paymentStatus)}]]</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                `).join('');
+                                                <tbody>
+                                                    <tr>
+                                                        <td>[[${payments.username}]]</td>
+                                                        <td>[[${payments.packageTitle}]]</td>
+                                                        <td>[[${payments.totalCost}]]</td>
+                                                        <td class="pay-status ${getPaymentStatusClass(payments.paymentStatus)}">[[${getPaymentStatusText(payments.paymentStatus)}]]</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                `).join('');
+                            }
 
                         // 모달 표시
                         if(paymentModal) {
@@ -384,43 +400,43 @@ function getStatusClass(status) {
                     .then(user => {
                         userInfo.innerHTML = `
                         <div class="modal hidden" id="businessUpdate-modal">
-                                <form th:action="@{/business/profile/{userId}(userId=${user.id})}">
+                                <form  data-user-id="${userId}">
                                     <div class="header">
                                         <span class="close-button">&times;</span>
-                                        <h2 class="businessName" th:value="${user.username}"></h2>
+                                        <h2 class="businessName" value="${user.username}"></h2>
                                         <span class="joinDate">가입일 :  ${formatDate(user.regDate)}</span>
                                     </div>
                                     <div class="profile">
                                         <img th:src="@{/img/basicProfile.png}" alt="프로필" class="profile-img">
                                     </div>
                                     <div class="businessInfo">
-                                        <label>
+                                        <label for="businessId">
                                             <span>기업 ID</span>
-                                            <input type="text" th:value="${user.username}" readonly>
+                                            <input type="text" id="businessId" value="${user.username}" readonly>
                                         </label>
                                     </div>
                                     <div class="businessInfo">
-                                        <label>
+                                        <label for="businessEmail">
                                             <span>기업이메일</span>
-                                            <input type="email" th:value="${user.email}" readonly>
+                                            <input type="email" id="businessEmail" value="${user.email}" readonly>
                                         </label>
                                     </div>
                                     <div class="businessInfo">
-                                        <label>
+                                        <label for="password">
                                             <span>비밀번호</span>
-                                            <input type="password" th:utext="${user.password}">
+                                            <input type="password" id="password" value="${user.password}">
                                         </label>
                                     </div>
                                     <div class="businessInfo">
-                                        <label>
+                                        <label for="new-password">
                                             <span>새 비밀번호</span>
-                                            <input type="re-password" placeholder="새 비밀번호를 입력하세요.">
+                                            <input type="password" id="new-password" placeholder="새 비밀번호를 입력하세요.">
                                         </label>
                                     </div>
                                     <div class="businessInfo">
-                                        <label>
+                                        <label for="businessNumber">
                                             <span>회사 사업자 번호</span>
-                                            <input type="text" th:value="${user.companyNumber}" readonly>
+                                            <input type="text" id="businessNumber" value="${user.companyNumber}" readonly>
                                         </label>
                                     </div>
                     

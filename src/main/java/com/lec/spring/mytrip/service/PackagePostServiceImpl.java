@@ -103,6 +103,10 @@ public class PackagePostServiceImpl implements PackagePostService {
         return packagePostRepository.deleteById(packageId);
     }
 
+    @Override
+    public List<PackagePost> getPackageDetailsById(int packageId) {
+        return packagePostRepository.mypagePackageDetail(packageId);
+    }
 
 
     // 유저(기업 계정) 별 패키지 목록 > 마이페이지
