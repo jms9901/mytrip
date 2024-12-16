@@ -40,7 +40,9 @@ $(document).ready(function () {
         comments.forEach(comment => {
             // 초 단위 제거 (HH:mm:ss → HH:mm)
             const rawDate = new Date(comment.date);
-            const formattedDate = rawDate.toISOString().slice(0, 16).replace("T", " ");
+            const kstDate = new Date(rawDate.getTime() + 9 * 60 * 60 * 1000); // UTC에서 KST로 변환
+            const formattedDate = kstDate.toISOString().slice(0, 16).replace("T", " ");
+            console.log(comment.date);
             const commentHtml = `
             <div class="border p-2 mb-2">
                 <div class="d-flex justify-content-between align-items-center">
@@ -75,7 +77,6 @@ $(document).ready(function () {
             contentType: "application/json",
             data: JSON.stringify({
                 boardId: boardId, // 추출된 boardId 사용
-                userId: userId,   // 사용자 ID
                 content: content // 댓글 내용
             }),
             success: function () {
