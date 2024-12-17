@@ -1,0 +1,13 @@
+/* 상태가 '거절'일 때 */
+.package-details-button[data-packagestatus="미승인"] {
+    background-color: red;
+    color: white;
+    border: none;
+}
+
+/* 상태가 '대기'일 때 */
+.package-details-button[data-packagestatus="대기"] {
+    background-color: black;
+    color: white;
+    border: none;
+}

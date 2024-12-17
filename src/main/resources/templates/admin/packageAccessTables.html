@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>TripAdmin</title>
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+    <link th:href="@{/css/styles.css}" rel="stylesheet" />
+    <link th:href="@{/css/userTables.css}" rel="stylesheet" />
+    <link th:href="@{/css/packageAccessTables.css}" rel="stylesheet" />
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+</head>
+<body class="sb-nav-fixed">
+
+<nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+    <!-- Navbar Brand-->
+    <a class="navbar-brand ps-3" th:href="@{/index.html}">Trip Partner</a>
+    <!-- Sidebar Toggle-->
+    <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
+    <div class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0"></div>
+    <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                <li>
+                    <form th:action="@{/admin/logout}" method="POST"  th:with="user=${#authentication.getPrincipal()}">
+                        <button type="submit" class="dropdown-item"> Logout </button></form>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</nav>
+<div id="layoutSidenav">
+    <div id="layoutSidenav_nav">
+        <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+            <div class="sb-sidenav-menu">
+                <div class="nav">
+                    <div class="sb-sidenav-menu-heading">User</div>
+                    <a class="nav-link" th:href="@{/admin/userTables}">
+                        <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        사용자 관리 메뉴
+                    </a>
+                    <div class="sb-sidenav-menu-heading">Post</div>
+                    <a class="nav-link" th:href="@{/admin/boardTables}">
+                        <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        게시글 관리 메뉴
+                    </a>
+                    <div class="sb-sidenav-menu-heading">Package</div>
+                    <a class="nav-link" th:href="@{/admin/packageAccessTables}">
+                        <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        패키지 관리 메뉴
+                    </a>
+                    <div class="sb-sidenav-menu-heading">Payment</div>
+                    <a class="nav-link" th:href="@{/admin/paymentTables}">
+                        <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        결제 관리 메뉴
+                    </a>
+                    <!--                    <div class="sb-sidenav-menu-heading">Addons</div>-->
+                    <!--                    <a class="nav-link" th:href="@{/admin/charts}">-->
+                    <!--                        <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>-->
+                    <!--                        Charts-->
+                    <!--                    </a>-->
+                </div>
+            </div>
+            <div class="sb-sidenav-footer">
+                <div class="small">Logged in as:</div>
+                Trip Partner
+            </div>
+        </nav>
+    </div>
+    <div id="layoutSidenav_content">
+        <main>
+            <div class="container-fluid px-4">
+                <h1 class="mt-4">패키지 관리</h1>
+                <ol class="breadcrumb mb-4">
+                    <li class="breadcrumb-item"><a th:href="@{/admin/packageAccessTables}">승인</a></li>
+                    <li class="breadcrumb-item active"><a th:href="@{/admin/packageStandbyTables}">대기</a></li>
+                </ol>
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-table me-1"></i>
+                        DataTable Package Access
+                    </div>
+                    <div class="card-body">
+                        <table id="datatablesSimple">
+                            <thead>
+                            <tr>
+                                <th>사업자명</th>
+                                <th>패키지명</th>
+                                <th>게시일자</th>
+                                <th>상태 및 상세보기</th>
+                            </tr>
+                            </thead>
+                            <tfoot>
+                            <tr>
+                                <th>사업자명</th>
+                                <th>패키지명</th>
+                                <th>게시일자</th>
+                                <th>상태 및 상세보기</th>
+                            </tr>
+                            </tfoot>
+                            <tbody>
+                            <tr th:each="AccessPackages : ${AccessPackages}">
+                                <td th:text="${AccessPackages.userName}"></td>
+                                <td th:text="${AccessPackages.title}"></td>
+                                <td th:text="${AccessPackages.regDate}"></td>
+                                <!--                                <td th:text="${AccessPackages.status}"></td>-->
+                                <td>
+                                    <button type="button" class="btn btn-primary package-details-button"
+                                            th:attr="data-bs-toggle='modal',
+                                                         data-bs-target='#exampleModal',
+                                                         data-packageid=${AccessPackages.packageId},
+                                                         data-username=${AccessPackages.userName},
+                                                         data-packagetitle=${AccessPackages.title},
+                                                         data-packagecontent=${AccessPackages.content},
+                                                         data-packagecost=${AccessPackages.cost},
+                                                         data-packagemaxpeople=${AccessPackages.maxPeople},
+                                                         data-packagestartday=${AccessPackages.startDay},
+                                                         data-packageendday=${AccessPackages.endDay},
+                                                         data-packageregdate=${AccessPackages.regDate},
+                                                         data-packagestatus=${AccessPackages.status}
+                                                        "
+                                            th:text="${AccessPackages.status ?: '상세 없음'}">
+                                    </button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" inert>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"> 사용자 정보</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="sliderContainer" style="position: relative; width: 100%; max-width: 600px; overflow: hidden;">
+                    <div id="imageContainer" style="display: flex; transition: transform 0.5s ease-in-out;" th:href="@{/admin/boardAttachments/{boardId}}"></div>
+                    <button id="prevBtn" class="slideBtn" style="position: absolute; top: 50%; left: 10px; transform: translateY(-50%); background-color: rgba(0, 0, 0, 0.5); color: white; border: none; padding: 10px; cursor: pointer;">&#9664;</button>
+                    <button id="nextBtn" class="slideBtn" style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%); background-color: rgba(0, 0, 0, 0.5); color: white; border: none; padding: 10px; cursor: pointer;">&#9654;</button>
+                </div>
+                <p><strong></strong></p>
+
+                <p><strong>게시일자:</strong> <span id="modalPackageRegDate">[데이터 없음]</span></p>
+                <p><strong>기업이름:</strong> <span id="modalUsername">[데이터 없음]</span></p>
+                <p><strong>패키지명:</strong> <span id="modalPackageTitle">[데이터 없음]</span></p> <!-- user_username 표시 -->
+                <p><strong>패키지내용:</strong> <span id="modalPackageContent">[데이터 없음]</span></p>
+                <p><strong>패키지비용:</strong> <span id="modalPackageCost">[데이터 없음]</span></p>
+                <p><strong>최대인원:</strong> <span id="modalPackageMaxPeople">[데이터 없음]</span></p>
+                <p><strong>시작일자:</strong> <span id="modalPackageStartDay">[데이터 없음]</span></p>
+                <p><strong>종료일자:</strong> <span id="modalPackageEndDay">[데이터 없음]</span></p>
+            </div>
+            <div class="modal-footer">
+                <button id="deleteButton" class="btn btn-danger">삭제</button>
+                <input type="button" class="btn btn-secondary" data-bs-dismiss="modal" value="닫기">
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<script th:src="@{/js/scripts.js}"></script>
+<script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+<script th:src="@{/js/packageAccessTables.js}"></script>
+<script th:src="@{/js/datatables-simple-demo.js}"></script>
+</body>
+</html>

@@ -5,6 +5,13 @@ $(document).ready(function () {
     const today = new Date();
     let progress = 0;
     let interval;
+    // 랜덤 이미지 경로 배열
+    const image = [
+        '../../img/flight/loading2.jpg',
+        '../../img/flight/loading3.jpg',
+        '../../img/flight/loading4.jpg',
+        '../../img/flight/loading5.jpg'
+    ];
 
     flatpickr("#start-date-btn", {
         minDate: today,
@@ -181,6 +188,8 @@ $(document).ready(function () {
 
         $("#loading-text").html(`${fromAirportId}에서 ${toAirportId}까지<br>왕복 여정을 찾고 있습니다`);
         $("#loading-overlay").removeClass("d-none");
+        $("#loading-overlay").css("display", "flex"); // display 속성을 flex로 변경하여 표시
+
 
         progress = 0;
         const loadingBar = $(".loading-bar");
@@ -210,9 +219,27 @@ $(document).ready(function () {
 
 
 
+    // 랜덤 이미지 선택
+    const randomImage = image[Math.floor(Math.random() * image.length)];
+
+    // 선택된 이미지를 "loading-overlay"에 적용
+    const loadingOverlay = document.getElementById('loading-overlay');
+    loadingOverlay.style.backgroundImage = `url('${randomImage}')`;
+    // 중복 방지를 위해 background 요소의 스타일 한 번만 설정
+    const backgroundDiv = document.querySelector('.background');
+    if (backgroundDiv) {
+        backgroundDiv.style.backgroundImage = `url('${randomImage}')`;
+    }
+
+    // 로딩 화면 표시 (클래스 제어)
+    loadingOverlay.classList.remove('d-none'); // 로딩 화면 보이기
 
 
-// 슬라이더 이미지 변경
+
+
+});
+
+document.addEventListener("DOMContentLoaded", function () {
     const images = document.querySelectorAll("#background-slider .slider-image");
     let currentIndex = 0;
 
@@ -225,4 +252,3 @@ $(document).ready(function () {
     setInterval(changeImage, 5000);
     images[currentIndex].classList.add("active");
 });
-

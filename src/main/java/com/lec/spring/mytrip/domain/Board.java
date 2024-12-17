@@ -24,4 +24,6 @@ public class Board {
     private int likedUserId;     // 좋아요 누른 사람 ID
     private int authorId;
     private String category;     // 카테고리 (예: "소모임" / "피드")
+    private String userName;
+    private String cityName;
 }

@@ -23,6 +23,6 @@ public class PackagePost {
     private int maxPeople;          // 최대 참여 가능 인원
     private LocalDateTime startDay; // 패키지 시작 날짜
     private LocalDateTime endDay;   // 패키지 종료 날짜
-    private String packageTitle;        // 패키지 제목
-    private String packageAttachmentFile; // 패키지 첨부 파일
+    private String packageAttachmentFile;
+    private String userName;
 }

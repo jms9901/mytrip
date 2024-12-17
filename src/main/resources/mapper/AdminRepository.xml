@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lec.spring.mytrip.repository.AdminRepository">
+    <resultMap id="UserResultMap" type="com.lec.spring.mytrip.domain.User">
+        <id property="id" column="user_id"/>
+        <result property="email" column="user_email"/>
+        <result property="password" column="user_password"/>
+        <result property="username" column="user_username"/>
+        <result property="name" column="user_name"/>
+        <result property="regDate" column="user_regdate"/>
+        <result property="provider" column="user_birthday"/>
+        <result property="profile" column="user_profile"/>
+        <result property="birthday" column="user_provider"/>
+        <result property="introduction" column="user_introdution"/>
+        <result property="authorization" column="user_authorization"/>
+        <result property="companyNumber" column="user_companynumber"/>
+        <result property="status" column="user_status"/>
+    </resultMap>
+
+    <resultMap id="BoardResultMap" type="com.lec.spring.mytrip.domain.Board">
+        <id column="board_id" property="boardId" />
+        <result column="user_id" property="userId" />
+        <result column="city_id" property="cityId" />
+        <result column="board_subject" property="subject" />
+        <result column="board_content" property="content" />
+        <result column="board_view_count" property="viewCount" />
+        <result column="board_date" property="date" />
+        <result column="board_category" property="category" />
+        <result column="user_name" property="userName" />
+        <result column="city_name" property="cityName" />
+    </resultMap>
+
+
+    <resultMap id="PackagePostResultMap" type="com.lec.spring.mytrip.domain.PackagePost">
+        <id property="packageId" column="package_id"/>
+        <result property="cityId" column="city_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="status" column="package_status"/>
+        <result property="content" column="package_content"/>
+        <result property="regDate" column="package_regdate"/>
+        <result property="title" column="package_title"/>
+        <result property="cost" column="package_cost"/>
+        <result property="maxPeople" column="package_maxpeople"/>
+        <result property="startDay" column="package_start_day"/>
+        <result property="endDay" column="package_end_day"/>
+        <result property="userName" column="user_name"/>
+    </resultMap>
+
+    <resultMap id="PaymentResultMap" type="com.lec.spring.mytrip.domain.Payment">
+        <id property="paymentId" column="payment_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="packageId" column="package_id"/>
+        <result property="userCount" column="user_count"/>
+        <result property="date" column="payment_date"/>
+        <result property="status" column="payment_status"/>
+        <result property="userName" column="user_name"/>
+        <result property="packageTitle" column="package_title"/>
+        <result property="packageCost" column="package_cost" />
+    </resultMap>
+
+    <resultMap id="PackageAttachmentResultMap" type="com.lec.spring.mytrip.domain.attachment.PackagePostAttachment">
+        <id property="packageAttachmentId" column="package_attachment_id"/>
+        <result property="packageId" column="package_id"/>
+        <result property="fileName" column="package_attachment_file"/>
+    </resultMap>
+
+    <resultMap id="BoardAttachmentResultMap" type="com.lec.spring.mytrip.domain.attachment.BoardAttachment">
+        <id property="boardAttachmentId" column="board_attachment_id"/>
+        <result property="boardId" column="board_id"/>
+        <result property="fileName" column="board_attachment_file"/>
+    </resultMap>
+
+
+    <!-- ROLE_USER 리스트 가져오기 -->
+    <select id="findByAuthorityRoleUser" resultMap="UserResultMap">
+        SELECT * FROM user WHERE user_authorization = #{authority}
+        ORDER BY user_id ASC
+    </select>
+
+
+
+
+    <!-- ROLE_BUSINESS 리스트 가져오기 -->
+    <select id="findByAuthorityRoleBusiness" resultMap="UserResultMap">
+        SELECT * FROM user WHERE user_authorization = #{authority}
+        ORDER BY user_id ASC
+    </select>
+
+    <!-- category 가 소모임인 리스트 가져오기 -->
+    <select id="findByBoardCategory" resultMap="BoardResultMap">
+        SELECT b.*, u.user_name, c.city_name
+        FROM board b
+                 LEFT JOIN user u ON b.user_id = u.user_id
+                 LEFT JOIN city c ON b.city_id = c.city_id
+        WHERE b.board_category = #{boardCategory}
+        ORDER BY b.board_id ASC
+    </select>
+
+    <!-- category 가 피드인 리스트 가져오기 -->
+    <select id="findByFeedCategory" resultMap="BoardResultMap">
+        SELECT b.*, u.user_name, c.city_name
+        FROM board b
+                 LEFT JOIN user u ON b.user_id = u.user_id
+                 LEFT JOIN city c ON b.city_id = c.city_id
+        WHERE b.board_category = #{boardCategory}
+        ORDER BY b.board_id ASC
+    </select>
+
+
+    <!-- 게시물 첨부파일 조회 -->
+    <select id="findBoardAttachments" resultMap="BoardAttachmentResultMap">
+        SELECT *
+        FROM board_attachment
+        WHERE board_id = #{boardId}
+    </select>
+
+
+    <!-- package 상태가 승인인 리스트 가져오기 -->
+    <select id="findByAccessPackage" resultMap="PackagePostResultMap">
+        SELECT p.*, u.user_name
+        FROM package p
+                 JOIN user u on p.user_id = u.user_id
+        WHERE package_status = #{packageStatus}
+        ORDER BY p.package_id ASC
+    </select>
+
+    <!-- package 상태가 대기인 리스트 가져오기 -->
+    <select id="findByStandByPackage" resultMap="PackagePostResultMap">
+        SELECT p.*, u.user_name
+        FROM package p
+                 JOIN user u on p.user_id = u.user_id
+        WHERE package_status = #{param1} OR package_status = #{param2}
+    </select>
+
+    <!-- package 첨부파일 조회 -->
+    <select id="findPackageAttachments" resultMap="PackageAttachmentResultMap">
+        SELECT *
+        FROM package_attachment
+        WHERE package_id = #{packageId}
+    </select>
+
+
+    <!-- payment 리스트 가져오기 -->
+    <select id="findByPayment" resultMap="PaymentResultMap">
+        SELECT DISTINCT i.*, u.user_name, p.package_title, p.package_cost
+        FROM payment_info i
+                 LEFT JOIN user u ON i.user_id = u.user_id
+                 LEFT JOIN package p ON i.package_id = p.package_id
+        ORDER BY i.payment_id ASC;
+    </select>
+
+    <!-- TODO -->
+    <!-- 유저 삭제 -->
+    <update id="deleteUser">
+        UPDATE user SET user_authorization = 'ROLE_DORMANT', user_status = '거절' WHERE user_id = #{userId}
+    </update>
+
+    <select id="viewBusinessUser">
+        select * from user where user_authorization='ROLE_BUSINESS';
+    </select>
+    <!-- business 유저 대기값 상태 변경 -->
+    <update id="updateBusinessUserStatus">
+        UPDATE user SET user_status = #{status} WHERE user_id = #{userId}
+    </update>
+
+    <!-- 소모임/피드 삭제 -->
+    <delete id="deleteBoard">
+        DELETE FROM board WHERE board_id = #{boardId}
+    </delete>
+
+    <delete id="deletePackage">
+        DELETE FROM package where package_id = #{packageId}
+    </delete>
+
+    <!-- 패키지 승인 상태 변경 -->
+    <update id="updatePackageStatus">
+        UPDATE package SET package_status = #{status} WHERE package_id = #{packageId}
+    </update>
+</mapper>

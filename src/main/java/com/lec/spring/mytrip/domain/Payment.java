@@ -15,13 +15,12 @@ public class Payment {
     private int paymentId;
     private int userId;
     private int packageId;
-    private int  userCount;
+    private int userCount;
     private LocalDateTime Date;
     private String  Status;
-
     private String userName;
     private String packageTitle;
+    private int packageCost;
     private int price;
-
     private int totalPrice;
 }

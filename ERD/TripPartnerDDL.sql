@@ -286,27 +286,32 @@ ALTER TABLE payment_info
 ALTER TABLE package_attachment
     ADD CONSTRAINT FK_package_TO_package_attachment
         FOREIGN KEY (package_id)
-            REFERENCES package (package_id);
+            REFERENCES package (package_id)
+            ON DELETE CASCADE ;
 
 ALTER TABLE board_attachment
     ADD CONSTRAINT FK_board_TO_board_attachment
         FOREIGN KEY (board_id)
-            REFERENCES board (board_id);
+            REFERENCES board (board_id)
+            ON DELETE CASCADE ;
 
 ALTER TABLE declaration
     ADD CONSTRAINT FK_user_TO_declaration
         FOREIGN KEY (user_id)
-            REFERENCES user (user_id);
+            REFERENCES user (user_id)
+            ON DELETE CASCADE ;
 
 ALTER TABLE board_comment
     ADD CONSTRAINT FK_board_TO_board_comment
         FOREIGN KEY (board_id)
-            REFERENCES board (board_id);
+            REFERENCES board (board_id)
+            ON DELETE CASCADE ;
 
 ALTER TABLE board_comment
     ADD CONSTRAINT FK_user_TO_board_comment
         FOREIGN KEY (user_id)
-            REFERENCES user (user_id);
+            REFERENCES user (user_id)
+            ON DELETE CASCADE ;
 
 ALTER TABLE search_history
     ADD CONSTRAINT FK_user_TO_search_history
@@ -351,7 +356,8 @@ ALTER TABLE board
 ALTER TABLE declaration
     ADD CONSTRAINT FK_board_TO_declaration
         FOREIGN KEY (board_id)
-            REFERENCES board (board_id);
+            REFERENCES board (board_id)
+            ON DELETE CASCADE;
 
 ALTER TABLE board
     ADD CONSTRAINT FK_city_TO_board
