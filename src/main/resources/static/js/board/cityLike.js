@@ -9,13 +9,13 @@ $('.likeButton').off('click').on('click', function (event) {
     let data = {};
 
     if (cityId) {
-        url = '/likey/city';
+        url = '/likey/board/city';
         data.cityId = cityId;
     } else if (packageId) {
-        url = '/likey/package';
+        url = '/likey/board/package';
         data.packageId = packageId;
     } else if (postId) {
-        url = '/likey/post';
+        url = '/likey/board/post';
         data.postId = postId;
     }
 
@@ -29,7 +29,7 @@ $('.likeButton').off('click').on('click', function (event) {
         success: function (response) {
             console.log("Response:", response);
             const icon = $(event.currentTarget).find('i');
-            if (response == 1) {
+            if (response) {
                 icon.removeClass('bi-heart').addClass('bi-heart-fill');
             } else {
                 icon.removeClass('bi-heart-fill').addClass('bi-heart');
