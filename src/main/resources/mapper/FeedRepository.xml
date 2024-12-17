@@ -149,14 +149,14 @@
 
     <select id="findByCityAndCategory" resultType="com.lec.spring.mytrip.domain.Feed">
         <include refid="SELECT_BOARD"/>
-        AND city_id = #{cityId}
-        AND board_category = #{category}
+        AND c.city_id = #{cityId}
+        AND b.board_category = #{category}
     </select>
 
     <!-- 특정 피드 id로 글 찾기 -->
     <select id="findById" parameterType="int" resultType="com.lec.spring.mytrip.domain.Feed">
         <include refid="SELECT_BOARD"/>
-        AND board_id = #{id}
+        AND b.board_id = #{id}
     </select>
 
 <!--    특정 게시글의 첨부파일 불러오기-->
