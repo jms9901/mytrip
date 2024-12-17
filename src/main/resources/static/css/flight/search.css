@@ -105,9 +105,10 @@
 /*커스텀 드롭다운*/
 
 /*인원 선택*/
+/*인원 선택*/
 #selectionContainer {
     display: none; /* 기본적으로 숨김 */
-    position: absolute; /* 버튼 기준으로 위치 설정 */
+    /* position: absolute; 버튼 기준으로 위치 설정 */
     top: calc(100% + 5px); /* 버튼 바로 아래, 약간의 간격 */
     left: 0; /* 버튼의 왼쪽 정렬 */
     z-index: 1000; /* 다른 요소 위로 올리기 */
