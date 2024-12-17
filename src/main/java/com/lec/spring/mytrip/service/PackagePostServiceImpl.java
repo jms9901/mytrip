@@ -35,6 +35,7 @@ public class PackagePostServiceImpl implements PackagePostService {
         }
         // 패키지 데이터 조회
         postAndAttachment.setPackagePost(packagePostRepository.findById(packageId));
+
         if (postAndAttachment.getPackagePost() == null) {
             throw new IllegalArgumentException("ID가 " + packageId + "인 패키지를 찾을 수 없습니다.");
         }
@@ -54,10 +55,10 @@ public class PackagePostServiceImpl implements PackagePostService {
     public List<PackagePost> getPackagesByCityId(int cityId) {
         List<PackagePost> packagePosts = packagePostRepository.findByCityId(cityId);
         packagePosts.forEach(packagePost -> {
-            List<BoardAttachment> e =
-                    packageAttachmentService.getAttachmentsByBoardId(packagePost.getPackageId());
+            List<PackagePostAttachment> e =
+                    packageAttachmentService.getAttachmentsByPackageId(packagePost.getPackageId());
             if(!e.isEmpty()) {
-                packagePost.setPackageAttachmentFile(e.get(0).getFileName());
+                packagePost.setPackageAttachmentFile(e.get(0).getPackageAttachmentFile());
             };
         });
         return packagePosts;

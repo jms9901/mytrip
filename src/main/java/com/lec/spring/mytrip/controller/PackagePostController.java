@@ -53,6 +53,7 @@ public class PackagePostController {
 
         // 이 도시의 패키지 목록
         List<PackagePost> packages = packagePostService.getPackagesByCityId(cityId);
+        packages.forEach(System.out::println);
         model.addAttribute("packages", packages);
 //        System.out.println("패키지 목록" + packages.toString());
 
