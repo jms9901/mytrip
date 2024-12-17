@@ -25,6 +25,8 @@ public class CityServiceImpl implements CityService {
         API_TO_DB_NAME_MAP.put("로스앤젤레스", "로스엔젤레스");
         API_TO_DB_NAME_MAP.put("호놀룰루", "하와이");
         API_TO_DB_NAME_MAP.put("타무닝(괌)", "괌");
+        API_TO_DB_NAME_MAP.put("밴쿠버", "벤쿠버");
+
     }
 
     @Autowired
