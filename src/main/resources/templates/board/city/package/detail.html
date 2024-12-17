@@ -16,7 +16,7 @@
             <img th:src="@{/img/logo.png}" alt="" class="logo">
         </a>
         <a th:href="@{/aipage/start}" class="top-menu">여행지 추천</a>
-        <a th:href="@{/post}" class="top-menu">여행지 게시판</a>
+        <a th:href="@{/board/city/1}" class="top-menu">여행지 게시판</a>
         <a th:href="@{/flight/search}" class="top-menu">항공권 예약</a>
         <a sec:authorize="isAnonymous()" th:href="@{/user/login}" class="top-menu">Login</a>
         <form th:action="@{/user/mypage}" method="GET" sec:authorize="isAuthenticated()">

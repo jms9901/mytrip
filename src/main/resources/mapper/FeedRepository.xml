@@ -140,8 +140,7 @@
         SET
         city_id = #{cityId},
         board_subject = #{boardSubject},
-        board_content = #{boardContent},
-        board_category = '피드'
+        board_content = #{boardContent}
         WHERE
         board_id = #{boardId} AND user_id = #{userId};
 

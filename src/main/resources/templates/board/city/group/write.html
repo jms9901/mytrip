@@ -32,10 +32,10 @@
             <textarea class="form-control" rows="5" id="summernote" placeholder="내용을 입력하세요" name="boardContent"></textarea>
         </div>
 
-        <!-- 저장 및 취소 버튼 -->
+        <!-- 저장 및 목록 -->
         <div class="text-end">
             <button type="submit" class="btn btn-primary">저장</button>
-            <button type="button" class="btn btn-secondary" onclick="location.href='/board/city'">취소</button>
+            <a th:href="@{|/board/city/${cityId}|}" class="btn">목록</a>
         </div>
     </form>
 </main>
