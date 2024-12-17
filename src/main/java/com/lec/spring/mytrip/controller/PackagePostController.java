@@ -76,7 +76,7 @@ public class PackagePostController {
         model.addAttribute("packages", packages);
         return "package/statusPackages";
     }
-
+//
     /**
      * 패키지 제목 검색
      *
