@@ -27,5 +27,10 @@ public interface FeedRepository {
     // 첨부파일 등록
     void insertAttachments(PostAttachment attachment);
 
+    City findCityById(Long id);
+
+    //도시와 카테고리 별 피드
+    List<Feed> findByCityAndCategory(int cityId, String category);
+
     void deleteAttachmentsByBoardId(int boardId);
 }

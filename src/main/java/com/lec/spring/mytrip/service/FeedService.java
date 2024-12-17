@@ -22,4 +22,8 @@ public interface FeedService {
 
     void deleteFeed(int boardId, int userId);
 
+
+    // 도시 및 카테고리 별 불러오기
+    List<Feed> findByCityAndCategory(int cityId, String Category);
+
 }

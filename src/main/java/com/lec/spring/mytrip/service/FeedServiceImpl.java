@@ -188,4 +188,16 @@ public class FeedServiceImpl implements FeedService{
             throw new IllegalArgumentException("삭제할 수 없는 게시물입니다.");
         }
     }
+
+
+    //도시 별, 그리고 카테고리 별 불러오기
+    @Override
+    public List<Feed> findByCityAndCategory(int cityId, String category) {
+        System.out.println("도시 id : " + cityId + "  카테고리 : " + category);
+
+        List<Feed> c = feedRepository.findByCityAndCategory(cityId, category);
+//        System.out.println("서비스단 받아온 피드 : " + c.toString());
+        return c;
+    }
+
 }

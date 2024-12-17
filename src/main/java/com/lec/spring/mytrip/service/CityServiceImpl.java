@@ -60,7 +60,7 @@ public class CityServiceImpl implements CityService {
         return city;
     }
     public List<City> findCitiesByContinentOfThisCity(int cityId) {
-        return List.of();
+        return aipageRepository.findContinentByCity(cityId);
     }
 
     @Override

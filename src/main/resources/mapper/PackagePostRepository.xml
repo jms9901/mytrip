@@ -4,10 +4,17 @@
 <mapper namespace="com.lec.spring.mytrip.repository.PackagePostRepository">
 
     <!-- ResultMap 정의 -->
+
+    <resultMap id="userMap" type="com.lec.spring.mytrip.domain.User">
+        <result column="user_id" property="id"/>
+        <result column="u_username" property="username"/>
+        <result column="u_email" property="email"/>
+        <result column="u_regdate" property="regDate"/>
+    </resultMap>
+
     <resultMap id="PackagePostResultMap" type="com.lec.spring.mytrip.domain.PackagePost">
         <id property="packageId" column="package_id"/>
         <result property="cityId" column="city_id"/>
-        <result property="userId" column="user_id"/>
         <result property="packageStatus" column="package_status"/>
         <result property="packageContent" column="package_content"/>
         <result property="packageRegdate" column="package_regdate"/>
@@ -16,6 +23,7 @@
         <result property="packageMaxpeople" column="package_maxpeople"/>
         <result property="packageStartDay" column="package_start_day"/>
         <result property="packageEndDay" column="package_end_day"/>
+        <collection property="user" resultMap="userMap"/>
     </resultMap>
 
     <!-- 패키지 상세 조회 -->
@@ -26,7 +34,8 @@
 
     <!-- 도시별 패키지 조회 -->
     <select id="findByCityId" parameterType="int" resultMap="PackagePostResultMap">
-        SELECT user_id,
+        SELECT package_id,
+               user_id,
                package_status,
                package_content,
                package_regdate,
@@ -37,19 +46,26 @@
                package_end_day
         FROM package
         WHERE city_id = #{cityId}
-        ORDER BY package_id DESC
+        ORDER BY package_regdate DESC
     </select>
 
     <!-- 사용자별 패키지 조회 -->
-    <select id="findByUserId" parameterType="int" resultMap="PackagePostResultMap">
+    <select id="findByUserId" resultMap="PackagePostResultMap">
         SELECT * FROM package
-        WHERE user_id = #{userId}
+        WHERE user_id = #{user.id}
     </select>
 
     <!-- 패키지 상태별 조회 -->
     <select id="findByStatus" parameterType="string" resultMap="PackagePostResultMap">
         SELECT * FROM package
         WHERE package_status = #{status}
+    </select>
+    
+    <!-- 도시별 승인 된 데이터만 조회(board 출력용) -->
+    <select id="findByCityAndStatus" parameterType="int" resultMap="PackagePostResultMap">
+        SELECT * FROM package
+        WHERE city_id = #{cityId}
+            AND package_status = '승인'
     </select>
 
     <!-- 패키지 제목 검색 -->
@@ -59,20 +75,21 @@
     </select>
 
     <!-- 패키지 저장 -->
-    <insert id="save" parameterType="com.lec.spring.mytrip.domain.PackagePost" useGeneratedKeys="true" keyProperty="packageId">
+    <insert id="save" flushCache="true" parameterType="com.lec.spring.mytrip.domain.PackagePost"
+            useGeneratedKeys="true" keyProperty="packageId" keyColumn="package_id">
         INSERT INTO package (
             city_id, user_id, package_status, package_content,
             package_regdate, package_title, package_cost, package_maxpeople,
             package_start_day, package_end_day
         ) VALUES (
-                     #{cityId}, #{userId}, #{packageStatus}, #{packageContent},
+                     #{cityId}, #{user.id}, #{packageStatus}, #{packageContent},
                      NOW(), #{packageTitle}, #{packageCost}, #{packageMaxpeople},
                      #{packageStartDay}, #{packageEndDay}
                  )
     </insert>
 
     <!-- 패키지 수정 -->
-    <update id="update" parameterType="com.lec.spring.mytrip.domain.PackagePost">
+    <update id="update" flushCache="true" parameterType="com.lec.spring.mytrip.domain.PackagePost">
         UPDATE package
         SET
             city_id = #{cityId},
@@ -86,7 +103,7 @@
     </update>
 
     <!-- 패키지 삭제 -->
-    <delete id="deleteById" parameterType="int">
+    <delete id="deleteById" flushCache="true" parameterType="int">
         DELETE FROM package
         WHERE package_id = #{packageId}
     </delete>

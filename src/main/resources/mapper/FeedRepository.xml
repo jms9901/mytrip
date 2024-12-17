@@ -120,4 +120,16 @@
     </delete>
 
 
+    <select id="findCityById" resultType="com.lec.spring.mytrip.domain.City">
+        SELECT * FROM city WHERE city_id = #{id}
+    </select>
+
+<!--    도시 및 카테고리 별 불러오기-->
+
+    <select id="findByCityAndCategory" resultType="com.lec.spring.mytrip.domain.Feed">
+        <include refid="SELECT_BOARD"/>
+        AND city_id = #{cityId}
+        AND board_category = #{category}
+    </select>
+
 </mapper>

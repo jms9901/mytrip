@@ -41,6 +41,7 @@ delete from messageroom;
 delete from message;
 
 SET FOREIGN_KEY_CHECKS = 0;
+SET foreign_key_checks = 1;
 DROP TABLE IF EXISTS user;
 DROP TABLE IF EXISTS package;
 DROP TABLE IF EXISTS package_attachment;

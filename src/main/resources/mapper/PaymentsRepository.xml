@@ -7,8 +7,8 @@
 
     <!-- 결제 정보 저장 -->
     <insert id="paymentSave" parameterType="com.lec.spring.mytrip.domain.Payment">
-        INSERT INTO payment_info (user_id, package_id, user_count, payment_date, payment_status)
-        VALUES (#{userId}, #{packageId}, #{userCount}, NOW(), #{Status});
+        INSERT INTO payment_info (payment_id, user_id, package_id, user_count, payment_date)
+        VALUES (#{paymentId}, #{userId}, #{packageId}, #{userCount}, NOW());
     </insert>
 
     <!-- 사용자 ID로 결제 정보 조회 -->

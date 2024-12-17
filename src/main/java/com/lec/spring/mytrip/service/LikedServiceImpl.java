@@ -77,6 +77,7 @@ public class LikedServiceImpl implements LikedService {
 
         } else {
             //로그인 하지 않은 상태
+            System.out.println("로그인하라고 알림 떠야댐");
             return -1;
         }
 

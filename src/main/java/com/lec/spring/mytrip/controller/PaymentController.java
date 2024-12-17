@@ -1,11 +1,13 @@
 package com.lec.spring.mytrip.controller;
 
 import com.lec.spring.mytrip.domain.Payment;
+import com.lec.spring.mytrip.domain.payment.Response;
 import com.lec.spring.mytrip.service.PaymentService;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,10 +30,21 @@ public class PaymentController {
 
     //결제 저장
     @PostMapping("board/package/payment")
-    public String packagePaymentSave(Payment payment) {
-        if(1 == paymentService.paymentSave(payment))
-            return "/board/payment/success"; //결제 성공 팝업 후 어디로 갈까요
-        else return "redirect:/board/payment"; //결제페이지 재이동
+    public String packagePaymentSave(@ModelAttribute Payment payment) {
+        System.out.println("수신한 Payment 데이터: " + payment);
+
+        Response response = paymentService.paymentSave(payment);
+
+        // 응답 검증
+        if (response == null || response.getResponse() == null) {
+            throw new RuntimeException("결제 응답이 null입니다. KakaoPay API 호출 실패");
+        }
+
+        // 리다이렉트 URL 확인
+        String url = response.getResponse().get("next_redirect_pc_url").toString();
+        System.out.println("리다이렉트 URL: " + url);
+
+        return "redirect:" + url;
     }
 
     @GetMapping("/payment")

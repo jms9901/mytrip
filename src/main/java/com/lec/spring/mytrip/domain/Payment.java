@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 public class Payment {
-    private int paymentId;
     private int userId;
     private int packageId;
     private int userCount;
@@ -23,4 +22,7 @@ public class Payment {
     private int packageCost;
     private int price;
     private int totalPrice;
+
+    private String paymentId; //  주문번호
+    private int cityId; //도시 id. 결제 후 이동 페이지에 필요
 }

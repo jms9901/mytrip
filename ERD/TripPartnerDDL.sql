@@ -25,7 +25,7 @@ CREATE TABLE board
     user_id          INT           NOT NULL COMMENT '사용자 ID',
     city_id          INT           NOT NULL COMMENT '도시 ID',
     board_subject    VARCHAR(100)  NOT NULL COMMENT '피드 제목',
-    board_content    VARCHAR(1000) NOT NULL COMMENT '파드 내용',
+    board_content    LONGTEXT      NOT NULL COMMENT '피드 내용',
     board_view_count INT           NOT NULL DEFAULT 0 COMMENT '피드 조회수',
     board_date       DATETIME      NOT NULL DEFAULT NOW() COMMENT '피드 게시일',
     board_category   VARCHAR(100)  NOT NULL COMMENT '피드 카테고리',
@@ -40,7 +40,7 @@ CREATE TABLE board_attachment
 (
     board_attachment_id   INT           NOT NULL AUTO_INCREMENT COMMENT '피드 게시물 테이블 ID',
     board_id              INT           NOT NULL COMMENT '피드. 소모임 ID',
-    board_attachment_file VARCHAR(1000) NOT NULL COMMENT '피드 첨부파일 명',
+    board_attachment_file LONGTEXT NOT NULL COMMENT '피드 첨부파일 명',
     PRIMARY KEY (board_attachment_id)
 ) COMMENT '피드 첨부파일';
 
@@ -144,14 +144,14 @@ CREATE TABLE package
     package_id        INT           NOT NULL AUTO_INCREMENT COMMENT '패키지 테이블 ID',
     city_id           INT           NOT NULL COMMENT '도시 ID',
     user_id           INT           NOT NULL COMMENT '사용자 테이블 ID',
-    package_status    VARCHAR(100)  NOT NULL COMMENT '패키지 허가 여부',
-    package_content   VARCHAR(1000) NOT NULL COMMENT '패키지 내용',
+    package_status    VARCHAR(100)  NOT NULL DEFAULT '대기' COMMENT '패키지 허가 여부',
+    package_content   LONGTEXT      NOT NULL COMMENT '패키지 내용',
     package_regdate   DATETIME      NOT NULL DEFAULT NOW() COMMENT '패키지 게시일자',
     package_title     VARCHAR(100)  NOT NULL COMMENT '패키지 제목',
     package_cost      INT           NOT NULL COMMENT '패키지 비용',
     package_maxpeople INT           NOT NULL COMMENT '패키지 최대 인원',
-    package_start_day DATETIME      NOT NULL COMMENT '패키지 시작 일자',
-    package_end_day   DATETIME      NOT NULL COMMENT '패키지 종료 일자',
+    package_start_day DATE          NOT NULL COMMENT '패키지 시작 일자',
+    package_end_day   DATE          NOT NULL COMMENT '패키지 종료 일자',
     PRIMARY KEY (package_id)
 ) COMMENT '패키지';
 
@@ -163,7 +163,7 @@ CREATE TABLE package_attachment
 (
     package_attachment_id   INT           NOT NULL AUTO_INCREMENT COMMENT '패키지 첨부파일 테이블 ID',
     package_id              INT           NOT NULL COMMENT '패키지 ID',
-    package_attachment_file VARCHAR(1000) NOT NULL COMMENT '패키지 첨부파일 명',
+    package_attachment_file LONGTEXT NOT NULL COMMENT '패키지 첨부파일 명',
     PRIMARY KEY (package_attachment_id)
 ) COMMENT '패키지 첨부파일';
 
@@ -177,12 +177,12 @@ CREATE TABLE package_liked
 
 CREATE TABLE payment_info
 (
-    payment_id      INT         NOT NULL AUTO_INCREMENT COMMENT '결제 정보 ID',
+    payment_id      VARCHAR(500)    NOT NULL COMMENT '결제 정보        ID',
     user_id         INT         NOT NULL COMMENT '사용자 ID',
     package_id      INT         NOT NULL COMMENT '패키지 ID',
     user_count      INT         NOT NULL COMMENT '결제에 관련된 인원수',
     payment_date    DATETIME    NOT NULL DEFAULT NOW() COMMENT '결제 일시',
-    payment_status VARCHAR(20) NOT NULL COMMENT '결제 상태',
+    payment_status  VARCHAR(20) NOT NULL DEFAULT '결제완료' COMMENT '결제 상태',
     PRIMARY KEY (payment_id)
 ) COMMENT '결제 정보';
 

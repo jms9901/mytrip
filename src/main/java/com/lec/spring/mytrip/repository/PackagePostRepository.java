@@ -14,6 +14,8 @@ public interface PackagePostRepository {
     // 사용자별 패키지 조회
     List<PackagePost> findByUserId(int userId);
 
+    List<PackagePost> findByCityAndStatus(int userId);
+
     // 패키지 상태별 조회
     List<PackagePost> findByStatus(String status);
 

@@ -1,35 +1,51 @@
 package com.lec.spring.mytrip.service;
 
 import com.lec.spring.mytrip.domain.PackagePost;
+import com.lec.spring.mytrip.domain.User;
+import com.lec.spring.mytrip.domain.attachment.PackagePostAndAttachment;
 import com.lec.spring.mytrip.repository.PackagePostRepository;
+import com.lec.spring.mytrip.util.U;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 @Service
 public class PackagePostServiceImpl implements PackagePostService {
     private final PackagePostRepository packagePostRepository;
+    private final PackageAttachmentService packageAttachmentService;
 
     @Autowired
-    public PackagePostServiceImpl(SqlSession sqlSession) {
+    public PackagePostServiceImpl(SqlSession sqlSession, PackageAttachmentService packageAttachmentService) {
         this.packagePostRepository = sqlSession.getMapper(PackagePostRepository.class);
+        this.packageAttachmentService = packageAttachmentService;
     }
 
     // 패키지 상세
     @Override
-    public PackagePost getPackageDetails(int packageId) {
+    public PackagePostAndAttachment getPackageDetails(int packageId) {
+        PackagePostAndAttachment postAndAttachment = new PackagePostAndAttachment();
         // 패키지 ID 검증
         if (packageId <= 0) {
             throw new IllegalArgumentException("유효하지 않은 패키지 ID입니다.");
         }
         // 패키지 데이터 조회
-        PackagePost pkg = packagePostRepository.findById(packageId);
-        if (pkg == null) {
+        postAndAttachment.setPackagePost(packagePostRepository.findById(packageId));
+        if (postAndAttachment.getPackagePost() == null) {
             throw new IllegalArgumentException("ID가 " + packageId + "인 패키지를 찾을 수 없습니다.");
         }
-        return pkg;
+        postAndAttachment.setPackagePostAttachment(packageAttachmentService.getAttachmentsByPostId(packageId));
+        if (postAndAttachment.getPackagePost() == null) {
+            throw new IllegalArgumentException("ID가 " + packageId + "인 패키지를 찾을 수 없습니다.");
+        }
+
+//        System.out.println(postAndAttachment.toString());
+
+
+        return postAndAttachment;
     }
 
     //도시 별 패키지 목록
@@ -54,15 +70,38 @@ public class PackagePostServiceImpl implements PackagePostService {
 
     // 패키지 저장
     @Override
-    public int savePackage(PackagePost pkg) {
-        // 패키지 데이터 검증
-        if (pkg == null) {
-            throw new IllegalArgumentException("패키지 정보가 null일 수 없습니다.");
+    @Transactional  //게시글-이미지 DB 저장-이미지 서버 저장을 트랜잭션으로
+    public int savePackage(PackagePost pkg, List<MultipartFile> files) {
+        System.out.println("서비스 들어옴");
+
+//        User user = U.getLoggedUser();
+        User user = User.builder()
+                .id(1)
+                .name("이경원")
+                .email("wonwon123123@naver.com")
+                .build();
+        pkg.setUser(user);
+        pkg.setPackageStatus("대기");
+
+        // 패키지 데이터 검증. 이거 찐하게 수정해야겠는데
+        if (user == null) {
+            throw new RuntimeException("로그인 하세요.");
         }
-        if (pkg.getCityId() <= 0 || pkg.getUserId() <= 0 || pkg.getTitle() == null || pkg.getTitle().trim().isEmpty()) {
-            throw new IllegalArgumentException("유효하지 않은 패키지 데이터입니다. 도시 ID, 사용자 ID, 제목은 필수입니다.");
+        if (pkg.getCityId() <= 0 || pkg.getUser().getId() <= 0 || pkg.getPackageTitle() == null || pkg.getPackageTitle().trim().isEmpty()) {
+            throw new RuntimeException("유효하지 않은 패키지 데이터입니다. 다시 작성해주세요");
         }
-        return packagePostRepository.save(pkg);
+
+        // 패키지 저장
+        packagePostRepository.save(pkg);
+
+        // 첨부파일 저장
+        try {
+            packageAttachmentService.saveAttachments(files, pkg);
+        } catch (Exception e) {
+            throw new RuntimeException("첨부파일 저장 중 오류가 발생했습니다.", e);
+        }
+
+        return pkg.getPackageId();
     }
 
     //패키지 수정
@@ -72,13 +111,12 @@ public class PackagePostServiceImpl implements PackagePostService {
         if (pkg == null || pkg.getPackageId() <= 0) {
             throw new IllegalArgumentException("패키지 또는 패키지 ID가 null일 수 없습니다.");
         }
-
         // 기존 데이터 조회 및 검증
         PackagePost existingPackage = packagePostRepository.findById(pkg.getPackageId());
         if (existingPackage == null) {
             throw new IllegalArgumentException("ID가 " + pkg.getPackageId() + "인 패키지를 찾을 수 없습니다.");
         }
-        if (existingPackage.getUserId() != pkg.getUserId()) {
+        if (existingPackage.getUser().getId() != pkg.getUser().getId()) {
             throw new SecurityException("이 패키지를 수정할 권한이 없습니다.");
         }
         return packagePostRepository.update(pkg);
@@ -97,7 +135,7 @@ public class PackagePostServiceImpl implements PackagePostService {
         if (pkg == null) {
             throw new IllegalArgumentException("ID가 " + packageId + "인 패키지를 찾을 수 없습니다.");
         }
-        if (pkg.getUserId() != userId) {
+        if (pkg.getUser().getId() != userId) {
             throw new SecurityException("이 패키지를 삭제할 권한이 없습니다.");
         }
         return packagePostRepository.deleteById(packageId);
