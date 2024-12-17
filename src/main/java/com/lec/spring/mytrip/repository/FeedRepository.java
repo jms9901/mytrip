@@ -40,4 +40,7 @@ public interface FeedRepository {
     // 특정 피드 ID로 첨부파일 찾기
     List<PostAttachment> findAttachmentByBoardId(int boardId);
 
+    //조회수 증가
+    int addViewCnt(int boardId);
+
 }
