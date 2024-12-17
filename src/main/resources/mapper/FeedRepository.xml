@@ -127,14 +127,14 @@
 <!--    도시 및 카테고리 별 불러오기-->
 
     <select id="findByCityAndCategory" resultType="com.lec.spring.mytrip.domain.Feed">
-        <include refid="SELECT_BOARD"/>
+        <include refid="FeedResultMap"/>
         AND city_id = #{cityId}
         AND board_category = #{category}
     </select>
 
     <!-- 특정 피드 id로 글 찾기 -->
     <select id="findById" parameterType="int" resultType="com.lec.spring.mytrip.domain.Feed">
-        <include refid="SELECT_BOARD"/>
+        <include refid="FeedResultMap"/>
         AND board_id = #{id}
     </select>
 
