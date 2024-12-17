@@ -98,11 +98,9 @@
                             <div class="card-body">
                                 <img th:src="${(package.packageAttachmentFile != null
                                               and not #lists.isEmpty(package.packageAttachmentFile)
-                                              and package.packageAttachmentFile[0] != null)
-                                              ? '/uploads/package/' + package.packageAttachmentFile[0]
+                                              and package.packageAttachmentFile != null)
+                                              ? '/uploads/package/' + package.packageAttachmentFile
                                               : '/img/china.jpg'}" alt="Package Image">
-
-
                                 alt="패키지 이미지">
 
                                 <a th:href="@{|${cityId}/package/detail/${package.packageId}|}" th:text="${package.packageTitle}"></a>
@@ -129,7 +127,12 @@
                         <div class="card package-card">
                             <div class="card-body">
                                 <a th:href="@{|${cityId}/group/detail/${feed.boardId}|}" th:text="${feed.boardSubject}"></a>
-                                <br><br><br><br><br>
+                                <img th:src="${(feed.attachmentFiles != null
+                                             and not #lists.isEmpty(feed.attachmentFiles)
+                                             and feed.attachmentFiles[0] != null)
+                                            ? '/uploads/' + feed.attachmentFiles[0]
+                                            : '/img/china.jpg'}"
+                                     alt="Package Image">
                                 <!-- Group 좋아요 버튼 -->
                                 <button class="likeButton groupLikeButton btn" type="button" th:data-group-id="${feed.boardId}">
                                     <i class="bi bi-heart"></i>

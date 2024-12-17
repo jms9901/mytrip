@@ -57,7 +57,7 @@
 
     <select id="findAllPeedLike">
         SELECT count(*)
-        FROM city_liked
+        FROM board_liked
     </select>
 
     <resultMap id="boardResultMap" type="com.lec.spring.mytrip.domain.Board">
@@ -121,7 +121,7 @@
 
     <select id="findAllPackageLike">
         SELECT count(*)
-        FROM city_liked
+        FROM package_liked
     </select>
 
     <!--좋아요한 패키지 리스트-->
