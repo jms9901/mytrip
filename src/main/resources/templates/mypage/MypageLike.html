@@ -23,7 +23,7 @@
 
 <body style="background-image: url(/img/mypageBackground.jpg); background-repeat: no-repeat ; background-size: cover;">
 <div class="logo">
-    <div class="logo" style="background-image: url(/img/mypageLogo.png);"></div>
+    <div class="logo" style="background-image: url(/img/mypageLogo.png);" onclick="window.location.href='/main/mainpage';"></div>
 </div>
 <div class="myPageGoHome" style="background-image: url(/img/myPageGoHome.png)"></div>
 <div class="backgroundGuestBook" style="background-image: url(/img/addBook.png);"></div>
@@ -53,7 +53,7 @@
 <div class="menu5" id="5" style="background-image: url(/img/mypageMenu.png);"><h4 id="Invoice">&nbsp;GuestBook</h4>
 </div>
 
-<button id="open-modal" class="open-modal-btn">피드 작성</button>
+<!--<button id="open-modal" class="open-modal-btn">피드 작성</button>-->
 <div class="writeFeed" style="background-image: url(/img/feedDetailFrame.png);">
     <form action="/mypage/feed/createFeed" method="post" enctype="multipart/form-data">
 
@@ -97,7 +97,7 @@
         <input type="text" name="boardSubject" placeholder="제목" required>
         <textarea name="boardContent" placeholder="내용" required></textarea>
         <input type="file" name="files" multiple>  <!-- 여러 파일을 선택 가능 -->
-        <button type="submit">피드 작성</button>
+<!--        <button type="submit">피드 작성</button>-->
         <!-- 모달 안에 닫기 버튼 추가 -->
         <button type="button" class="close-modal-btn" onclick="closeModal()">닫기</button>
     </form>
