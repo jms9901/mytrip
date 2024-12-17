@@ -107,3 +107,8 @@ DROP TABLE IF EXISTS message;
 
 
 
+update user
+set user_username = 'kyungone0424@gmail.com'
+where user_id = 17;
+
+delete from user where user_id = 16;

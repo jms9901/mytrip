@@ -1,5 +1,6 @@
 package com.lec.spring.mytrip.config.oauth;
 
+import com.lec.spring.mytrip.config.PrincipalDetails;
 import com.lec.spring.mytrip.config.oauth.provider.GoogleUserInfo;
 import com.lec.spring.mytrip.config.oauth.provider.KakaoUserInfo;
 import com.lec.spring.mytrip.config.oauth.provider.OAuth2UserInfo;
@@ -61,17 +62,18 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
                     .profile(profile)
                     .build();
             userRepository.save(user);
+            user = userRepository.findByEmail(email); // 새로 저장한 사용자 정보를 다시 가져옴
 
-            // 새 사용자 정보 콘솔에 출력
             System.out.println("New user created:");
+            System.out.println("ID: " + user.getId());
             System.out.println("Username: " + username);
             System.out.println("Email: " + email);
             System.out.println("Provider: " + provider);
             System.out.println("Name: " + name);
             System.out.println("Profile: " + profile);
         } else {
-            // 기존 사용자 정보 콘솔에 출력
             System.out.println("Existing user logged in:");
+            System.out.println("ID: " + user.getId());
             System.out.println("Username: " + user.getUsername());
             System.out.println("Email: " + user.getEmail());
             System.out.println("Provider: " + user.getProvider());
@@ -79,14 +81,38 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
             System.out.println("Profile: " + profile);
         }
 
-        Map<String, Object> attributes = new HashMap<>(oAuth2User.getAttributes());
-        System.out.println(attributes.toString());
-        attributes.put("email", email);
+        // 사용자 정보를 principal에 저장할 속성 구조로 변경
+        Map<String, Object> userAttributes = new HashMap<>();
+        userAttributes.put("id", user.getId());
+        userAttributes.put("email", user.getEmail());
+        userAttributes.put("password", user.getPassword());
+        userAttributes.put("username", user.getUsername());
+        userAttributes.put("regDate", user.getRegDate());
+        userAttributes.put("provider", user.getProvider());
+        userAttributes.put("providerId", user.getProviderId());
+        userAttributes.put("profile", user.getProfile());
+        userAttributes.put("birthday", user.getBirthday());
+        userAttributes.put("introduction", user.getIntroduction());
+        userAttributes.put("authorization", user.getAuthorization());
+        userAttributes.put("companyNumber", user.getCompanyNumber());
+        userAttributes.put("status", user.getStatus());
+        userAttributes.put("user_name", name);
+
+        // 추가 속성 설정
+        Map<String, Object> additionalAttributes = new HashMap<>(oAuth2User.getAttributes());
+        additionalAttributes.put("email", email);
+        userAttributes.put("attributes", additionalAttributes);
+
+        Map<String, Object> principalAttributes = new HashMap<>();
+        principalAttributes.put("user", userAttributes);
+        principalAttributes.put("authorities", Collections.singletonMap("authority", "ROLE_USER"));
+        principalAttributes.put("attributes", additionalAttributes);
+        principalAttributes.put("name", email);
 
         DefaultOAuth2User defaultOAuth2User = new DefaultOAuth2User(
                 Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")),
-                attributes,
-                "email");
+                principalAttributes,
+                "name");
 
         // OAuth2AuthenticationToken 사용
         OAuth2AuthenticationToken authentication = new OAuth2AuthenticationToken(
@@ -111,5 +137,3 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         };
     }
 }
-
-// git push를 위한 주석 241210 10:45

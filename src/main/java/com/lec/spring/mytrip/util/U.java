@@ -48,16 +48,30 @@ public class U {
         } else if (principal instanceof DefaultOAuth2User) {
             DefaultOAuth2User oAuth2User = (DefaultOAuth2User) principal;
             Map<String, Object> attributes = oAuth2User.getAttributes();
+            Map<String, Object> user = (Map<String, Object>) attributes.get("user");
+            String email = (String) user.get("email");
+            String name = (String) user.get("name");
+            int id = (int) user.get("id");
 
-            String email = (String) attributes.get("email");
-            String name = (String) attributes.get("name");
-
+            // 사용자 정보를 생성할 때 필요한 추가 속성들을 가져옵니다.
             Map<String, Object> properties = (Map<String, Object>) attributes.get("properties");
             if (properties != null && properties.get("nickname") != null) {
                 name = (String) properties.get("nickname");
             }
 
-            loggedUser = new User(email, name);
+            String profile = null;
+            if (properties != null && properties.get("profile_image") != null) {
+                profile = (String) properties.get("profile_image");
+            }
+
+            // 사용자 ID를 가져옵니다.
+
+            if (attributes.containsKey("user")) {
+                Map<String, Object> userMap = (Map<String, Object>) attributes.get("user");
+                id = (int) userMap.get("id");
+            }
+
+            loggedUser = new User(email, name, id);
         }
 
         // 세션에 사용자 정보를 저장 (옵션)
@@ -67,4 +81,5 @@ public class U {
 
         return loggedUser;
     }
+
 }
