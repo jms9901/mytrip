@@ -15,6 +15,7 @@ import java.util.List;
 public class CityServiceImpl implements CityService {
 
     private final CityRepository cityRepository;
+    private final AipageRepository aipageRepository;
 
     // API 이름 ↔ DB 이름 매핑
     private static final Map<String, String> API_TO_DB_NAME_MAP = new HashMap<>();
@@ -34,6 +35,7 @@ public class CityServiceImpl implements CityService {
     @Autowired
     public CityServiceImpl(SqlSession sqlSession) {
         this.cityRepository = sqlSession.getMapper(CityRepository.class);
+        this.aipageRepository = sqlSession.getMapper(AipageRepository.class);
     }
 
     // API 도시 이름 → DB 도시 이름 변환
