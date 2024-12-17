@@ -46,4 +46,15 @@ public interface LikeRepository {
     int findAllPackageLike(int userId);
 
     List<PackagePost> getLikedPackageDetails(int userId);
+
+
+
+    // 도시 좋아요 ID 목록 조회
+    List<Integer> getLikedCityIds(@Param("userId") int userId);
+
+    // 게시글 좋아요 ID 목록 조회
+    List<Integer> getLikedPostIds(@Param("userId") int userId);
+
+    // 패키지 좋아요 ID 목록 조회
+    List<Integer> getLikedPackageIds(@Param("userId") int userId);
 }

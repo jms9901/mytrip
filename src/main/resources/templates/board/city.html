@@ -45,6 +45,7 @@
         <button class="likeButton cityLikeButton btn" type="button" th:data-city-id="${city.cityId}">
             <i class="bi bi-heart"></i>
         </button>
+        <span class="likeCount">0</span> <!-- 좋아요 수 초기값 -->
     </div>
 
     <!-- Navigation -->
@@ -111,6 +112,7 @@
                                 <button class="likeButton packageLikeButton btn" type="button" th:data-package-id="${package.packageId}">
                                     <i class="bi bi-heart"></i>
                                 </button>
+                                <span class="likeCount">0</span> <!-- 좋아요 수 초기값 -->
                             </div>
                         </div>
                     </div>
@@ -132,6 +134,7 @@
                                 <button class="likeButton groupLikeButton btn" type="button" th:data-group-id="${feed.boardId}">
                                     <i class="bi bi-heart"></i>
                                 </button>
+                                <span class="likeCount">0</span> <!-- 좋아요 수 초기값 -->
                             </div>
                         </div>
                     </div>
@@ -180,8 +183,7 @@
 </footer>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script th:src="@{/js/board/cityLike.js}"></script>
-<script th:src="@{/js/board/package/packageLike.js}"></script>
+<script th:src="@{/js/board/like.js}"></script>
 <script th:src="@{/js/board/city.js}"></script>
 </body>
 </html>
