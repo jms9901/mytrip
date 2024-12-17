@@ -118,10 +118,28 @@ public class BusinessMypageController {
 
     }
 
-    // 기업 개인정보 수정 -> 모달
+    // 기업 개인정보 조회
     // JSON API 엔드포인트(js요청)
     // businessMain.html
-    @GetMapping("/business/profile/{userId}")
+    @GetMapping("/business/profile/{id}")
+    @ResponseBody
+    public ResponseEntity<?> getCompanyProfile(@PathVariable("id") int id) {
+        try {
+            // 유저 조회
+            User user = businessMypageService.getUserById(id);
+
+            if(user == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("사용자 데이터를 찾을 수 없습니다.");
+            }
+            return ResponseEntity.ok(user);
+        } catch (Exception e) {
+            log.error("프로필 불러오기 중 예외 발생", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 오류 발생");
+        }
+    }
+
+    // 기업 개인정보 수정
+    @PostMapping("/business/profile/{id}")
     @ResponseBody
     public ResponseEntity<?> updateCompanyProfile(
             @PathVariable("id") int id,
@@ -131,14 +149,19 @@ public class BusinessMypageController {
             ) {
          try {
              String profileImageFilename = profileImage != null ? profileImage.getOriginalFilename() : null;
-            User result = businessMypageService.updateCompany(
-                    id,
-                    currentPassword,
-                    newPassword,
-                    profileImage,
-                    profileImageFilename
-            );
-            return result != null ? ResponseEntity.ok().build(): ResponseEntity.badRequest().body("프로필 수정 실패");
+             // 서비스 호출 (수정 로직 실행)
+             boolean updateResult = businessMypageService.updateCompany(
+                     id,
+                     currentPassword,
+                     newPassword,
+                     profileImage,
+                     profileImageFilename
+             );
+
+             // 성공/실패 응답 반환
+             return updateResult
+                     ? ResponseEntity.ok("프로필 수정 성공")
+                     : ResponseEntity.badRequest().body("프로필 수정 실패: 비밀번호 불일치 또는 오류 발생");
         } catch (Exception e) {
              log.error("프로필 수정 중 예외 발생: ", e);
              return ResponseEntity.status(500).body("서버 오류");
@@ -172,7 +195,7 @@ public class BusinessMypageController {
     @ResponseBody
     public ResponseEntity<?> getPackageDetails(@PathVariable("packageId") int packageId) {
         try {
-            List<PackagePost> packagePost = packagePostRepository.mypagePackageDetail(packageId);
+            List<PackagePost> packagePost = packagePostService.getPackageDetailsById(packageId);
 
             if(packagePost == null) {
                 return ResponseEntity.notFound().build();

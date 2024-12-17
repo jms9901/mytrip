@@ -43,20 +43,28 @@ public class BusinessMypageService {
     // 사용자 정보 가져오기
     public User getUserById(int id) {return userRepository.findById(id);}
 
+
     // 개인정보 수정
     // 비밀번호, 프로필 수정
     @Transactional
-    public User updateCompany(int userId, String currentPassword, String newPassword, MultipartFile profileImage, String profileImageFileName) {
+    public boolean updateCompany(int userId, String currentPassword, String newPassword, MultipartFile profileImage, String profileImageFileName) {
 
         User user = userRepository.findById(userId);
         if(user == null && !user.getStatus().equals("승인")) {
-            return null;
+            return false;
+        }
+
+        // 상태 확인
+        if(!"승인".equals(user.getStatus())) {
+            return false;
         }
 
         // 비밀번호 확인 및 업데이트
         if (currentPassword != null && newPassword != null && !newPassword.isEmpty()) {
-            if (!passwordEncoder.matches(currentPassword, user.getPassword())) return null;
-            user.setPassword(passwordEncoder.encode(newPassword)); // 암호화 저장
+            if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
+                return false; // 현재 비밀번호 불일치
+            }
+            user.setPassword(passwordEncoder.encode(newPassword)); // 새 비밀번호 암호화 저장
         }
 
         // 프로필 이미지 저장 및 업데이트
@@ -66,12 +74,12 @@ public class BusinessMypageService {
                 user.setProfile(imageName);
             } catch (IOException e) {
                 e.printStackTrace();
-                return null;
+                return false;
             }
         }
         // 업데이트 실행
         userRepository.updateCompany(user.getId(), user.getPassword(), user.getProfile());
-        return user;
+        return true;
 
     }
 

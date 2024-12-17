@@ -362,7 +362,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
 
-// 개인 정보 수정
+// 개인 정보 조회 및 수정
         document.addEventListener('DOMContentLoaded', function () {
             const userProfile = document.getElementById('profile-icon-Button');
             const profileUpdateModal = document.getElementById('modalOverlay');
@@ -397,8 +397,16 @@ document.addEventListener('DOMContentLoaded', function() {
                         if (!response.ok) {
                             throw new Error(`HTTP error! status: ${response.status} / 프로필 개인 정보를 불러올 수 없습니다.`);
                         }
-                        return response.json();
+                        return response.text(); // text로 먼저 받기
                     }) // 첫 번째 then 종료
+                    .then(text => {
+                        if(!text) {
+                            throw new Error('서버에서 빈 응답이 반한되었습니다.');
+                        }
+                        return JSON.parse(text);    // 텍스를 JSON으로 반환
+                        }
+
+                    )
                     .then(user => {
                         userInfo.innerHTML = `
                         <div class="modal hidden" id="businessUpdate-modal">
@@ -453,19 +461,26 @@ document.addEventListener('DOMContentLoaded', function() {
                                 </form>
                             </div>
                         `;
-                        // 모달 표시
-                        profileUpdateModal.style.display = 'block';
 
-                        // 닫기 버튼 이벤트
-                        const closeButton = profileUpdateModal.querySelector('.close-button');
-                        closeButton.addEventListener('click', function () {
-                            profileUpdateModal.classList.add('hidden');
-                        });
+                        // DOM에 모달이 추가된 후에 실행되도록 setTimeout 사용
+                        setTimeout(() => {
+                            const profileUpdateModal = document.getElementById('businessUpdate-modal');
+                            if (profileUpdateModal) {
+                                profileUpdateModal.classList.remove('hidden'); // 모달 표시
+                                profileUpdateModal.style.display = 'block';
 
-                        // 수정 버튼 이벤트
-                        const updateButton = profileUpdateModal.querySelector('.update-button');
-                        const submitButton = profileUpdateModal.querySelector('.submit-button');
-                        const newPasswordInput = profileUpdateModal.querySelector('.new-password');
+                                // 닫기 버튼 이벤트
+                                const closeButton = profileUpdateModal.querySelector('.close-button');
+                                closeButton.addEventListener('click', function () {
+                                    profileUpdateModal.classList.add('hidden');
+                                });
+
+                                console.log("모달이 성공적으로 추가되었습니다.");
+                            } else {
+                                console.error("모달 요소를 찾을 수 없습니다.");
+                            }
+                        }, 0);
+
 
                         updateButton.addEventListener('click', function () {
                             // 수정 가능한 필드 활성화
@@ -479,10 +494,10 @@ document.addEventListener('DOMContentLoaded', function() {
                             const currentPassword = profileUpdateModal.querySelector('#password').value;
                             const newPassword = newPasswordInput.value;
 
-
-                            const formData = new FormData();
-                            formData.append('currentPassword', currentPassword);
-                            formData.append('newPassword', newPassword);
+                            const payload = {
+                                currentPassword: currentPassword,
+                                newPassword: newPassword
+                            };
 
                             fetch(`/mypage/business/profile/${userId}`, {
                                 method: 'POST',
@@ -490,7 +505,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                     'Accept': 'application/json',
                                     'Content-Type': 'application/json'
                                 },
-                                body: JSON.stringify(Object.fromEntries(formData))
+                                body: JSON.stringify(payload)
                             })
                                 .then(response => {
                                     console.log("프로필 수정 서버 응답: ", response);
@@ -500,7 +515,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                     return response.json();
                                 })
                                 .then(data => {
-                                    alert('프로필이 성공적으로 업데이트되었습니다.');
+                                    alert('프로필이 성공적으로 업데이트 되었습니다.');
                                     profileUpdateModal.classList.add('hidden');
                                 })
                                 .catch(error => {
@@ -515,6 +530,18 @@ document.addEventListener('DOMContentLoaded', function() {
                     });
             });
         });
+
+// // 개인정보 수정
+// document.addEventListener('DOMContentLoaded', function () {
+//     // 수정 버튼 이벤트
+//     const updateButton = profileUpdateModal.querySelector('.update-button');
+//     const submitButton = profileUpdateModal.querySelector('.submit-button');
+//     const newPasswordInput = profileUpdateModal.querySelector('#new-password');
+//
+//     updateButton.addEventListener('click', function () {
+//
+//     })
+// })
 
 // 모달 외부 닫기
         document.addEventListener('DOMContentLoaded', function () {
