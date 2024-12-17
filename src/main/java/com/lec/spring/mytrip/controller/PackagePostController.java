@@ -9,6 +9,7 @@ import com.lec.spring.mytrip.service.CityService;
 import com.lec.spring.mytrip.service.PackageAttachmentService;
 import com.lec.spring.mytrip.service.FeedService;
 import com.lec.spring.mytrip.service.PackagePostService;
+import com.lec.spring.mytrip.util.U;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -228,11 +229,10 @@ public class PackagePostController {
     @DeleteMapping("{cityId}/group/delete/{groupId}")
     public String deleteGroup(@PathVariable int cityId,
                               @PathVariable int groupId) {
-        boolean isDeleted = feedService.deleteById(groupId);
 
-        if (!isDeleted) {
-            return "redirect:/error"; // 삭제 실패 시 에러 페이지
-        }
+        feedService. deleteFeed(groupId , U.getLoggedUser().getId());
+
+
 
         return "redirect:/board";
     }
