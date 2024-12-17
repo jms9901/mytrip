@@ -34,7 +34,7 @@
                     <a th:href="@{/aipage/start}" class="top-menu">여행지 추천</a>
                 </sec:authorize>
                 <sec:authorize access="isAuthenticated()">
-                    <a th:href="@{/post}" class="top-menu">여행지 게시판</a>
+                    <a th:href="@{/board/city/1}" class="top-menu">여행지 게시판</a>
                 </sec:authorize>
                 <sec:authorize access="isAuthenticated()">
                     <a th:href="@{/flight/search}" class="top-menu">항공권 조회</a>
@@ -135,39 +135,39 @@
             <p class="text-center text-muted"> 어느 대륙으로 떠나볼까요? </p>
             <div class="container5">
                 <div class="row1">
-                    <a th:href="@{/aipage/start}" class="continent-card">
+                    <a href="/board/city/9" class="continent-card">
                         <img th:src="@{/img/America.jpg}" alt="America">
                         <div class="overlay">
                             <span>아메리카</span>
                         </div>
                     </a>
-                    <a th:href="@{/aipage/start}" class="continent-card">
+                    <a href="/board/city/7" class="continent-card">
                         <img th:src="@{/img/China.jpg}" alt="China">
                         <div class="overlay">
-                            <span>중국</span>
+                            <span>아시아</span>
                         </div>
                     </a>
-                    <a th:href="@{/aipage/start}" class="continent-card">
+                    <a href="/board/city/6" class="continent-card">
                         <img th:src="@{/img/Europe.jpg}" alt="Europe">
                         <div class="overlay">
-                            <span>유럽</span>
+                            <span>구라파</span>
                         </div>
                     </a>
                 </div>
                 <div class="row2">
-                    <a th:href="@{/aipage/start}" class="continent-card">
+                    <a href="/board/city/15" class="continent-card">
                         <img th:src="@{/img/Japan.jpg}" alt="Japan">
                         <div class="overlay">
                             <span>일본</span>
                         </div>
                     </a>
-                    <a th:href="@{/aipage/start}" class="continent-card">
+                    <a href="/board/city/2" class="continent-card">
                         <img th:src="@{/img/SoutheastAsia.jpg}" alt="Southeast Asia">
                         <div class="overlay">
                             <span>동남아시아</span>
                         </div>
                     </a>
-                    <a th:href="@{/aipage/start}" class="continent-card">
+                    <a href="/board/city/1" class="continent-card">
                         <img th:src="@{/img/SouthPacific.jpg}" alt="South Pacific">
                         <div class="overlay">
                             <span>남태평양</span>

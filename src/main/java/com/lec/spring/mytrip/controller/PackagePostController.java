@@ -189,6 +189,9 @@ public class PackagePostController {
     public String saveGroup(@PathVariable int cityId,
                             @ModelAttribute Feed feed,
                             @RequestParam List<MultipartFile> files) {
+
+        feed.setUserId(U.getLoggedUser().getId());
+
         try {
             feed.setBoardCategory("소모임");
             feedService.insertFeed(feed, files);
