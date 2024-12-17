@@ -44,7 +44,6 @@ public class FeedServiceImpl implements FeedService{
     @Override
     @Transactional
     public void insertFeed(Feed feed, List<MultipartFile> files) throws IOException {
-        feed.setBoardCategory("피드");
 
         System.out.println("Before Insert boardId: " + feed.getBoardId());
         // 게시물 삽입

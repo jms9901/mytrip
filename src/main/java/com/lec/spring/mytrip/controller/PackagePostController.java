@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -160,7 +161,8 @@ public class PackagePostController {
         // 소모임 상세 페이지로 이동
         Feed feed =  feedService.detail(groupId);
 
-        System.out.println(feed); //현 시점에선 불러와지지도 않음
+//        조회수 증가
+        feed.setBoardViewCount(feed.getBoardViewCount() + 1);
 
         model.addAttribute("feed", feed);
         model.addAttribute("cityId", cityId);
@@ -179,11 +181,12 @@ public class PackagePostController {
     @PostMapping("{cityId}/group/save")
     public String saveGroup(@PathVariable int cityId,
                             @ModelAttribute Feed feed,
-                            @RequestParam Map<String, MultipartFile> files) {
-        boolean isSaved = feedService.write(feed, files);
-
-        if (!isSaved) {
-            return "redirect:/error"; // 저장 실패 시 에러 페이지
+                            @RequestParam List<MultipartFile> files) {
+        try {
+            feed.setBoardCategory("소모임");
+            feedService.insertFeed(feed, files);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
 
         return "redirect:/board/city/" + cityId + "/group/detail/" + feed.getBoardId();
@@ -196,7 +199,7 @@ public class PackagePostController {
                                 @PathVariable int groupId,
                                 Model model) {
         // 소모임 수정 페이지로 이동
-        Feed feed = feedService.findById(groupId);
+        Feed feed = feedService.detail(groupId);
         model.addAttribute("feed", feed);
         model.addAttribute("cityId", cityId);
         return "board/city/group/edit";
@@ -206,12 +209,16 @@ public class PackagePostController {
     @PostMapping("{cityId}/group/update")
     public String updateGroup(@PathVariable int cityId,
                               @ModelAttribute Feed feed,
-                              @RequestParam Map<String, MultipartFile> files,
-                              @RequestParam(value = "delfile", required = false) int[] delfile) {
-        boolean isUpdated = feedService.update(feed, files, delfile);
+                              @RequestParam List<MultipartFile> files) {
 
-        if (!isUpdated) {
-            return "redirect:/error"; // 수정 실패 시 에러 페이지
+        try {
+            feedService.updateFeed(feed.getBoardId(), feed.getUserId()
+                    , feed.getBoardSubject()
+                    , feed.getBoardContent()
+                    , feed.getCityId()
+                    , files);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
 
         return "redirect:/board/city/" + cityId + "/group/edit/" + feed.getBoardId();
