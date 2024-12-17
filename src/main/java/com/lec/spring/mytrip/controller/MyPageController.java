@@ -152,15 +152,11 @@ public class MyPageController {
     // 프로필 이미지 반환 메서드
     @GetMapping("/profile/{userId}")
     @ResponseBody
-    public ResponseEntity<Resource> getProfileImage(@PathVariable("userId") Long userId) {
+    public ResponseEntity<Resource> getProfileImage(@PathVariable("userId") long userId) {
         User user = myPageService.getUserById(userId);
-        Path imagePath;
-
-        if (user != null && user.getProfile() != null) {
-            imagePath = Paths.get("uploads/profiles/", user.getProfile());
-        } else {
-            imagePath = Paths.get("img", "defaultProfile.jpg"); // 기본 프로필 이미지 경로
-        }
+        Path imagePath = (user != null && user.getProfile() != null)
+                ? Paths.get("static/uploads/profiles/", user.getProfile())
+                : Paths.get("img", "defaultProfile.jpg");
 
         Resource resource = new FileSystemResource(imagePath);
         if (resource.exists()) {
@@ -170,6 +166,7 @@ public class MyPageController {
         }
         return ResponseEntity.notFound().build();
     }
+
     @GetMapping("/bookMain")
     public String myPage() {
         return "mypage/bookMain";

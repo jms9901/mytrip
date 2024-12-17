@@ -463,11 +463,12 @@ document.addEventListener('DOMContentLoaded', function () {
                     if (profileUpdateModal) {
                         profileUpdateModal.classList.remove('hidden');
                         profileUpdateModal.style.display = 'block';
-                        document.getElementById("profileImage").style.backgroundImage = `url('/uploads/profiles${user.profile}')`;
+
 
                         // 프로필 사진 클릭 시 파일 선택
                         const profileImage = document.getElementById("profileImage");
                         const profileImageInput = document.getElementById("profileImageInput");
+                        profileImage.style.backgroundImage =`url(../../uploads/profiles/ + ${user.profile})`;
 
                         profileImage.addEventListener('click', function () {
                             profileImageInput.click();
@@ -488,6 +489,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         const closeButton = profileUpdateModal.querySelector('.close-button');
                         closeButton.addEventListener('click', function () {
                             profileUpdateModal.classList.add('hidden');
+                            profileUpdateModal.style.display = 'none';
                         });
 
                         const profileForm = document.getElementById('profile-update-form');

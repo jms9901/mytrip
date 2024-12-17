@@ -21,7 +21,7 @@ import java.util.UUID;
 public class MyPageService {
 
     private final UserRepository userRepository;
-    private final Path uploadDir = Paths.get("uploads/profiles");
+    private final Path uploadDir = Paths.get("static/uploads/profiles");
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();  // 직접 인스턴스 생성
     @Autowired
     public MyPageService(UserRepository userRepository) throws IOException {
@@ -62,6 +62,7 @@ public class MyPageService {
         if (introduction != null && !introduction.isEmpty()) {
             user.setIntroduction(introduction);  // 자기소개 업데이트
         }
+
         // **수정 위치: 프로필 이미지 업데이트 로직 삽입**
         if (profileImageFileName != null && !profileImageFileName.isEmpty()) {
             user.setProfile(profileImageFileName);  // 프로필 이미지 파일 이름 업데이트
@@ -85,11 +86,12 @@ public class MyPageService {
 
         return result > 0; // 업데이트가 성공하면 true, 실패하면 false 반환
     }
+
     // 프로필 이미지 저장 메서드 (MultipartFile을 실제 파일로 저장)
     private String saveProfileImage(MultipartFile file) throws IOException {
         byte[] bytes = file.getBytes();
         String imageName = UUID.randomUUID().toString() + ".jpg";  // UUID 기반 고유 이미지 이름 생성
-        Path path = Paths.get("static/uploads/profiles", imageName);
+        Path path = Paths.get(uploadDir.toString(), imageName);
         Files.write(path, bytes);  // 파일 저장
         return imageName;
     }
