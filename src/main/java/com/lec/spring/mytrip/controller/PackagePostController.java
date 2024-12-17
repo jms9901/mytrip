@@ -3,6 +3,7 @@ package com.lec.spring.mytrip.controller;
 import com.lec.spring.mytrip.domain.City;
 import com.lec.spring.mytrip.domain.Feed;
 import com.lec.spring.mytrip.domain.PackagePost;
+import com.lec.spring.mytrip.domain.User;
 import com.lec.spring.mytrip.domain.attachment.PackagePostAndAttachment;
 import com.lec.spring.mytrip.domain.attachment.PackagePostAttachment;
 import com.lec.spring.mytrip.service.CityService;
@@ -191,6 +192,7 @@ public class PackagePostController {
                             @RequestParam List<MultipartFile> files) {
 
         feed.setUserId(U.getLoggedUser().getId());
+        System.out.println(feed.getUserId());
 
         try {
             feed.setBoardCategory("소모임");
@@ -220,6 +222,7 @@ public class PackagePostController {
     public String updateGroup(@PathVariable int cityId,
                               @ModelAttribute Feed feed,
                               @RequestParam List<MultipartFile> files) {
+        System.out.println(feed.toString());
 
         try {
             feedService.updateFeed(feed.getBoardId(), feed.getUserId()
@@ -238,10 +241,9 @@ public class PackagePostController {
     @GetMapping("{cityId}/group/delete/{groupId}")
     public String deleteGroup(@PathVariable int cityId,
                               @PathVariable int groupId) {
+        System.out.println("컨트롤라 : " + U.getLoggedUser().getId());
 
         feedService. deleteFeed(groupId , U.getLoggedUser().getId());
-
-
 
         return "redirect:/board/city/" + cityId;
     }

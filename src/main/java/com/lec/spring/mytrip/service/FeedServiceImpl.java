@@ -114,6 +114,8 @@ public class FeedServiceImpl implements FeedService{
         feed.setBoardContent(boardContent);
         feed.setCityId(cityId);
 
+        System.out.println("updateFeed in service : " + feed.toString());
+
         // 게시물 수정: 제목, 내용, 도시명 수정
         feedRepository.updateFeed(feed);
 
@@ -205,7 +207,7 @@ public class FeedServiceImpl implements FeedService{
     public Feed detail(int id) {
         // 본인이 누를 시 조회수 증가 X
         // 조회수 증가
-//        feedRepository.viewCnt(id);
+        feedRepository.addViewCnt(id);
         Feed feed = feedRepository.findById(id);
         if (feed != null) {
             feed.setAttachments(feedRepository.findAttachmentByBoardId(id));
