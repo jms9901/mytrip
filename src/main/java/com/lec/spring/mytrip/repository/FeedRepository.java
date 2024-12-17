@@ -33,4 +33,11 @@ public interface FeedRepository {
     List<Feed> findByCityAndCategory(int cityId, String category);
 
     void deleteAttachmentsByBoardId(int boardId);
+
+    //게시글 상세 보기
+    Feed findById(int id);
+
+    // 특정 피드 ID로 첨부파일 찾기
+    List<PostAttachment> findAttachmentByBoardId(int boardId);
+
 }

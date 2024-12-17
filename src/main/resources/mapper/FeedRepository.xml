@@ -132,4 +132,18 @@
         AND board_category = #{category}
     </select>
 
+    <!-- 특정 피드 id로 글 찾기 -->
+    <select id="findById" parameterType="int" resultType="com.lec.spring.mytrip.domain.Feed">
+        <include refid="SELECT_BOARD"/>
+        AND board_id = #{id}
+    </select>
+
+<!--    특정 게시글의 첨부파일 불러오기-->
+    <select id="findAttachmentByBoardId" resultType="com.lec.spring.mytrip.domain.PostAttachment">
+        SELECT * FROM board_attachment
+        WHERE board_id = #{boardId}
+    </select>
+
+
+
 </mapper>

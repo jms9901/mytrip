@@ -26,4 +26,6 @@ public interface FeedService {
     // 도시 및 카테고리 별 불러오기
     List<Feed> findByCityAndCategory(int cityId, String Category);
 
+    Feed detail(int id);
+
 }

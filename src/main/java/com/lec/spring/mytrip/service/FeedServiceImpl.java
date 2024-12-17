@@ -20,6 +20,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import com.lec.spring.mytrip.util.U;
 
 @Service
 public class FeedServiceImpl implements FeedService{
@@ -198,6 +199,22 @@ public class FeedServiceImpl implements FeedService{
         List<Feed> c = feedRepository.findByCityAndCategory(cityId, category);
 //        System.out.println("서비스단 받아온 피드 : " + c.toString());
         return c;
+    }
+
+    @Override
+    @Transactional
+    public Feed detail(int id) {
+        // 본인이 누를 시 조회수 증가 X
+        // 조회수 증가
+//        feedRepository.viewCnt(id);
+        Feed feed = feedRepository.findById(id);
+        if (feed != null) {
+            feed.setAttachments(feedRepository.findAttachmentByBoardId(id));
+            User user = U.getLoggedUser();
+            feed.setUser(user);
+            return feed;
+        }
+        return null;
     }
 
 }
