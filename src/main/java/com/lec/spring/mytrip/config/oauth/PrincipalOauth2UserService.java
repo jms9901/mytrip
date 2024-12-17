@@ -44,7 +44,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         String email = oAuth2UserInfo.getEmail();
         String provider = oAuth2UserInfo.getProvider();
         String name = oAuth2UserInfo.getName();
-        String username = provider + "_" + email.replace("@", "_").replace(".", "_");
+        String username = email;
         String profile = oAuth2UserInfo.getProfile();
 
         User user = userRepository.findByEmail(email);
