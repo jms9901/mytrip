@@ -55,7 +55,7 @@ public class SecurityConfig {
                         // 특정 패턴의 URL 요청을 매칭
                         .requestMatchers("/", "/user/login", "/oauth2/**", "/css/**", "/js/**", "/img/**", "/admin/adminLogin", "/admin/auth").permitAll()
                         .requestMatchers("/user/login").hasAnyAuthority("ROLE_USER", "ROLE_DORMANT")
-                        .requestMatchers("/user/**").hasAnyAuthority("ROLE_USER", "ROLE_BUSINESS")
+                        .requestMatchers("/user/**", "/flight/**", "/board/**", "/aipage/**", "/mypage/**").hasAnyAuthority("ROLE_USER", "ROLE_BUSINESS")
                         .anyRequest().permitAll())
                 // 폼 기반 로그인 기능을 설정
                 .formLogin(form -> form
