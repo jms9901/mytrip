@@ -105,6 +105,8 @@ public class PackagePostController {
                               @ModelAttribute PackagePost packagePost){
         System.out.println("컨트롤러 들어옴");
 
+        files.forEach(System.out::println);
+
         System.out.println("저장할 파일" + packagePost);
 
         // 패키지 저장 처리
@@ -123,19 +125,20 @@ public class PackagePostController {
                                   Model model) {
         // 패키지 수정 페이지로 이동
         model.addAttribute("packagePost", packagePostService.getPackageDetails(packageId));
-        return "package/edit";
+        return "/board/city/package/edit";
     }
 
     // 패키지 수정 저장 안써
-    @PostMapping("{cityId}/package/update")
+    @PostMapping("{cityId}/package/update/{packageId}")
     public String updatePackage(@PathVariable int cityId,
+                                @PathVariable int packageId,
                                 @ModelAttribute PackagePost packagePost) {
         // 패키지 수정 저장 처리
         // 패키지 저장 처리 후 저장된 ID 반환
         int id = packagePostService.updatePackage(packagePost);
 
         // 저장 후 상세 페이지로 리다이렉트
-        return "redirect:" + cityId + "/package/detail/" + id;
+        return "redirect:/board/city/" + cityId + "/package/detail/" + packageId;
     }
 
     // 패키지 삭제
@@ -156,7 +159,7 @@ public class PackagePostController {
     // 소모임 상세 이동
     // board.group.detail.html
     @GetMapping("{cityId}/group/detail/{groupId}")
-    public void getGroupDetails(@PathVariable int cityId,
+    public String getGroupDetails(@PathVariable int cityId,
                                 @PathVariable int groupId,
                                 Model model) {
         // 소모임 상세 페이지로 이동
@@ -168,6 +171,8 @@ public class PackagePostController {
         model.addAttribute("feed", feed);
         model.addAttribute("cityId", cityId);
         model.addAttribute("groupId", groupId);
+
+        return "board/city/group/detail";
     }
 
     // 소모임 글쓰기 페이지 이동
@@ -222,11 +227,11 @@ public class PackagePostController {
             throw new RuntimeException(e);
         }
 
-        return "redirect:/board/city/" + cityId + "/group/edit/" + feed.getBoardId();
+        return "redirect:/board/city/" + cityId + "/group/detail/" + feed.getBoardId();
     }
 
     // 소모임 삭제
-    @DeleteMapping("{cityId}/group/delete/{groupId}")
+    @GetMapping("{cityId}/group/delete/{groupId}")
     public String deleteGroup(@PathVariable int cityId,
                               @PathVariable int groupId) {
 
@@ -234,16 +239,38 @@ public class PackagePostController {
 
 
 
-        return "redirect:/board";
+        return "redirect:/board/city/" + cityId;
     }
 
 
     // 도시별 피드 모음 페이지 이동
     // board.feeds.html
     @GetMapping("{cityId}/feeds")
-    public void cityFeedsPage(@PathVariable int cityId,
-                              Model model) {
-        // 도시별 피드 모음 페이지로 이동
+    public String cityFeedsPage(
+            @PathVariable int cityId,
+            @RequestParam(required = false) Integer groupId,
+            @RequestParam(required = false) String category,
+            Model model) {
+        // 도시와 카테고리에 따른 피드 가져오기
+        List<Feed> feeds = feedService.findByCityAndCategory(cityId, "피드");
+
+        // 그룹 ID 관련 데이터 추가 로직 필요시 구현
+        if (groupId != null) {
+            model.addAttribute("groupId", groupId);
+        }
+
+
+        List<City> sideCities = cityService.findCitiesByContinentOfThisCity(cityId);
+        model.addAttribute("cities", sideCities);
+
+
+        // 모델에 데이터 추가
+        model.addAttribute("feeds", feeds); // 피드 목록
+        model.addAttribute("cityId", cityId); // 현재 도시 ID
+        model.addAttribute("category", category); // 현재 카테고리
+
+        // "board/feeds"는 templates/board/feeds.html을 가리킴
+        return "board/city/feeds";
     }
 
     //상대방 마이페이지로 이동

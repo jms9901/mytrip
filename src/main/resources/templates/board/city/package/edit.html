@@ -35,34 +35,40 @@
 
 <!-- Main Section -->
 <main>
-    <form th:action="@{/board/city/{cityId}/package/save(cityId=${cityId})}"
+    <form th:action="@{|/board/city/${cityId}/package/update/${packageId}|}"
           method="post" enctype="multipart/form-data">
     <div>
-            <!-- 도시 ID -->
-            <input type="hidden" id="cityId" name="cityId" th:value="${cityId}">
+            <!-- 필요한 값 ID -->
+            <input type="hidden" name="cityId" th:value="${cityId}">
+            <input type="hidden" name="packageId" th:value="${packagePost.packagePost.packageId}">
+            <input type="hidden" name="user.id" th:value="${packagePost.packagePost.user.id}">
             <!-- 패키지 비용 -->
             <div>
                 <label for="packageCost">Package Cost:</label>
-                <input type="number" id="packageCost" name="packageCost" min="0" >
+                <input type="number" id="packageCost" name="packageCost"
+                       th:value="${packagePost.packagePost.packageCost}" required>
             </div>
             <!-- 최대 참여 가능 인원 -->
             <div>
                 <label for="packageMaxpeople">Max Participants:</label>
-                <input type="number" id="packageMaxpeople" name="packageMaxpeople" min="0" required>
+                <input type="number" id="packageMaxpeople" name="packageMaxpeople"
+                       th:value="${packagePost.packagePost.packageMaxpeople}" required>
             </div>
             <!-- 패키지 시작 날짜 -->
             <div class="">
                 <button type="button" id="start-date-btn">출발일</button>
-                <input type="hidden" name="packageStartDay" id="start-date-value">
+                <input type="hidden" name="packageStartDay" id="start-date-value"
+                       th:value="${packagePost.packagePost.packageStartDay}" required>
                 <button type="button" id="end-date-btn">도착일</button>
-                <input type="hidden" name="packageEndDay" id="end-date-value">
+                <input type="hidden" name="packageEndDay" id="end-date-value"
+                       th:value="${packagePost.packagePost.packageEndDay}" required>
             </div>
         </div>
 
         <!--private String packageTitle;           // 패키지 제목-->
         <div>
             <label for="subject">제목:</label>
-            <input type="text" class="form-control" id="subject" placeholder="제목을 입력하세요" name="packageTitle" th:value="${subject}">
+            <input type="text" class="form-control" id="subject" placeholder="제목을 입력하세요" name="packageTitle" th:value="${packagePost.packagePost.packageTitle}">
         </div>
 <!--        <div><span class="text-danger" th:if="${error_subject}" th:utext="${error_subject}"></span></div>-->
 
@@ -70,7 +76,7 @@
         <!--private String packageContent;         // 패키지 내용-->
         <div class="my-3">
             <label for="summernote">내용:</label>
-            <textarea class="form-control" rows="5" id="summernote" placeholder="내용을 입력하세요" name="packageContent" th:utext="${content}"></textarea>
+            <textarea class="form-control" rows="5" id="summernote" placeholder="내용을 입력하세요" name="packageContent" th:utext="${packagePost.packagePost.packageContent}"></textarea>
         </div>
 
         <button type="submit" class="btn btn-outline-dark">작성완료</button>

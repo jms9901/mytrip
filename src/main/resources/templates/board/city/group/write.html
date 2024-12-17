@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="city-id" th:content="${cityId}">
     <title>게시판 작성 페이지</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.css" rel="stylesheet">
 </head>
 <body>
 <!-- Header -->
@@ -15,20 +17,20 @@
 <!-- Main Content -->
 <main class="container my-4">
     <!-- 작성 폼 -->
-    <form method="post" action="/board/save" enctype="multipart/form-data">
+    <form method="post" th:action="@{|/board/city/${cityId}/group/save|}" enctype="multipart/form-data">
+        <!-- 도시 ID -->
+        <input type="hidden" id="cityId" name="cityId" th:value="${cityId}">
         <!-- 제목 -->
-        <div class="mb-3">
-            <label for="title" class="form-label">제목</label>
-            <input type="text" class="form-control" id="title" name="title" placeholder="제목을 입력하세요" required>
+        <div>
+            <label for="subject">제목:</label>
+            <input type="text" class="form-control" id="subject" placeholder="제목을 입력하세요" name="boardSubject">
         </div>
 
         <!-- 본문 -->
-        <div class="mb-3">
-            <label for="content" class="form-label">본문</label>
-            <textarea class="form-control" id="content" name="content" rows="10" placeholder="본문을 입력하세요" required></textarea>
+        <div class="my-3">
+            <label for="summernote">내용:</label>
+            <textarea class="form-control" rows="5" id="summernote" placeholder="내용을 입력하세요" name="boardContent"></textarea>
         </div>
-
-
 
         <!-- 저장 및 취소 버튼 -->
         <div class="text-end">
@@ -45,5 +47,7 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.js"></script>
+<script src="/js/board/group/write.js"></script>
 </body>
 </html>

@@ -39,30 +39,6 @@ delete from friendship;
 delete from guest_book;
 delete from messageroom;
 delete from message;
-
-SET FOREIGN_KEY_CHECKS = 0;
-SET foreign_key_checks = 1;
-DROP TABLE IF EXISTS user;
-DROP TABLE IF EXISTS package;
-DROP TABLE IF EXISTS package_attachment;
-DROP TABLE IF EXISTS package_liked;
-DROP TABLE IF EXISTS payment_info;
-DROP TABLE IF EXISTS board;
-DROP TABLE IF EXISTS board_liked;
-DROP TABLE IF EXISTS board_comment;
-DROP TABLE IF EXISTS board_attachment;
-DROP TABLE IF EXISTS declaration;
-DROP TABLE IF EXISTS city;
-DROP TABLE IF EXISTS city_liked;
-DROP TABLE IF EXISTS user_city;
-DROP TABLE IF EXISTS question_answer;
-DROP TABLE IF EXISTS airport;
-DROP TABLE IF EXISTS search_history;
-DROP TABLE IF EXISTS friendship;
-DROP TABLE IF EXISTS guest_book;
-DROP TABLE IF EXISTS messageroom;
-DROP TABLE IF EXISTS message;
-
 SELECT * FROM guest_book WHERE to_user_id = 1;
 alter table user
 add column user_status varchar(20);
@@ -104,3 +80,30 @@ SELECT user_name, user_username, user_profile FROM user WHERE user_id = 3;
 select * from friendship;
 SELECT * FROM board WHERE board_id = 121;
 ALTER TABLE board AUTO_INCREMENT = 119;
+
+
+SET foreign_key_checks = 0;
+SET foreign_key_checks = 1;
+DROP TABLE IF EXISTS user;
+DROP TABLE IF EXISTS package;
+DROP TABLE IF EXISTS package_attachment;
+DROP TABLE IF EXISTS package_liked;
+DROP TABLE IF EXISTS payment_info;
+DROP TABLE IF EXISTS board;
+DROP TABLE IF EXISTS board_liked;
+DROP TABLE IF EXISTS board_comment;
+DROP TABLE IF EXISTS board_attachment;
+DROP TABLE IF EXISTS declaration;
+DROP TABLE IF EXISTS city;
+DROP TABLE IF EXISTS city_liked;
+DROP TABLE IF EXISTS user_city;
+DROP TABLE IF EXISTS question_answer;
+DROP TABLE IF EXISTS airport;
+DROP TABLE IF EXISTS search_history;
+DROP TABLE IF EXISTS friendship;
+DROP TABLE IF EXISTS guest_book;
+DROP TABLE IF EXISTS messageroom;
+DROP TABLE IF EXISTS message;
+
+
+

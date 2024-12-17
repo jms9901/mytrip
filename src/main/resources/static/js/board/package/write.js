@@ -1,6 +1,7 @@
 $().ready(function (){
     // flatpickr 초기화
     const today = new Date();
+    console.log("아아아아ㅏ아아ㅏㅇ")
 
     flatpickr("#start-date-btn", {
     minDate: today,
@@ -45,5 +46,17 @@ $().ready(function (){
         height: 300
     });
 
+    document.getElementById('packageCost').addEventListener('input', function () {
+        if (this.value < 0) {
+            this.value = 0;
+            alert('Package Cost는 0 이상의 값만 입력할 수 있습니다.');
+        }
+    });
 
+    document.getElementById('packageMaxpeople').addEventListener('input', function () {
+        if (this.value < 0) {
+            this.value = 0;
+            alert('Max Participants는 0 이상의 값만 입력할 수 있습니다.');
+        }
+    });
 })

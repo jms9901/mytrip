@@ -15,6 +15,7 @@ public class Comment {
     private int commentId;        // 댓글 ID
     private int boardId;          // 소모임 ID (댓글이 작성된 소모임)
     private int userId;           // 댓글 작성자 ID
+    private String userName;        // 댓글 작성자 이름
     private String content;        // 댓글 내용
     private LocalDateTime date;    // 댓글 작성 일시
 }
