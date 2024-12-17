@@ -89,7 +89,7 @@
             </div>
           </div>
         </div>
-        <input type="hidden" id="toEntityId" name="toAirportId">
+        <input type="hidden" id="toEntityId" name="toAirportId" th:value="${flightRoundTrip.toAirportId}">
       </div>
 
       <!-- 날짜 선택 -->
@@ -169,7 +169,7 @@
         <table id="apiResult" class="table" style="top:-200px;">
           <tbody id="incompleteResult">
           <hr>
-          <tr th:each="flight : ${flights}">
+          <tr th:each="flight : ${flights}" th:if="${#lists.isNotEmpty(flights)}">
             <form class="detailApiCall" th:action="@{/flight/detail}" method="post">
               <!-- 기타 필요 정보들을 hidden으로 전송 -->
               <input type="hidden" th:name="itineraryId" th:value="${flight.id}">

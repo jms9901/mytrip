@@ -94,8 +94,12 @@
                     <div class="slider-item" th:each="package : ${packages}">
                         <div class="card package-card">
                             <div class="card-body">
+                                <img th:src="${package.packageAttachmentFile != null and !package.packageAttachmentFile.isEmpty()
+                                             ? '/upload/package/' + package.packageAttachmentFile[0]
+                                             : '/img/china.jpg'}"
+                                     alt="패키지 이미지">
+
                                 <a th:href="@{|${cityId}/package/detail/${package.packageId}|}" th:text="${package.packageTitle}"></a>
-                                <br><br><br><br><br>
                                 <button class="packageLikeButton btn" type="button" th:data-package-id="${package.packageId}">
                                     <i class="bi bi-heart"></i>
                                 </button>

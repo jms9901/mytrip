@@ -66,13 +66,10 @@ public class FlightController {
         try {
             FlightRoundTripResponse flightApiResponse = flightService.roundTripApiCall(flightRoundTrip);
 
-            System.out.println("flightApiResponse 생겨먹은거  " + flightApiResponse + "\n");
-            System.out.println("flightApiResponse.getFlights() 생겨먹은거  " + flightApiResponse.getFlights() + "\n");
             if (flightApiResponse.getFlights() == null) {
                 flightApiResponse.setFlights(new ArrayList<>());
             } else {
                 model.addAttribute("flights", flightApiResponse.getFlights());
-                System.out.println("flights 모달 보냄");
             }
         } catch (Exception e) {
             model.addAttribute("error", "항공편 조회 중 오류가 발생했습니다.");
