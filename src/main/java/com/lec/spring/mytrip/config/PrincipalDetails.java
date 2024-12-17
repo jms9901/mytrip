@@ -23,7 +23,7 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
 
     // 로그인한 사용자 정보
     private final User user;
-    public User getUser() {return user;}
+    public User getUser() { return user; }
 
     // 일반 회원가입
     public PrincipalDetails(User user) {

@@ -37,6 +37,7 @@ public class KakaoUserInfo implements OAuth2UserInfo {
         } else {
             return null; // 이름 정보가 없는 경우 null 반환
         }
+
     }
 
     @Override
@@ -46,5 +47,10 @@ public class KakaoUserInfo implements OAuth2UserInfo {
             return (String) properties.get("profile_image");
         }
         return null; // 프로필 이미지 정보가 없는 경우 null 반환
+    }
+
+    public Map<String, Object> getUser(){
+        Map<String, Object> user = (Map<String, Object>) attributes.get("user");
+        return user;
     }
 }
