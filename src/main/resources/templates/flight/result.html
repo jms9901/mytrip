@@ -25,7 +25,7 @@
       <a th:href="@{/aipage/start}" class="top-menu">여행지 추천</a>
     </sec:authorize>
     <sec:authorize access="isAuthenticated()">
-      <a th:href="@{/post}" class="top-menu">여행지 게시판</a>
+      <a th:href="@{/board/city/1}" class="top-menu">여행지 게시판</a>
     </sec:authorize>
     <sec:authorize access="isAuthenticated()">
       <a th:href="@{/flight/search}" class="top-menu">항공권 조회</a>
@@ -44,7 +44,6 @@
   </div>
 </header>
 
-<!-- 모든 항목 담을 div -->
 <div id="pageContainer" class="container d-flex justify-content-center align-items-center min-vh-100">
   <div id="background-slider">
     <div class="slider-image" style="background-image: url('/img/flight/spring.jpg');"></div>
@@ -57,7 +56,7 @@
 
   <!-- 검색 폼 -->
   <form id="roundTrip" name="frm" th:action="@{/flight/result}" method="post" enctype="multipart/form-data" class="w-100 w-md-75 w-lg-50">
-    <div id="formContainer" class="row gy-3 d-flex align-items-center">
+    <div id="formContainer" class="row gy-3 d-flex">
       <!-- 출발지 -->
       <div class="col-12 col-md-2">
         <div class="text-center">
@@ -90,21 +89,21 @@
             </div>
           </div>
         </div>
-        <input type="hidden" id="toEntityId" name="toAirportId">
+        <input type="hidden" id="toEntityId" name="toAirportId" th:value="${flightRoundTrip.toAirportId}">
       </div>
 
       <!-- 날짜 선택 -->
       <div class="col-12 col-md-3 d-flex">
-        <button id="start-date-btn" class="btn btn-outline-primary flex-fill">가는 날</button>
+        <button id="start-date-btn" class="btn btn-outline-primary flex-fill" style="height: 50px; margin-right: 20px;">가는 날</button>
         <input type="hidden" name="departDate" id="start-date-value">
-        <button id="end-date-btn" class="btn btn-outline-primary flex-fill">오는 날</button>
+        <button id="end-date-btn" class="btn btn-outline-primary flex-fill" style="height: 50px;">오는 날</button>
         <input type="hidden" name="returnDate" id="end-date-value">
       </div>
 
       <!-- 인원 및 좌석 선택 -->
       <div class="col-12 col-md-3">
         <!-- 상대 위치 설정 -->
-        <button id="openSelectionBtn" class="btn btn-outline-secondary w-100">인원 및 좌석 선택</button>
+        <button id="openSelectionBtn" class="btn btn-outline-secondary w-100">성인 1명 프리미엄 이코노미</button>
 
         <div id="selectionContainer" class="mt-3 d-none p-3 border bg-white rounded shadow">
           <!-- 인원 선택 -->
@@ -139,6 +138,7 @@
             </div>
           </div>
 
+
           <!-- 좌석 선택 -->
           <!-- 좌석 선택 -->
           <div>
@@ -159,7 +159,7 @@
       </div>
     </div>
   </form>
-</div><!-- #pageContainer -->
+</div>
 
 
   <!-- 검색 결과 테이블 -->
@@ -169,7 +169,7 @@
         <table id="apiResult" class="table" style="top:-200px;">
           <tbody id="incompleteResult">
           <hr>
-          <tr th:each="flight : ${flights}">
+          <tr th:each="flight : ${flights}" th:if="${#lists.isNotEmpty(flights)}">
             <form class="detailApiCall" th:action="@{/flight/detail}" method="post">
               <!-- 기타 필요 정보들을 hidden으로 전송 -->
               <input type="hidden" th:name="itineraryId" th:value="${flight.id}">

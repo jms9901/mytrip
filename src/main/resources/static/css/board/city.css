@@ -19,36 +19,40 @@
     font-weight: bold;
 }
 
+/* 공통 스타일 */
+.likeButton {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #888; /* 기본 색상 */
+    transition: color 0.3s; /* 부드러운 색상 전환 */
+}
+
+.likeButton .bi-heart-fill {
+    color: #ff0000; /* 좋아요 활성화 색상 */
+}
+
+/* 개별 위치 조정 */
 .cityLikeButton {
     position: absolute;
     top: 20px;
-    right: 20px;
-    background: none;
-    border: none;
-    color: #ff0000;
-    font-size: 24px;
-    cursor: pointer;
+    right: 20px; /* 시티 버튼만 우상단 */
 }
 
-.packageLikeButton {
-    background: none;
-    border: none;
-    color: #ff0000;
-    font-size: 24px;
-    cursor: pointer;
+.packageLikeButton,
+.groupLikeButton {
+    position: absolute; /* 부모 요소 기준으로 배치 */
+    bottom: 10px; /* 하단에서 20px 떨어진 위치 */
+    right: 10px; /* 우측에서 20px 떨어진 위치 */
+    margin: 0; /* 기존 여백 제거 */
+    z-index: 10; /* 다른 요소 위에 표시 */
 }
 
-.cityLikeButton .bi-heart {
-    font-size: 24px;
-}
 
-.cityLikeButton:hover i{
-    background-color: red;
-}
 
-.packageLikeButton:hover i {
-    background-color: red;
-}
+
+
 
 .cityLikeButton .bi-heart-fill {
     color: #ff0000;
@@ -68,8 +72,10 @@
     cursor: pointer;
 }
 .package-card, .group-card {
-    transition: transform 0.2s;
-    width: 200px;
+    min-height: 250px; /* 카드의 최소 높이 설정 */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* 내부 요소를 상하 정렬 */
 }
 .package-card:hover, .group-card:hover {
     transform: scale(1.05);
@@ -117,4 +123,13 @@
     align-items: center;
     justify-content: center;
     margin: 50px 0;
+}
+.card-body {
+    position: relative; /* 부모 요소를 기준으로 */
+}
+
+
+
+.likeButton .bi-heart-fill {
+    color: #ff0000;
 }

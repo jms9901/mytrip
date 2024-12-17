@@ -51,5 +51,32 @@ public class likedController {
     }
 
 
+    //이하 게시판에서 사용
 
+    // 도시 좋아요 증감
+    @GetMapping("/board/city")
+    @ResponseBody
+    public boolean checkCityLikeStatus(@RequestParam("cityId") int cityId) {
+        int target = 1;
+        System.out.println("컨트롤러는 옴");
+        return likedService.checkLiked(target, cityId);
+    }
+
+    // 피드 좋아요 증감
+    @GetMapping("/board/post")
+    @ResponseBody
+    public boolean checkPeedLikeStatus(@RequestParam("postId") int postId) {
+        int target = 2;
+        System.out.println("컨트롤러는 옴, postId = " + postId);
+        return likedService.checkLiked(target, postId);
+    }
+
+    // 훼키지 좋아요 증감
+    @GetMapping("/board/package")
+    @ResponseBody
+    public boolean checkPackageLikeStatus(@RequestParam("packageId") int packageId) {
+        int target = 3;
+        System.out.println("컨트롤러는 옴");
+        return likedService.checkLiked(target, packageId);
+    }
 }

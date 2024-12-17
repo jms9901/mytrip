@@ -18,4 +18,6 @@ public interface LikedService {
    List<Board> getLikedPosts(int userId);
 
     List<PackagePost> getLikedPackageDetails(int userId);
+
+    boolean checkLiked(int target, int id);
 }

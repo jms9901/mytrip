@@ -19,6 +19,7 @@
     <form method="post" th:action="@{|/board/city/${cityId}/group/update|}" enctype="multipart/form-data">
         <input type="hidden" name="cityId" th:value="${cityId}">
         <input type="hidden" name="BoardId" th:value="${feed.boardId}">
+        <input type="hidden" name="UserId" th:value="${feed.user.id}">
         <!-- 제목 수정 -->
         <div class="mb-3">
             <label for="title" class="form-label">제목</label>

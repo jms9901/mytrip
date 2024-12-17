@@ -20,8 +20,8 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public int writeComment(Comment comment) {
-//       comment.setUserId(U.getLoggedUser().getId());
-        comment.setUserId(1);
+       comment.setUserId(U.getLoggedUser().getId());
+
         return repository.insertComment(comment);
     }
 
