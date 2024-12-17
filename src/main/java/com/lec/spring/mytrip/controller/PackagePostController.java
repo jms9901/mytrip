@@ -257,7 +257,7 @@ public class PackagePostController {
             Model model) {
         // 도시와 카테고리에 따른 피드 가져오기
         List<Feed> feeds = feedService.findByCityAndCategory(cityId, "피드");
-
+        System.out.println("feeds " + feeds);
         // 그룹 ID 관련 데이터 추가 로직 필요시 구현
         if (groupId != null) {
             model.addAttribute("groupId", groupId);
