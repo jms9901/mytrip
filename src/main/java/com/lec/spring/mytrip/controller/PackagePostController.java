@@ -132,10 +132,11 @@ public class PackagePostController {
     @PostMapping("{cityId}/package/update/{packageId}")
     public String updatePackage(@PathVariable int cityId,
                                 @PathVariable int packageId,
+                                @RequestParam("files") List<MultipartFile> files,
                                 @ModelAttribute PackagePost packagePost) {
         // 패키지 수정 저장 처리
         // 패키지 저장 처리 후 저장된 ID 반환
-        int id = packagePostService.updatePackage(packagePost);
+        int id = packagePostService.updatePackage(packagePost, files);
 
         // 저장 후 상세 페이지로 리다이렉트
         return "redirect:/board/city/" + cityId + "/package/detail/" + packageId;
