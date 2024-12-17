@@ -55,7 +55,7 @@ CREATE TABLE board_liked
 CREATE TABLE city
 (
     city_id       INT           NOT NULL AUTO_INCREMENT COMMENT '도시 ID',
-    city_name     VARCHAR(20)   NOT NULL COMMENT '도시 이름',
+    city_name     VARCHAR(20)   NOT NULL UNIQUE COMMENT '도시 이름',
     city_continent VARCHAR(50)   NOT NULL COMMENT '도시의 대륙',
     city_language VARCHAR(20)   NOT NULL COMMENT '도시의 언어',
     city_currency VARCHAR(20)   NOT NULL COMMENT '도시의 통화',
@@ -71,6 +71,7 @@ CREATE TABLE city
 
 ALTER TABLE city
     ADD CONSTRAINT UQ_city_name UNIQUE (city_name);
+
 
 CREATE TABLE city_liked
 (
@@ -95,7 +96,7 @@ CREATE TABLE friendship
     request_friend_id INT         NOT NULL AUTO_INCREMENT COMMENT '친구 관계 테이블 ID',
     to_user_id        INT         NOT NULL COMMENT '친구 요청된 사용자 ID',
     from_user_id      INT         NOT NULL COMMENT '친구 요청한 사용자 ID',
-    friend_status     VARCHAR(20) NOT NULL COMMENT '친구 상태',
+    friend_status     ENUM('수락','대기','거절') NOT NULL default '대기' COMMENT '친구 상태',
     friendship_date   DATETIME    NULL     DEFAULT NOW() COMMENT '친구 수락 일자',
     PRIMARY KEY (request_friend_id)
 ) COMMENT '친구 관계';
@@ -213,7 +214,7 @@ CREATE TABLE user
     user_id                INT           NOT NULL AUTO_INCREMENT COMMENT '사용자 테이블 ID',
     user_email             VARCHAR(100)  NOT NULL COMMENT '사용자 이메일',
     user_password          VARCHAR(100)  NOT NULL COMMENT '사용자 비밀번호',
-    user_username          VARCHAR(200)   NOT NULL COMMENT '사용자 ID',
+    user_username          VARCHAR(20)   NOT NULL COMMENT '사용자 ID',
     user_name              VARCHAR(20)   NOT NULL COMMENT '사용자 실제 이름',
     user_regdate           DATETIME      NOT NULL DEFAULT NOW() COMMENT '사용자 계정 생성 일자',
     user_birthday          VARCHAR(20)   NULL     COMMENT '사용자 생년월일',
@@ -397,3 +398,17 @@ ALTER TABLE package
     ADD CONSTRAINT FK_user_TO_package
         FOREIGN KEY (user_id)
             REFERENCES user (user_id);
+
+ALTER TABLE user MODIFY user_profile BLOB;
+ALTER TABLE board
+    MODIFY COLUMN board_category ENUM('피드', '소모임') NOT NULL COMMENT '피드 카테고리';
+
+ALTER TABLE board_attachment
+    DROP FOREIGN KEY FK_board_TO_board_attachment;
+
+
+ALTER TABLE board_attachment
+    ADD CONSTRAINT FK_board_TO_board_attachment
+        FOREIGN KEY (board_id)
+            REFERENCES board (board_id)
+            ON DELETE CASCADE;

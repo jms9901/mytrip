@@ -40,7 +40,7 @@
                     <a th:href="@{/flight/search}" class="top-menu">항공권 조회</a>
                 </sec:authorize>
                 <a sec:authorize="isAnonymous()" th:href="@{/user/login}" class="top-menu" style="margin-left: 500px;">login</a>
-                <form th:action="@{/user/mypage}" method="GET" sec:authorize="isAuthenticated()">
+                <form sec:authorize="isAuthenticated()">
                     <button type="submit" class="mypage" style="font-family: 'Kaushan Script'">Mypage</button></form>
                 <form th:action="@{/user/logout}" method="POST" sec:authorize="isAuthenticated()" th:with="user=${#authentication.getPrincipal()}">
                     <button type="submit" style="background-color: #142055; border: none;">

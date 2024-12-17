@@ -58,4 +58,6 @@ public class MainpageController {
 
     // TODO : 팝업    --> boardpage
     // 좋아요가 가장 많은 여행지 정보를 Service에게 요청한다.
+
+
 }

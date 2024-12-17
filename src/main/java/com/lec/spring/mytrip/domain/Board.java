@@ -19,6 +19,10 @@ public class Board {
     private String content;      // 소모임 내용
     private int viewCount;       // 조회수
     private LocalDateTime date;  // 게시일
+    private LocalDateTime likedDate;
+    private String attachmentFile; // 첨부파일
+    private int likedUserId;     // 좋아요 누른 사람 ID
+    private int authorId;
     private String category;     // 카테고리 (예: "소모임" / "피드")
     private String userName;
     private String cityName;

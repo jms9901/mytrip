@@ -2,11 +2,14 @@ package com.lec.spring.mytrip.service;
 
 import com.lec.spring.mytrip.domain.City;
 import com.lec.spring.mytrip.repository.CityRepository;
+import com.lec.spring.mytrip.repository.AipageRepository;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.Map;
+
+import java.util.List;
 
 @Service
 public class CityServiceImpl implements CityService {
@@ -55,5 +58,13 @@ public class CityServiceImpl implements CityService {
         System.out.println("서비스에서 가져온 도시 정보 : " + city);
 
         return city;
+    }
+    public List<City> findCitiesByContinentOfThisCity(int cityId) {
+        return List.of();
+    }
+
+    @Override
+    public City findCityById(int cityId) {
+        return null;
     }
 }

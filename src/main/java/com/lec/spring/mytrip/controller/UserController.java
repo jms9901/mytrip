@@ -80,6 +80,8 @@ public class UserController {
         return SecurityContextHolder.getContext().getAuthentication();
     }
 
+
+
     // 회원가입 처리
     @PostMapping("/register")
     public String register(@Valid User user, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
@@ -156,5 +158,29 @@ public class UserController {
     public String rejectAuth() {
         return "common/rejectAuth";
     }
-}
-// git push를 위한 주석 241210 10:45
+
+    // 회원정보 수정
+    // 사용자 정보 수정 페이지 요청
+    @GetMapping("/editUser")
+    public String editUser(Model model, Authentication authentication) {
+
+        // 현재 로그인한 사용자 정보 찾기
+        String username = authentication.getName();
+        User user = userService.findByUsername(username);
+
+        if (user == null) {
+            model.addAttribute("error", "사용자를 찾을 수 없습니다.");
+            return "redirect:/mypage/bookMain"; // 사용자 정보를 찾을 수 없으면 마이페이지 메인으로
+        }
+
+        model.addAttribute("user", user); // 사용자 정보를 모델에 추가
+        return "user/editUser"; // 사용자 정보 수정 페이지 반환
+    }
+
+
+
+
+    }
+
+
+

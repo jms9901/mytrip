@@ -1,0 +1,178 @@
+<!doctype html>
+<!--[if lt IE 7 ]>
+<html lang="en" class="ie6"> <![endif]-->
+<!--[if IE 7 ]>
+<html lang="en" class="ie7"> <![endif]-->
+<!--[if IE 8 ]>
+<html lang="en" class="ie8"> <![endif]-->
+<!--[if IE 9 ]>
+<html lang="en" class="ie9"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en"> <!--<![endif]-->
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="viewport" content="width = 1050, user-scalable = no"/>    <!--전체 섹션 규격 & 유저 크기 조정 가능여부-->
+    <script type="text/javascript" src="/lib/JQuery/jquery.min.1.7.js"></script>    <!--경로 & 실제 파일 존재여부 반드시 확인-->
+    <script type="text/javascript" src="/lib/JQuery/modernizr.2.5.3.min.js"></script>    <!--경로 & 실제 파일 존재여부 반드시 확인-->
+    <!--	<script type="text/javascript" src="../lib/JQuery/yepnope.js"></script>-->
+    <!--	<script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/3.11.2/modernizr.min.js"></script>-->
+    <link rel="stylesheet" type="text/css" href="/css/bookMain.css">
+    <link href='https://fonts.googleapis.com/css?family=Kaushan Script' rel='stylesheet'>
+
+</head>
+<body style="background-image: url(/img/mypageBackground.jpg); background-repeat: no-repeat ; background-size: cover;">
+<div class="logo">
+    <div class="logo" style="background-image: url(/img/mypageLogo.png);" onclick="window.location.href='/main/mainpage';"></div>
+</div>
+
+<div class="addGuestBookModal"></div>
+<div class="myPageGoHome" style="background-image: url(/img/myPageGoHome.png)"></div>
+
+<div class="flipbook-viewport">
+
+    <div class="container">
+        <div class="flipbook">
+            <div style="background-image:url(/img/mypageTitle.png)"></div>
+            <!--배경이미지 설정 부분 (여권사진 홀수번 우측, 짝수번 좌측 화면 표시 예정)-->
+            <div style="background-image:url(/img/sample_left.png)">
+                <div class="mypageUserInfo">
+                    <div class="circle">
+                        <img th:src="@{'/uploads/profiles/' + ${user.profile}}">
+
+                    </div>
+                    <div class="InfoArea">
+                        <div>
+                            <div class="InfoName" th:text="${user.name}">사용자명</div>
+                            <div class="decorateName" style="font-family: 'Kaushan Script'">
+                                &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp A.k.a Best Travler.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="myPageUpdate" style="background-image: url(/img/myPageUpdate.png)"></div>
+                </div>
+                <div class="mypageUserIntroduce" th:text="${user.introduction}">자기소개</div>
+                <div class="mypageFreind">
+
+
+
+                    <div class="requestView" id="requestView"></div>
+                    <form id="sendFriendRequestForm">
+                        <button type="submit" class="btn" id="freindrequestbtn" style="left: 330px;">친구 요청</button>
+                    </form>
+                    <div class="Connections" id="openModalBtn">Connections.</div>
+                    <div class="ConnectionsCnt" id="ConnectionsCnt">
+                        <span th:text="${countAcceptedFriends}">0</span>
+                    </div>
+                </div>
+                <div class="mypageCityLiked">
+                    <div class="slider">
+                        <div class="cityLikedItem">
+                            <div class="CityLikedTitle"></div>  <!-- 도시 이름 -->
+                            <div class="CityLikedImg">
+                                <img src="" alt="City Image">  <!-- 도시 이미지 -->
+                            </div>
+                        </div>
+
+                    </div>
+                    <button class="prev">Previous</button>
+                    <button class="next">Next</button>
+                </div>
+            </div>
+            <div style="background-image:url(/img/sample_right.png)">
+                <div class="recentPost">
+                    <div class="feedEntries"></div>
+
+
+
+
+
+                </div>
+            </div>
+            <div style="background-image:url(/img/sample_left.png)"></div>
+            <div style="background-image:url(/img/sample_right.png)"></div>
+            <div style="background-image:url(/img/sample_left.png)"></div>
+            <div style="background-image:url(/img/sample_right.png)"></div>
+            <div style="background-image:url(/img/sample_left.png)"></div>
+            <div style="background-image:url(/img/sample_right.png)"></div>
+            <div style="background-image:url(/img/sample_left.png)"></div>
+            <div style="background-image:url(/img/sample_right.png)"></div>
+        </div>
+    </div>
+</div>
+
+
+<div class="menu1" id="1" style="background-image: url(/img/mypageMenu.png);"><h4 id="Invoice">&nbsp;Invoice</h4></div>
+<div class="menu2" id="2" style="background-image: url(/img/mypageMenu.png);"><h4 id="post">&nbsp;Post</h4></div>
+<div class="menu3" id="3" style="background-image: url(/img/mypageMenu.png);"><h4 id="PostLiked">&nbsp;Post♥</h4></div>
+<div class="menu4" id="4" style="background-image: url(/img/mypageMenu.png);"><h4 id="PackageLiked">&nbsp;Package♥</h4>
+</div>
+<div class="menu5" id="5" style="background-image: url(/img/mypageMenu.png);">
+    <h4 id="GuestBook" >
+        &nbsp;GuestBook
+    </h4>
+</div>
+
+
+<div class="goChat" style="background-image: url(/img/mypageChat.png);"></div>
+<div id="friendModal" style="display:none;">
+    <div class="modal-content">
+        <h2>Friend List</h2>
+        <ul id="friendList">
+            <!-- 친구 목록은 여기에 동적으로 추가됩니다 -->
+        </ul>
+        <button onclick="closeModal()" class="closed">Close</button>
+    </div>
+</div>
+<div class="updateUserModal">
+    <div class="NameAndImg">
+        <div class="Updatecircle">
+            <img th:src="${user.profile != null && !user.profile.isEmpty() ? '/uploads/profiles/' + user.profile : '/img/defaultProfile.jpg'}"
+                 alt="Profile Image">
+        </div>
+        <div class="UserNameArea" id="userName" th:text="${user.name}" onclick="editUserName()">userName</div>
+        <button class="closeUpdateModal" style="top:33%; right: 5%">X</button>
+    </div>
+
+    <!-- 소개글 수정 -->
+    <div class="IntroduceMyself">
+        <div style="margin-left: 10%; margin-top: 5%">Introduce yourself:</div>
+        <span id="userIntroduction" onclick="updateIntroduction()" style="margin-left: 10%; margin-top: 5%">-Insert Here Your Introduction</span>
+        <input type="text" id="editIntroduction" class="UserIntroduction" style="display: none;">
+    </div>
+
+    <!-- 비밀번호 수정 -->
+    <div class="UpdatePassword">
+        <div id="passwordArea" style="margin-left: 10%; margin-top: 5%">
+            <div>Current password</div>
+            <span id="currentPasswordText"
+                  onclick="updatePassword('currentPassword')">-Insert Here Current Password</span>
+            <input type="password" id="currentPassword" style="display: none;">
+        </div>
+        <div id="newpasswordArea" style="margin-left: 10%; margin-top: 5%">
+            <div>New password</div>
+            <span id="newPasswordText" onclick="updatePassword('newPassword')">-Insert Here New Password</span>
+            <input type="password" id="newPassword" style="display: none;">
+        </div>
+        <div class="submitUpdate" style="background-image: url('/img/checkIcon.png'); margin-left: 90%;margin-top:5%"
+             id="submitUpdateBtn" onclick="submitUserChanges()"></div>
+    </div>
+
+    <!-- 프로필 이미지 수정 -->
+    <div class="UpdateProfileImage">
+        <input type="file" id="profileImageInput" class="ProfileImageInput" onchange="previewProfileImage()"
+               style="display: none;">
+        <button onclick="document.getElementById('profileImageInput').click()" style="top:140px; left:220px">Change
+            Profile Image
+        </button>
+        <img id="profilePreview" src="" alt="Profile Image" style="display: none;">
+    </div>
+</div>
+</div>
+
+
+</div>
+
+
+<script src="/JS/bookMain.js"></script>
+</body>
+</html>

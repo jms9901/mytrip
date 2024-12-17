@@ -34,4 +34,11 @@
         FROM city
         WHERE city_name = #{cityName}
     </select>
+    <select id="findLikedCitiesByUserId" resultType="com.lec.spring.mytrip.domain.City">
+        SELECT c.*
+        FROM city c
+                 JOIN city_liked cl ON c.city_id = cl.city_id
+        WHERE cl.user_id = #{userId}
+    </select>
+
 </mapper>

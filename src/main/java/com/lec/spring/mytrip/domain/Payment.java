@@ -21,4 +21,6 @@ public class Payment {
     private String userName;
     private String packageTitle;
     private int packageCost;
+    private int price;
+    private int totalPrice;
 }

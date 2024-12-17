@@ -17,8 +17,8 @@ public interface PackagePostService {
     // 패키지 상태별 조회
     List<PackagePost> getPackagesByStatus(String status);
 
-    // 패키지 제목 검색
-    List<PackagePost> searchPackagesByTitle(String keyword);
+    // 패키지 검색
+    List<PackagePost> searchPackages(String keyword);
 
     // 패키지 저장
     int savePackage(PackagePost pkg);
