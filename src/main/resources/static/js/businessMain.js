@@ -468,7 +468,10 @@ document.addEventListener('DOMContentLoaded', function () {
                         // 프로필 사진 클릭 시 파일 선택
                         const profileImage = document.getElementById("profileImage");
                         const profileImageInput = document.getElementById("profileImageInput");
-                        profileImage.style.backgroundImage =`url(../../uploads/profiles/ + ${user.profile})`;
+                        profileImage.style.backgroundImage = `url('/uploads/profiles/${user.profile}')`;
+
+                        console.log(user.profile);
+                        console.log(`url('/uploads/profiles/${user.profile}')`);
 
                         profileImage.addEventListener('click', function () {
                             profileImageInput.click();
@@ -524,7 +527,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                     profileImage: profileImageBase64
                                 };
 
-                                fetch(`/mypage/update/${userId}`, {
+                                fetch(`/mypage/business/update/${userId}`, {
                                     method: "POST",
                                     headers: {
                                         "Content-Type": "application/json"
@@ -534,8 +537,13 @@ document.addEventListener('DOMContentLoaded', function () {
                                     .then(response => response.json())
                                     .then(data => {
                                         console.log("Success:", data);
+                                        if (data.profile) {
+                                            profileImage.style.backgroundImage = `url('/uploads/profiles/${data.profile}')`;
+                                        }
                                         alert(data.message || "프로필이 성공적으로 업데이트되었습니다.");
+                                        // 모달 숨기기
                                         profileUpdateModal.classList.add('hidden');
+                                        profileUpdateModal.style.display = 'none';
                                     })
                                     .catch(error => {
                                         console.error("Error:", error);

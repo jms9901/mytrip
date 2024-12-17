@@ -48,7 +48,6 @@ public class BusinessMypageService {
     // 비밀번호, 프로필 수정
     @Transactional
     public boolean updateCompany(int userId, String currentPassword, String newPassword, MultipartFile profileImage, String profileImageFileName) {
-
         User user = userRepository.findById(userId);
 
         // 사용자 정보 없으면 실패
@@ -101,7 +100,7 @@ public class BusinessMypageService {
     public String saveProfileImage(MultipartFile profileImage) throws IOException {
         byte[] bytes = profileImage.getBytes();
         String imageName = UUID.randomUUID().toString() + ".jpg";  // UUID 기반 고유 이미지 이름 생성
-        Path path = Paths.get("static/uploads/profiles", imageName);
+        Path path = Paths.get("/uploads/profiles", imageName);
         Files.write(path, bytes);  // 파일 저장
         return imageName;
     }
