@@ -36,15 +36,10 @@
     height: 95px;
 }
 
-/* 로그인 버튼 */
-.topnav .top-menu:last-child {
-    font-size: 30px;
-    margin-left: 100px;
-}
+
 
 /* 마이페이지 버튼 */
 .mypage {
-    font-family: 'BMkkubulimTTF-Regular', sans-serif;
     font-size: 40px;
     margin-left: 450px;
     color: white;
