@@ -204,15 +204,12 @@ public class FeedServiceImpl implements FeedService{
 
     @Override
     @Transactional
-    public Feed detail(int id) {
-        // 본인이 누를 시 조회수 증가 X
-        // 조회수 증가
-        feedRepository.addViewCnt(id);
-        Feed feed = feedRepository.findById(id);
+    public Feed detail(int groupId) {
+        Feed feed = feedRepository.findById(groupId);
+        System.out.println(feed.toString());
+
         if (feed != null) {
-            feed.setAttachments(feedRepository.findAttachmentByBoardId(id));
-            User user = U.getLoggedUser();
-            feed.setUser(user);
+            feedRepository.addViewCnt(groupId);
             return feed;
         }
         return null;

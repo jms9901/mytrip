@@ -2,6 +2,7 @@ package com.lec.spring.mytrip.service;
 
 import com.lec.spring.mytrip.domain.PackagePost;
 import com.lec.spring.mytrip.domain.User;
+import com.lec.spring.mytrip.domain.attachment.BoardAttachment;
 import com.lec.spring.mytrip.domain.attachment.PackagePostAndAttachment;
 import com.lec.spring.mytrip.domain.attachment.PackagePostAttachment;
 import com.lec.spring.mytrip.repository.PackagePostRepository;
@@ -51,7 +52,15 @@ public class PackagePostServiceImpl implements PackagePostService {
     //도시 별 패키지 목록
     @Override
     public List<PackagePost> getPackagesByCityId(int cityId) {
-        return packagePostRepository.findByCityId(cityId);
+        List<PackagePost> packagePosts = packagePostRepository.findByCityId(cityId);
+        packagePosts.forEach(packagePost -> {
+            List<BoardAttachment> e =
+                    packageAttachmentService.getAttachmentsByBoardId(packagePost.getPackageId());
+            if(!e.isEmpty()) {
+                packagePost.setPackageAttachmentFile(e.get(0).getFileName());
+            };
+        });
+        return packagePosts;
     }
 
     //검색

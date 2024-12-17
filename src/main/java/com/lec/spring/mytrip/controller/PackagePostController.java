@@ -167,9 +167,6 @@ public class PackagePostController {
         // 소모임 상세 페이지로 이동
         Feed feed =  feedService.detail(groupId);
 
-//        조회수 증가
-        feed.setBoardViewCount(feed.getBoardViewCount() + 1);
-
         model.addAttribute("feed", feed);
         model.addAttribute("cityId", cityId);
         model.addAttribute("groupId", groupId);

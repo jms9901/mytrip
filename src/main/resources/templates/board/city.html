@@ -95,10 +95,15 @@
                     <div class="slider-item" th:each="package : ${packages}">
                         <div class="card package-card">
                             <div class="card-body">
-                                <img th:src="${package.packageAttachmentFile != null and !package.packageAttachmentFile.isEmpty()
-                                             ? '/upload/package/' + package.packageAttachmentFile[0]
-                                             : '/img/china.jpg'}"
-                                     alt="패키지 이미지">
+                                <img th:src="${(package.packageAttachmentFile != null
+                                              and not #lists.isEmpty(package.packageAttachmentFile)
+                                              and package.packageAttachmentFile[0] != null)
+                                              ? '/uploads/package/' + package.packageAttachmentFile[0]
+                                              : '/img/china.jpg'}"
+                                     alt="Package Image">
+
+
+                                alt="패키지 이미지">
 
                                 <a th:href="@{|${cityId}/package/detail/${package.packageId}|}" th:text="${package.packageTitle}"></a>
 
