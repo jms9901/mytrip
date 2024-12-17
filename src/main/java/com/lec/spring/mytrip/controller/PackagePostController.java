@@ -55,7 +55,9 @@ public class PackagePostController {
         List<PackagePost> packages = packagePostService.getPackagesByCityId(cityId);
         packages.forEach(System.out::println);
         model.addAttribute("packages", packages);
-//        System.out.println("패키지 목록" + packages.toString());
+//        packages.forEach(packagePost -> {
+//            packagePost.getPackageAttachmentFile()
+//        });
 
         // 이 도시의 소모임 목록
         List<Feed> feeds = feedService.findByCityAndCategory(cityId, "소모임");
