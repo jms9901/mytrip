@@ -26,7 +26,7 @@
         <div class="profile-section">
             <!-- 비즈니스 개인정보 수정 링크 연결  -->
             <button type="button" style="border: none; background-color: #e9eefb;">
-                <img src="/img/basicProfile.png" class="profile-icon-Button"  alt="profileUpdate-button" id="profile-icon-Button">
+                <img class="profile-icon-Button"  alt="profileUpdate-button" id="profile-icon-Button" th:src="${user.getProfile()}">
             </button>
             <div class="business-name">[[${user.username}]]</div>
         </div>

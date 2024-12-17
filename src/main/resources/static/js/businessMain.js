@@ -142,39 +142,20 @@ document.addEventListener("DOMContentLoaded", function () {
                             </div>
 
                             <div class="info-section">
-                                <label for="cityName">
-                                    <span>도시</span>
-                                    <input type="text" id="cityName" class="cityName" value="${selectedPackage.cityName}">
-                                </label>
-                                <label for="packageStartDay" class="packageStartDay">
-                                    <span>시작일</span>
-                                    <input type="date" id="packageStartDay" class="packageStartDay" value="${formatDate(selectedPackage.packageStartDay)}">
-                                </label>
-                                <label for="packageEndDay">
-                                    <span>종료일</span>
-                                    <input type="date" id="packageEndDay" class="packageEndDay" value="${formatDate(selectedPackage.packageEndDay)}">
-                                </label>
-                                <label for="packageCost">
-                                    <span>금액</span>
-                                    <input type="text" id="packageCost" class="packageCost" value="${selectedPackage.packageCost}">
-                                </label>
-                                <label for="packageMaxpeople">
-                                    <span>최대 인원</span>
-                                    <input type="number" id="packageMaxpeople" class="packageMaxpeople" value="${selectedPackage.packageMaxpeople}">
-                                </label>
+                                <div class="cityName" id="cityName">도시:  ${selectedPackage.cityName}</div>
+                                <div class="packageStartDay" id="packageStartDay">시작일:   ${formatDate(selectedPackage.packageStartDay)}</div>
+                                <div class="packageEndDay" id="packageEndDay">종료일:   ${formatDate(selectedPackage.packageEndDay)}</div>
+                                <div class="packagCost" id="packageCost">금액:   ${selectedPackage.packageCost}원</div>
+                                <div class="packageMaxpeople" id="packageMaxpeople">최대 인원:   ${selectedPackage.packageMaxpeople}명</div>
+                                <div class="package-details">
+                                    패키지 내용
+                                    <div class="package-content" id="packageContent" style="border: solid 1px #ccc; width: 80%; height: 30%">${selectedPackage.packageContent}</div>
+                                </div>
                             </div>
-
-                            <div class="package-details">
-                                <label for="packageContent">
-                                    <span>패키지 내용</span>
-                                    <textarea class="package-content" id="packageContent">${selectedPackage.packageContent}</textarea>
-                                </label>
-                            </div>
-
-                            <div class="file-attachments">
-                                <!-- 해당 패키지 이미지 첨부파일 리스트 동적 추가 -->
-                            </div>
-
+                            <button class="packageMoveButton">
+                                <img src="/img/mypageFeedList.png" alt="moveButton" id="move-button">
+                            </button>
+                            
                             <form class="button-action" style="border: none;">
                                 <input type="hidden" name="cityId" value="${selectedPackage.cityId}">
                                 <input type="hidden" name="packageId" value="${selectedPackage.packageId}">
@@ -363,199 +344,230 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
 // 개인 정보 조회 및 수정
-        document.addEventListener('DOMContentLoaded', function () {
-            const userProfile = document.getElementById('profile-icon-Button');
-            const profileUpdateModal = document.getElementById('modalOverlay');
-            const userInfo = document.querySelector('.userInfo');
+document.addEventListener('DOMContentLoaded', function () {
+    const userProfile = document.getElementById('profile-icon-Button');
+    const userInfo = document.querySelector('.userInfo');
 
-            console.log("userId 추출: ", userId);
+    console.log("userId 추출: ", userId);
 
-            // 날짜 포맷팅 함수
-            function formatDate(dateString) {
-                const date = new Date(dateString);
-                return date.toLocaleString('ko-KR', {
-                    year: 'numeric',
-                    month: '2-digit',
-                    day: '2-digit',
-                    hour: '2-digit',
-                    minute: '2-digit'
-                });
-            }
-
-            // 프로필 수정 모달 열기
-            userProfile.addEventListener('click', function () {
-                // 사용자 프로필 정보 불러오기
-                fetch(`/mypage/business/profile/${userId}`, {
-                    method: 'GET',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    }
-                })
-                    .then(response => {
-                        console.log("프로필 개인정보 서버 응답: ", response);
-                        if (!response.ok) {
-                            throw new Error(`HTTP error! status: ${response.status} / 프로필 개인 정보를 불러올 수 없습니다.`);
-                        }
-                        return response.text(); // text로 먼저 받기
-                    }) // 첫 번째 then 종료
-                    .then(text => {
-                        if(!text) {
-                            throw new Error('서버에서 빈 응답이 반한되었습니다.');
-                        }
-                        return JSON.parse(text);    // 텍스를 JSON으로 반환
-                        }
-
-                    )
-                    .then(user => {
-                        userInfo.innerHTML = `
-                        <div class="modal hidden" id="businessUpdate-modal">
-                                <form  data-user-id="${userId}">
-                                    <div class="header">
-                                        <span class="close-button">&times;</span>
-                                        <h2 class="businessName" value="${user.username}"></h2>
-                                        <span class="joinDate">가입일 :  ${formatDate(user.regDate)}</span>
-                                    </div>
-                                    <div class="profile">
-                                        <img th:src="@{/img/basicProfile.png}" alt="프로필" class="profile-img">
-                                    </div>
-                                    <div class="businessInfo">
-                                        <label for="businessId">
-                                            <span>기업 ID</span>
-                                            <input type="text" id="businessId" value="${user.username}" readonly>
-                                        </label>
-                                    </div>
-                                    <div class="businessInfo">
-                                        <label for="businessEmail">
-                                            <span>기업이메일</span>
-                                            <input type="email" id="businessEmail" value="${user.email}" readonly>
-                                        </label>
-                                    </div>
-                                    <div class="businessInfo">
-                                        <label for="password">
-                                            <span>비밀번호</span>
-                                            <input type="password" id="password" value="${user.password}">
-                                        </label>
-                                    </div>
-                                    <div class="businessInfo">
-                                        <label for="new-password">
-                                            <span>새 비밀번호</span>
-                                            <input type="password" id="new-password" placeholder="새 비밀번호를 입력하세요.">
-                                        </label>
-                                    </div>
-                                    <div class="businessInfo">
-                                        <label for="businessNumber">
-                                            <span>회사 사업자 번호</span>
-                                            <input type="text" id="businessNumber" value="${user.companyNumber}" readonly>
-                                        </label>
-                                    </div>
-                    
-                                    <div class="actions">
-                                        <button type="button" class="update-button" id="update-button">
-                                            <img src="/img/myPageUpdate.png" alt="update-button" class="update-button">
-                                        </button>
-                                        <button type="submit" class="submit-button">
-                                            <img src="/img/checkIcon.png" alt="submit-button" class="submit-button">
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-                        `;
-
-                        // DOM에 모달이 추가된 후에 실행되도록 setTimeout 사용
-                        setTimeout(() => {
-                            const profileUpdateModal = document.getElementById('businessUpdate-modal');
-                            if (profileUpdateModal) {
-                                profileUpdateModal.classList.remove('hidden'); // 모달 표시
-                                profileUpdateModal.style.display = 'block';
-
-                                // 닫기 버튼 이벤트
-                                const closeButton = profileUpdateModal.querySelector('.close-button');
-                                closeButton.addEventListener('click', function () {
-                                    profileUpdateModal.classList.add('hidden');
-                                });
-
-                                console.log("모달이 성공적으로 추가되었습니다.");
-                            } else {
-                                console.error("모달 요소를 찾을 수 없습니다.");
-                            }
-                        }, 0);
-
-
-                        updateButton.addEventListener('click', function () {
-                            // 수정 가능한 필드 활성화
-                            newPasswordInput.disabled = false;
-                            submitButton.disabled = false;
-                        });
-
-                        // 프로필 제출 버튼 이벤트
-                        submitButton.addEventListener('click', function (event) {
-                            event.preventDefault();
-                            const currentPassword = profileUpdateModal.querySelector('#password').value;
-                            const newPassword = newPasswordInput.value;
-
-                            const payload = {
-                                currentPassword: currentPassword,
-                                newPassword: newPassword
-                            };
-
-                            fetch(`/mypage/business/profile/${userId}`, {
-                                method: 'POST',
-                                headers: {
-                                    'Accept': 'application/json',
-                                    'Content-Type': 'application/json'
-                                },
-                                body: JSON.stringify(payload)
-                            })
-                                .then(response => {
-                                    console.log("프로필 수정 서버 응답: ", response);
-                                    if (!response.ok) {
-                                        throw new Error('프로필 업데이트 실패');
-                                    }
-                                    return response.json();
-                                })
-                                .then(data => {
-                                    alert('프로필이 성공적으로 업데이트 되었습니다.');
-                                    profileUpdateModal.classList.add('hidden');
-                                })
-                                .catch(error => {
-                                    console.error('프로필 업데이트 오류:', error);
-                                    alert('프로필 업데이트 중 오류가 발생했습니다.');
-                                });
-                        });
-                    })
-                    .catch(error => {
-                        console.error('프로필 정보 로드 오류:', error);
-                        alert('프로필 정보를 불러올 수 없습니다.');
-                    });
-            });
+    // 날짜 포맷팅 함수
+    function formatDate(dateString) {
+        const date = new Date(dateString);
+        return date.toLocaleString('ko-KR', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
         });
+    }
 
-// // 개인정보 수정
-// document.addEventListener('DOMContentLoaded', function () {
-//     // 수정 버튼 이벤트
-//     const updateButton = profileUpdateModal.querySelector('.update-button');
-//     const submitButton = profileUpdateModal.querySelector('.submit-button');
-//     const newPasswordInput = profileUpdateModal.querySelector('#new-password');
-//
-//     updateButton.addEventListener('click', function () {
-//
-//     })
-// })
+    // 비밀번호 유효성 검사
+    function validatePasswords(currentPassword, newPassword) {
+        if (!currentPassword.trim()) {
+            alert('기존 비밀번호를 입력해주세요.');
+            return false;
+        }
+
+        if (!newPassword.trim()) {
+            alert('새 비밀번호를 입력해주세요.');
+            return false;
+        }
+
+        if (newPassword.length < 8) {
+            alert('새 비밀번호는 최소 8자 이상이어야 합니다.');
+            return false;
+        }
+
+        if (currentPassword === newPassword) {
+            alert('새 비밀번호는 기존 비밀번호와 다르게 입력해주세요.');
+            return false;
+        }
+
+        return true;
+    }
+
+    // 프로필 수정 모달 열기
+    userProfile.addEventListener('click', function () {
+        fetch(`/mypage/business/profile/${userId}`, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status} / 프로필 개인 정보를 불러올 수 없습니다.`);
+                }
+                return response.json();
+            })
+            .then(user => {
+                userInfo.innerHTML = `
+                <div class="modal hidden" id="businessUpdate-modal">
+                    <form id="profile-update-form">
+                        <div class="header">
+                            <span class="close-button">&times;</span>
+                            <h2 class="businessName">${user.username}</h2>
+                            <span class="joinDate">가입일 :  ${formatDate(user.regDate)}</span>
+                        </div>
+                        <div class="profile">
+                            <img alt="프로필" class="profile-img" id="profileImage">
+                            <input type="file" id="profileImageInput" accept="image/*" style="display: none;">
+                        </div>
+                        <div class="businessInfo">
+                            <label for="businessId">
+                                <span>기업 ID</span>
+                                <input type="text" id="businessId" value="${user.username}" readonly>
+                            </label>
+                        </div>
+                        <div class="businessInfo">
+                            <label for="businessEmail">
+                                <span>기업 이메일</span>
+                                <input type="email" id="businessEmail" value="${user.email}" readonly>
+                            </label>
+                        </div>
+                        <div class="businessInfo">
+                            <label for="businessName">
+                                <span>기업 이름</span>
+                                <input type="email" id="businessName" value="${user.user_name}" readonly>
+                            </label>
+                        </div>
+                        <div class="businessInfo">
+                            <label for="password">
+                                <span>기존 비밀번호</span>
+                                <input type="password" id="password" placeholder="기존 비밀번호를 입력하세요.">
+                            </label>
+                        </div>
+                        <div class="businessInfo">
+                            <label for="new-password">
+                                <span>새 비밀번호</span>
+                                <input type="password" id="new-password" placeholder="새 비밀번호를 입력하세요.">
+                            </label>
+                        </div>
+                        <div class="businessInfo">
+                            <label for="businessNumber">
+                                <span>사업자 번호</span>
+                                <input type="text" id="businessNumber" value="${user.companyNumber}" readonly>
+                            </label>
+                        </div>
+                        
+                        <button type="submit" class="submit-button">
+                            <img src="/img/checkIcon.png" alt="submit-button" class="submit-button">
+                        </button>
+                    
+                    </form>
+                </div>
+                `;
+
+                setTimeout(() => {
+                    const profileUpdateModal = document.getElementById('businessUpdate-modal');
+                    if (profileUpdateModal) {
+                        profileUpdateModal.classList.remove('hidden');
+                        profileUpdateModal.style.display = 'block';
+                        document.getElementById("profileImage").style.backgroundImage = `url('/uploads/profiles${user.profile}')`;
+
+                        // 프로필 사진 클릭 시 파일 선택
+                        const profileImage = document.getElementById("profileImage");
+                        const profileImageInput = document.getElementById("profileImageInput");
+
+                        profileImage.addEventListener('click', function () {
+                            profileImageInput.click();
+                        });
+
+                        // 파일 선택 시 미리보기 업데이트
+                        profileImageInput.addEventListener('change', function () {
+                            const file = profileImageInput.files[0];
+                            if (file) {
+                                const reader = new FileReader();
+                                reader.onload = function (e) {
+                                    profileImage.style.backgroundImage = `url(${e.target.result})`;
+                                };
+                                reader.readAsDataURL(file);
+                            }
+                        });
+
+                        const closeButton = profileUpdateModal.querySelector('.close-button');
+                        closeButton.addEventListener('click', function () {
+                            profileUpdateModal.classList.add('hidden');
+                        });
+
+                        const profileForm = document.getElementById('profile-update-form');
+                        profileForm.addEventListener('submit', function (event) {
+                            event.preventDefault();
+
+                            const currentPassword = document.getElementById("password").value.trim();
+                            const newPassword = document.getElementById("new-password").value.trim();
+                            const profileImage = document.getElementById("profileImageInput").files[0];
+
+                            if (!validatePasswords(currentPassword, newPassword)) {
+                                return;
+                            }
+
+                            let profileImageBase64 = null;
+                            if (profileImage) {
+                                const reader = new FileReader();
+                                reader.onloadend = function () {
+                                    profileImageBase64 = reader.result.split(',')[1];
+                                    sendRequest(profileImageBase64);
+                                };
+                                reader.readAsDataURL(profileImage);
+                            } else {
+                                sendRequest();
+                            }
+
+                            function sendRequest(profileImageBase64) {
+                                const formData = {
+                                    userId: userId,
+                                    currentPassword: currentPassword,
+                                    newPassword: newPassword,
+                                    profileImage: profileImageBase64
+                                };
+
+                                fetch(`/mypage/update/${userId}`, {
+                                    method: "POST",
+                                    headers: {
+                                        "Content-Type": "application/json"
+                                    },
+                                    body: JSON.stringify(formData)
+                                })
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        console.log("Success:", data);
+                                        alert(data.message || "프로필이 성공적으로 업데이트되었습니다.");
+                                        profileUpdateModal.classList.add('hidden');
+                                    })
+                                    .catch(error => {
+                                        console.error("Error:", error);
+                                        alert("프로필 업데이트 중 오류가 발생했습니다.");
+                                    });
+                            }
+                        });
+                    } else {
+                        console.error("모달 요소를 찾을 수 없습니다.");
+                    }
+                }, 0);
+            })
+            .catch(error => {
+                console.error('프로필 정보 로드 오류:', error);
+                alert('프로필 정보를 불러올 수 없습니다.');
+            });
+    });
+});
+
+
 
 // 모달 외부 닫기
-        document.addEventListener('DOMContentLoaded', function () {
-            // 모달 외부 닫기 공통
-            const modals = document.querySelectorAll('.modal, .businessUpdate-modal, .package-modal');
+document.addEventListener('DOMContentLoaded', function () {
+    // 모달 외부 닫기 공통
+    const modals = document.querySelectorAll('.modal, .businessUpdate-modal, .package-modal');
 
-            window.addEventListener('click', function (event) {
-                modals.forEach(modal => {
-                    if (event.target === modal) {
-                        modal.style.display = 'none';
-                    }
-                });
-            });
-        })
+    window.addEventListener('click', function (event) {
+        modals.forEach(modal => {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+    });
+})
 
 // 홈버튼 클릭 시 이동
 document.addEventListener('DOMContentLoaded', function () {
@@ -563,8 +575,78 @@ document.addEventListener('DOMContentLoaded', function () {
     const homeLogoButton = document.querySelector('.homeLogo-Button');
     if (homeLogoButton) {
         homeLogoButton.addEventListener('click', function () {
-            window.location.href = '/'; // 홈페이지로 이동
+            window.location.href = '/main/mainPage'; // 홈페이지로 이동
         });
     }
 })
+
+// // 비밀번호 수정 함수
+// function updatePassword(type) {
+//     const password = document.getElementById(type + "input");
+//     const passwordInputs = document.getElementById(type);
+//
+//     passwordInputs.focus();
+//
+//     passwordInputs.addEventListener("blur", () => {
+//         if (passwordInputs.value.trim()) {
+//             password.textContent = "*".repeat(passwordInputs.value.length);
+//         }
+//         password.style.display = "inline";
+//         passwordInputs.style.display = "none";
+//     }, {once: true});
+// }
+//
+// // 변경 사항 제출
+// function submitUserChanges() {
+//     const currentPassword = document.getElementById("password").value.trim();
+//     const newPassword = document.getElementById("new-Password").value.trim();
+//     const profileImage = document.getElementById("profileImageInput").files[0];
+//
+//     // URL에서 userId 추출
+//     const currentUrl = window.location.pathname;  // 예시: "/mypage/1"
+//     const userId = parseInt(currentUrl.substring(currentUrl.lastIndexOf('/') + 1)); // 문자열을 숫자로 변환
+//
+//     // profileImage가 있을 경우 base64로 변환
+//     let profileImageBase64 = null;
+//     if (profileImage) {
+//         const reader = new FileReader();
+//         reader.onloadend = function () {
+//             profileImageBase64 = reader.result.split(',')[1]; // base64 부분만 추출
+//             sendRequest(profileImageBase64);  // base64 변환 후 서버에 요청 보내기
+//         };
+//         reader.readAsDataURL(profileImage);  // base64로 변환
+//     } else {
+//         sendRequest();  // 프로필 이미지가 없으면 바로 서버로 요청
+//     }
+//
+//     // 요청 보내는 함수
+//     function sendRequest(profileImageBase64) {
+//         const formData = {
+//             userId: userId,
+//             currentPassword: currentPassword,
+//             newPassword: newPassword,
+//             profileImage: profileImageBase64 // base64로 변환된 프로필 이미지 전달
+//         };
+//
+//         // 서버로 POST 요청
+//         fetch(`/mypage/update/${userId}`, {
+//             method: "POST",
+//             headers: {
+//                 "Content-Type": "application/json"
+//             },
+//             body: JSON.stringify(formData)  // formData를 JSON으로 전송
+//         })
+//             .then(response => response.json())
+//             .then(data => {
+//                 console.log("Success:", data);
+//                 // 응답 데이터에 따라 추가 작업 수행
+//             })
+//             .catch(error => {
+//                 console.error("Error:", error);
+//             });
+//     }
+// }
+//
+//
+
 

@@ -17,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.nio.file.Path;
 import java.util.List;
 
 @Slf4j
@@ -121,12 +122,12 @@ public class BusinessMypageController {
     // 기업 개인정보 조회
     // JSON API 엔드포인트(js요청)
     // businessMain.html
-    @GetMapping("/business/profile/{id}")
+    @GetMapping("/business/profile/{userId}")
     @ResponseBody
-    public ResponseEntity<?> getCompanyProfile(@PathVariable("id") int id) {
+    public ResponseEntity<?> getCompanyProfile(@PathVariable("userId") int userId) {
         try {
             // 유저 조회
-            User user = businessMypageService.getUserById(id);
+            User user = businessMypageService.getUserById(userId);
 
             if(user == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("사용자 데이터를 찾을 수 없습니다.");
@@ -139,35 +140,8 @@ public class BusinessMypageController {
     }
 
     // 기업 개인정보 수정
-    @PostMapping("/business/profile/{id}")
-    @ResponseBody
-    public ResponseEntity<?> updateCompanyProfile(
-            @PathVariable("id") int id,
-            @RequestParam(required = false) String currentPassword,
-            @RequestParam(required = false) String newPassword,
-            @RequestParam(required = false)MultipartFile profileImage
-            ) {
-         try {
-             String profileImageFilename = profileImage != null ? profileImage.getOriginalFilename() : null;
-             // 서비스 호출 (수정 로직 실행)
-             boolean updateResult = businessMypageService.updateCompany(
-                     id,
-                     currentPassword,
-                     newPassword,
-                     profileImage,
-                     profileImageFilename
-             );
-
-             // 성공/실패 응답 반환
-             return updateResult
-                     ? ResponseEntity.ok("프로필 수정 성공")
-                     : ResponseEntity.badRequest().body("프로필 수정 실패: 비밀번호 불일치 또는 오류 발생");
-        } catch (Exception e) {
-             log.error("프로필 수정 중 예외 발생: ", e);
-             return ResponseEntity.status(500).body("서버 오류");
-         }
-    }
-
+    // 이미지 업데이트
+    // 비밀번호 수정 =>mypageService, mypageController 사용.
 
     // 기업이 등록한 모든 패키지에 관한 일반 유저의 결제 내역(사용자, 패키지 상품 제목, 결제 상태) -> 모달
     // 결제 리스트 데이터 반환

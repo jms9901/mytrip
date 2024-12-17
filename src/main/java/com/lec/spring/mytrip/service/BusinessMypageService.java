@@ -50,39 +50,54 @@ public class BusinessMypageService {
     public boolean updateCompany(int userId, String currentPassword, String newPassword, MultipartFile profileImage, String profileImageFileName) {
 
         User user = userRepository.findById(userId);
-        if(user == null && !user.getStatus().equals("승인")) {
+
+        // 사용자 정보 없으면 실패
+        if(user == null) {
             return false;
         }
 
-        // 상태 확인
+        // 사용자 상태 확인
         if(!"승인".equals(user.getStatus())) {
             return false;
         }
 
         // 비밀번호 확인 및 업데이트
         if (currentPassword != null && newPassword != null && !newPassword.isEmpty()) {
-            if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
+            // 현재 비밀번호가 맞는 지 확인
+            if (!user.getPassword().equals(currentPassword)) {
                 return false; // 현재 비밀번호 불일치
             }
-            user.setPassword(passwordEncoder.encode(newPassword)); // 새 비밀번호 암호화 저장
+
+            // 새로운 비밀번호가 기존 비밀번호와 다를 경우에만 업데이트
+            if (!user.getPassword().equals(newPassword)) {
+                user.setPassword(newPassword);  // 평문 비밀번호 업데이트
+            }
         }
 
-        // 프로필 이미지 저장 및 업데이트
+        // **수정 위치: 프로필 이미지 업데이트 로직 삽입**
+        if (profileImageFileName != null && !profileImageFileName.isEmpty()) {
+            user.setProfile(profileImageFileName);  // 프로필 이미지 파일 이름 업데이트
+        }
+
+        // 프로필 이미지 수정
         if (profileImage != null && !profileImage.isEmpty()) {
             try {
-                String imageName = saveProfileImage(profileImage);
-                user.setProfile(imageName);
+                String imageName = saveProfileImage(profileImage);  // 파일 이미지 저장
+                user.setProfile(imageName);  // 프로필 이미지 업데이트
             } catch (IOException e) {
                 e.printStackTrace();
+
                 return false;
             }
         }
-        // 업데이트 실행
-        userRepository.updateCompany(user.getId(), user.getPassword(), user.getProfile());
-        return true;
 
+        // updateUser 메서드를 호출하여 업데이트된 행의 수 반환
+        int result = userRepository.updateCompany(userId, user.getPassword(), user.getProfile());
+
+        return result > 0; // 업데이트가 성공하면 true, 실패하면 false 반환
     }
 
+    // 프로필 이미지 저장 메소드
     public String saveProfileImage(MultipartFile profileImage) throws IOException {
         byte[] bytes = profileImage.getBytes();
         String imageName = UUID.randomUUID().toString() + ".jpg";  // UUID 기반 고유 이미지 이름 생성
@@ -91,31 +106,8 @@ public class BusinessMypageService {
         return imageName;
     }
 
-    // 비밀번호 업데이트
-    @Transactional
-    public boolean updatePassword(int userId, String currentPassword, String newPassword) {
-        User user = userRepository.findById(userId);
-        if (user == null || !user.getPassword().equals(currentPassword)) {
-            return false;  // 현재 비밀번호가 일치하지 않으면 실패
-        }
-        user.setPassword(newPassword);  // 새 비밀번호로 업데이트
-        userRepository.save(user);
-        return true;
-    }
-
-    // 프로필 이미지 업데이트
-    @Transactional
-    public boolean updateProfileImage(Long userId, MultipartFile file) throws IOException {
-        User user = userRepository.findById(userId).orElse(null);
-        if (user == null) {
-            return false;
-        }
-
-        String imageName = saveProfileImage(file);  // 파일을 저장하고 이름 반환
-        user.setProfile(imageName);  // 사용자 프로필 이미지 이름 업데이트
-        userRepository.save(user);  // DB에 업데이트된 정보 저장
-        return true;
-    }
+    // 비밀번호 업데이트 => mypageService 가져다 쓰기
+    // 프로필 이미지 업데이트 => mypageService 가져다 쓰기
 
     // 기업이 작성한 패키지 리스트 조회
     // 패키지 제목, 내용, 상태(대기, 승인, 미승인), 좋아요 수
