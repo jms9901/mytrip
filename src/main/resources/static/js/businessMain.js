@@ -265,11 +265,11 @@ document.addEventListener('DOMContentLoaded', function() {
                         ? `<tr><td colspan="4" style="text-align:center;">결제 내역이 없습니다.</td></tr>`
                         : paymentData.map(payments => `
                                                     <tr>
-                                                        <td>${payments.username}</td>
+                                                        <td>${payments.userName}</td>
                                                         <td>${payments.packageTitle}</td>
-                                                        <td>${payments.totalCost}</td>
-                                                        <td class="pay-status ${getPaymentStatusClass(payments.paymentStatus)}">
-                                                            ${getPaymentStatusText(payments.paymentStatus)}
+                                                        <td>${payments.totalPrice}</td>
+                                                        <td class="pay-status ${getPaymentStatusClass(payments.status)}">
+                                                            ${getPaymentStatusText(payments.status)}
                                                         </td>
                                                     </tr>
                                                 `).join('')}
