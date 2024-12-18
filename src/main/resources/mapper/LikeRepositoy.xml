@@ -4,12 +4,12 @@
 <mapper namespace="com.lec.spring.mytrip.repository.LikeRepository">
 <!--    //도시-->
 <!--    //내가 좋아요를 했는가?-->
+    <!-- 도시 좋아요 상태 확인 -->
     <select id="checkIfCityLiked" resultType="boolean">
-        SELECT EXISTS (
-            SELECT 1
-            FROM city_liked
+        SELECT CASE WHEN EXISTS (
+            SELECT 1 FROM city_liked
             WHERE user_id = #{userId} AND city_id = #{cityId}
-        ) AS liked
+        ) THEN TRUE ELSE FALSE END
     </select>
 <!--    //좋아요 증가-->
     <insert id="incrementCityLike">
@@ -37,12 +37,12 @@
 
 <!--    //피드-->
 <!--    //내가 좋아요를 했는가?-->
+    <!-- 게시글 좋아요 상태 확인 -->
     <select id="checkIfPeedLiked" resultType="boolean">
-        SELECT EXISTS (
-            SELECT 1
-            FROM board_liked
+        SELECT CASE WHEN EXISTS (
+            SELECT 1 FROM board_liked
             WHERE user_id = #{userId} AND board_id = #{peedId}
-        ) AS liked
+        ) THEN TRUE ELSE FALSE END
     </select>
 <!--    //좋아요 증가-->
     <insert id="incrementPeedLike">
@@ -57,7 +57,7 @@
 
     <select id="findAllPeedLike">
         SELECT count(*)
-        FROM city_liked
+        FROM board_liked
     </select>
 
     <resultMap id="boardResultMap" type="com.lec.spring.mytrip.domain.Board">
@@ -101,12 +101,12 @@
 
     <!--    //패키지-->
 <!--    //내가 좋아요를 했는가?-->
+    <!-- 패키지 좋아요 상태 확인 -->
     <select id="checkIfPackageLiked" resultType="boolean">
-        SELECT EXISTS (
-            SELECT 1
-            FROM package_liked
+        SELECT CASE WHEN EXISTS (
+            SELECT 1 FROM package_liked
             WHERE user_id = #{userId} AND package_id = #{packageId}
-        ) AS liked
+        ) THEN TRUE ELSE FALSE END
     </select>
 <!--    //좋아요 증가-->
     <insert id="incrementPackageLike">
@@ -121,7 +121,7 @@
 
     <select id="findAllPackageLike">
         SELECT count(*)
-        FROM city_liked
+        FROM package_liked
     </select>
 
     <!--좋아요한 패키지 리스트-->
@@ -141,5 +141,18 @@
             pl.user_id = #{userId}
     </select>
 
+    <!-- 좋아요한 도시 ID -->
+    <select id="getLikedCityIds" resultType="int">
+        SELECT city_id FROM city_liked WHERE user_id = #{userId}
+    </select>
 
+    <!-- 좋아요한 게시글 ID -->
+    <select id="getLikedPostIds" resultType="int">
+        SELECT board_id FROM board_liked WHERE user_id = #{userId}
+    </select>
+
+    <!-- 좋아요한 패키지 ID -->
+    <select id="getLikedPackageIds" resultType="int">
+        SELECT package_id FROM package_liked WHERE user_id = #{userId}
+    </select>
 </mapper>

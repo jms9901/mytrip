@@ -53,8 +53,11 @@ public class PackagePostController {
 
         // 이 도시의 패키지 목록
         List<PackagePost> packages = packagePostService.getPackagesByCityId(cityId);
+        packages.forEach(System.out::println);
         model.addAttribute("packages", packages);
-//        System.out.println("패키지 목록" + packages.toString());
+//        packages.forEach(packagePost -> {
+//            packagePost.getPackageAttachmentFile()
+//        });
 
         // 이 도시의 소모임 목록
         List<Feed> feeds = feedService.findByCityAndCategory(cityId, "소모임");
@@ -166,9 +169,6 @@ public class PackagePostController {
                                 Model model) {
         // 소모임 상세 페이지로 이동
         Feed feed =  feedService.detail(groupId);
-
-//        조회수 증가
-        feed.setBoardViewCount(feed.getBoardViewCount() + 1);
 
         model.addAttribute("feed", feed);
         model.addAttribute("cityId", cityId);

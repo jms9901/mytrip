@@ -19,5 +19,7 @@ public interface LikedService {
 
     List<PackagePost> getLikedPackageDetails(int userId);
 
-    boolean checkLiked(int target, int id);
+    Map<String, Object> checkLiked(int target, int id);
+
+    Map<String,List<Integer>> getLikedItems(int userId);
 }

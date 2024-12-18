@@ -195,24 +195,29 @@ public class FeedServiceImpl implements FeedService{
     //도시 별, 그리고 카테고리 별 불러오기
     @Override
     public List<Feed> findByCityAndCategory(int cityId, String category) {
-        System.out.println("도시 id : " + cityId + "  카테고리 : " + category);
+//        System.out.println("도시 id : " + cityId + "  카테고리 : " + category);
 
         List<Feed> c = feedRepository.findByCityAndCategory(cityId, category);
 //        System.out.println("서비스단 받아온 피드 : " + c.toString());
+        c.forEach(feed -> {
+            System.out.println("이건 null일까?" + feed.getAttachmentFiles());
+            if(feed.getAttachments() != null){
+                feed.getAttachments().forEach(attachment -> {
+                    System.out.println("이것이 당신의 파일 이름" + attachment.getFileName());
+                });
+            }
+        });
         return c;
     }
 
     @Override
     @Transactional
-    public Feed detail(int id) {
-        // 본인이 누를 시 조회수 증가 X
-        // 조회수 증가
-        feedRepository.addViewCnt(id);
-        Feed feed = feedRepository.findById(id);
+    public Feed detail(int groupId) {
+        Feed feed = feedRepository.findById(groupId);
+        System.out.println(feed.toString());
+
         if (feed != null) {
-            feed.setAttachments(feedRepository.findAttachmentByBoardId(id));
-            User user = U.getLoggedUser();
-            feed.setUser(user);
+            feedRepository.addViewCnt(groupId);
             return feed;
         }
         return null;
