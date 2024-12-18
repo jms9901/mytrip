@@ -77,7 +77,7 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(({ status, body }) => {
           const errorDiv2 = document.getElementById('errorDiv2');
           if (status >= 400 && status < 600) {
-            errorDiv3.textContent = body.error || '회원 가입 중 오류가 발생했습니다.'; // 서버에서 받은 에러 메시지를 div에 표시
+            errorDiv2.textContent = body.error || '회원 가입 중 오류가 발생했습니다.'; // 서버에서 받은 에러 메시지를 div에 표시
             alert(body.error || '회원 가입 중 오류가 발생했습니다.');
           } else {
             errorDiv3.textContent = ''; // 성공 시 에러 메시지를 제거
