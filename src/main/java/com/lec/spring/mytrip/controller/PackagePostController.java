@@ -107,8 +107,6 @@ public class PackagePostController {
     public String savePackage(@PathVariable int cityId,
                               @RequestParam("files") List<MultipartFile> files,
                               @ModelAttribute PackagePost packagePost){
-        System.out.println("컨트롤러 들어옴");
-
         files.forEach(System.out::println);
 
         System.out.println("저장할 파일" + packagePost);

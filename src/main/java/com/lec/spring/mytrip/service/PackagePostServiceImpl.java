@@ -88,6 +88,7 @@ public class PackagePostServiceImpl implements PackagePostService {
         User user = U.getLoggedUser();
         pkg.setUser(user);
         pkg.setPackageStatus("대기");
+        pkg.setUserId(user.getId());
 
         // 패키지 데이터 검증. 이거 찐하게 수정해야겠는데
         if (user == null) {

@@ -46,6 +46,7 @@
                package_end_day
         FROM package
         WHERE city_id = #{cityId}
+        AND package_status = '승인'
         ORDER BY package_regdate DESC
     </select>
 

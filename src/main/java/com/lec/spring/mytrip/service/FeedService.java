@@ -29,4 +29,6 @@ public interface FeedService {
     Feed detail(int id);
 
     int deleteGroup(int boardId);
+
+    String generateUniqueFileName(String originalFileName, int userId);
 }
