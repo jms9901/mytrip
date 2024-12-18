@@ -63,6 +63,11 @@ $(document).ready(function () {
             data: data,
             success: function (response) {
                 console.log("Response:", response);
+                // 로그인 필요 메시지 확인
+                if (response.message) {
+                    alert(response.message); // 로그인 필요시 팝업 표시
+                    return;
+                }
 
                 const icon = button.find('i');
                 if (response.liked) {
