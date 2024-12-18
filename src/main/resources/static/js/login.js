@@ -85,13 +85,13 @@ document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById("loginForm3");  // ID 수정
     const inputs = form.querySelectorAll("input");
     let check = true;
-    if(document.querySelector('.text-danger') !== null){
+    if(document.querySelector('.text-danger') === null){
       form.submit();
       alert(`회원 가입 중 오류가 발생했습니다.`);
       href.location='/user/login;'
     }
     form.submit();
-    alert('회원가입이 되었습니다.');
+    alert('회원가입이 되었습니다. 관리자의 승인을 기다려주세요');
 
   });
 });

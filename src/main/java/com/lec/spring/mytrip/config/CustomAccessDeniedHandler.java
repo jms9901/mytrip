@@ -23,8 +23,7 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
             HttpServletResponse response,   // 현재 HTTP 응답 객체
             AccessDeniedException accessDeniedException // 접근 거부 발생 시 발생하는 예외
     ) throws IOException, ServletException {
-        response.setContentType("text/html");   // 콘텐츠 타입을 html 로 설정
-        response.setCharacterEncoding("UTF-8"); // 문자 인코딩 설정
+        response.setContentType("text/html; charset=UTF-8");   // 콘텐츠 타입과 문자 인코딩 설정
 
         // 사용자 상태 확인
         // 현재 인증된 사용자의 anthentication 객체를 반환하여 spring context holder 에서 현재 인정 정보를 가져온다
@@ -35,7 +34,7 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
             User user = principalDetails.getUser();
             if ("대기".equals(user.getStatus())) {
                 response.getWriter().write("<script>alert('관리자의 승인이 필요합니다. 관리자에게 문의 바랍니다.'); window.location='/user/logout';</script>");
-            } else if ("거절 ".equals(user.getStatus())) {
+            } else if ("거절".equals(user.getStatus())) {
                 response.getWriter().write("<script>alert('관리자의 승인이 거절되었습니다. 관리자에게 문의 바랍니다.'); window.location='/user/logout';</script>");
             }  else if ("ROLE_DORMANT".equals(user.getAuthorization())) {
                 response.getWriter().write("<script>alert('ROLE_DORMANT 권한으로 접근할 수 없습니다. 관리자에게 문의 바랍니다.'); window.location='/user/logout';</script>");

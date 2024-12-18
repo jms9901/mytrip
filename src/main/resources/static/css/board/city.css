@@ -51,9 +51,6 @@
 
 
 
-
-
-
 .cityLikeButton .bi-heart-fill {
     color: #ff0000;
 }
@@ -95,7 +92,20 @@
 
 .slider-item {
     min-width: 25%; /* 4개씩 보이도록 설정 */
+    max-width: 25%;
     box-sizing: border-box;
+}
+
+.card-img {
+    height: 200px;
+}
+
+.card-title{
+    display: block;             /* 링크를 블록으로 만듦 */
+    width: 80px;               /* 최대 너비 지정 (글자 수 제한 효과) */
+    overflow: hidden;           /* 넘치는 텍스트 숨기기 */
+    white-space: nowrap;        /* 텍스트 한 줄로 고정 */
+    text-overflow: ellipsis;    /* 넘치는 부분에 줄임표 추가 */
 }
 
 .slider-btn {
@@ -109,12 +119,11 @@
     padding: 10px;
     z-index: 9999;
 }
-
-.prev-btn {
-    left: 0;
+[class$="prev-btn"]{
+    left: 33px;
 }
 
-.next-btn {
+[class$="next-btn"] {
     right: 0;
 }
 
