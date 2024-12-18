@@ -30,4 +30,7 @@ public interface PackagePostService {
 
     // 패키지 삭제
     int deletePackage(int packageId, int userId);
+
+    // 마이페이지 패키지 상세 조회
+    List<PackagePost> getPackageDetailsById(int packageId);
 }

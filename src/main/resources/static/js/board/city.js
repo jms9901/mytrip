@@ -11,7 +11,7 @@ document.getElementById("goFeedButton").addEventListener("click", function () {
 
 $().ready(function() {
     const packages = $('#packages');
-    const feed = $('#feed');
+    const feed = $('#groups');
     const items = $('.slider-item');
     const itemWidth = items.first().outerWidth();
     const totalWidth = items.length * itemWidth;

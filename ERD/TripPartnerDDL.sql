@@ -155,7 +155,7 @@ CREATE TABLE package
     PRIMARY KEY (package_id)
 ) COMMENT '패키지';
 
- ALTER TABLE package
+ALTER TABLE package
     ADD CONSTRAINT chk_package_status
         CHECK (package_status IN('승인', '대기', '미승인'));
 

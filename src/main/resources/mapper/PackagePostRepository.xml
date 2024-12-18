@@ -46,6 +46,7 @@
                package_end_day
         FROM package
         WHERE city_id = #{cityId}
+        AND package_status = '승인'
         ORDER BY package_regdate DESC
     </select>
 
@@ -107,5 +108,43 @@
         DELETE FROM package
         WHERE package_id = #{packageId}
     </delete>
+
+    <!-- 기업 회원이 등록한 패키지 리스트와 그에 해당 패키지의 좋아요 수 -->
+    <select id="likeCntByPackage" resultType="com.lec.spring.mytrip.domain.PackagePost">
+        SELECT
+            pk.package_id AS packageId,
+            pk.package_title AS packageTitle,
+            pk.package_content AS packageContent,
+            pk.package_status AS packageStatus,
+            COALESCE(liked_count.cnt, 0) AS likedCount
+        FROM package pk
+                 LEFT JOIN (
+            SELECT
+                package_id,
+                COUNT(*) AS cnt
+            FROM package_liked
+            GROUP BY package_id
+        ) liked_count ON pk.package_id = liked_count.package_id
+        WHERE pk.user_id = #{userId}
+        ORDER BY pk.package_id DESC
+    </select>
+
+    <!-- 도시 이름과 함께 패키지 상세정보 조회 -->
+    <select id="mypagePackageDetail" resultType="com.lec.spring.mytrip.domain.PackagePost">
+        SELECT
+            p.package_id,
+            p.package_title,
+            p.package_content,
+            p.package_cost,
+            p.package_maxpeople,
+            p.package_regdate,
+            p.package_start_day,
+            p.package_end_day,
+            c.city_name
+        FROM
+            package p
+        JOIN city c
+        ON p.city_id = c.city_id
+    </select>
 
 </mapper>

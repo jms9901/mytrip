@@ -31,11 +31,11 @@
             <a th:href="@{/board/city/1}" class="top-menu">여행지 게시판</a>
         </sec:authorize>
         <sec:authorize access="isAuthenticated()">
-            <a th:href="@{/flight/search}" class="top-menu">항공권 예약</a>
+            <a th:href="@{/flight/search}" class="top-menu">항공권 조회</a>
         </sec:authorize>
-        <a sec:authorize="isAnonymous()" th:href="@{/user/login}" class="top-menu" style="margin-left: 500px;">login</a>
-        <form sec:authorize="isAuthenticated()">
-            <button type="submit" class="mypage" style="font-family: 'Kaushan Script'">Mypage</button></form>
+        <a sec:authorize="isAnonymous()" th:href="@{/user/login}" class="top-menu" style="margin-left: 40vw;">login</a>
+        <form th:action="@{/user/mypage}" method="GET" sec:authorize="isAuthenticated()">
+            <button type="submit" class="mypage" style="font-family: 'Kaushan Script'; margin-left: 40vw;">Mypage</button></form>
         <form th:action="@{/user/logout}" method="POST" sec:authorize="isAuthenticated()" th:with="user=${#authentication.getPrincipal()}">
             <button type="submit" style="background-color: #142055; border: none;">
                 <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16" style="color: #f2f2f2; background-color: #142055; margin-left: 50px; top: 20px">
@@ -54,7 +54,7 @@
         <img th:src="@{/img/{cityImg}(cityImg=${city.cityImg})}" alt="City Image">
         <h1 th:text="@{${city.cityName}}"></h1>
         <!-- City 좋아요 버튼 -->
-        <button class="likeButton cityLikeButton btn" type="button" th:data-city-id="${city.cityId}">
+        <button sec:authorize="hasRole('ROLE_USER')" class="likeButton cityLikeButton btn" type="button" th:data-city-id="${city.cityId}">
             <i class="bi bi-heart"></i>
         </button>
         <span class="likeCount">0</span> <!-- 좋아요 수 초기값 -->
@@ -131,7 +131,7 @@
         <!-- Packages -->
         <section class="col-md-9">
             <h2>떠나자! 세계여행! 패키지로 놀아보자!</h2>
-            <div id="packageWrite"><a th:href="@{|${cityId}/package/write|}" class="btn btn-primary">Write</a></div>
+            <div id="packageWrite"><a sec:authorize="hasAuthority('ROLE_BUSINESS')" th:href="@{|${cityId}/package/write|}" class="btn btn-primary">글쓰기</a></div>
             <div class="slider-container" >
                 <button class="slider-btn package-prev-btn" style="left:10px;">&#10094;</button>
                 <div class="slider" id="packages">
@@ -145,7 +145,7 @@
                                               : '/img/china.jpg'}" alt="Package Image">
                                 <a  class="card-title m-1" th:href="@{|${cityId}/package/detail/${package.packageId}|}" th:text="${package.packageTitle}"></a>
                                 <!-- Package 좋아요 버튼 -->
-                                <button class="likeButton packageLikeButton btn" type="button" th:data-package-id="${package.packageId}">
+                                <button sec:authorize="hasRole('ROLE_USER')" class="likeButton packageLikeButton btn" type="button" th:data-package-id="${package.packageId}">
                                     <span class="likeCount" th:text="${package.packageLiked}">0</span> <!-- 좋아요 수 초기값 -->
                                     <i class="bi bi-heart"></i>
                                 </button>
@@ -157,7 +157,7 @@
             </div>
 
             <h2 class="mt-4">같이 낭만 즐기러 갈 파티원 구함!!</h2>
-            <div id="groupWrite"><a th:href="@{|/board/city/${cityId}/group/write|}" class="btn btn-primary">Write</a></div>
+            <div id="groupWrite"><a sec:authorize="hasRole('ROLE_USER')" th:href="@{|/board/city/${cityId}/group/write|}" class="btn btn-primary">글쓰기</a></div>
             <div class="slider-container">
                 <button class="slider-btn group-prev-btn" style="left:10px;">&#10094;</button>
                 <div class="slider" id="groups">
@@ -171,7 +171,7 @@
                                             : '/img/china.jpg'}" alt="Package Image">
                                 <a class="card-title m-1" th:href="@{|${cityId}/group/detail/${feed.boardId}|}" th:text="${feed.boardSubject}"></a>
                                 <!-- Group 좋아요 버튼 -->
-                                <button class="likeButton groupLikeButton btn" type="button" th:data-group-id="${feed.boardId}">
+                                <button sec:authorize="hasRole('ROLE_USER')" class="likeButton groupLikeButton btn" type="button" th:data-group-id="${feed.boardId}">
                                     <span class="likeCount" th:text="${feed.boardLiked}">0</span> <!-- 좋아요 수 초기값 -->
                                     <i class="bi bi-heart"></i>
                                 </button>

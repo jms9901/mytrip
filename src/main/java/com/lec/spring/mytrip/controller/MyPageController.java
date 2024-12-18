@@ -74,7 +74,15 @@ public class MyPageController {
         return Map.of("userName", currentLoggerName);
     }
 
-
+    @GetMapping("/loginuserauthority")
+    @ResponseBody
+    public Map<String, String> loginUserAuthority(HttpSession session) {
+        User loggedUserName = U.getLoggedUser();  // 사용자 정보 가져오기
+        String currentLoggerName = loggedUserName.getAuthorization();
+        System.out.println(currentLoggerName);
+        // JSON 응답 형식으로 반환
+        return Map.of("userName", currentLoggerName);
+    }
 
     @GetMapping("/{userId}/likedCity")
     public List<City> getLikedCity(@PathVariable("userId") int userId) {

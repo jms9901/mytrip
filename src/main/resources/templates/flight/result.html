@@ -8,9 +8,12 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!-- jquery -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
   <!-- font -->
   <link href='https://fonts.googleapis.com/css?family=Kaushan Script' rel='stylesheet'>
   <link rel="stylesheet" th:href="@{/css/header.css}">
+  <link rel="stylesheet" th:href="@{/css/footer.css}">
   <link rel="stylesheet" th:href="@{/css/flight/search.css}">
   <link rel="stylesheet" th:href="@{/css/flight/result.css}">
 </head>
@@ -30,9 +33,9 @@
     <sec:authorize access="isAuthenticated()">
       <a th:href="@{/flight/search}" class="top-menu">항공권 조회</a>
     </sec:authorize>
-    <a sec:authorize="isAnonymous()" th:href="@{/user/login}" class="top-menu" style="margin-left: 500px;">login</a>
+    <a sec:authorize="isAnonymous()" th:href="@{/user/login}" class="top-menu" style="margin-left: 40vw;">login</a>
     <form th:action="@{/user/mypage}" method="GET" sec:authorize="isAuthenticated()">
-      <button type="submit" class="mypage" style="font-family: 'Kaushan Script'">Mypage</button></form>
+      <button type="submit" class="mypage" style="font-family: 'Kaushan Script'; margin-left: 40vw;">Mypage</button></form>
     <form th:action="@{/user/logout}" method="POST" sec:authorize="isAuthenticated()" th:with="user=${#authentication.getPrincipal()}">
       <button type="submit" style="background-color: #142055; border: none;">
         <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16" style="color: #f2f2f2; background-color: #142055; margin-left: 50px; top: 20px">
@@ -137,8 +140,6 @@
               </div>
             </div>
           </div>
-
-
           <!-- 좌석 선택 -->
           <!-- 좌석 선택 -->
           <div>
@@ -152,7 +153,6 @@
           </div>
         </div>
       </div>
-
       <!-- 조회 버튼 -->
       <div class="col-12 text-center">
         <button id="api-query" class="btn btn-primary btn-lg px-5">조회</button>
@@ -166,10 +166,14 @@
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-10">
+        <div id="errorMessage" data-error="${error}" style="display: none;"></div>
+        <div id="errorDiv" th:unless="${flights != null and not #lists.isEmpty(flights)}">
+          <p>정보가 없습니다.</p>
+        </div>
         <table id="apiResult" class="table" style="top:-200px;">
           <tbody id="incompleteResult">
           <hr>
-          <tr th:each="flight : ${flights}" th:if="${#lists.isNotEmpty(flights)}">
+          <tr th:each="flight : ${flights}">
             <form class="detailApiCall" th:action="@{/flight/detail}" method="post">
               <!-- 기타 필요 정보들을 hidden으로 전송 -->
               <input type="hidden" th:name="itineraryId" th:value="${flight.id}">
@@ -243,16 +247,51 @@
     </div>
   </div>
 
-  <!--토큰 저장용 가짜 div-->
-  <div th:attr="data-token=${flights.get(0).token}"></div>
-  <!-- 가짜 div. 무한 스크롤 구현을 위해 스크린에 이 div가 뜨면 다음 쿼리가 진행되도록 -->
-  <div id="incomplete" th:attr="data-session-id=${flights.get(0).sessionId}"></div>
-<!--  <button id="loadMoreButton">Load More</button>-->
-  <div id="loadingMessage" style="display: none;">로딩중...</div>
+<div th:if="${flights != null and #lists.size(flights) > 0}">
+    <!--토큰 저장용 가짜 div-->
+    <div th:attr="data-token=${flights.get(0).token}"></div>
+    <!-- 가짜 div. 무한 스크롤 구현을 위해 스크린에 이 div가 뜨면 다음 쿼리가 진행되도록 -->
+    <div id="incomplete" th:attr="data-session-id=${flights.get(0).sessionId}"></div>
+    <!--  <button id="loadMoreButton">Load More</button>-->
+    <div id="loadingMessage" style="display: none;">로딩중...</div>
+</div>
 
   <!-- 페이지 상단 이동 버튼이 들어갈 자리 -->
   <div><button id="scrollTopBtn">↑ 상단으로</button></div>
-</div>
+
+<!-- Footer Section -->
+<footer id="footer">
+  <div class="footercontainer">
+    <div class="column1">
+      <a th:href="@{/aipage/start}"><img th:src="@{/img/logo.png}" alt=""></a>
+    </div>
+    <div class="column2">
+      <a th:href="@{/aipage/start}">여행지 추천</a>
+      <a th:href="@{/post}">여행지 게시판</a>
+      <a th:href="@{/flight/search}">항공권 예약</a>
+      <a th:href="@{/flight/search}">마이페이지</a>
+    </div>
+    <div class="column3">
+      <a th:href="@{/aipage/start}">이용약관</a>
+      <a th:href="@{/post}">공지사항</a>
+      <a th:href="@{/flight/search}">고객센터</a>
+    </div>
+
+    <!-- 아이콘과 텍스트를 묶는 컨테이너 -->
+    <div class="icon-and-text">
+      <div class="column4">
+        <a th:href="@{/aipage/start}"><img th:src="@{/img/Instagram_logo.png}" alt="Instagram"></a>
+        <a th:href="@{/aipage/start}"><img th:src="@{/img/facebook-logo.png}" alt="Facebook"></a>
+        <a th:href="@{/aipage/start}"><img th:src="@{/img/youtube_logo.png}" alt="YouTube"></a>
+        <a th:href="@{/aipage/start}"><img th:src="@{/img/naver_logo.png}" alt="Naver"></a>
+      </div>
+      <div class="column5">
+        <p>©트립파트너㈜. ALL RIGHTS RESERVED.</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
 
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
