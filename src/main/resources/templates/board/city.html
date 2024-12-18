@@ -48,7 +48,7 @@
 </header>
 
 <!-- Main Section -->
-<main class="container my-4">
+<main class="container p-0">
     <!-- Hero Section -->
     <div class="hero" th:each="city : ${cities}" th:if="${city.cityId == cityId}">
         <img th:src="@{/img/{cityImg}(cityImg=${city.cityImg})}" alt="City Image">
@@ -62,24 +62,54 @@
 
     <!-- Navigation -->
     <div class="city-navigation text-center">
-        <div class="row justify-content-center gap-2">
-            <div class="col-lg-auto col-md-4 col-6 city-item btn btn-outline-secondary">
-                <a href="15" class="text-decoration-none">일본</a>
+        <div class="row justify-content-center gap-3">
+            <div class="col-lg-auto col-md-4 col-6 city-item">
+                <a href="15" class="text-decoration-none">
+                    <div class="city-card">
+                        <img src="/img/japan.jpg" alt="일본" class="city-img">
+                        <span>일본</span>
+                    </div>
+                </a>
             </div>
-            <div class="col-lg-auto col-md-4 col-6 city-item btn btn-outline-secondary">
-                <a href="7" class="text-decoration-none">아시아</a>
+            <div class="col-lg-auto col-md-4 col-6 city-item">
+                <a href="7" class="text-decoration-none">
+                    <div class="city-card">
+                        <img src="/img/China.jpg" alt="아시아" class="city-img">
+                        <span>아시아</span>
+                    </div>
+                </a>
             </div>
-            <div class="col-lg-auto col-md-4 col-6 city-item btn btn-outline-secondary">
-                <a href="6" class="text-decoration-none">유럽</a>
+            <div class="col-lg-auto col-md-4 col-6 city-item">
+                <a href="6" class="text-decoration-none">
+                    <div class="city-card">
+                        <img src="/img/europe.jpg" alt="유럽" class="city-img">
+                        <span>유럽</span>
+                    </div>
+                </a>
             </div>
-            <div class="col-lg-auto col-md-4 col-6 city-item btn btn-outline-secondary">
-                <a href="1" class="text-decoration-none">남미</a>
+            <div class="col-lg-auto col-md-4 col-6 city-item">
+                <a href="1" class="text-decoration-none">
+                    <div class="city-card">
+                        <img src="/img/SouthPacific.jpg" alt="남태평양" class="city-img">
+                        <span>남태평양</span>
+                    </div>
+                </a>
             </div>
-            <div class="col-lg-auto col-md-4 col-6 city-item btn btn-outline-secondary">
-                <a href="2" class="text-decoration-none">동남아시아</a>
+            <div class="col-lg-auto col-md-4 col-6 city-item">
+                <a href="2" class="text-decoration-none">
+                    <div class="city-card">
+                        <img src="/img/southeastasia.jpg" alt="동남아시아" class="city-img">
+                        <span>동남아시아</span>
+                    </div>
+                </a>
             </div>
-            <div class="col-lg-auto col-md-4 col-6 city-item btn btn-outline-secondary">
-                <a href="9" class="text-decoration-none">북미</a>
+            <div class="col-lg-auto col-md-4 col-6 city-item">
+                <a href="9" class="text-decoration-none">
+                    <div class="city-card">
+                        <img src="/img/America.jpg" alt="아메리카" class="city-img">
+                        <span>아메리카</span>
+                    </div>
+                </a>
             </div>
         </div>
     </div>
@@ -87,7 +117,7 @@
     <!-- Content Section -->
     <div class="row">
         <!-- Sidebar -->
-        <aside class="col-md-3">
+        <aside class="col-md-2">
             <div class="bg-light p-3 rounded shadow-sm">
                 <h4 class="text-center">Menu</h4>
                 <ul class="list-unstyled">
@@ -100,10 +130,10 @@
 
         <!-- Packages -->
         <section class="col-md-9">
-            <h2>Packages</h2>
+            <h2>떠나자! 세계여행! 패키지로 놀아보자!</h2>
             <div id="packageWrite"><a th:href="@{|${cityId}/package/write|}" class="btn btn-primary">Write</a></div>
-            <div class="slider-container">
-                <button class="slider-btn package-prev-btn">&#10094;</button>
+            <div class="slider-container" >
+                <button class="slider-btn package-prev-btn" style="left:10px;">&#10094;</button>
                 <div class="slider" id="packages">
                     <div class="slider-item" th:each="package : ${packages}">
                         <div class="card package-card">
@@ -126,10 +156,10 @@
                 <button class="slider-btn package-next-btn">&#10095;</button>
             </div>
 
-            <h2 class="mt-4">Groups</h2>
+            <h2 class="mt-4">같이 낭만 즐기러 갈 파티원 구함!!</h2>
             <div id="groupWrite"><a th:href="@{|/board/city/${cityId}/group/write|}" class="btn btn-primary">Write</a></div>
             <div class="slider-container">
-                <button class="slider-btn group-prev-btn">&#10094;</button>
+                <button class="slider-btn group-prev-btn" style="left:10px;">&#10094;</button>
                 <div class="slider" id="groups">
                     <div class="slider-item" th:each="feed : ${feeds}">
                         <div class="card package-card">
@@ -143,7 +173,7 @@
                                 <!-- Group 좋아요 버튼 -->
                                 <button class="likeButton groupLikeButton btn" type="button" th:data-group-id="${feed.boardId}">
                                     <i class="bi bi-heart"></i>
-                                    <span class="likeCount"   th:text="${feed.boardLiked}">0</span> <!-- 좋아요 수 초기값 -->
+                                    <span class="likeCount"  th:text="${feed.boardLiked}">0</span> <!-- 좋아요 수 초기값 -->
                                 </button>
                             </div>
                         </div>
@@ -156,7 +186,10 @@
 </main>
 
 <section id="feed-button">
-    <button type="button" class="btn btn-outline-secondary" id="goFeedButton">피드 게시판 가는 버튼</button>
+    <button type="button" class="btn btn-outline-secondary" id="goFeedButton">
+        <span class="button-text original-text">피드 게시판</span>
+        <span class="button-text hover-text">두가자!!</span>
+    </button>
 </section>
 
 <!-- Footer Section -->
