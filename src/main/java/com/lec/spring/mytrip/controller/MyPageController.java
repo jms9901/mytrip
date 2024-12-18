@@ -145,7 +145,7 @@ public class MyPageController {
             try {
                 byte[] decodedBytes = Base64.getDecoder().decode(profileImageBase64);
                 String fileName = userId + "_profileImage.jpg";
-                Path filePath = Paths.get("static/uploads/profiles/", fileName);
+                Path filePath = Paths.get("uploads/profiles/", fileName);
                 Files.write(filePath, decodedBytes);
                 savedFileName = fileName;
             } catch (IOException e) {
@@ -182,7 +182,7 @@ public class MyPageController {
     public ResponseEntity<Resource> getProfileImage(@PathVariable("userId") int userId) {
         User user = myPageService.getUserById(userId);
         Path imagePath = (user != null && user.getProfile() != null)
-                ? Paths.get("static/uploads/profiles/", user.getProfile())
+                ? Paths.get("uploads/profiles/", user.getProfile())
                 : Paths.get("img", "defaultProfile.jpg");
 
         Resource resource = new FileSystemResource(imagePath);
