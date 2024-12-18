@@ -95,7 +95,7 @@ public class UserController {
                 for(FieldError error : errorList){
                     // 가장 처음에 발견된 에러만 담아서 보낸다
                     redirectAttributes.addFlashAttribute("error", error.getDefaultMessage());
-                    break;
+                    return "redirect:/user/login";
                 }
                 if(errorList.isEmpty()){
                     return "redirect:/user/login";
@@ -104,10 +104,9 @@ public class UserController {
 
         // 사용자명 중복 확인
         if (userService.findByUsername(user.getUsername()) != null) {
-            redirectAttributes.addFlashAttribute("error", "이미 존재하는 아이디(username) 입니다.");
+            redirectAttributes.addFlashAttribute("error", "이미 존재하는 (email) 입니다.");
             redirectAttributes.addFlashAttribute("user", user);
             return "redirect:/user/login";
-//            return null;
         }
 
 //        String page = "/user/registerOk";
