@@ -20,6 +20,6 @@ public interface LikedService {
     List<PackagePost> getLikedPackageDetails(int userId);
 
     Map<String, Object> checkLiked(int target, int id);
-
-    Map<String,List<Integer>> getLikedItems(int userId);
+    // 사용자가 좋아요 누른 상태 로딩 때 표시랑 각각의 id들의 좋아요 갯수
+    Map<String, Object> getLikedItems(int userId); // 반환 타입 수정
 }
