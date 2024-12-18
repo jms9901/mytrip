@@ -36,13 +36,13 @@
                pk.package_title AS packageTitle,
                u.user_name AS userName,
                p.user_count AS userCount,
-               (p.user_count * pk.package_cost) AS totalCost,
-               p.payment_date AS paymentDate,
-               p.payment_status AS paymentStatus
+               (p.user_count * pk.package_cost) AS totalPrice,
+               p.payment_date AS Date,
+               p.payment_status AS Status
         FROM payment_info p
                  JOIN user u ON p.user_id = u.user_id
                  JOIN package pk ON p.package_id = pk.package_id
-        WHERE p.user_id = #{userId}
+        WHERE u.user_id = #{userId}
         ORDER BY p.payment_date DESC;
     </select>
 

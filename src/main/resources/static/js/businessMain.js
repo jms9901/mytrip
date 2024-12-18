@@ -282,11 +282,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
                     // 모달 표시
                     if (paymentModal) {
+                        paymentModal.classList.remove('hidden');
                         paymentModal.style.display = 'block';
 
                         // 닫기 버튼 이벤트 등록
                         const paymentClose = paymentModal.querySelector('.close-button');
                         paymentClose.addEventListener('click', function () {
+                            paymentModal.classList.add('hidden');
                             paymentModal.style.display = 'none';
                         });
                     }

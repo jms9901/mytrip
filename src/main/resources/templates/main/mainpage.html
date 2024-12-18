@@ -69,20 +69,20 @@
                 <div class="slide-track">
                     <!-- 슬라이드 복사본 (끝에 추가될 첫 슬라이드) -->
                     <div class="slide" th:each="pkg : ${latestPackages}">
-                        <img th:src="@{|${pkg.packageAttachmentFile}|}" th:alt="${pkg.title}">
-                        <p th:text="${pkg.title}"></p>
+                        <img th:src="@{|${pkg.packageAttachmentFile}|}" th:alt="${pkg.packageTitle}">
+                        <p th:text="${pkg.packageTitle}"></p>
                     </div>
 
                     <!-- 실제 슬라이드들 -->
                     <div class="slide" th:each="pkg : ${latestPackages}">
-                        <img th:src="@{|${pkg.packageAttachmentFile}|}" th:alt="${pkg.title}">
-                        <p th:text="${pkg.title}"></p>
+                        <img th:src="@{|${pkg.packageAttachmentFile}|}" th:alt="${pkg.packageTitle}">
+                        <p th:text="${pkg.packageTitle}"></p>
                     </div>
 
                     <!-- 슬라이드 복사본 (처음으로 돌아갈 마지막 슬라이드) -->
                     <div class="slide" th:each="pkg : ${latestPackages}">
-                        <img th:src="@{|${pkg.packageAttachmentFile}|}" th:alt="${pkg.title}">
-                        <p th:text="${pkg.title}"></p>
+                        <img th:src="@{|${pkg.packageAttachmentFile}|}" th:alt="${pkg.packageTitle}">
+                        <p th:text="${pkg.packageTitle}"></p>
                     </div>
                 </div>
             </div>

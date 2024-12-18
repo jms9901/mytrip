@@ -55,6 +55,11 @@ public class BusinessMypageService {
             return false;
         }
 
+        // 사용자 기업 확인
+        if(!"ROLE_BUSINESS".equals(user.getAuthorization())) {
+            return false;
+        }
+
         // 사용자 상태 확인
         if(!"승인".equals(user.getStatus())) {
             return false;

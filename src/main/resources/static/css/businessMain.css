@@ -12,8 +12,8 @@ body {
 
 .main-container {
     position: relative;
-    width: 1600px;
-    height: 1100px;
+    width: 1200px;
+    height: 900px;
     background: radial-gradient( #fffefe, #000000);
     border-radius: 40px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
@@ -127,21 +127,12 @@ body {
     position: relative;
 }
 
-/*.package-title {*/
-/*    font-size: 38px;*/
-/*    font-weight: bold;*/
-/*    display: flex;*/
-/*    justify-content: center;*/
-/*    align-items: center;*/
-/*    position: relative;*/
-/*}*/
-
 #package-payment-button {
     width: 50px;
     cursor: pointer;
     position: absolute;
     right: 7%;
-    top: 48%;
+    top: 116%;
     transform: translateY(-50%);
 }
 

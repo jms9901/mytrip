@@ -108,7 +108,7 @@ DROP TABLE IF EXISTS message;
 
 
 update user
-set user_username = 'kyungone0424@gmail.com'
-where user_id = 17;
+set user_authorization = 'ROLE_ADMIN'
+where user_id = 1;
 
 delete from user where user_id = 41;

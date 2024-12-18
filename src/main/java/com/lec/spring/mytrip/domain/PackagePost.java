@@ -20,8 +20,8 @@ public class PackagePost {
     private String packageTitle;           // 패키지 제목
     private int packageCost;               // 패키지 비용
     private int packageMaxpeople;          // 최대 참여 가능 인원
-    private LocalDateTime packageStartDay; // 패키지 시작 날짜
-    private LocalDateTime packageEndDay;   // 패키지 종료 날짜
+//    private LocalDateTime packageStartDay; // 패키지 시작 날짜
+//    private LocalDateTime packageEndDay;   // 패키지 종료 날짜
     private int likedCount;         // 패키지 좋아요 수
     private String cityName;        // 도시 이름
     private String packageAttachmentFile;

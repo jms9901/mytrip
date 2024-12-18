@@ -8,10 +8,10 @@ body {
 #businessUpdate-modal {
     display: flex;
     position: fixed;
-    top: 22%;
-    left: 40%;
-    width: 35%;
-    height: 54%;
+    top: 10%;
+    left: 32%;
+    width: 37%;
+    height: 74%;
     background-color: rgba(255, 255, 255);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     justify-content: center;
@@ -20,11 +20,11 @@ body {
 }
 
 .modal {
-    background: white;
     border-radius: 10px;
     padding: 20px;
     width: 450px;
     height: 650px;
+    background-color: rgb(95 95 95 / 75%);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
@@ -52,11 +52,11 @@ body {
 }
 
 .joinDate {
-    font-size: 16px;
+    font-size: 12px;
     position: relative;
     float: right;
     top: -20px;
-    right: 22px;
+
 }
 
 .businessInfo {
@@ -97,15 +97,19 @@ body {
 }
 
 .close-button {
-    color: #aaa;
-    float: right;
-    font-size: 40px;
-    font-weight: bold;
+    position: absolute;
+    top: 2px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 35px;
+    cursor: pointer;
+    color: #777;
 }
 
 .submit-button {
     position: relative;
-    bottom: -63px;
+    bottom: -41px;
     float: right;
     cursor: pointer;
     width: 28px;

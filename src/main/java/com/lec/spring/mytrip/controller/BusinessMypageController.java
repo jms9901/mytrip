@@ -48,8 +48,8 @@ public class BusinessMypageController {
     public String businessMypage(@PathVariable("userId") int userId, Model model) {
         try {
             User user = businessMypageService.getUserById(userId);
-            List<PackagePost> packagePost = packagePostService.getPackagesByUserId(userId);
-            List<Payment> payment = businessMypageService.getPaymentByCompanyId(userId);
+//            List<PackagePost> packagePost = packagePostService.getPackagesByUserId(userId);
+//            List<Payment> payment = businessMypageService.getPaymentByCompanyId(userId);
 
             if(user == null) {
                 model.addAttribute("error", "해당 유저를 찾을 수 없습니다.");
@@ -61,9 +61,10 @@ public class BusinessMypageController {
                 return "error";
             }
 
+
             model.addAttribute("user", user);
-            model.addAttribute("packagePost", packagePost);
-            model.addAttribute("payment", payment);
+//            model.addAttribute("packagePost", packagePost);
+//            model.addAttribute("payment", payment);
 
             return "mypage/businessMain";
         } catch (Exception e) {
@@ -100,20 +101,20 @@ public class BusinessMypageController {
             }
 
             // 패키지 목록 로드
-            List<PackagePost> packages = businessMypageService.likeCntByPackage(userId);
+//            List<PackagePost> packages = businessMypageService.likeCntByPackage(userId);
             // 패키지 상세정보 로드
 //            PackagePost packageDetail = packagePostService.getPackageDetails(packageId);
             // 결제 내역 로드
-            List<Payment> payments = businessMypageService.getPaymentByCompanyId(userId);
+//            List<Payment> payments = businessMypageService.getPaymentByCompanyId(userId);
 
-            log.info("Business data: {}, Packages: {}, Payments: {}", user, packages, payments);
+//            log.info("Business data: {}, Packages: {}, Payments: {}", user, packages, payments);
 
             // 패키지, 패키지 상세정보, 결제 내역이 없는 경우 빈 배열 반환
 //            if (packages == null || packages.isEmpty() || payments == null || payments.isEmpty()) {
 //                return ResponseEntity.ok(Collections.emptyList());
 //            }
 
-            return ResponseEntity.ok(packages);
+            return ResponseEntity.ok(userId);
 
         } catch (Exception e) {
             log.error("패키지 조회 중 오류 발생", e);
@@ -161,9 +162,6 @@ public class BusinessMypageController {
         // 전달받은 정보
         String currentPassword = updateRequest.get("currentPassword");
         String newPassword = updateRequest.get("newPassword");
-
-        String uploadDirectory = "uploads/profiles/";
-        System.out.println(uploadDirectory.toString());
 
         // 사용자 업데이트 호출
         boolean success = businessMypageService.updateCompany(userId, currentPassword, newPassword);
