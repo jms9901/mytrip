@@ -28,4 +28,5 @@ public interface FeedService {
 
     Feed detail(int id);
 
+    int deleteGroup(int boardId);
 }

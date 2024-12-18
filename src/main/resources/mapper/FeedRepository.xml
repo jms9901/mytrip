@@ -178,6 +178,7 @@
         <include refid="SELECT_BOARD"/>
         AND c.city_id = #{cityId}
         AND b.board_category = #{category}
+        ORDER BY board_id DESC
     </select>
 
     <!-- 특정 피드 id로 글 찾기 -->

@@ -131,7 +131,7 @@
         <!-- Packages -->
         <section class="col-md-9">
             <h2>떠나자! 세계여행! 패키지로 놀아보자!</h2>
-            <div id="packageWrite"><a th:href="@{|${cityId}/package/write|}" class="btn btn-primary">Write</a></div>
+            <div id="packageWrite"><a sec:authorize="hasAuthority('ROLE_BUSINESS')" th:href="@{|${cityId}/package/write|}" class="btn btn-primary">Write</a></div>
             <div class="slider-container" >
                 <button class="slider-btn package-prev-btn" style="left:10px;">&#10094;</button>
                 <div class="slider" id="packages">

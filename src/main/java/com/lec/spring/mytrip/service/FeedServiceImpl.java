@@ -227,4 +227,21 @@ public class FeedServiceImpl implements FeedService{
         return null;
     }
 
+    //피드가 아닌 게시글도 삭제. 매퍼에 문자 박아넣지 마요오오오 나 울거가태ㅐㅐㅐㅐ
+    @Override
+    public int deleteGroup(int boardId){
+
+        System.out.println("이거 로긘" + U.getLoggedUser().getId());
+        System.out.println("이거 게시글 쓴 인간" + feedRepository.findById(boardId).getUserId());
+
+        if(U.getLoggedUser().getId() == feedRepository.findById(boardId).getUserId()){
+            feedRepository.deleteAttachmentsByBoardId(boardId);
+            feedRepository.deleteFeed(boardId, U.getLoggedUser().getId());
+            System.out.println("성공했는데");
+            return 1;
+        }else {
+            return 0;
+        }
+    }
+
 }
