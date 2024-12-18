@@ -45,7 +45,6 @@ public class PackagePostController {
     @GetMapping("/{cityId}")
     public String getPackagesByCityId(@PathVariable int cityId,
                                     Model model) {
-
         //메인 페이지 사이드 도시 목록 출력용
         List<City> sideCities = cityService.findCitiesByContinentOfThisCity(cityId);
         model.addAttribute("cities", sideCities);

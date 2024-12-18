@@ -155,4 +155,41 @@
     <select id="getLikedPackageIds" resultType="int">
         SELECT package_id FROM package_liked WHERE user_id = #{userId}
     </select>
+
+
+
+
+
+    <!--총 좋아요 나타내기-->
+    <!-- 도시의 총 좋아요 수 -->
+    <select id="getCityLikeCount" resultType="int">
+        SELECT COUNT(*)
+        FROM city_liked
+        WHERE city_id = #{cityId}
+    </select>
+
+    <!-- 포스트의 총 좋아요 수 -->
+    <select id="getPostLikeCount" resultType="int">
+        SELECT COUNT(*)
+        FROM board_liked
+        WHERE board_id = #{boardId}
+    </select>
+
+    <!-- 패키지의 총 좋아요 수 -->
+    <select id="getPackageLikeCount" resultType="int">
+        SELECT COUNT(*)
+        FROM package_liked
+        WHERE package_id = #{packageId}
+    </select>
+
+
+
+
+
+
+
+
+
+
+
 </mapper>
