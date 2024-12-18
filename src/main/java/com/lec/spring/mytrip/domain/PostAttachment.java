@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class PostAttachment {
+    private int boardAttachmentId;        // 첨부파일 ID
     private int boardId;
     private Long boardAttachmentId;        // 첨부파일 ID
     private Feed feed;                     // 피드

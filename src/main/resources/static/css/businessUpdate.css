@@ -1,0 +1,124 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+#businessUpdate-modal {
+    display: flex;
+    position: fixed;
+    top: 22%;
+    left: 40%;
+    width: 35%;
+    height: 54%;
+    background-color: rgba(255, 255, 255);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.modal {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    width: 450px;
+    height: 650px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.modal .hidden {
+    display: none;
+}
+
+.header {
+    width: 100%;
+    border-bottom: 1px solid #ccc;
+}
+
+.modal h2 {
+    margin: 0;
+    text-align: center;
+    padding-bottom: 8px;
+}
+
+.businessName {
+    font-size: 50px;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    display: flex;
+}
+
+.joinDate {
+    font-size: 16px;
+    position: relative;
+    float: right;
+    top: -20px;
+    right: 22px;
+}
+
+.businessInfo {
+    width: 90%;
+    font-size: 24px;
+    float: left;
+    padding: 4px;
+}
+
+.businessInfo span {
+    position: relative;
+    top: 16px;
+}
+
+.modal input {
+    width: 50%;
+    padding: 10px;
+    font-size: 19px;
+    float: right;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.modal .profile {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    margin-bottom: 40px;
+    justify-content: center;
+}
+
+.modal .profile img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 40px;
+    font-weight: bold;
+}
+
+.submit-button {
+    position: relative;
+    bottom: -63px;
+    float: right;
+    cursor: pointer;
+    width: 28px;
+}
+
+.actions {
+    display: flex;
+    position: relative;
+    top: 444px;
+    gap: 8px;
+}
+
+button {
+    border: none;
+    background-color: rgba(0,0,0,0);
+}

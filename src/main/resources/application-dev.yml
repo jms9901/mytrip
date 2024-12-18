@@ -68,3 +68,5 @@ app:
 
   oauth2:
     password: 1234
+
+debug: true
