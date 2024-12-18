@@ -72,7 +72,6 @@
         }
 
         #messageInput {
-            flex: 1;
             padding: 10px;
             font-size: 16px;
             border: 1px solid #ddd;
@@ -80,7 +79,7 @@
             margin-right: 10px;
             outline: none;
             height: 100px;
-
+            width: 90%;
         }
 
         #messageInput:focus {
@@ -100,7 +99,7 @@
         button:hover {
             background-color: #0097a7;
         }
-.chat-container{
+    .chat-container{
     background-color: white;
     height: 90%;
     width: 80%;
@@ -139,51 +138,87 @@
 </div>
 <script>
     var stompClient = null;
+    var username = '';
 
-    // WebSocket 연결 함수
+    // 사용자 이름 가져오기
+    function fetchUsername() {
+        fetch('/aipage/username')
+            .then(response => response.json())
+            .then(data => {
+                username = data.name || 'Anonymous';
+            })
+            .catch(error => console.error('Error fetching username:', error));
+    }
+
+    // WebSocket 연결
     function connect() {
-        var socket = new SockJS('/chat');  // WebSocket 엔드포인트에 연결
+        var socket = new SockJS('/chat');  // WebSocket 엔드포인트 연결
         stompClient = Stomp.over(socket);
+
         stompClient.connect({}, function(frame) {
-            console.log('연결 성공: ' + frame);
-            // '/topic/messages'에서 메시지를 구독
+            console.log('Connected: ' + frame);
+
+            // 메시지 구독
             stompClient.subscribe('/topic/messages', function(messageOutput) {
-                // 메시지 수신 시 화면에 출력
-                showMessage(JSON.parse(messageOutput.body).content);
+                var messageData = JSON.parse(messageOutput.body);
+                showMessage(messageData.content);  // 기존 메시지 수신 로직 유지
             });
         });
     }
 
-    // 메시지 화면에 표시하는 함수
+    // 메시지 표시 로직
     function showMessage(message) {
         var messagesDiv = document.getElementById('messages');
         var messageElement = document.createElement('div');
         messageElement.classList.add('message');
 
-        // 현재 시간 구하기
+        // 현재 시간 계산
         var now = new Date();
         var hours = now.getHours().toString().padStart(2, '0');
         var minutes = now.getMinutes().toString().padStart(2, '0');
-        var time = `${hours}:${minutes}`;
+        var formattedTime = `${hours}:${minutes}`;
 
-        // 메시지 내용과 시간 결합
-        messageElement.innerHTML = `${message} <span class="message-time">(${time})</span>`;
+
+
+        // 메시지와 사용자 이름 표시
+        messageElement.innerHTML = `<strong>${username}</strong>: ${message}
+            <span class="message-time">(${formattedTime})</span>`;
+
         messagesDiv.appendChild(messageElement);  // 메시지를 메시지 영역에 추가
 
-        // 스크롤을 가장 아래로 내리기
+        // 스크롤 아래로 이동
         messagesDiv.scrollTop = messagesDiv.scrollHeight;
     }
 
-    // 메시지 보내기 함수
+    // 메시지 전송 버튼 클릭 시
     function sendMessage() {
-        var messageContent = document.getElementById('messageInput').value;
-        var message = { sender: 'User1', content: messageContent };  // 메시지 내용 설정
-        stompClient.send('/app/chat', {}, JSON.stringify(message));  // 서버로 메시지 전송
-        document.getElementById('messageInput').value = '';  // 입력창 초기화
+        var messageContent = document.getElementById('messageInput').value.trim();
+        if (messageContent && stompClient) {
+            if (!username || username.trim() === '') {
+                username = 'Anonymous';
+            }
+
+            // 서버로 메시지 전송 (기존 로직)
+            stompClient.send('/app/chat', {}, JSON.stringify({
+                sender: username,  // 기존 로직 유지
+                content: messageContent
+            }));
+
+            document.getElementById('messageInput').value = '';  // 입력 초기화
+        }
     }
 
-    // 페이지 로드 시 WebSocket 연결
-    connect();
+    // 엔터키 이벤트 추가
+    document.getElementById('messageInput').addEventListener('keypress', function(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault();  // 기본 엔터 동작 방지
+            sendMessage();  // 메시지 전송 함수 호출
+        }
+    });
+
+    // 초기화
+    fetchUsername();  // 사용자 이름 가져오기
+    connect();  // WebSocket 연결
 </script>
 </body>
 </html>
