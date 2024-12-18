@@ -127,7 +127,7 @@
 <div class="updateUserModal">
     <div class="NameAndImg">
         <div class="Updatecircle">
-            <img th:src="${user.profile != null && !user.profile.isEmpty() ? '/uploads/profiles/' + user.profile : '/img/defaultProfile.jpg'}"
+            <img th:src="${user.profile != null && !user.profile.isEmpty() ? '/uploads/profiles/' + user.profile : 'defaultProfile.jpg'}"
                  alt="Profile Image">
         </div>
         <div class="UserNameArea" id="userName" th:text="${user.name}" onclick="editUserName()">userName</div>

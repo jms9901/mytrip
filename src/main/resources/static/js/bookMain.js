@@ -119,7 +119,7 @@ document.getElementById('ConnectionsCnt').addEventListener('click', function () 
                     li.classList.add('friend-item');
 
                     // 프로필 이미지 경로 설정 (profile이 없으면 defaultProfile.jpg 사용)
-                    const profileImage = friendshipUserResultMap.user.profile ? `/uploads/profiles/${friendshipUserResultMap.user.profile}` : '/img/defaultProfile.jpg';
+                    const profileImage = friendshipUserResultMap.user.profile ? `/uploads/profiles/${friendshipUserResultMap.user.profile}` : '/uploads/profiles/defaultProfile.jpg';
 
                     // name이 null일 경우 "Unknown"으로 처리
                     const userName = friendshipUserResultMap.user.user_name || 'Unknown';
@@ -191,7 +191,7 @@ function loadFriendRequests() {
                     // 프로필 이미지 경로 설정
                     const profileImage = friendshipUserResultMap.user.profile
                         ? `/uploads/profiles/${friendshipUserResultMap.user.profile}`
-                        : '/img/defaultProfile.jpg';
+                        : '/uploads/profiles/defaultProfile.jpg';
 
                     // 이름 설정
                     const userName = friendshipUserResultMap.user.user_name || 'Unknown';
