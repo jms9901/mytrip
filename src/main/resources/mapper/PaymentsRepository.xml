@@ -14,7 +14,6 @@
     <!-- 사용자 ID로 결제 정보 조회 -->
     <select id="getPaymentsByUserId" parameterType="int" resultType="com.lec.spring.mytrip.domain.Payment">
         SELECT
-        p.payment_id AS paymentId,
         p.user_id AS userId,
         p.package_id AS packageId,
         p.user_count AS userCount,
