@@ -164,21 +164,21 @@
     <!-- 도시의 총 좋아요 수 -->
     <select id="getCityLikeCount" resultType="int">
         SELECT COUNT(*)
-        FROM city_likes
+        FROM city_liked
         WHERE city_id = #{cityId}
     </select>
 
     <!-- 포스트의 총 좋아요 수 -->
     <select id="getPostLikeCount" resultType="int">
         SELECT COUNT(*)
-        FROM post_likes
-        WHERE post_id = #{postId}
+        FROM board_liked
+        WHERE board_id = #{boardId}
     </select>
 
     <!-- 패키지의 총 좋아요 수 -->
     <select id="getPackageLikeCount" resultType="int">
         SELECT COUNT(*)
-        FROM package_likes
+        FROM package_liked
         WHERE package_id = #{packageId}
     </select>
 

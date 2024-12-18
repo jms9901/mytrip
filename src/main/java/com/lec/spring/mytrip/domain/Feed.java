@@ -23,6 +23,7 @@ public class Feed {
     private City city;                          // 도시
     private List<PostAttachment> attachments;   // 첨부파일
     private List<String> attachmentFiles;
+    private int boardLiked;
     @Getter
     @Setter
     private int cityId;

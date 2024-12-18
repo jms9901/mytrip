@@ -33,4 +33,5 @@ public class PackagePost {
     private int packageMaxpeople;          // 최대 참여 가능 인원
     private LocalDate packageStartDay; // 패키지 시작 날짜
     private LocalDate packageEndDay;   // 패키지 종료 날짜
+    private int packageLiked;
 }
