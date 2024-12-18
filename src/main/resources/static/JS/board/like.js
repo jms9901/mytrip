@@ -34,28 +34,6 @@ $(document).ready(function () {
                 });
             }
 
-            // 총 좋아요 수 업데이트
-            if (response.totalLikes) {
-                Object.keys(response.totalLikes).forEach(key => {
-                    const [type, id] = key.split('_'); // key 예: "city_1", "post_10"
-                    const likeCount = response.totalLikes[key]; // 총 좋아요 수
-
-                    let button;
-                    if (type === 'city') {
-                        button = $(`button[data-city-id='${id}']`);
-                    } else if (type === 'post') {
-                        button = $(`button[data-group-id='${id}']`);
-                    } else if (type === 'package') {
-                        button = $(`button[data-package-id='${id}']`);
-                    }
-
-                    if (button) {
-                        const likeCountElement = button.siblings('.likeCount');
-                        likeCountElement.text(likeCount); // 총 좋아요 수 업데이트
-                    }
-                });
-            }
-
             // 비로그인 메시지 처리
             if (response.message) {
                 console.warn(response.message); // 콘솔에 메시지 출력 (필요 시 팝업 처리 가능)
@@ -71,7 +49,7 @@ $(document).ready(function () {
         event.preventDefault();
 
         const button = $(this);
-        const likeCountElement = button.siblings('.likeCount'); // 좋아요 수 표시 요소
+        const likeCountElement = button.find('.likeCount'); // 좋아요 수 표시 요소
 
         const cityId = button.data('city-id');
         const packageId = button.data('package-id');
@@ -108,6 +86,10 @@ $(document).ready(function () {
                     icon.removeClass('bi-heart').addClass('bi-heart-fill');
                 } else {
                     icon.removeClass('bi-heart-fill').addClass('bi-heart');
+                }
+
+                if (likeCountElement.length > 0){
+                    console.log("어 뭔가 있어")
                 }
 
                 likeCountElement.text(response.totalLikes); // 좋아요 개수 업데이트

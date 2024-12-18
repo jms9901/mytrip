@@ -36,13 +36,7 @@ public class PaymentServiceImpl implements PaymentService {
     public Response paymentSave(Payment payment) {
         System.out.println("싸-비쓰 왔슈");
         try {
-//            payment.setUserId(U.getLoggedUser().getId());
-            User user = User.builder()
-                    .id(1)
-                    .name("이경원")
-                    .email("wonwon123123@naver.com")
-                    .build();
-            payment.setUserId(user.getId());
+            payment.setUserId(U.getLoggedUser().getId());
             // KakaoPay API 호출
             if (payment == null) {
                 System.out.println("Payment 객체가 null입니다.");
@@ -64,7 +58,7 @@ public class PaymentServiceImpl implements PaymentService {
     //마이/기업페이지 결제 출력
     @Override
     public List<Payment> getPaymentDetails(int userId) {
-
+        System.out.println("결제정보"+paymentsRepository.getPaymentsByUserId(userId));
 
         return paymentsRepository.getPaymentsByUserId(userId);
     }

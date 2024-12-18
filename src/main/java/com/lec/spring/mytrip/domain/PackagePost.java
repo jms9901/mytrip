@@ -29,4 +29,5 @@ public class PackagePost {
     private User user;            // 작성자
     private LocalDate packageStartDay; // 패키지 시작 날짜
     private LocalDate packageEndDay;   // 패키지 종료 날짜
+    private int packageLiked;
 }

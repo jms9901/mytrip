@@ -115,7 +115,7 @@ public class LikedServiceImpl implements LikedService {
                         likeRepository.incrementCityLike(userId, id); // 좋아요 추가
                         result.put("liked", true);
                     }
-                    int totalLikes = likeRepository.findAllCityLike(id); // 총 좋아요 수 조회
+                    int totalLikes = likeRepository.getCityLikeCount(id); // 총 좋아요 수 조회
                     result.put("totalLikes", totalLikes);
                 }
                 case 2 -> { // Post 좋아요
@@ -126,7 +126,7 @@ public class LikedServiceImpl implements LikedService {
                         likeRepository.incrementPeedLike(userId, id);
                         result.put("liked", true);
                     }
-                    int totalLikes = likeRepository.findAllPeedLike(id);
+                    int totalLikes = likeRepository.getPostLikeCount(id);
                     result.put("totalLikes", totalLikes);
                 }
                 case 3 -> { // Package 좋아요
@@ -137,7 +137,7 @@ public class LikedServiceImpl implements LikedService {
                         likeRepository.incrementPackageLike(userId, id);
                         result.put("liked", true);
                     }
-                    int totalLikes = likeRepository.findAllPackageLike(id);
+                    int totalLikes = likeRepository.getPackageLikeCount(id);
                     result.put("totalLikes", totalLikes);
                 }
                 default -> throw new IllegalStateException("대상이 존재하지 않습니다. 대상 id : " + id);

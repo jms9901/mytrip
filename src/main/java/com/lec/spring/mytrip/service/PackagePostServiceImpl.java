@@ -5,7 +5,9 @@ import com.lec.spring.mytrip.domain.User;
 import com.lec.spring.mytrip.domain.attachment.BoardAttachment;
 import com.lec.spring.mytrip.domain.attachment.PackagePostAndAttachment;
 import com.lec.spring.mytrip.domain.attachment.PackagePostAttachment;
+import com.lec.spring.mytrip.repository.LikeRepository;
 import com.lec.spring.mytrip.repository.PackagePostRepository;
+import com.lec.spring.mytrip.util.U;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,11 +20,13 @@ import java.util.List;
 public class PackagePostServiceImpl implements PackagePostService {
     private final PackagePostRepository packagePostRepository;
     private final PackageAttachmentService packageAttachmentService;
+    private final LikeRepository likeRepository;
 
     @Autowired
     public PackagePostServiceImpl(SqlSession sqlSession, PackageAttachmentService packageAttachmentService) {
         this.packagePostRepository = sqlSession.getMapper(PackagePostRepository.class);
         this.packageAttachmentService = packageAttachmentService;
+        this.likeRepository = sqlSession.getMapper(LikeRepository.class);
     }
 
     // 패키지 상세
@@ -59,7 +63,8 @@ public class PackagePostServiceImpl implements PackagePostService {
                     packageAttachmentService.getAttachmentsByPackageId(packagePost.getPackageId());
             if(!e.isEmpty()) {
                 packagePost.setPackageAttachmentFile(e.get(0).getPackageAttachmentFile());
-            };
+            }
+            packagePost.setPackageLiked(likeRepository.getPackageLikeCount(packagePost.getPackageId()));
         });
         return packagePosts;
     }
@@ -80,12 +85,7 @@ public class PackagePostServiceImpl implements PackagePostService {
     public int savePackage(PackagePost pkg, List<MultipartFile> files) {
         System.out.println("서비스 들어옴");
 
-//        User user = U.getLoggedUser();
-        User user = User.builder()
-                .id(1)
-                .name("이경원")
-                .email("wonwon123123@naver.com")
-                .build();
+        User user = U.getLoggedUser();
         pkg.setUser(user);
         pkg.setPackageStatus("대기");
 

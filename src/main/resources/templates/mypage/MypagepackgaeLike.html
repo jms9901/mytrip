@@ -24,7 +24,7 @@
     <div class="logo" style="background-image: url(/img/mypageLogo.png);" onclick="window.location.href='/main/mainpage';"></div>
 </div>
 <div class="myPageGoHome" style="background-image: url(/img/myPageGoHome.png)" onclick="window.location.href='/mypage/bookMain';"></div>
-<!--<div class="backgroundGuestBook" style="background-image: url(/img/addBook.png);"></div>-->
+<div class="backgroundGuestBook" style="background-image: url(/img/addBook.png);"></div>
 
 <div id="feedEntries" style="margin-top: 20px;">
     <!-- feedEntries 동적 생성 영역 -->
@@ -159,7 +159,7 @@
                     // 첨부파일이 있을 경우
                     let attachmentHtml = '';
                     if (feeds.packageAttachmentFile) {
-                        const filePath = `/uploads/${feeds.packageAttachmentFile}`; // 첨부파일의 경로
+                        const filePath = `/uploads/package/${feeds.packageAttachmentFile}`; // 첨부파일의 경로
                         console.log('Image path: ' + filePath);  // /uploads/bus.jpg 경로가 올바르게 출력되는지 확인
                         attachmentHtml = `<img src="${filePath}" alt="첨부파일" class="feed-attachment">`; // 이미지 출력
                     }
@@ -187,13 +187,13 @@
                         // feed.attachmentFiles가 배열인 경우 처리
                         if (Array.isArray(feed.packageAttachmentFile)) {
                             attachmentHtml = feed.packageAttachmentFile.map(file => {
-                                const filePath = `/uploads/${file}`; // 첨부파일의 경로
+                                const filePath = `/uploads/package/${file}`; // 첨부파일의 경로
                                 return `<img src="${filePath}" alt="첨부파일" class="feed-attachment">`;
                             }).join('');
                         }
                         // feed.attachmentFiles가 문자열인 경우 처리
                         else if (typeof feed.packageAttachmentFile === 'string') {
-                            const filePath = `/uploads/${feed.packageAttachmentFile}`; // 첨부파일의 경로
+                            const filePath = `/uploads/package/${feed.packageAttachmentFile}`; // 첨부파일의 경로
                             attachmentHtml = `<img src="${filePath}" alt="첨부파일" class="feed-attachment">`;
                         }
                     }

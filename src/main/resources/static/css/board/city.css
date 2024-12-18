@@ -18,6 +18,38 @@
     font-size: 2.5rem;
     font-weight: bold;
 }
+/* 도시 카드 스타일 */
+.city-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 130px; /* 카드의 너비 */
+    border-radius: 10px; /* 모서리 둥글게 */
+    overflow: hidden; /* 이미지가 넘치지 않도록 */
+    background-color: #fff; /* 배경색 */
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2); /* 가벼운 그림자 */
+    transition: transform 0.3s ease-in-out;
+}
+
+.city-card:hover {
+    transform: scale(1.05); /* 호버 시 확대 */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.city-card img.city-img {
+    width: 100%; /* 이미지 꽉 차게 */
+    height: 100px; /* 이미지 높이 */
+    object-fit: cover; /* 비율 유지하며 자르기 */
+}
+
+.city-card span {
+    margin-top: 8px; /* 텍스트와 이미지 간격 */
+    font-size: 1rem;
+    font-weight: bold;
+    color: #333; /* 텍스트 색상 */
+}
 
 /* 공통 스타일 */
 .likeButton {
@@ -60,11 +92,14 @@
     right: 0;
     margin-bottom: 20px;
 }
-
-.city-navigation {
-    margin-top: 20px;
+#groupWrite{
+    position: relative;
+    right: 0;
     margin-bottom: 20px;
 }
+
+
+
 .city-item {
     cursor: pointer;
 }
@@ -73,6 +108,8 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between; /* 내부 요소를 상하 정렬 */
+    margin: 10px; /* 카드 간격 설정 */
+    transition: transform 0.3s ease-in-out;
 }
 .package-card:hover, .group-card:hover {
     transform: scale(1.05);
@@ -86,8 +123,9 @@
 
 .slider {
     display: flex;
+    gap: 15px; /* 카드 간 간격 추가 */
     transition: transform 0.3s ease-in-out;
-    margin-left: 33px;
+    margin-left: 0; /* 기존 여백 제거 */
 }
 
 .slider-item {
@@ -97,12 +135,12 @@
 }
 
 .card-img {
-    height: 200px;
+    height: 170px;
 }
 
 .card-title{
     display: block;             /* 링크를 블록으로 만듦 */
-    width: 80px;               /* 최대 너비 지정 (글자 수 제한 효과) */
+    width: 150px;               /* 최대 너비 지정 (글자 수 제한 효과) */
     overflow: hidden;           /* 넘치는 텍스트 숨기기 */
     white-space: nowrap;        /* 텍스트 한 줄로 고정 */
     text-overflow: ellipsis;    /* 넘치는 부분에 줄임표 추가 */
@@ -127,12 +165,7 @@
     right: 0;
 }
 
-#feed-button{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 50px 0;
-}
+
 .card-body {
     position: relative; /* 부모 요소를 기준으로 */
 }
@@ -141,4 +174,66 @@
 
 .likeButton .bi-heart-fill {
     color: #ff0000;
+}
+.city-navigation {
+
+    margin-bottom: 60px; /* 아래 요소와의 간격 (선택) */
+}
+/* 피드 버튼 섹션 스타일 */
+#feed-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 40px 0;
+    padding: 20px;
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 버튼 스타일 */
+#goFeedButton {
+    position: relative;
+    overflow: hidden; /* 슬라이드 시 넘치는 텍스트 숨기기 */
+    width: 200px; /* 버튼 너비 고정 */
+    height: 50px; /* 버튼 높이 */
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #343a40;
+    border: 2px solid #6c757d;
+    border-radius: 5px;
+    background-color: #fff;
+    transition: all 0.3s ease-in-out;
+}
+
+/* 텍스트 컨테이너 */
+.button-text {
+    position: absolute;
+    top: 50%; /* 버튼 중앙에 위치 */
+    left: 0;
+    width: 100%;
+    text-align: center;
+    transform: translateY(-50%);
+    transition: transform 0.3s ease-in-out; /* 슬라이딩 효과 */
+}
+
+/* 원래 텍스트 */
+.original-text {
+    transform: translateY(-50%); /* 기본 상태 */
+}
+
+/* 호버 시 원래 텍스트 이동 */
+#goFeedButton:hover .original-text {
+    transform: translateY(-180%); /* 위로 슬라이드 */
+}
+
+/* 호버 시 새로운 텍스트 등장 */
+.hover-text {
+    transform: translateY(100%); /* 아래에 대기 */
+    opacity: 0; /* 숨겨진 상태 */
+}
+
+#goFeedButton:hover .hover-text {
+    transform: translateY(-50%); /* 중앙으로 슬라이드 */
+    opacity: 1; /* 표시 */
 }
