@@ -58,7 +58,7 @@ public class PaymentServiceImpl implements PaymentService {
     //마이/기업페이지 결제 출력
     @Override
     public List<Payment> getPaymentDetails(int userId) {
-
+        System.out.println("결제정보"+paymentsRepository.getPaymentsByUserId(userId));
 
         return paymentsRepository.getPaymentsByUserId(userId);
     }

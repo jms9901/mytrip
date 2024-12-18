@@ -14,7 +14,6 @@
     <!-- 사용자 ID로 결제 정보 조회 -->
     <select id="getPaymentsByUserId" parameterType="int" resultType="com.lec.spring.mytrip.domain.Payment">
         SELECT
-        p.payment_id AS paymentId,
         p.user_id AS userId,
         p.package_id AS packageId,
         p.user_count AS userCount,
@@ -29,4 +28,21 @@
         WHERE p.user_id = #{userId}
         ORDER BY p.payment_date DESC;
     </select>
+
+    <!-- 해당 기업회원이 등록한 모든 패키지에 대한 일반 유저의 결제 내역 결제 최신순 -->
+    <select id="getPaymentByCompanyId" parameterType="int" resultType="com.lec.spring.mytrip.domain.Payment">
+        SELECT p.payment_id AS paymentId,
+               pk.package_title AS packageTitle,
+               u.user_name AS userName,
+               p.user_count AS userCount,
+               (p.user_count * pk.package_cost) AS totalPrice,
+               p.payment_date AS Date,
+               p.payment_status AS Status
+        FROM payment_info p
+                 JOIN user u ON p.user_id = u.user_id
+                 JOIN package pk ON p.package_id = pk.package_id
+        WHERE u.user_id = #{userId}
+        ORDER BY p.payment_date DESC;
+    </select>
+
 </mapper>

@@ -93,8 +93,8 @@ public class PackagePostServiceImpl implements PackagePostService {
         if (user == null) {
             throw new RuntimeException("로그인 하세요.");
         }
-        if (pkg.getCityId() <= 0 || pkg.getUser().getId() <= 0 || pkg.getPackageTitle() == null || pkg.getPackageTitle().trim().isEmpty()) {
-            throw new RuntimeException("유효하지 않은 패키지 데이터입니다. 다시 작성해주세요");
+        if (pkg.getCityId() <= 0 || pkg.getUserId() <= 0 || pkg.getPackageTitle() == null || pkg.getPackageTitle().trim().isEmpty()) {
+            throw new IllegalArgumentException("유효하지 않은 패키지 데이터입니다. 도시 ID, 사용자 ID, 제목은 필수입니다.");
         }
 
         // 패키지 저장
@@ -118,6 +118,7 @@ public class PackagePostServiceImpl implements PackagePostService {
         if (pkg == null || pkg.getPackageId() <= 0) {
             throw new IllegalArgumentException("패키지 또는 패키지 ID가 null일 수 없습니다.");
         }
+
         // 기존 데이터 조회 및 검증
         PackagePost existingPackage = packagePostRepository.findById(pkg.getPackageId());
         if (existingPackage == null) {
@@ -178,6 +179,10 @@ public class PackagePostServiceImpl implements PackagePostService {
         return packagePostRepository.deleteById(packageId);
     }
 
+    @Override
+    public List<PackagePost> getPackageDetailsById(int packageId) {
+        return packagePostRepository.mypagePackageDetail(packageId);
+    }
 
 
     // 유저(기업 계정) 별 패키지 목록 > 마이페이지

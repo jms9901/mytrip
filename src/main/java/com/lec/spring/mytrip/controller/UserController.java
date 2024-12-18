@@ -7,6 +7,7 @@ import com.lec.spring.mytrip.util.U;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -84,66 +85,27 @@ public class UserController {
 
     // 회원가입 처리
     @PostMapping("/register")
-    public String register(@Valid User user, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
-            //검증동작
-            if(bindingResult.hasErrors()){
-                redirectAttributes.addFlashAttribute("username", user.getUsername());
-                redirectAttributes.addFlashAttribute("name", user.getName());
-                redirectAttributes.addFlashAttribute("email", user.getEmail());
+    @ResponseBody
+    public ResponseEntity<Map<String, String>> register(@Valid User user, BindingResult bindingResult) {
+        Map<String, String> response = new HashMap<>();
 
-                List<FieldError> errorList = bindingResult.getFieldErrors();
-                for(FieldError error : errorList){
-                    // 가장 처음에 발견된 에러만 담아서 보낸다
-                    redirectAttributes.addFlashAttribute("error", error.getDefaultMessage());
-                    return "redirect:/user/login";
-                }
-                if(errorList.isEmpty()){
-                    return "redirect:/user/login";
-                }
+        if (bindingResult.hasErrors()) {
+            List<FieldError> errorList = bindingResult.getFieldErrors();
+            for (FieldError error : errorList) {
+                response.put("error", error.getDefaultMessage());
+                return ResponseEntity.badRequest().body(response);
+            }
         }
 
-        // 사용자명 중복 확인
         if (userService.findByUsername(user.getUsername()) != null) {
-            redirectAttributes.addFlashAttribute("error", "이미 존재하는 (email) 입니다.");
-            redirectAttributes.addFlashAttribute("user", user);
-            return "redirect:/user/login";
+            response.put("error", "이미 존재하는 ID 입니다.");
+            return ResponseEntity.badRequest().body(response);
         }
 
-//        String page = "/user/registerOk";
         int cnt = userService.register(user);
-        model.addAttribute("result", cnt);
-        return "redirect:/user/login"; // 회원가입 성공 후 로그인 페이지로 리다이렉트
+        response.put("result", "success");
+        return ResponseEntity.ok(response); // 회원가입 성공 시 성공 응답 반환
     }
-
-//    @PostMapping("/register")
-//    @ResponseBody
-//    public Map<String, String> register(@Valid User user, BindingResult bindingResult) {
-//        Map<String, String> response = new HashMap<>();
-//
-//        // 검증 동작
-//        if (bindingResult.hasErrors()) {
-//            List<FieldError> errorList = bindingResult.getFieldErrors();
-//            for (FieldError error : errorList) {
-//                // 가장 처음에 발견된 에러만 담아서 보낸다
-//                response.put("error", error.getDefaultMessage());
-//                break;
-//            }
-//            return response;
-//        }
-//
-//        // 사용자명 중복 확인
-//        if (userService.findByUsername(user.getUsername()) != null) {
-//            response.put("error", "이미 존재하는 아이디(username) 입니다.");
-//            return response;
-//        }
-//
-//        // 사용자 등록 로직
-//        int cnt = userService.register(user);
-//        response.put("result", String.valueOf(cnt));
-//        return response;
-//    }
-
-
 
     // 로그인 오류 처리
     @PostMapping("/loginError")

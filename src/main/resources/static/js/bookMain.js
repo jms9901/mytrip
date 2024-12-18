@@ -347,10 +347,12 @@ function submitUserChanges() {
             .then(response => response.json())
             .then(data => {
                 console.log("Success:", data);
+                alert("수정 완료!");
                 // 응답 데이터에 따라 추가 작업 수행
             })
             .catch(error => {
                 console.error("Error:", error);
+                alert("수정 실패! 비밀번호 확인해주세요");
             });
     }
 }
