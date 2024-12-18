@@ -137,8 +137,6 @@
               </div>
             </div>
           </div>
-
-
           <!-- 좌석 선택 -->
           <!-- 좌석 선택 -->
           <div>
@@ -152,7 +150,6 @@
           </div>
         </div>
       </div>
-
       <!-- 조회 버튼 -->
       <div class="col-12 text-center">
         <button id="api-query" class="btn btn-primary btn-lg px-5">조회</button>
@@ -166,10 +163,14 @@
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-10">
+        <div id="errorMessage" data-error="${error}" style="display: none;"></div>
+        <div id="errorDiv" th:unless="${flights != null and not #lists.isEmpty(flights)}">
+          <p>정보가 없습니다.</p>
+        </div>
         <table id="apiResult" class="table" style="top:-200px;">
           <tbody id="incompleteResult">
           <hr>
-          <tr th:each="flight : ${flights}" th:if="${#lists.isNotEmpty(flights)}">
+          <tr th:each="flight : ${flights}">
             <form class="detailApiCall" th:action="@{/flight/detail}" method="post">
               <!-- 기타 필요 정보들을 hidden으로 전송 -->
               <input type="hidden" th:name="itineraryId" th:value="${flight.id}">
@@ -243,12 +244,14 @@
     </div>
   </div>
 
-  <!--토큰 저장용 가짜 div-->
-  <div th:attr="data-token=${flights.get(0).token}"></div>
-  <!-- 가짜 div. 무한 스크롤 구현을 위해 스크린에 이 div가 뜨면 다음 쿼리가 진행되도록 -->
-  <div id="incomplete" th:attr="data-session-id=${flights.get(0).sessionId}"></div>
-<!--  <button id="loadMoreButton">Load More</button>-->
-  <div id="loadingMessage" style="display: none;">로딩중...</div>
+<div th:if="${flights != null and #lists.size(flights) > 0}">
+    <!--토큰 저장용 가짜 div-->
+    <div th:attr="data-token=${flights.get(0).token}"></div>
+    <!-- 가짜 div. 무한 스크롤 구현을 위해 스크린에 이 div가 뜨면 다음 쿼리가 진행되도록 -->
+    <div id="incomplete" th:attr="data-session-id=${flights.get(0).sessionId}"></div>
+    <!--  <button id="loadMoreButton">Load More</button>-->
+    <div id="loadingMessage" style="display: none;">로딩중...</div>
+</div>
 
   <!-- 페이지 상단 이동 버튼이 들어갈 자리 -->
   <div><button id="scrollTopBtn">↑ 상단으로</button></div>

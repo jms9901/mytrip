@@ -11,10 +11,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class PostAttachment {
+    private int boardAttachmentId;        // 첨부파일 ID
     private int boardId;
-    private Long boardAttachmentId;        // 첨부파일 ID
     private Feed feed;                     // 피드
     private String fileName;    // 저장된 파일명
     private String filePath;               // 파일 경로
-//    private Board board;                   // 소모임
 }

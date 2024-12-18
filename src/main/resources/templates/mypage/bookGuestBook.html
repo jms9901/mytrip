@@ -250,14 +250,15 @@
                 </div>`;
 
                         addEntryToPage(entryHtml);  // 비동기적으로 항목을 페이지에 추가
+                       alert("작성 완료!")
                         resetGuestBookForm();  // 폼 초기화
                     },
                     error: function () {
-                        alert("Failed to add the guest book entry.");
+                        alert("방명록 작성 실패!");
                     }
                 });
             } else {
-                alert("Please fill in both fields!");
+                alert("작성란 입력하세요!");
             }
         }
 

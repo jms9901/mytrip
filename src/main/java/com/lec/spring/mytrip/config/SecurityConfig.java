@@ -37,9 +37,9 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeRequests(auth -> auth
-                        .requestMatchers("/main/**","/user/**", "/user/login", "/oauth2/**", "/css/**", "/js/**", "/img/**", "/admin/adminLogin", "/admin/auth").permitAll()
-                        .requestMatchers( "/flight/**", "/aipage/**", "/mypage/**").hasAnyAuthority("ROLE_USER", "ROLE_BUSINESS")
-                        .anyRequest().permitAll())
+                        .requestMatchers("/main/**","/user/**", "/user/login", "/oauth2/**", "/css/**", "/js/**", "/img/**", "/admin/adminLogin", "admin/login","/admin/auth").permitAll()
+                        .requestMatchers( "/flight/**", "/board/**", "/aipage/**", "/mypage/**").hasAnyAuthority("ROLE_USER", "ROLE_BUSINESS")
+                        .anyRequest().authenticated())
                 .formLogin(form -> form
                         .loginPage("/user/login")
                         .loginProcessingUrl("/user/login")

@@ -28,6 +28,7 @@
     </select>
 
     <!-- 특정 사용자의 좋아요한 도시 조회 -->
+    <!-- 형님 -->
     <select id="getLikedCityByUserId" resultType="com.lec.spring.mytrip.domain.City">
         SELECT c.city_img, c.city_name
         FROM city c
@@ -181,15 +182,4 @@
         FROM package_liked
         WHERE package_id = #{packageId}
     </select>
-
-
-
-
-
-
-
-
-
-
-
 </mapper>

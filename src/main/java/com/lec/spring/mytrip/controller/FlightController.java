@@ -65,9 +65,10 @@ public class FlightController {
 
         try {
             FlightRoundTripResponse flightApiResponse = flightService.roundTripApiCall(flightRoundTrip);
-
             if (flightApiResponse.getFlights() == null) {
                 flightApiResponse.setFlights(new ArrayList<>());
+                model.addAttribute("flights", flightApiResponse.getFlights());
+                model.addAttribute("error", "조회 목록이 없습니다");
             } else {
                 model.addAttribute("flights", flightApiResponse.getFlights());
             }

@@ -34,6 +34,11 @@ public class CommentServiceImpl implements CommentService {
     }
 
 
+    @Override
+    public int getBoardWriterId(int boardId) {
+        return repository.findBoardWriterIdByBoardId(boardId); // 게시글 작성자 ID 조회
+    }
+
 
     @Override
     public int deleteComment(int commentId) {

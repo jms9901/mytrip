@@ -68,7 +68,11 @@
         WHERE user_id = #{userId}
     </update>
 
-
-
-
+    <!-- 기업 사용자 업데이트  -->
+    <update id="updateCompany" parameterType="map">
+        UPDATE user
+        SET user_password = #{password},
+            user_profile = #{profile}
+        WHERE user_id = #{userId}
+    </update>
 </mapper>

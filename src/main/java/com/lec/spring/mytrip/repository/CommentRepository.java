@@ -11,7 +11,8 @@ public interface CommentRepository {
     // 특정 게시물의 댓글 목록 조회
     List<Comment> findCommentsByBoardId(int boardId);
 
-
+    // 게시글 작성자 ID 조회
+    int findBoardWriterIdByBoardId(int boardId);
 
     // 댓글 삭제
     int deleteComment(int CommentId);
