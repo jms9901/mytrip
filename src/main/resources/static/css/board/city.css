@@ -60,6 +60,12 @@
     right: 0;
     margin-bottom: 20px;
 }
+#groupWrite{
+    position: relative;
+    right: 0;
+    margin-bottom: 20px;
+}
+
 
 .city-navigation {
     margin-top: 20px;
@@ -97,7 +103,7 @@
 }
 
 .card-img {
-    height: 200px;
+    height: 170px;
 }
 
 .card-title{

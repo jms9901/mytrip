@@ -7,6 +7,7 @@ import com.lec.spring.mytrip.domain.attachment.PackagePostAndAttachment;
 import com.lec.spring.mytrip.domain.attachment.PackagePostAttachment;
 import com.lec.spring.mytrip.repository.LikeRepository;
 import com.lec.spring.mytrip.repository.PackagePostRepository;
+import com.lec.spring.mytrip.util.U;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -84,12 +85,7 @@ public class PackagePostServiceImpl implements PackagePostService {
     public int savePackage(PackagePost pkg, List<MultipartFile> files) {
         System.out.println("서비스 들어옴");
 
-//        User user = U.getLoggedUser();
-        User user = User.builder()
-                .id(1)
-                .name("이경원")
-                .email("wonwon123123@naver.com")
-                .build();
+        User user = U.getLoggedUser();
         pkg.setUser(user);
         pkg.setPackageStatus("대기");
 

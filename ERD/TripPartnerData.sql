@@ -2,46 +2,34 @@
 insert into user (user_email, user_password, user_username, user_name,  user_birthday, user_profile, user_provider, user_introdution, user_authorization)
 values ('fullstackK08@naver.com',
         '1234',
-        'admin1',
-        '관리자',
+        'admin1234',
+        '이경원',
         '2000-04-24',
         '',
         '',
-        '',
-        'admin'
+        '나는 이경원이다',
+        'ROLE_ADMIN'
         ),
         (
-         'user1@naver.com',
+         'wonwon123123@naver.com',
          '1234',
-         'user1',
+         'user1234',
          '이경원',
          '2000-02-11',
          '',
          '',
          '',
-         'user'
-        ),
-       (
-           'user2@naver.com',
-           '1234',
-           'user2',
-           '이경원',
-           '2000-02-11',
-           '',
-           '',
-           '',
-           'user'
-       );
-
+         'ROLE_USER'
+        );
 
 # business 데이터
 insert into user (user_email, user_password,user_username,user_name,user_authorization,business_companynumber)
  values       (
         'business@naver.com',
          '1234',
-         'business1',
-         '하나투어',
-         'business',
+         'business1234',
+         '이경원',
+         'ROLE_BUSINESS',
          '123-11-12345'
         ) ;
 
@@ -669,5 +657,3 @@ insert into  friendship(to_user_id, from_user_id)
 values (2,3);
 insert into  friendship(to_user_id, from_user_id)
 values (2,3);
-
-
