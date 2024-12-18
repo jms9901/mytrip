@@ -410,8 +410,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             <span class="joinDate">가입일 :  ${formatDate(user.regDate)}</span>
                         </div>
                         <div class="profile">
-                            <img alt="프로필" class="profile-img" id="profileImage">
-                            <input type="file" id="profileImageInput" accept="image/*" style="display: none;">
+                            <img alt="프로필" class="profile-img" id="profileImage" src="/img/defaultProfile.jpg">
                         </div>
                         <div class="businessInfo">
                             <label for="businessId">
@@ -464,31 +463,6 @@ document.addEventListener('DOMContentLoaded', function () {
                         profileUpdateModal.classList.remove('hidden');
                         profileUpdateModal.style.display = 'block';
 
-
-                        // 프로필 사진 클릭 시 파일 선택
-                        const profileImage = document.getElementById("profileImage");
-                        const profileImageInput = document.getElementById("profileImageInput");
-                        profileImage.style.backgroundImage = `url('/uploads/profiles/${user.profile}')`;
-
-                        console.log(user.profile);
-                        console.log(`url('/uploads/profiles/${user.profile}')`);
-
-                        profileImage.addEventListener('click', function () {
-                            profileImageInput.click();
-                        });
-
-                        // 파일 선택 시 미리보기 업데이트
-                        profileImageInput.addEventListener('change', function () {
-                            const file = profileImageInput.files[0];
-                            if (file) {
-                                const reader = new FileReader();
-                                reader.onload = function (e) {
-                                    profileImage.style.backgroundImage = `url(${e.target.result})`;
-                                };
-                                reader.readAsDataURL(file);
-                            }
-                        });
-
                         const closeButton = profileUpdateModal.querySelector('.close-button');
                         closeButton.addEventListener('click', function () {
                             profileUpdateModal.classList.add('hidden');
@@ -501,31 +475,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
                             const currentPassword = document.getElementById("password").value.trim();
                             const newPassword = document.getElementById("new-password").value.trim();
-                            const profileImage = document.getElementById("profileImageInput").files[0];
 
                             if (!validatePasswords(currentPassword, newPassword)) {
                                 return;
                             }
 
-                            let profileImageBase64 = null;
-                            if (profileImage) {
-                                const reader = new FileReader();
-                                reader.onloadend = function () {
-                                    profileImageBase64 = reader.result.split(',')[1];
-                                    sendRequest(profileImageBase64);
-                                };
-                                reader.readAsDataURL(profileImage);
-                            } else {
-                                sendRequest();
-                            }
-
-                            function sendRequest(profileImageBase64) {
-                                const formData = {
-                                    userId: userId,
-                                    currentPassword: currentPassword,
-                                    newPassword: newPassword,
-                                    profileImage: profileImageBase64
-                                };
+                            const formData = {
+                                userId: userId,
+                                currentPassword: currentPassword,
+                                newPassword: newPassword,
+                            };
 
                                 fetch(`/mypage/business/update/${userId}`, {
                                     method: "POST",
@@ -537,10 +496,8 @@ document.addEventListener('DOMContentLoaded', function () {
                                     .then(response => response.json())
                                     .then(data => {
                                         console.log("Success:", data);
-                                        if (data.profile) {
-                                            profileImage.style.backgroundImage = `url('/uploads/profiles/${data.profile}')`;
-                                        }
                                         alert(data.message || "프로필이 성공적으로 업데이트되었습니다.");
+
                                         // 모달 숨기기
                                         profileUpdateModal.classList.add('hidden');
                                         profileUpdateModal.style.display = 'none';
@@ -549,7 +506,6 @@ document.addEventListener('DOMContentLoaded', function () {
                                         console.error("Error:", error);
                                         alert("프로필 업데이트 중 오류가 발생했습니다.");
                                     });
-                            }
                         });
                     } else {
                         console.error("모달 요소를 찾을 수 없습니다.");
@@ -589,74 +545,5 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 })
-
-// // 비밀번호 수정 함수
-// function updatePassword(type) {
-//     const password = document.getElementById(type + "input");
-//     const passwordInputs = document.getElementById(type);
-//
-//     passwordInputs.focus();
-//
-//     passwordInputs.addEventListener("blur", () => {
-//         if (passwordInputs.value.trim()) {
-//             password.textContent = "*".repeat(passwordInputs.value.length);
-//         }
-//         password.style.display = "inline";
-//         passwordInputs.style.display = "none";
-//     }, {once: true});
-// }
-//
-// // 변경 사항 제출
-// function submitUserChanges() {
-//     const currentPassword = document.getElementById("password").value.trim();
-//     const newPassword = document.getElementById("new-Password").value.trim();
-//     const profileImage = document.getElementById("profileImageInput").files[0];
-//
-//     // URL에서 userId 추출
-//     const currentUrl = window.location.pathname;  // 예시: "/mypage/1"
-//     const userId = parseInt(currentUrl.substring(currentUrl.lastIndexOf('/') + 1)); // 문자열을 숫자로 변환
-//
-//     // profileImage가 있을 경우 base64로 변환
-//     let profileImageBase64 = null;
-//     if (profileImage) {
-//         const reader = new FileReader();
-//         reader.onloadend = function () {
-//             profileImageBase64 = reader.result.split(',')[1]; // base64 부분만 추출
-//             sendRequest(profileImageBase64);  // base64 변환 후 서버에 요청 보내기
-//         };
-//         reader.readAsDataURL(profileImage);  // base64로 변환
-//     } else {
-//         sendRequest();  // 프로필 이미지가 없으면 바로 서버로 요청
-//     }
-//
-//     // 요청 보내는 함수
-//     function sendRequest(profileImageBase64) {
-//         const formData = {
-//             userId: userId,
-//             currentPassword: currentPassword,
-//             newPassword: newPassword,
-//             profileImage: profileImageBase64 // base64로 변환된 프로필 이미지 전달
-//         };
-//
-//         // 서버로 POST 요청
-//         fetch(`/mypage/update/${userId}`, {
-//             method: "POST",
-//             headers: {
-//                 "Content-Type": "application/json"
-//             },
-//             body: JSON.stringify(formData)  // formData를 JSON으로 전송
-//         })
-//             .then(response => response.json())
-//             .then(data => {
-//                 console.log("Success:", data);
-//                 // 응답 데이터에 따라 추가 작업 수행
-//             })
-//             .catch(error => {
-//                 console.error("Error:", error);
-//             });
-//     }
-// }
-//
-//
 
 

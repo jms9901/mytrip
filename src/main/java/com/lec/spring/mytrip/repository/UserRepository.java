@@ -27,5 +27,5 @@ public interface UserRepository {
     int updateUser(Long userId, String password, String introduction, String profile);
 
     // 기업 정보 업데이트 (비밀번호, 프로필 이미지)
-    int updateCompany(int userId, String password, String profile);
+    int updateCompany(int userId, String password);
 }

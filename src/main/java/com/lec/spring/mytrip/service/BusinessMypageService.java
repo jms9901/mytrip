@@ -47,7 +47,7 @@ public class BusinessMypageService {
     // 개인정보 수정
     // 비밀번호, 프로필 수정
     @Transactional
-    public boolean updateCompany(int userId, String currentPassword, String newPassword, MultipartFile profileImage, String profileImageFileName) {
+    public boolean updateCompany(int userId, String currentPassword, String newPassword) {
         User user = userRepository.findById(userId);
 
         // 사용자 정보 없으면 실패
@@ -73,36 +73,10 @@ public class BusinessMypageService {
             }
         }
 
-        // **수정 위치: 프로필 이미지 업데이트 로직 삽입**
-        if (profileImageFileName != null && !profileImageFileName.isEmpty()) {
-            user.setProfile(profileImageFileName);  // 프로필 이미지 파일 이름 업데이트
-        }
-
-        // 프로필 이미지 수정
-        if (profileImage != null && !profileImage.isEmpty()) {
-            try {
-                String imageName = saveProfileImage(profileImage);  // 파일 이미지 저장
-                user.setProfile(imageName);  // 프로필 이미지 업데이트
-            } catch (IOException e) {
-                e.printStackTrace();
-
-                return false;
-            }
-        }
-
         // updateUser 메서드를 호출하여 업데이트된 행의 수 반환
-        int result = userRepository.updateCompany(userId, user.getPassword(), user.getProfile());
+        int result = userRepository.updateCompany(userId, user.getPassword());
 
         return result > 0; // 업데이트가 성공하면 true, 실패하면 false 반환
-    }
-
-    // 프로필 이미지 저장 메소드
-    public String saveProfileImage(MultipartFile profileImage) throws IOException {
-        byte[] bytes = profileImage.getBytes();
-        String imageName = UUID.randomUUID().toString() + ".jpg";  // UUID 기반 고유 이미지 이름 생성
-        Path path = Paths.get("/uploads/profiles", imageName);
-        Files.write(path, bytes);  // 파일 저장
-        return imageName;
     }
 
     // 비밀번호 업데이트 => mypageService 가져다 쓰기

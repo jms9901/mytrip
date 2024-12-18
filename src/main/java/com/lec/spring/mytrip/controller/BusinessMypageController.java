@@ -14,17 +14,12 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -154,47 +149,24 @@ public class BusinessMypageController {
     @PostMapping("/business/update/{userId}")
     public ResponseEntity<Map<String, String>> updateBusiness (
             @PathVariable("userId") int userId,
-            @RequestBody Map<String, String> updateRequest,  // 모든 데이터를 Map으로 받습니다.
-            @RequestParam(required = false) MultipartFile profileImg) {
+            @RequestBody Map<String, String> updateRequest  // 모든 데이터를 Map으로 받습니다.
+    ) {
 
 
         Map<String, String> response = new HashMap<>();
 
         // 전달받은 정보 출력
         log.info("Received request to update user {}", userId);
-        log.info("Received data: {}", updateRequest);  // updateRequest에 포함된 모든 값 출력
-        if (profileImg != null) {
-            log.info("Received profile image: {} (size: {} bytes)", profileImg.getOriginalFilename(), profileImg.getSize());
-        } else {
-            log.info("No profile image received.");
-        }
+
         // 전달받은 정보
         String currentPassword = updateRequest.get("currentPassword");
         String newPassword = updateRequest.get("newPassword");
-        String profileImageBase64 = updateRequest.get("profileImage");
 
         String uploadDirectory = "uploads/profiles/";
-        String savedFileName = null;
         System.out.println(uploadDirectory.toString());
 
-        if (profileImageBase64 != null && !profileImageBase64.isEmpty()) {
-            try {
-                byte[] decodedBytes = Base64.getDecoder().decode(profileImageBase64);
-                String fileName = userId + "_profileImage.jpg";
-                Path filePath = Paths.get(uploadDirectory, fileName);
-                Files.write(filePath, decodedBytes); // 이미지 파일 저장
-                savedFileName = fileName;
-                log.info("Profile image saved as: {}", savedFileName);
-            } catch (IOException e) {
-                log.error("프로필 이미지 저장 오류", e);
-                response.put("error", "프로필 이미지 저장 중 오류가 발생했습니다.");
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
-            }
-        } else {
-            log.info("No profile image received.");
-        }
         // 사용자 업데이트 호출
-        boolean success = businessMypageService.updateCompany(userId, currentPassword, newPassword, profileImg, savedFileName);
+        boolean success = businessMypageService.updateCompany(userId, currentPassword, newPassword);
 
         if (success) {
             response.put("message", "정보가 성공적으로 업데이트되었습니다.");
