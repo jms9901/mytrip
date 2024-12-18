@@ -127,6 +127,10 @@
     </style>
 </head>
 <body>
+<audio id="bgMusic" loop autoplay>
+    <source src="/bgm/trippartnerbgm.mp3" type="audio/mp3">
+    Your browser does not support the audio element.
+</audio>
 <div class="logo">
     <div class="logo" style="background-image: url(/img/mypageLogo.png);" onclick="window.location.href='/main/mainpage';"></div>
 </div>
@@ -139,7 +143,33 @@
 <script>
     var stompClient = null;
     var username = '';
+    var bgMusic = document.getElementById('bgMusic');
 
+    function checkAudioStatus() {
+        const isPlaying = localStorage.getItem('isAudioPlaying');
+        if (isPlaying === 'true') {
+            bgMusic.play();
+        } else {
+            bgMusic.pause();
+        }
+    }
+    // 오디오 상태 로컬 스토리지에 저장
+    function setAudioStatus(isPlaying) {
+        localStorage.setItem('isAudioPlaying', isPlaying);
+    }
+
+    // 페이지 로드 시 오디오 상태 확인
+    checkAudioStatus();
+    // 오디오 재생/일시정지 토글 함수
+    function toggleAudio() {
+        if (bgMusic.paused) {
+            bgMusic.play();
+            setAudioStatus(true);
+        } else {
+            bgMusic.pause();
+            setAudioStatus(false);
+        }
+    }
     // 사용자 이름 가져오기
     function fetchUsername() {
         fetch('/aipage/username')
@@ -220,5 +250,6 @@
     fetchUsername();  // 사용자 이름 가져오기
     connect();  // WebSocket 연결
 </script>
+<button onclick="toggleAudio()">BGM</button>
 </body>
 </html>
