@@ -17,36 +17,6 @@
     <link rel="stylesheet" th:href="@{/css/header.css}">
 </head>
 <body>
-<!-- Header Section -->
-<!-- 헤더 부분 -->
-<!--<header id="header">-->
-<!--    <div class="topnav SMN_effect-6">-->
-<!--        <a th:href="@{/main/mainpage}">-->
-<!--            <img th:src="@{/img/logo.png}" alt="" class="logo">-->
-<!--        </a>-->
-<!--        <sec:authorize access="isAuthenticated()">-->
-<!--            <a th:href="@{/aipage/start}" class="top-menu">여행지 추천</a>-->
-<!--        </sec:authorize>-->
-<!--        <sec:authorize access="isAuthenticated()">-->
-<!--            <a th:href="@{/board/city/1}" class="top-menu">여행지 게시판</a>-->
-<!--        </sec:authorize>-->
-<!--        <sec:authorize access="isAuthenticated()">-->
-<!--            <a th:href="@{/flight/search}" class="top-menu">항공권 조회</a>-->
-<!--        </sec:authorize>-->
-<!--        <a sec:authorize="isAnonymous()" th:href="@{/user/login}" class="top-menu" style="margin-left: 500px;">login</a>-->
-<!--        <form sec:authorize="isAuthenticated()">-->
-<!--            <button type="submit" class="mypage" style="font-family: 'Kaushan Script'">Mypage</button></form>-->
-<!--        <form th:action="@{/user/logout}" method="POST" sec:authorize="isAuthenticated()" th:with="user=${#authentication.getPrincipal()}">-->
-<!--            <button type="submit" style="background-color: #142055; border: none;">-->
-<!--                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16" style="color: #f2f2f2; background-color: #142055; margin-left: 50px; top: 20px">-->
-<!--                    <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0z"/>-->
-<!--                    <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"/>-->
-<!--                </svg>-->
-<!--            </button>-->
-<!--        </form>-->
-<!--    </div>-->
-<!--</header>-->
-
 <!-- 전체 레이아웃 -->
 <div class="container-fluid vh-100 d-flex p-0">
     <!-- 사이드 메뉴 -->
@@ -70,7 +40,7 @@
                     <h5 class="card-title" th:text="${feed.boardSubject}">제목</h5>
                     <!-- 작성자와 날짜 -->
                     <p class="text-muted">
-                        작성자: <span th:text="${feed.user.name}">유저명</span> |
+                        작성자: <a th:href="@{|/mypage/${feed.userId}|}" th:text="${feed.user.name}">유저명</a> |
                         날짜: <span th:text="${#temporals.format(feed.boardDate, 'yyyy-MM-dd')}">2024-12-12</span>
                     </p>
                     <!-- 이미지 -->
@@ -95,12 +65,9 @@
                 </div>
             </div>
         </div>
+        <a id="backToList" th:href="@{|/board/city/${cityId}|}" class="btn btn-secondary">목록</a>
     </main>
 </div>
-
-<!-- Scroll to Top 버튼 -->
-<button id="scrollToTop">↑</button>
-
 <!-- 스크립트 -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
