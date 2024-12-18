@@ -31,9 +31,9 @@
         <sec:authorize access="isAuthenticated()">
             <a th:href="@{/flight/search}" class="top-menu">항공권 조회</a>
         </sec:authorize>
-        <a sec:authorize="isAnonymous()" th:href="@{/user/login}" class="top-menu" style="margin-left: 500px;">login</a>
-        <form sec:authorize="isAuthenticated()">
-            <button type="submit" class="mypage" style="font-family: 'Kaushan Script'">Mypage</button></form>
+        <a sec:authorize="isAnonymous()" th:href="@{/user/login}" class="top-menu" style="margin-left: 40vw;">login</a>
+        <form th:action="@{/user/mypage}" method="GET" sec:authorize="isAuthenticated()">
+            <button type="submit" class="mypage" style="font-family: 'Kaushan Script'; margin-left: 40vw;">Mypage</button></form>
         <form th:action="@{/user/logout}" method="POST" sec:authorize="isAuthenticated()" th:with="user=${#authentication.getPrincipal()}">
             <button type="submit" style="background-color: #142055; border: none;">
                 <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16" style="color: #f2f2f2; background-color: #142055; margin-left: 50px; top: 20px">
