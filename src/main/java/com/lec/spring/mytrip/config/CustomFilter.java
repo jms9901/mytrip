@@ -47,9 +47,6 @@ public class CustomFilter implements Filter {
                 httpResponse.getWriter().write("<script>alert('ROLE_DORMANT 권한으로 접근할 수 없습니다. 관리자에게 문의 바랍니다.'); window.location='/user/logout';</script>");
                 httpResponse.getWriter().flush();
                 return;
-            }else {
-                httpResponse.getWriter().write("<script>alert('접근 권한이 없습니다. 로그인 페이지로 이동합니다.'); window.location='/user/logout';</script>");
-                httpResponse.getWriter().flush();
             }
         }
 
