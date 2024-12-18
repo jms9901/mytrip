@@ -15,7 +15,7 @@
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
-    font-size: 20px !important;
+    font-size: 1.2vw !important;
     position: relative;
     top: 20px;
     left: 100px;
@@ -40,7 +40,7 @@
 
 /* 마이페이지 버튼 */
 .mypage {
-    font-size: 40px;
+    font-size: 3.4vw;
     margin-left: 450px;
     color: white;
     background-color: #142055;
