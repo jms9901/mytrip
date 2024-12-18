@@ -32,6 +32,11 @@ public class MainpageController {
 
         // 가장 최신에 등록된 10개의 패키지 게시물 가져오기
         List<PackagePost> latestPackages = mainpageService.getLatestPackages();
+
+//        latestPackages.forEach(e -> {
+//            System.out.println(e.getPackageAttachmentFile());
+//        });
+
         model.addAttribute("latestPackages", latestPackages);
 
         return "main/mainpage";
