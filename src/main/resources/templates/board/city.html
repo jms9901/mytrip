@@ -54,7 +54,7 @@
         <img th:src="@{/img/{cityImg}(cityImg=${city.cityImg})}" alt="City Image">
         <h1 th:text="@{${city.cityName}}"></h1>
         <!-- City 좋아요 버튼 -->
-        <button class="likeButton cityLikeButton btn" type="button" th:data-city-id="${city.cityId}">
+        <button sec:authorize="hasRole('ROLE_USER')" class="likeButton cityLikeButton btn" type="button" th:data-city-id="${city.cityId}">
             <i class="bi bi-heart"></i>
         </button>
         <span class="likeCount">0</span> <!-- 좋아요 수 초기값 -->
@@ -131,7 +131,7 @@
         <!-- Packages -->
         <section class="col-md-9">
             <h2>떠나자! 세계여행! 패키지로 놀아보자!</h2>
-            <div id="packageWrite"><a th:href="@{|${cityId}/package/write|}" class="btn btn-primary">Write</a></div>
+            <div id="packageWrite"><a sec:authorize="hasAuthority('ROLE_BUSINESS')" th:href="@{|${cityId}/package/write|}" class="btn btn-primary">글쓰기</a></div>
             <div class="slider-container" >
                 <button class="slider-btn package-prev-btn" style="left:10px;">&#10094;</button>
                 <div class="slider" id="packages">
@@ -145,7 +145,7 @@
                                               : '/img/china.jpg'}" alt="Package Image">
                                 <a  class="card-title m-1" th:href="@{|${cityId}/package/detail/${package.packageId}|}" th:text="${package.packageTitle}"></a>
                                 <!-- Package 좋아요 버튼 -->
-                                <button class="likeButton packageLikeButton btn" type="button" th:data-package-id="${package.packageId}">
+                                <button sec:authorize="hasRole('ROLE_USER')" class="likeButton packageLikeButton btn" type="button" th:data-package-id="${package.packageId}">
                                     <span class="likeCount" th:text="${package.packageLiked}">0</span> <!-- 좋아요 수 초기값 -->
                                     <i class="bi bi-heart"></i>
                                 </button>
@@ -157,7 +157,7 @@
             </div>
 
             <h2 class="mt-4">같이 낭만 즐기러 갈 파티원 구함!!</h2>
-            <div id="groupWrite"><a th:href="@{|/board/city/${cityId}/group/write|}" class="btn btn-primary">Write</a></div>
+            <div id="groupWrite"><a sec:authorize="hasRole('ROLE_USER')" th:href="@{|/board/city/${cityId}/group/write|}" class="btn btn-primary">글쓰기</a></div>
             <div class="slider-container">
                 <button class="slider-btn group-prev-btn" style="left:10px;">&#10094;</button>
                 <div class="slider" id="groups">
@@ -171,7 +171,7 @@
                                             : '/img/china.jpg'}" alt="Package Image">
                                 <a class="card-title m-1" th:href="@{|${cityId}/group/detail/${feed.boardId}|}" th:text="${feed.boardSubject}"></a>
                                 <!-- Group 좋아요 버튼 -->
-                                <button class="likeButton groupLikeButton btn" type="button" th:data-group-id="${feed.boardId}">
+                                <button sec:authorize="hasRole('ROLE_USER')" class="likeButton groupLikeButton btn" type="button" th:data-group-id="${feed.boardId}">
                                     <span class="likeCount" th:text="${feed.boardLiked}">0</span> <!-- 좋아요 수 초기값 -->
                                     <i class="bi bi-heart"></i>
                                 </button>

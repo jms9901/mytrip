@@ -27,5 +27,11 @@
         DELETE FROM board_comment
         WHERE board_comment_id = #{commentId}
     </delete>
+    <!-- 게시글 작성자 ID 조회 -->
+    <select id="findBoardWriterIdByBoardId" parameterType="int" resultType="int">
+        SELECT user_id
+        FROM board
+        WHERE board_id = #{boardId}
+    </select>
 
 </mapper>
