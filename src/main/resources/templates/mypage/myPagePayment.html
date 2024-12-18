@@ -64,7 +64,7 @@
 <script type="text/javascript">
     $(document).ready(function () {
         const userId = getToUserIdFromUrl();
-        const apiUrl = `/bookmain/payments/list/${userId}`; // API URL 설정
+        const apiUrl = `/bookmain/payment/list/${userId}`; // API URL 설정
         let initialPageCount = $('.flipbook .page').length;
 
         // 앱 로드 및 초기화
@@ -76,7 +76,8 @@
 
         function initializeApp() {
             checkAndLoadFlipbook();
-            loadGuestBooks();
+            // loadPayments();
+            // loadGuestBooks();
 
             // 채팅 hover 효과
             $('.goChat').hover(() => hoverChat());

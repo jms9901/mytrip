@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.util.List;
@@ -117,8 +118,6 @@ public class PackagePostController {
     public String savePackage(@PathVariable int cityId,
                               @RequestParam("files") List<MultipartFile> files,
                               @ModelAttribute PackagePost packagePost){
-        System.out.println("컨트롤러 들어옴");
-
         files.forEach(System.out::println);
 
         System.out.println("저장할 파일" + packagePost);
@@ -262,12 +261,16 @@ public class PackagePostController {
     // 소모임 삭제
     @GetMapping("{cityId}/group/delete/{groupId}")
     public String deleteGroup(@PathVariable int cityId,
-                              @PathVariable int groupId) {
+                              @PathVariable int groupId,
+                              RedirectAttributes redirectAttributes) {
         System.out.println("컨트롤라 : " + U.getLoggedUser().getId());
 
-        feedService. deleteFeed(groupId , U.getLoggedUser().getId());
-
-        return "redirect:/board/city/" + cityId;
+        if(feedService.deleteGroup(groupId) == 1){
+            return "redirect:/board/city/" + cityId;
+        } else {
+            redirectAttributes.addFlashAttribute("errorMessage", "그룹 삭제에 실패했습니다.");
+            return "redirect:/board/city/" + cityId + "/group/detail/" + groupId;
+        }
     }
 
 

@@ -136,22 +136,22 @@
 
     <!-- 소개글 수정 -->
     <div class="IntroduceMyself">
-        <div style="margin-left: 10%; margin-top: 5%">Introduce yourself:</div>
-        <span id="userIntroduction" onclick="updateIntroduction()" style="margin-left: 10%; margin-top: 5%">-Insert Here Your Introduction</span>
+        <div style="margin-left: 10%; margin-top: 5%">상태메세지:</div>
+        <span id="userIntroduction" onclick="updateIntroduction()" style="margin-left: 10%; margin-top: 5%">-상태 메세지를 입력하세요</span>
         <input type="text" id="editIntroduction" class="UserIntroduction" style="display: none;">
     </div>
 
     <!-- 비밀번호 수정 -->
     <div class="UpdatePassword">
         <div id="passwordArea" style="margin-left: 10%; margin-top: 5%">
-            <div>Current password</div>
+            <div>비밀번호 입력</div>
             <span id="currentPasswordText"
-                  onclick="updatePassword('currentPassword')">-Insert Here Current Password</span>
+                  onclick="updatePassword('currentPassword')">-현재 비밀번호를 입력하세요</span>
             <input type="password" id="currentPassword" style="display: none;">
         </div>
         <div id="newpasswordArea" style="margin-left: 10%; margin-top: 5%">
-            <div>New password</div>
-            <span id="newPasswordText" onclick="updatePassword('newPassword')">-Insert Here New Password</span>
+            <div>변경할 비밀번호 입력</div>
+            <span id="newPasswordText" onclick="updatePassword('newPassword')">-변경할 비밀번호를 입력하세요</span>
             <input type="password" id="newPassword" style="display: none;">
         </div>
         <div class="submitUpdate" style="background-image: url('/img/checkIcon.png'); margin-left: 90%;margin-top:5%"
