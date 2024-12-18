@@ -86,7 +86,18 @@ public class PackagePostController {
                                   @PathVariable int packageId,
                                   Model model) {
         PackagePostAndAttachment packagePostAndAttachment = packagePostService.getPackageDetails(packageId);
+        PackagePost packagePost = packagePostAndAttachment.getPackagePost();
+        // 작성자 ID
+        // 작성자 ID
+        model.addAttribute("writerId", packagePost.getUserId());
 
+        // 현재 로그인한 사용자 정보
+        User loggedInUser = U.getLoggedUser();
+        if (loggedInUser != null) {
+            model.addAttribute("loggedInUserId", loggedInUser.getId());
+        } else {
+            model.addAttribute("loggedInUserId", -1); // 비로그인 상태 처리
+        }
         model.addAttribute("packagePost", packagePostAndAttachment.getPackagePost());
         model.addAttribute("packageId", packageId);
         model.addAttribute("attachments", packagePostAndAttachment.getPackagePostAttachment());
@@ -107,8 +118,6 @@ public class PackagePostController {
     public String savePackage(@PathVariable int cityId,
                               @RequestParam("files") List<MultipartFile> files,
                               @ModelAttribute PackagePost packagePost){
-        System.out.println("컨트롤러 들어옴");
-
         files.forEach(System.out::println);
 
         System.out.println("저장할 파일" + packagePost);
@@ -169,6 +178,18 @@ public class PackagePostController {
                                 Model model) {
         // 소모임 상세 페이지로 이동
         Feed feed =  feedService.detail(groupId);
+
+
+        // 현재 로그인한 사용자 정보 가져오기
+        User loggedInUser = U.getLoggedUser();
+        if (loggedInUser != null) {
+            model.addAttribute("loggedInUserId", loggedInUser.getId());
+        } else {
+            model.addAttribute("loggedInUserId", -1); // 비로그인 상태
+        }
+
+        // 작성자 ID 전달
+        model.addAttribute("writerId", feed.getUserId());
 
         model.addAttribute("feed", feed);
         model.addAttribute("cityId", cityId);

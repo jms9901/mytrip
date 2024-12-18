@@ -14,11 +14,16 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import com.lec.spring.mytrip.util.U;
@@ -241,6 +246,43 @@ public class FeedServiceImpl implements FeedService{
             return 1;
         }else {
             return 0;
+        }
+    }
+
+    //파일 이름 중복 처리
+    @Override
+    public String generateUniqueFileName(String originalFileName, int userId) {
+        try {
+            // 한글 파일 이름 UTF-8 인코딩
+            String encodedFileName = URLEncoder.encode(originalFileName, StandardCharsets.UTF_8.toString());
+            encodedFileName = encodedFileName.replace("+", "%20"); // 공백 처리
+
+            // 파일 이름 생성
+            String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+            String baseFileName
+                    = userId + "_" + timeStamp + "_" + encodedFileName.replaceAll("[^a-zA-Z0-9._-]", "_");
+            File uploadDir = new File("upload");
+
+            String uniqueFileName = baseFileName;
+            int duplicateCount = 1;
+
+            // 중복 파일 이름 처리
+            while (new File(uploadDir, uniqueFileName).exists()) {
+                int dotIndex = baseFileName.lastIndexOf(".");
+                if (dotIndex > 0) {
+                    String nameWithoutExtension = baseFileName.substring(0, dotIndex);
+                    String extension = baseFileName.substring(dotIndex);
+                    uniqueFileName = nameWithoutExtension + "_" + duplicateCount + extension;
+                } else {
+                    uniqueFileName = baseFileName + "_" + duplicateCount;
+                }
+                duplicateCount++;
+            }
+
+            return uniqueFileName;
+
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException("파일 이름 인코딩에 실패했습니다.", e);
         }
     }
 

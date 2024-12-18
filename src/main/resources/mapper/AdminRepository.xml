@@ -38,14 +38,14 @@
         <id property="packageId" column="package_id"/>
         <result property="cityId" column="city_id"/>
         <result property="userId" column="user_id"/>
-        <result property="status" column="package_status"/>
-        <result property="content" column="package_content"/>
-        <result property="regDate" column="package_regdate"/>
-        <result property="title" column="package_title"/>
-        <result property="cost" column="package_cost"/>
-        <result property="maxPeople" column="package_maxpeople"/>
-        <result property="startDay" column="package_start_day"/>
-        <result property="endDay" column="package_end_day"/>
+        <result property="packageStatus" column="package_status"/>
+        <result property="packageContent" column="package_content"/>
+        <result property="packageRegdate" column="package_regdate"/>
+        <result property="packageTitle" column="package_title"/>
+        <result property="packageCost" column="package_cost"/>
+        <result property="packageMaxpeople" column="package_maxpeople"/>
+        <result property="packageStartDay" column="package_start_day"/>
+        <result property="packageEndDay" column="package_end_day"/>
         <result property="userName" column="user_name"/>
     </resultMap>
 

@@ -97,7 +97,7 @@ public class MyPageController {
         User user = myPageService.getUserById(userId);
         if (user == null) {
             user = new User();
-            user.setProfile("/img/defaultProfile.jpg");
+            user.setProfile("defaultProfile.jpg");
         }
 
         int countAcceptedFriends = friendshipService.countAcceptedFriends(userId);
@@ -191,7 +191,7 @@ public class MyPageController {
         User user = myPageService.getUserById(userId);
         Path imagePath = (user != null && user.getProfile() != null)
                 ? Paths.get("uploads/profiles/", user.getProfile())
-                : Paths.get("img", "defaultProfile.jpg");
+                : Paths.get("uploads/profiles", "defaultProfile.jpg");
 
         Resource resource = new FileSystemResource(imagePath);
         if (resource.exists()) {

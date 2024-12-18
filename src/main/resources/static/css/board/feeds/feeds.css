@@ -1,0 +1,134 @@
+/* 공통 초기화 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* 전체 레이아웃 스타일 */
+body {
+    background-color: #000; /* 전체 배경색 검은색 */
+    color: #fff; /* 기본 글씨 색상 */
+}
+
+.container-fluid {
+    background-color: #000;
+    height: 100%; /* 전체 높이를 자동으로 설정 */
+}
+
+
+
+/* 사이드바 스타일 */
+aside {
+    background-color: #343a40;
+}
+
+aside a:hover {
+    color: #f8f9fa;
+}
+
+/* 메인 피드 스타일 */
+main.col {
+    background-color: #fff;
+    color: #333;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* 카드 스타일 */
+.card {
+    background-color: #f9f9f9;
+    color: #333;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.card-title {
+    font-weight: bold;
+}
+
+.card-text {
+    color: #555;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.text-muted {
+    color: #777 !important;
+    font-size: 0.85rem;
+}
+
+.feed-image {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+/* 좋아요 버튼 */
+.likeButton {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #888;
+    transition: color 0.3s;
+}
+
+.likeButton .bi-heart-fill {
+    color: #ff0000; /* 활성화 상태 */
+}
+
+.likeCount {
+    margin-right: 10px;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #555;
+}
+
+/* 뒤로가기 버튼 스타일 */
+#backToList {
+    position: fixed; /* 스크롤해도 화면에 고정 */
+    top: 20px; /* 화면 상단에서 20px 아래 */
+    right: 20px; /* 화면 오른쪽에서 20px 왼쪽 */
+    padding: 10px 20px; /* 내부 여백 */
+    font-size: 14px; /* 텍스트 크기 */
+    font-weight: bold; /* 텍스트 굵기 */
+    background-color: #dc3545; /* 빨간색 배경 */
+    color: white; /* 흰색 텍스트 */
+    border: none; /* 테두리 제거 */
+    border-radius: 8px; /* 모서리를 둥글게 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 부드러운 그림자 */
+    z-index: 1000; /* 항상 위에 표시 */
+    cursor: pointer; /* 클릭 가능한 상태로 설정 */
+    transition: background-color 0.3s ease, transform 0.2s ease; /* 부드러운 전환 효과 */
+    text-align: center; /* 텍스트 가운데 정렬 */
+}
+
+/* 호버 효과 */
+#backToList:hover {
+    background-color: #c82333; /* 더 진한 빨간색 */
+    transform: translateY(-2px); /* 살짝 위로 이동 */
+}
+
+/* 클릭 효과 */
+#backToList:active {
+    background-color: #bd2130; /* 클릭 시 어두운 빨간색 */
+    transform: translateY(0); /* 원래 위치로 돌아오기 */
+}
+
+/*호버 효과 삭제*/
+a {
+    color: inherit; /* 링크 색상 제거 */
+    text-decoration: none; /* 밑줄 제거 */
+}
+
+a:hover {
+    /*color: inherit; !* 호버 상태에서 색상 제거 *!*/
+    text-decoration: none; /* 호버 상태에서 밑줄 제거 */
+    background-color: #0c63e4;
+    color: #bfe2e9;
+}
