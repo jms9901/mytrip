@@ -49,9 +49,7 @@ public class SecurityConfig {
                         .invalidateHttpSession(true))
                 .oauth2Login(oauth2 -> oauth2
                         .loginPage("/user/login")
-                        .defaultSuccessUrl("/main/mainpage", true))
-                .exceptionHandling(exception -> exception
-                        .accessDeniedHandler(accessDeniedHandler));
+                        .defaultSuccessUrl("/main/mainpage", true));
 
         // 사용자 상태 확인 필터 추가
         http.addFilterBefore((Filter)customFilter, UsernamePasswordAuthenticationFilter.class);
