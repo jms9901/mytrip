@@ -117,7 +117,7 @@
                                 <!-- Package 좋아요 버튼 -->
                                 <button class="likeButton packageLikeButton btn" type="button" th:data-package-id="${package.packageId}">
                                     <i class="bi bi-heart"></i>
-                                    <span class="likeCount" th:text="${package.packageLiked}"></span> <!-- 좋아요 수 초기값 -->
+                                    <span class="likeCount" >0</span> <!-- 좋아요 수 초기값 -->
                                 </button>
                             </div>
                         </div>
@@ -143,7 +143,7 @@
                                 <!-- Group 좋아요 버튼 -->
                                 <button class="likeButton groupLikeButton btn" type="button" th:data-group-id="${feed.boardId}">
                                     <i class="bi bi-heart"></i>
-                                    <span class="likeCount"   th:text="${feed.boardLiked}"></span> <!-- 좋아요 수 초기값 -->
+                                    <span class="likeCount"   th:text="${feed.boardLiked}">0</span> <!-- 좋아요 수 초기값 -->
                                 </button>
                             </div>
                         </div>
