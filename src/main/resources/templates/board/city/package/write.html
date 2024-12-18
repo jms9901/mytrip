@@ -85,7 +85,7 @@
             <textarea class="form-control" rows="5" id="summernote" placeholder="내용을 입력하세요" name="packageContent" th:utext="${content}"></textarea>
         </div>
 
-        <button type="submit" class="btn btn-outline-dark">작성완료</button>
+        <button type="submit" id="form-submit-btn" class="btn btn-outline-dark">작성완료</button>
         <a th:href="@{|/board/city/${cityId}|}" class="btn">목록</a>
     </form>
 

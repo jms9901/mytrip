@@ -34,6 +34,19 @@ $().ready(function (){
     $('#end-date-btn').prop('disabled', true).attr("type", "button");
 
 
+    document.getElementById("form-submit-btn").addEventListener("click", function (event) {
+        // 숨겨진 입력 필드 값 가져오기
+        const startDate = document.getElementById("start-date-value").value;
+        const endDate = document.getElementById("end-date-value").value;
+
+        // 날짜 값이 비어 있는지 확인
+        if (!startDate || !endDate) {
+            event.preventDefault(); // 폼 전송 막기
+            alert("날짜를 입력하세요."); // 팝업 메시지
+        }
+    });
+
+
     //웹에디터
     $('#summernote').summernote({
         toolbar: [
