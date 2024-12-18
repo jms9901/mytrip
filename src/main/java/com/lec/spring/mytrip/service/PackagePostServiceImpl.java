@@ -5,6 +5,7 @@ import com.lec.spring.mytrip.domain.User;
 import com.lec.spring.mytrip.domain.attachment.BoardAttachment;
 import com.lec.spring.mytrip.domain.attachment.PackagePostAndAttachment;
 import com.lec.spring.mytrip.domain.attachment.PackagePostAttachment;
+import com.lec.spring.mytrip.repository.LikeRepository;
 import com.lec.spring.mytrip.repository.PackagePostRepository;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +19,13 @@ import java.util.List;
 public class PackagePostServiceImpl implements PackagePostService {
     private final PackagePostRepository packagePostRepository;
     private final PackageAttachmentService packageAttachmentService;
+    private final LikeRepository likeRepository;
 
     @Autowired
     public PackagePostServiceImpl(SqlSession sqlSession, PackageAttachmentService packageAttachmentService) {
         this.packagePostRepository = sqlSession.getMapper(PackagePostRepository.class);
         this.packageAttachmentService = packageAttachmentService;
+        this.likeRepository = sqlSession.getMapper(LikeRepository.class);
     }
 
     // 패키지 상세
@@ -59,7 +62,8 @@ public class PackagePostServiceImpl implements PackagePostService {
                     packageAttachmentService.getAttachmentsByPackageId(packagePost.getPackageId());
             if(!e.isEmpty()) {
                 packagePost.setPackageAttachmentFile(e.get(0).getPackageAttachmentFile());
-            };
+            }
+            packagePost.setPackageLiked(likeRepository.getPackageLikeCount(packagePost.getPackageId()));
         });
         return packagePosts;
     }

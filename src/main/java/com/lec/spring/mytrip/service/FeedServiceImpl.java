@@ -5,6 +5,7 @@ import com.lec.spring.mytrip.domain.Feed;
 import com.lec.spring.mytrip.domain.PostAttachment;
 import com.lec.spring.mytrip.domain.User;
 import com.lec.spring.mytrip.repository.FeedRepository;
+import com.lec.spring.mytrip.repository.LikeRepository;
 import com.lec.spring.mytrip.repository.UserRepository;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Service;
@@ -26,9 +27,11 @@ import com.lec.spring.mytrip.util.U;
 public class FeedServiceImpl implements FeedService{
 
     private final FeedRepository feedRepository;
+    private final LikeRepository likeRepository;
 
-    public FeedServiceImpl(FeedRepository feedRepository) {
+    public FeedServiceImpl(FeedRepository feedRepository, SqlSession sqlSession) {
         this.feedRepository = feedRepository;
+        this.likeRepository = sqlSession.getMapper(LikeRepository.class);
     }
 
     @Override
@@ -200,12 +203,13 @@ public class FeedServiceImpl implements FeedService{
         List<Feed> c = feedRepository.findByCityAndCategory(cityId, category);
 //        System.out.println("서비스단 받아온 피드 : " + c.toString());
         c.forEach(feed -> {
-            System.out.println("이건 null일까?" + feed.getAttachmentFiles());
-            if(feed.getAttachments() != null){
-                feed.getAttachments().forEach(attachment -> {
-                    System.out.println("이것이 당신의 파일 이름" + attachment.getFileName());
-                });
-            }
+//            System.out.println("이건 null일까?" + feed.getAttachmentFiles());
+//            if(feed.getAttachments() != null){
+//                feed.getAttachments().forEach(attachment -> {
+//                    System.out.println("이것이 당신의 파일 이름" + attachment.getFileName());
+//                });
+//            }
+            feed.setBoardLiked(likeRepository.getPostLikeCount(feed.getBoardId()));
         });
         return c;
     }

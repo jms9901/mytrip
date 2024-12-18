@@ -31,7 +31,7 @@
             <a th:href="@{/board/city/1}" class="top-menu">여행지 게시판</a>
         </sec:authorize>
         <sec:authorize access="isAuthenticated()">
-            <a th:href="@{/flight/search}" class="top-menu">항공권 조회</a>
+            <a th:href="@{/flight/search}" class="top-menu">항공권 예약</a>
         </sec:authorize>
         <a sec:authorize="isAnonymous()" th:href="@{/user/login}" class="top-menu" style="margin-left: 500px;">login</a>
         <form sec:authorize="isAuthenticated()">
@@ -116,8 +116,8 @@
                                 <a  class="card-title m-1" th:href="@{|${cityId}/package/detail/${package.packageId}|}" th:text="${package.packageTitle}"></a>
                                 <!-- Package 좋아요 버튼 -->
                                 <button class="likeButton packageLikeButton btn" type="button" th:data-package-id="${package.packageId}">
-                                    <span class="likeCount">0</span> <!-- 좋아요 수 초기값 -->
                                     <i class="bi bi-heart"></i>
+                                    <span class="likeCount" th:text="${package.packageLiked}"></span> <!-- 좋아요 수 초기값 -->
                                 </button>
                             </div>
                         </div>
@@ -142,8 +142,8 @@
                                 <a class="card-title m-1" th:href="@{|${cityId}/group/detail/${feed.boardId}|}" th:text="${feed.boardSubject}"></a>
                                 <!-- Group 좋아요 버튼 -->
                                 <button class="likeButton groupLikeButton btn" type="button" th:data-group-id="${feed.boardId}">
-                                    <span class="likeCount">0</span> <!-- 좋아요 수 초기값 -->
                                     <i class="bi bi-heart"></i>
+                                    <span class="likeCount"   th:text="${feed.boardLiked}"></span> <!-- 좋아요 수 초기값 -->
                                 </button>
                             </div>
                         </div>
