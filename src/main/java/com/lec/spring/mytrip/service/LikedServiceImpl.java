@@ -100,7 +100,7 @@ public class LikedServiceImpl implements LikedService {
     }
 
 
-    @Override
+    @Override // 좋아요 증감 감소 및 DB 수정
     public Map<String, Object> checkLiked(int target, int id) {
         int userId = LikeUtil.findUserId(); // 로그인 유저 ID 확인
         Map<String, Object> result = new HashMap<>(); // 결과 저장용 Map
@@ -151,11 +151,28 @@ public class LikedServiceImpl implements LikedService {
     }
 
     @Override
-    public Map<String, List<Integer>> getLikedItems(int userId) {
-        Map<String, List<Integer>> likedItems = new HashMap<>();
-        likedItems.put("cities", likeRepository.getLikedCityIds(userId));
-        likedItems.put("posts", likeRepository.getLikedPostIds(userId));
-        likedItems.put("packages", likeRepository.getLikedPackageIds(userId));
+    public Map<String, Object> getLikedItems(int userId) {
+        // 기존 사용자 좋아요 항목 리스트
+        Map<String, Object> likedItems = new HashMap<>();
+        likedItems.put("cities", likeRepository.getLikedCityIds(userId));  // 사용자가 좋아요한 도시 ID 목록
+        likedItems.put("posts", likeRepository.getLikedPostIds(userId));  // 사용자가 좋아요한 포스트 ID 목록
+        likedItems.put("packages", likeRepository.getLikedPackageIds(userId));  // 사용자가 좋아요한 패키지 ID 목록
+
+        // 각 항목별 총 좋아요 수 추가
+        Map<String, Integer> totalLikes = new HashMap<>();
+        for (Integer cityId : (List<Integer>) likedItems.get("cities")) {
+            totalLikes.put("city_" + cityId, likeRepository.getCityLikeCount(cityId)); // 각 도시의 총 좋아요 수
+        }
+        for (Integer postId : (List<Integer>) likedItems.get("posts")) {
+            totalLikes.put("post_" + postId, likeRepository.getPostLikeCount(postId)); // 각 포스트의 총 좋아요 수
+        }
+        for (Integer packageId : (List<Integer>) likedItems.get("packages")) {
+            totalLikes.put("package_" + packageId, likeRepository.getPackageLikeCount(packageId)); // 각 패키지의 총 좋아요 수
+        }
+
+        // 좋아요된 항목과 총 좋아요 수를 합쳐 반환
+        likedItems.put("totalLikes", totalLikes);
+
         return likedItems;
     }
 

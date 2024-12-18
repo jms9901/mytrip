@@ -57,4 +57,19 @@ public interface LikeRepository {
 
     // 패키지 좋아요 ID 목록 조회
     List<Integer> getLikedPackageIds(@Param("userId") int userId);
+
+
+
+
+
+
+    // 각각의 id의 총 좋아요 수
+    // 도시의 총 좋아요 수 가져오기
+    int getCityLikeCount(int cityId);
+
+    // 포스트의 총 좋아요 수 가져오기
+    int getPostLikeCount(int postId);
+
+    // 패키지의 총 좋아요 수 가져오기
+    int getPackageLikeCount(int packageId);
 }

@@ -1,34 +1,68 @@
 $(document).ready(function () {
-    // 로그인한 사용자의 좋아요 상태 가져오기
+    // 페이지 로드 시, 좋아요 상태와 총 좋아요 수 가져오기
     $.ajax({
-        url: "/likey/liked-items", // 좋아요 상태를 불러오는 컨트롤러
+        url: "/likey/liked-items", // 좋아요 상태 및 총 좋아요 수를 불러오는 컨트롤러
         method: "GET",
         success: function (response) {
-            console.log("좋아요 상태 불러오기 성공:", response);
+            console.log("좋아요 데이터 불러오기 성공:", response);
 
+            // 좋아요 상태와 총 좋아요 수 업데이트
             // 도시 좋아요 상태 처리
-            if (response.cities) {
-                response.cities.forEach(cityId => {
-                    $(`button[data-city-id='${cityId}'] i`).removeClass('bi-heart').addClass('bi-heart-fill');
+            if (response.likedCities) {
+                response.likedCities.forEach(cityId => {
+                    const button = $(`button[data-city-id='${cityId}']`);
+                    const likeCountElement = button.siblings('.likeCount');
+                    button.find('i').removeClass('bi-heart').addClass('bi-heart-fill'); // 좋아요 상태 업데이트
                 });
             }
 
             // 패키지 좋아요 상태 처리
-            if (response.packages) {
-                response.packages.forEach(packageId => {
-                    $(`button[data-package-id='${packageId}'] i`).removeClass('bi-heart').addClass('bi-heart-fill');
+            if (response.likedPackages) {
+                response.likedPackages.forEach(packageId => {
+                    const button = $(`button[data-package-id='${packageId}']`);
+                    const likeCountElement = button.siblings('.likeCount');
+                    button.find('i').removeClass('bi-heart').addClass('bi-heart-fill'); // 좋아요 상태 업데이트
                 });
             }
 
             // 그룹(게시물) 좋아요 상태 처리
-            if (response.posts) {
-                response.posts.forEach(postId => {
-                    $(`button[data-group-id='${postId}'] i`).removeClass('bi-heart').addClass('bi-heart-fill');
+            if (response.likedPosts) {
+                response.likedPosts.forEach(postId => {
+                    const button = $(`button[data-group-id='${postId}']`);
+                    const likeCountElement = button.siblings('.likeCount');
+                    button.find('i').removeClass('bi-heart').addClass('bi-heart-fill'); // 좋아요 상태 업데이트
                 });
+            }
+
+            // 총 좋아요 수 업데이트
+            if (response.totalLikes) {
+                Object.keys(response.totalLikes).forEach(key => {
+                    const [type, id] = key.split('_'); // key 예: "city_1", "post_10"
+                    const likeCount = response.totalLikes[key]; // 총 좋아요 수
+
+                    let button;
+                    if (type === 'city') {
+                        button = $(`button[data-city-id='${id}']`);
+                    } else if (type === 'post') {
+                        button = $(`button[data-group-id='${id}']`);
+                    } else if (type === 'package') {
+                        button = $(`button[data-package-id='${id}']`);
+                    }
+
+                    if (button) {
+                        const likeCountElement = button.siblings('.likeCount');
+                        likeCountElement.text(likeCount); // 총 좋아요 수 업데이트
+                    }
+                });
+            }
+
+            // 비로그인 메시지 처리
+            if (response.message) {
+                console.warn(response.message); // 콘솔에 메시지 출력 (필요 시 팝업 처리 가능)
             }
         },
         error: function () {
-            console.error("좋아요 상태를 불러오지 못했습니다.");
+            console.error("좋아요 데이터를 불러오지 못했습니다.");
         }
     });
 
