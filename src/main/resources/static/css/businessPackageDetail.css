@@ -1,5 +1,5 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: "Oswald", sans-serif;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -10,6 +10,7 @@ body {
     display: flex;
     justify-content: center;
     margin: 20px;
+
 }
 
 .modal .hidden {
@@ -37,11 +38,12 @@ body {
     height: 740px;
     padding: 20px;
     position: relative;
+    margin: 80px 600px;
 }
 
 .close-button {
     position: absolute;
-    top: 10px;
+    top: 2px;
     right: 10px;
     background: none;
     border: none;
@@ -58,7 +60,14 @@ body {
     padding-bottom: 6px;
     text-align: center;
     font-size: 28px;
-    border-bottom: 2px solid #ccc;
+}
+
+#package-content img {
+    width: 200px !important;
+    height: auto !important;
+    gap: 10px;
+    float: left;
+    margin: 6px;
 }
 
 .package-regdate {
@@ -69,7 +78,7 @@ body {
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
-    top: -46px;
+    top: -20px;
     position: relative;
 }
 
@@ -99,6 +108,8 @@ body {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    margin-top: 25px;
+    border-top: 2px solid #ccc;
 }
 
 .info-section label {
@@ -106,56 +117,16 @@ body {
     font-weight: bold;
 }
 
-.info-section input {
-    padding: 8px;
-    font-size: 14px;
+#packageContent {
+    margin-top: 10px;
+    max-height: 500px;
+    overflow-y: auto;
+    padding-right: 10px;
+    box-sizing: border-box;
     border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-.package-details {
-    margin-top: 20px;
-    margin-right: 26px;
-}
-
-.package-details textarea {
-    width: 100%;
-    height: 100px;
-    resize: none;
-    padding: 14px;
-    font-size: 14px;
-    overflow: scroll;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-.file-attachments {
-    margin-top: 20px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    justify-content: space-between;
-}
-
-.file-attachments button {
-    flex: 1 1 calc(33.33% - 10px); /* 한 줄에 3개 배치 (너비 33.33%) */
-    font-size: 14px;
-    background-color: #f0f0f0;
-    color: black;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 10px;
-    text-align: center;
-}
-
-.file-attachments button:hover {
-    background-color: #ddd;
-}
-
-.attachmentInfo {
-    font-size: 10px;
-    color: rgb(212, 3, 3);
-    margin-top: 5px;
+    width: 603px;
+    height: 480px;
+    border-radius: 2%;
 }
 
 .button-action {
@@ -165,20 +136,10 @@ body {
     float: right;
 }
 
-.update-button {
-    width: 23px;
+#move-button {
+    left: 570px;
+    width: 30px;
     height: auto;
-    cursor: pointer;
-}
-
-.submit-button {
-    width: 20px;
-    height: auto;
-    cursor: pointer;
-}
-
-.delete-button {
-    width: 20px;
-    height: auto;
-    cursor: pointer;
+    display: flex;
+    position: relative;
 }

@@ -1,7 +1,7 @@
 /* General Reset */
 body {
     margin: 0;
-    font-family: 'Kaushan Script';
+    font-family: "Oswald", sans-serif;
 }
 
 .modal .hidden {
@@ -10,6 +10,22 @@ body {
 
 .button {
     cursor: pointer;
+}
+
+.closebutton {
+    position: absolute;
+    top: 63px;
+    left: 1250px;
+    width: 30px;
+    background: none;
+    border: none;
+    font-size: 30px;
+    cursor: pointer;
+    color: #777;
+}
+
+.closebutton:hover {
+    color: black;
 }
 
 #payment-modal {
@@ -22,17 +38,18 @@ body {
     align-items: center;
 }
 
-/*.modal-content {*/
-/*    background: white;*/
-/*    width: 700px;*/
-/*    height: 900px;*/
-/*    border-radius: 5%;*/
-/*    padding: 30px;*/
-/*    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);*/
-/*    display: flex;*/
-/*    flex-direction: column;*/
-/*    align-items: center;*/
-/*}*/
+.modal-payment {
+    background: white;
+    width: 550px;
+    height: 750px;
+    border-radius: 2%;
+    padding: 30px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: -38px;
+}
 
 .modal-header {
     width: 100%;
@@ -59,20 +76,22 @@ body {
 }
 
 .pay-status-select {
-    font-size: 13px;
+    font-size: 12px;
     padding: 5px;
     border: 1px solid #ddd;
     border-radius: 5px;
-    height: 32px;
+    height: 27px;
     float: right;
     position: relative;
     display: flex;
-    top: -32px;
+    top: -48px;
 }
+
 .table-header {
     display: contents;
     top: -10px;
 }
+
 .payment-table {
     width: 100%;
     border-collapse: collapse;
@@ -86,10 +105,16 @@ body {
 
 .payment-table th {
     font-weight: bold;
-    border-bottom: 1px solid #ccc;
     display: table-cell;
     position: relative;
-    top: -31px;
+    top: -48px;
+}
+
+.payment-table tr {
+    border: 1px solid #ccc;
+    padding: 4px;
+    border-radius: 3%;
+    margin: 3px;
 }
 
 .payment-complete {

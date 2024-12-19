@@ -109,10 +109,11 @@ body {
 
 .submit-button {
     position: relative;
-    bottom: -41px;
+    bottom: -39px;
+    right: -9px;
     float: right;
     cursor: pointer;
-    width: 28px;
+    width: 23px;
 }
 
 .actions {

@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded", function () {
             packageListContainer.innerHTML = packages.map(package => `
                 <div class="package-item" id="package-item" data-package-id="${package.packageId}">
                     <div class="package-title">
-                        <div class="package-name">${package.packageTitle}</div>
+                        <div class="package-name">${truncateContent(package.packageTitle, 7)}</div>
                     </div>
                     <div class="package-content">${truncateContent(extractTextFromHTML(package.packageContent), 10)}</div>
                     <div class="package-status ${getStatusClass(package.packageStatus)}">${getStatusText(package.packageStatus)}</div>
@@ -160,14 +160,14 @@ document.addEventListener("DOMContentLoaded", function () {
                             </div>
 
                             <div class="info-section">
-                                <div class="cityName" id="cityName">도시:  ${selectedPackage.cityName}</div>
-                                <div class="packageStartDay" id="packageStartDay">시작일:   ${formatDate(selectedPackage.packageStartDay)}</div>
-                                <div class="packageEndDay" id="packageEndDay">종료일:   ${formatDate(selectedPackage.packageEndDay)}</div>
-                                <div class="packagCost" id="packageCost">금액:   ${selectedPackage.packageCost}원</div>
-                                <div class="packageMaxpeople" id="packageMaxpeople">최대 인원:   ${selectedPackage.packageMaxpeople}명</div>
+                                <div class="cityName" id="cityName"><strong>도시:</strong>  ${selectedPackage.cityName}</div>
+                                <div class="packageStartDay" id="packageStartDay"><strong>시작일:</strong>   ${formatDate(selectedPackage.packageStartDay)}</div>
+                                <div class="packageEndDay" id="packageEndDay"><strong>종료일:</strong>   ${formatDate(selectedPackage.packageEndDay)}</div>
+                                <div class="packagCost" id="packageCost"><strong>금액:</strong>   ${selectedPackage.packageCost}원</div>
+                                <div class="packageMaxpeople" id="packageMaxpeople"><strong>최대 인원:</strong>   ${selectedPackage.packageMaxpeople}명</div>
                                 <div class="package-details">
-                                    패키지 내용
-                                    <div class="package-content" id="packageContent" style="border: solid 1px #ccc; width: 80%; height: 30%">${selectedPackage.packageContent}</div>
+                                    <strong>패키지 내용:</strong>
+                                    <div class="package-content" id="packageContent">${selectedPackage.packageContent}</div>
                                 </div>
                             </div>
                             <button class="packageMoveButton">
@@ -267,9 +267,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     // 항상 테이블을 초기화하고 기본 구조를 유지
                     payments.innerHTML = `
                         <div class="modal hidden" id="payment-modal">
-                            <div class="modal-content">
+                            <div class="modal-payment">
                                 <div class="modal-header">
-                                    <span class="close-button">&times;</span>
+                                    <span class="closebutton">&times;</span>
                                     <div class="modal-title">결제 정보</div>
 
                                     <label for="payment-select" id="payment-status">
@@ -309,7 +309,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         </div>
                     `;
 
-                    const paymentModalButton = payments.querySelector('.close-button');
+                    const paymentModalButton = payments.querySelector('.closebutton');
 
                     // 모달 표시
                     payments.style.display = 'block';
