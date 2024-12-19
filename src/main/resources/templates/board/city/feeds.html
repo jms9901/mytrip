@@ -57,8 +57,8 @@
 0
                     <!-- 좋아요 버튼 -->
                     <div class="d-flex justify-content-end align-items-center">
-                        <button class="likeButton btn" type="button" th:data-group-id="${feed.boardId}">
-                            <span class="likeCount">0</span> <!-- 좋아요 수 -->
+                        <button sec:authorize="hasRole('ROLE_USER')" class="likeButton groupLikeButton btn" type="button" th:data-group-id="${feed.boardId}">
+                            <span class="likeCount" th:text="${feed.boardLiked}">0</span> <!-- 좋아요 수 초기값 -->
                             <i class="bi bi-heart"></i>
                         </button>
                     </div>
