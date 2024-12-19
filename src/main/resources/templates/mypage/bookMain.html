@@ -42,8 +42,8 @@
             <div style="background-image:url(/img/sample_left.png)">
                 <div class="mypageUserInfo">
                     <div class="circle">
-                        <img th:src="@{'/uploads/profiles/' + ${user.profile}}">
-
+                        <img th:src="@{'/uploads/profiles/' + ${user.profile}}"
+                             onerror="this.onerror=null; this.src='/uploads/profiles/defaultProfile.jpg';">
                     </div>
                     <div class="InfoArea">
                         <div>

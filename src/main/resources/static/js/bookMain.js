@@ -127,8 +127,10 @@ document.getElementById('ConnectionsCnt').addEventListener('click', function () 
 
                     // 프로필 이미지와 유저 이름 표시
                     li.innerHTML = `
-                        <img src="${profileImage}" alt="Profile" class="friend-profile-img">
+                       <img src="${profileImage}" alt="Profile" class="friend-profile-img" 
+                            onerror="this.onerror=null; this.src='/uploads/profiles/defaultProfile.jpg';">
                         <span class="friend-name" style="cursor: pointer">${userName}</span>
+                    
                     `;
 
                     // 클릭 시 개인 페이지로 이동
@@ -222,7 +224,8 @@ function loadFriendRequests() {
 
                     // 목록 생성
                     li.innerHTML = `
-                        <img src="${profileImage}" alt="Profile" class="friend-profile-img">
+                       <img src="${profileImage}" alt="Profile" class="friend-profile-img" 
+                            onerror="this.onerror=null; this.src='/uploads/profiles/defaultProfile.jpg';">
                         <span class="friend-name">${userName}</span>
                     `;
 
