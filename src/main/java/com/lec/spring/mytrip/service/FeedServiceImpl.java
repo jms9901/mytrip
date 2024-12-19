@@ -54,6 +54,7 @@ public class FeedServiceImpl implements FeedService{
     public void insertFeed(Feed feed, List<MultipartFile> files) throws IOException {
 
         System.out.println("Before Insert boardId: " + feed.getBoardId());
+        System.out.println("Before Insert view: " + feed.getBoardViewCount());
         // 게시물 삽입
         feedRepository.insertFeed(feed);  // 게시글이 DB에 저장된 후 boardId가 feed에 설정됨
         System.out.println("After Insert boardId: " + feed.getBoardId());
