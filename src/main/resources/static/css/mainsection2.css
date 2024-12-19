@@ -7,6 +7,9 @@
 }
 
 
+.slide a p {
+    text-decoration: none; /* 밑줄 제거 */
+}
 
 body, html {
     margin: 0;
@@ -29,7 +32,9 @@ body, html {
     background-color: #142055;
 }
 
-
+.slide a {
+    text-decoration: none; /* 밑줄 제거 */
+}
 .slider {
     background-color: #142055;
     width: 100%;
@@ -37,7 +42,9 @@ body, html {
     height: 600px;
 
 }
-
+.no-underline {
+    text-decoration: none; /* 밑줄 제거 */
+}
 .slide-track {
     display: flex;
     width: calc(200%); /* 슬라이더 길이를 길게 설정하여 무한 스크롤 효과 구현 *!*/
@@ -87,6 +94,7 @@ body, html {
     z-index: 10;
     line-height: 1.5;
     cursor: default; /* 링크처럼 보이지 않도록 커서 설정 */
+    stroke-dashoffset: 300; /* 초기 상태: 선 숨김 */
 }
 
 
