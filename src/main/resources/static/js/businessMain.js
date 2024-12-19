@@ -35,23 +35,26 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(data => {
             console.log("api로부터 받은 데이터: ", data);
 
+            // `packages` 배열 존재 확인
+            const packages = data.packages || [];
+
             // 데이터 형식 확인, 패키지 확인
-            if(!Array.isArray(data) || data.length === 0) {
+            if(!Array.isArray(packages) || packages.length === 0) {
                 packageListContainer.innerHTML = '<p>등록된 패키지가 없습니다.</p>';
                 return;
             }
 
             // 패키지 리스트 데이터 렌더링
-            packageListContainer.innerHTML = data.map(packages => `
-                <div class="package-item" id="package-item" data-package-id="${packages.packageId}">
+            packageListContainer.innerHTML = packages.map(package => `
+                <div class="package-item" id="package-item" data-package-id="${package.packageId}">
                     <div class="package-title">
-                        <div class="package-name">${packages.packageTitle}</div>
+                        <div class="package-name">${package.packageTitle}</div>
                     </div>
-                    <div class="package-content">${packages.packageContent}</div>
-                    <div class="package-status ${getStatusClass(packages.packageStatus)}">${getStatusText(packages.packageStatus)}</div>
+                    <div class="package-content">${truncateContent(extractTextFromHTML(package.packageContent), 10)}</div>
+                    <div class="package-status ${getStatusClass(package.packageStatus)}">${getStatusText(package.packageStatus)}</div>
                     <div class="liked">
                         <img src="/img/heart-icon-fill.png" alt="heart-icon-fill" id="liked-heart-icon" type="button">
-                        <span class="likedCnt">${packages.likedCount}</span>
+                        <span class="likedCnt">${package.likedCount}</span>
                     </div>
                 </div>
             `).join('');
@@ -61,6 +64,21 @@ document.addEventListener("DOMContentLoaded", function () {
             console.error('Error fetching package data:', error);
             packageListContainer.innerHTML = '<p>패키지를 불러오는 중 오류가 발생했습니다.</p>';
         });
+
+    // HTML 태그 제거 함수
+    function extractTextFromHTML(html) {
+        const tempDiv = document.createElement("div");
+        tempDiv.innerHTML = html;
+        return tempDiv.textContent || tempDiv.innerText || ""; // HTML 제거 후 순수 텍스트 반환
+    }
+
+    // 텍스트 길이 제한 함수
+    function truncateContent(text, maxLength) {
+        if (text.length > maxLength) {
+            return text.slice(0, maxLength) + "...";
+        }
+        return text;
+    }
 }); // 페이지 로드 괄호 닫기
 
 // 패키지 상세보기
@@ -153,7 +171,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                 </div>
                             </div>
                             <button class="packageMoveButton">
-                                <img src="/img/mypageFeedList.png" alt="moveButton" id="move-button">
+                                <img src="/img/mypageFeedList.png" alt="moveButton" id="move-button" style="cursor: pointer">
                             </button>
                             
                             <form class="button-action" style="border: none;">
@@ -173,6 +191,17 @@ document.addEventListener("DOMContentLoaded", function () {
                         packageDetailContainer.innerHTML = '';  // 모달 닫기 시 초기화
                         packageDetailContainer.style.display = 'none';
                     });
+
+                    // 게시판으로 이동
+                    // 이벤트 위임 방식 사용 (동적으로 생성된 요소도 포함)
+                    document.body.addEventListener('click', function (event) {
+                        // 클릭된 요소가 이미지 버튼인지 확인
+                        if (event.target.id === 'move-button') {
+                            // 페이지 이동
+                            window.location.href = '/board/city/1';
+                        }
+                    });
+
                 })
                 .catch(error => {
                     console.error('패키지 상세 정보 로딩 중 오류 발생: ', error);
@@ -246,8 +275,8 @@ document.addEventListener('DOMContentLoaded', function() {
                                     <label for="payment-select" id="payment-status">
                                         <select name="payment-select" id="payment-status" class="pay-status-select">
                                             <option value="" selected>전체</option>
-                                            <option value="complete">결제 완료</option>
-                                            <option value="cancel">결제 취소</option>
+                                            <option value="결제 완료">결제 완료</option>
+                                            <option value="결제 취소">결제 취소</option>
                                         </select>
                                     </label>
 
@@ -265,11 +294,11 @@ document.addEventListener('DOMContentLoaded', function() {
                         ? `<tr><td colspan="4" style="text-align:center;">결제 내역이 없습니다.</td></tr>`
                         : paymentData.map(payments => `
                                                     <tr>
-                                                        <td>${payments.username}</td>
+                                                        <td>${payments.userName}</td>
                                                         <td>${payments.packageTitle}</td>
-                                                        <td>${payments.totalCost}</td>
-                                                        <td class="pay-status ${getPaymentStatusClass(payments.paymentStatus)}">
-                                                            ${getPaymentStatusText(payments.paymentStatus)}
+                                                        <td>${payments.totalPrice}</td>
+                                                        <td class="pay-status ${getPaymentStatusClass(payments.status)}">
+                                                            ${getPaymentStatusText(payments.status)}
                                                         </td>
                                                     </tr>
                                                 `).join('')}
@@ -280,18 +309,35 @@ document.addEventListener('DOMContentLoaded', function() {
                         </div>
                     `;
 
-                    // 모달 표시
-                    if (paymentModal) {
-                        paymentModal.classList.remove('hidden');
-                        paymentModal.style.display = 'block';
+                    const paymentModalButton = payments.querySelector('.close-button');
 
-                        // 닫기 버튼 이벤트 등록
-                        const paymentClose = paymentModal.querySelector('.close-button');
-                        paymentClose.addEventListener('click', function () {
-                            paymentModal.classList.add('hidden');
-                            paymentModal.style.display = 'none';
+                    // 모달 표시
+                    payments.style.display = 'block';
+
+                    // 패키지 모달 닫기
+                    paymentModalButton.addEventListener('click', function() {
+                        payments.innerHTML = '';  // 모달 닫기 시 초기화
+                        payments.style.display = 'none';
+                    });
+                    // 상태 필터링 이벤트 등록
+                    const payStatusSelect = document.getElementById('pay-status-select');
+                    payStatusSelect.addEventListener('change', function () {
+                        const selectedStatus = this.value.trim(); // 선택된 상태 값
+                        const paymentRows = document.querySelectorAll('.payment-table tbody tr');
+
+                        paymentRows.forEach(row => {
+                            const statusCell = row.querySelector('.pay-status');
+                            const rowClass = statusCell.classList.contains(selectedStatus);
+
+                            // 전체 선택 시 모든 행 표시, 특정 상태 선택 시 필터링
+                            if (selectedStatus === '' || rowClass) {
+                                row.style.display = '';
+                            } else {
+                                row.style.display = 'none';
+                            }
                         });
-                    }
+                    });
+
                 })
                 .catch(error => {
                     console.error("결제 정보 로딩 중 오류 발생", error);
@@ -323,11 +369,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // 상태에 따른 한국어 텍스트 반환하는 함수 추가 -> 결제 상태
         function getPaymentStatusText(status) {
-            switch (status) {
-                case '결제 완료' :
-                    return '결제 완료';
-                case '결제 취소' :
-                    return '결제 취소';
+            switch (status.trim()) {
+                case '결제완료' :
+                    return '결제완료';
+                case '결제취소' :
+                    return '결제취소';
                 default:
                     return '';
             }
@@ -335,10 +381,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // 상태에 따른 CSS 클래스를 반환하는 함수 추가
         function getPaymentStatusClass(status) {
-            switch (status) {
-                case '결제 완료' :
+            switch (status.trim()) {
+                case '결제완료' :
                     return 'payment-complete';
-                case '결제 취소' :
+                case '결제취소' :
                     return 'payment-cancel';
                 default:
                     return '';

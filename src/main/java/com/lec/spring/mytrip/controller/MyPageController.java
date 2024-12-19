@@ -77,11 +77,33 @@ public class MyPageController {
     @GetMapping("/loginuserauthority")
     @ResponseBody
     public Map<String, String> loginUserAuthority(HttpSession session) {
-        User loggedUserName = U.getLoggedUser();  // 사용자 정보 가져오기
-        String currentLoggerName = loggedUserName.getAuthorization();
-        System.out.println(currentLoggerName);
-        // JSON 응답 형식으로 반환
-        return Map.of("userName", currentLoggerName);
+
+        User loggedUser = U.getLoggedUser();  // 사용자 정보 가져오기
+
+        // 유저 ID와 권한 가져오기
+        int userId = loggedUser.getId();
+        String userRole = loggedUser.getAuthorization();  // 권한 정보 가져오기 (ROLE_USER, ROLE_BUSINESS)
+        String status = loggedUser.getStatus();
+
+        // 리다이렉트 URL 생성
+        String redirectUrl;
+        if ("ROLE_BUSINESS".equals(userRole)) {
+            if ("승인".equals(status)) {
+                redirectUrl = "/mypage/business/" + userId;
+            } else {
+                // 상태가 승인되지 않은 경우 메시지 반환
+                return Map.of("alertMessage", "관리자가 검토 중입니다.");
+            }
+        } else {
+            // 일반 유저의 경우
+            redirectUrl = "/mypage/" + userId;
+        }
+
+        // 로그로 확인
+        System.out.println("Redirect URL: " + redirectUrl);
+
+        // JSON 응답으로 리다이렉트 URL 반환
+        return Map.of("redirectUrl", redirectUrl);
     }
 
     @GetMapping("/{userId}/likedCity")

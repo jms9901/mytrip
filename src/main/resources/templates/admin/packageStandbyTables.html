@@ -105,8 +105,8 @@ DOCTYPE html>
                             <tbody>
                             <tr th:each="standByPackages: ${standByPackages}">
                                 <td th:text="${standByPackages.userName}"></td>
-                                <td th:text="${standByPackages.title}"></td>
-                                <td th:text="${standByPackages.regDate}"></td>
+                                <td th:text="${standByPackages.packageTitle}"></td>
+                                <td th:text="${standByPackages.packageRegdate}"></td>
                                 <!--                                <td th:text="${standByPackages.status}"></td>-->
                                 <td>
                                     <button type="button" class="btn btn-primary package-details-button"
@@ -114,16 +114,16 @@ DOCTYPE html>
                                                          data-bs-target='#exampleModal',
                                                          data-packageid=${standByPackages.packageId},
                                                          data-username=${standByPackages.userName},
-                                                         data-packagetitle=${standByPackages.title},
-                                                         data-packagecontent=${standByPackages.content},
-                                                         data-packagecost=${standByPackages.cost},
-                                                         data-packagemaxpeople=${standByPackages.maxPeople},
-                                                         data-packagestartday=${standByPackages.startDay},
-                                                         data-packageendday=${standByPackages.endDay},
-                                                         data-packageregdate=${standByPackages.regDate},
-                                                         data-packagestatus=${standByPackages.status}
+                                                         data-packagetitle=${standByPackages.packageTitle},
+                                                         data-packagecontent=${standByPackages.packageContent},
+                                                         data-packagecost=${standByPackages.packageCost},
+                                                         data-packagemaxpeople=${standByPackages.packageMaxpeople},
+                                                         data-packagestartday=${standByPackages.packageStartDay},
+                                                         data-packageendday=${standByPackages.packageEndDay},
+                                                         data-packageregdate=${standByPackages.packageRegdate},
+                                                         data-packagestatus=${standByPackages.packageStatus}
                                                         "
-                                            th:text="${standByPackages.status ?: '상세 없음'}">
+                                            th:text="${standByPackages.packageStatus ?: '상세 없음'}">
                                     </button>
                                 </td>
                             </tr>

@@ -105,8 +105,8 @@
                             <tbody>
                             <tr th:each="AccessPackages : ${AccessPackages}">
                                 <td th:text="${AccessPackages.userName}"></td>
-                                <td th:text="${AccessPackages.title}"></td>
-                                <td th:text="${AccessPackages.regDate}"></td>
+                                <td th:text="${AccessPackages.packageTitle}"></td>
+                                <td th:text="${AccessPackages.packageRegdate}"></td>
                                 <!--                                <td th:text="${AccessPackages.status}"></td>-->
                                 <td>
                                     <button type="button" class="btn btn-primary package-details-button"
@@ -114,16 +114,16 @@
                                                          data-bs-target='#exampleModal',
                                                          data-packageid=${AccessPackages.packageId},
                                                          data-username=${AccessPackages.userName},
-                                                         data-packagetitle=${AccessPackages.title},
-                                                         data-packagecontent=${AccessPackages.content},
-                                                         data-packagecost=${AccessPackages.cost},
-                                                         data-packagemaxpeople=${AccessPackages.maxPeople},
-                                                         data-packagestartday=${AccessPackages.startDay},
-                                                         data-packageendday=${AccessPackages.endDay},
-                                                         data-packageregdate=${AccessPackages.regDate},
-                                                         data-packagestatus=${AccessPackages.status}
+                                                         data-packagetitle=${AccessPackages.packageTitle},
+                                                         data-packagecontent=${AccessPackages.packageContent},
+                                                         data-packagecost=${AccessPackages.packageCost},
+                                                         data-packagemaxpeople=${AccessPackages.packageMaxpeople},
+                                                         data-packagestartday=${AccessPackages.packageStartDay},
+                                                         data-packageendday=${AccessPackages.packageEndDay},
+                                                         data-packageregdate=${AccessPackages.packageRegdate},
+                                                         data-packagestatus=${AccessPackages.packageStatus}
                                                         "
-                                            th:text="${AccessPackages.status ?: '상세 없음'}">
+                                            th:text="${AccessPackages.packageStatus ?: '상세 없음'}">
                                     </button>
                                 </td>
                             </tr>
