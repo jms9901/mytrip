@@ -60,58 +60,46 @@ document.addEventListener('DOMContentLoaded', function () {
 
             console.log("Package ID:", modalPackageId);
 
+            // HTML 데이터를 DOM으로 변환
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(packageContent, 'text/html');
+
+            // 텍스트와 이미지 분리
+            const textContent = doc.body.textContent.trim(); // 텍스트 추출
+            const imageElements = doc.querySelectorAll('img'); // 이미지 요소 추출
+
+            // 이미지 정보를 배열로 저장
+            const images = Array.from(imageElements).map(img => ({
+                src: img.getAttribute('src'), // 이미지 데이터 (Base64)
+                filename: img.getAttribute('data-filename'), // 파일 이름
+                style: img.getAttribute('style') // 스타일 정보
+            }));
+
+            // 결과 출력
+            console.log("텍스트:", textContent);
+            console.log("이미지:", images);
+
             // 모달 데이터 업데이트
             document.getElementById('modalUsername').textContent = userName;
             document.getElementById('modalPackageTitle').textContent = packageTitle;
-            document.getElementById('modalPackageContent').textContent = packageContent;
+            document.getElementById('modalPackageContent').innerHTML = textContent;
             document.getElementById('modalPackageCost').textContent = packageCost;
             document.getElementById('modalPackageMaxPeople').textContent = packageMaxPeople;
             document.getElementById('modalPackageStartDay').textContent = packageStartDay;
             document.getElementById('modalPackageEndDay').textContent = packageEndDay;
             document.getElementById('modalPackageRegDate').textContent = packageRegDate;
 
-            // 슬라이더 초기화
-            fetch(`/admin/packageAttachments/${modalPackageId}`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    return response.json();
-                })
-                .then(attachments => {
-                    imageContainer.innerHTML = ''; // 기존 이미지 초기화
-                    console.log("Attachments received:", attachments); // 디버깅
+            images.forEach(image => {
+                const imgElement = document.createElement("img");
+                imgElement.src = image.src;
+                imgElement.alt = image.filename; // 이미지 파일 이름
+                imgElement.style.height = '200px';
+                imgElement.style.width = 'auto';
+                imgElement.style.objectFit = 'contain';
 
-                    if (attachments && attachments.length > 0) {
-                        attachments.forEach(attachment => {
-                            try {
-                                const img = document.createElement('img');
-                                const imagePath = `/img/${attachment.fileName.trim()}`;
-                                img.src = imagePath;
-                                img.alt = '첨부 이미지';
-                                img.style.width = '100%';
-                                img.style.flexShrink = '0';
-
-                                img.onload = () => console.log(`Image loaded: ${img.src}`);
-                                img.onerror = () => console.error(`Image failed to load: ${img.src}`);
-
-                                imageContainer.appendChild(img);
-                            } catch (error) {
-                                console.error("Error adding image to container:", error);
-                            }
-                        });
-                    } else {
-                        console.warn("No attachments found.");
-                        imageContainer.innerHTML = '<p>첨부파일이 없습니다.</p>';
-                    }
-
-                    console.log("Final imageContainer HTML:", imageContainer.innerHTML); // 확인
-                })
-                .catch(error => {
-                    console.error("Error in fetch or DOM update:", error);
-                });
-
-
+                // 이미지 컨테이너에 추가
+                imageContainer.appendChild(imgElement);
+            })
 
             // 버튼 초기화
             approveButton.style.display = 'none';

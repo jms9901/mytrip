@@ -109,7 +109,14 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public List<PackagePostAttachment> findPackageAttachments(int packageId) {
-        return adminRepository.findPackageAttachments(packageId);
+        System.out.println("들어오냐?");
+        List<PackagePostAttachment> packageAttachments = adminRepository.findPackageAttachments(packageId);
+        packageAttachments.forEach(e -> {
+            System.out.println("아이디" + e.getPackageId());
+            System.out.println("아이디" + e.getPackageAttachmentId());
+            System.out.println("아이디" + e.getPackageAttachmentFile());
+        });
+        return packageAttachments;
     }
 
 
