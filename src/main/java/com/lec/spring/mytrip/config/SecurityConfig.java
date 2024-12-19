@@ -37,7 +37,7 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeRequests(auth -> auth
-                        .requestMatchers("/main/**","/user/**", "/user/login", "/oauth2/**", "/css/**", "/js/**", "/img/**", "/admin/adminLogin", "admin/login","/admin/auth").permitAll()
+                        .requestMatchers("/main/**","/user/**", "/user/login", "/oauth2/**", "/css/**", "/js/**", "/img/**", "/admin/adminLogin", "admin/login","/admin/auth", "/uploads/**" ).permitAll()
                         .requestMatchers( "/flight/**", "/board/**", "/aipage/**", "/mypage/**").hasAnyAuthority("ROLE_USER", "ROLE_BUSINESS")
                         .anyRequest().authenticated())
                 .formLogin(form -> form

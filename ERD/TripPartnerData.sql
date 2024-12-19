@@ -8,18 +8,7 @@ values ('fullstackK08@naver.com',
         '',
         '',
         '나는 이경원이다',
-        'admin'
-       ),
-       (
-           'wonwon123123@naver.com',
-           '1234',
-           'user1234',
-           '이경원',
-           '2000-02-11',
-           '',
-           '',
-           '',
-           'user'
+        'ROLE_ADMIN'
        );
 
 # business 데이터
