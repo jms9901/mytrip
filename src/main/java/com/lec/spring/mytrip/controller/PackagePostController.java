@@ -117,7 +117,8 @@ public class PackagePostController {
     @PostMapping("{cityId}/package/save")
     public String savePackage(@PathVariable int cityId,
                               @RequestParam("files") List<MultipartFile> files,
-                              @ModelAttribute PackagePost packagePost){
+                              @ModelAttribute PackagePost packagePost,
+                               RedirectAttributes redirectAttributes) {
         files.forEach(System.out::println);
 
         System.out.println("저장할 파일" + packagePost);
@@ -125,9 +126,10 @@ public class PackagePostController {
         // 패키지 저장 처리
         // 패키지 저장 처리. 패키지 저장에서 첨부파일 서비스를 호출
         int packageId = packagePostService.savePackage(packagePost, files);
+       redirectAttributes.addFlashAttribute("msg", "관리자 승인 후 패키지가 등록됩니다.");
 
         // 저장 후 상세 페이지로 리다이렉트
-        return  "redirect:/board/city/" + cityId + "/package/detail/" + packageId + "?status=pending";
+        return "redirect:/board/city/" + cityId + "/package/detail/" + packageId;
     }
 
     // 패키지 수정 페이지 이동 안써
