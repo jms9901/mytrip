@@ -19,33 +19,7 @@
 <body>
 <!-- Header Section -->
 <!-- 헤더 부분 -->
-<header id="header">
-    <div class="topnav SMN_effect-6">
-        <a th:href="@{/main/mainpage}">
-            <img th:src="@{/img/logo.png}" alt="" class="logo">
-        </a>
-        <sec:authorize access="isAuthenticated()">
-            <a th:href="@{/aipage/start}" class="top-menu">여행지 추천</a>
-        </sec:authorize>
-        <sec:authorize access="isAuthenticated()">
-            <a th:href="@{/board/city/1}" class="top-menu">여행지 게시판</a>
-        </sec:authorize>
-        <sec:authorize access="isAuthenticated()">
-            <a th:href="@{/flight/search}" class="top-menu">항공권 조회</a>
-        </sec:authorize>
-        <a sec:authorize="isAnonymous()" th:href="@{/user/login}" class="top-menu" style="margin-left: 40vw;">login</a>
-        <form th:action="@{/user/mypage}" method="GET" sec:authorize="isAuthenticated()">
-            <button type="submit" class="mypage" style="font-family: 'Kaushan Script'; margin-left: 40vw;">Mypage</button></form>
-        <form th:action="@{/user/logout}" method="POST" sec:authorize="isAuthenticated()" th:with="user=${#authentication.getPrincipal()}">
-            <button type="submit" style="background-color: #142055; border: none;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16" style="color: #f2f2f2; background-color: #142055; margin-left: 50px; top: 20px">
-                    <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0z"/>
-                    <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"/>
-                </svg>
-            </button>
-        </form>
-    </div>
-</header>
+<div th:replace="~{fragments/header}"></div>
 
 <!-- Main Section -->
 <main class="container p-0">
@@ -193,37 +167,7 @@
 </section>
 
 <!-- Footer Section -->
-<footer id="footer">
-    <div class="footercontainer">
-        <div class="column1">
-            <a th:href="@{/aipage/start}"><img th:src="@{/img/logo.png}" alt=""></a>
-        </div>
-        <div class="column2">
-            <a th:href="@{/aipage/start}">여행지 추천</a>
-            <a th:href="@{/post}">여행지 게시판</a>
-            <a th:href="@{/flight/search}">항공권 예약</a>
-            <a th:href="@{/flight/search}">마이페이지</a>
-        </div>
-        <div class="column3">
-            <a th:href="@{/aipage/start}">이용약관</a>
-            <a th:href="@{/post}">공지사항</a>
-            <a th:href="@{/flight/search}">고객센터</a>
-        </div>
-
-        <!-- 아이콘과 텍스트를 묶는 컨테이너 -->
-        <div class="icon-and-text">
-            <div class="column4">
-                <a th:href="@{/aipage/start}"><img th:src="@{/img/Instagram_logo.png}" alt="Instagram"></a>
-                <a th:href="@{/aipage/start}"><img th:src="@{/img/facebook-logo.png}" alt="Facebook"></a>
-                <a th:href="@{/aipage/start}"><img th:src="@{/img/youtube_logo.png}" alt="YouTube"></a>
-                <a th:href="@{/aipage/start}"><img th:src="@{/img/naver_logo.png}" alt="Naver"></a>
-            </div>
-            <div class="column5">
-                <p>©트립파트너㈜. ALL RIGHTS RESERVED.</p>
-            </div>
-        </div>
-    </div>
-</footer>
+<div th:replace="~{fragments/header}"></div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script th:src="@{/js/board/like.js}"></script>
