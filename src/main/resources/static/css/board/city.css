@@ -1,4 +1,13 @@
+<<<<<<< HEAD
+@font-face {
+    font-family: 'ONE-Mobile-POP';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2105_2@1.0/ONE-Mobile-POP.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+=======
 /* font */
+>>>>>>> 708bf8d5e7d50b57e001171f0ef3f89d8e9d8835
 @font-face {
     font-family: 'MinSans-Regular';
     src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/MinSans-Regular.woff') format('woff');
@@ -6,6 +15,24 @@
     font-style: normal;
 }
 
+<<<<<<< HEAD
+body {
+    font-family: 'MinSans-Regular', sans-serif;
+}
+
+
+.Ejskwk {
+    font-family: 'ONE-Mobile-POP', sans-serif;
+}
+
+.mt-4{
+    font-family: 'ONE-Mobile-POP', sans-serif;
+
+}
+
+
+=======
+>>>>>>> 708bf8d5e7d50b57e001171f0ef3f89d8e9d8835
 .hero {
     position: relative;
     text-align: center;
@@ -100,10 +127,11 @@
     right: 0;
     margin-bottom: 20px;
 }
-#groupWrite{
-    position: relative;
-    right: 0;
-    margin-bottom: 20px;
+
+#groupWrite {
+    position: absolute;
+    right: 18%;
+    margin-bottom: 20%;
 }
 
 
@@ -124,6 +152,8 @@
 }
 
 .slider-container {
+    margin-top: 45px;
+    margin-bottom: 120px;
     position: relative;
     width: auto;
     overflow: hidden;
@@ -185,7 +215,7 @@
 }
 .city-navigation {
 
-    margin-bottom: 60px; /* 아래 요소와의 간격 (선택) */
+    margin-bottom: 100px; /* 아래 요소와의 간격 (선택) */
 }
 /* 피드 버튼 섹션 스타일 */
 #feed-button {

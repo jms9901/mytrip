@@ -74,13 +74,15 @@ HAVING COUNT(*) > 1;
 
 update user
 set user_status = '승인'
-where user_id = 25;
+where user_id = 11;
 ALTER TABLE user MODIFY COLUMN user_authorization VARCHAR(255) DEFAULT 'ROLE_USER';
 SELECT user_name, user_username, user_profile FROM user WHERE user_id = 3;
 select * from friendship;
 SELECT * FROM board WHERE board_id = 121;
 ALTER TABLE board AUTO_INCREMENT = 119;
-
+update user
+set user_authorization = 'ROLE_ADMIN'
+where user_id = 12;
 
 SET foreign_key_checks = 0;
 SET foreign_key_checks = 1;
