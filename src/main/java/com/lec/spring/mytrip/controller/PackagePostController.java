@@ -127,7 +127,7 @@ public class PackagePostController {
         int packageId = packagePostService.savePackage(packagePost, files);
 
         // 저장 후 상세 페이지로 리다이렉트
-        return "redirect:/board/city/" + cityId + "/package/detail/" + packageId;
+        return  "redirect:/board/city/" + cityId + "/package/detail/" + packageId + "?status=pending";
     }
 
     // 패키지 수정 페이지 이동 안써

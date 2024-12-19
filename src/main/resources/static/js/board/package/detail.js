@@ -78,3 +78,15 @@ if (cityIdMatch) {
 } else {
     console.error('cityId를 URL에서 찾을 수 없습니다.');
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    // URL 쿼리 파라미터 확인
+    const urlParams = new URLSearchParams(window.location.search);
+    const status = urlParams.get('status');
+
+    if (status === 'success') {
+        alert('결제가 성공적으로 완료되었습니다!');
+    } else if (status === 'pending') {
+        alert('관리자 승인 후 패키지가 등록됩니다.');
+    }
+});

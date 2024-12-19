@@ -74,7 +74,7 @@ HAVING COUNT(*) > 1;
 
 update user
 set user_status = '승인'
-where user_id = 5;
+where user_id = 25;
 ALTER TABLE user MODIFY COLUMN user_authorization VARCHAR(255) DEFAULT 'ROLE_USER';
 SELECT user_name, user_username, user_profile FROM user WHERE user_id = 3;
 select * from friendship;
