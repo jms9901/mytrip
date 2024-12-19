@@ -39,8 +39,12 @@ document.addEventListener('DOMContentLoaded', function () {
         if (event.target.classList.contains('package-details-button')) {
             console.log("Package details button clicked:", event.target);
 
-            // 데이터 가져오기
             const modalPackageId = event.target.getAttribute('data-packageid');
+
+            console.log("Package ID:", modalPackageId);
+
+
+            // 데이터 가져오기
             const userName = event.target.getAttribute('data-username') || '[데이터 없음]';
             const packageTitle = event.target.getAttribute('data-packagetitle') || '[데이터 없음]';
             const packageContent = event.target.getAttribute('data-packagecontent') || '[데이터 없음]';
@@ -50,41 +54,48 @@ document.addEventListener('DOMContentLoaded', function () {
             const packageEndDay = event.target.getAttribute('data-packageendday') || '[데이터 없음]';
             const packageRegDate = event.target.getAttribute('data-packageregdate') || '[데이터 없음]';
 
-            console.log("Package ID:", modalPackageId);
+            // HTML 데이터를 DOM으로 변환
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(packageContent, 'text/html');
+
+            // 텍스트와 이미지 분리
+            const textContent = doc.body.textContent.trim(); // 텍스트 추출
+            const imageElements = doc.querySelectorAll('img'); // 이미지 요소 추출
+
+            // 이미지 정보를 배열로 저장
+            const images = Array.from(imageElements).map(img => ({
+                src: img.getAttribute('src'), // 이미지 데이터 (Base64)
+                filename: img.getAttribute('data-filename'), // 파일 이름
+                style: img.getAttribute('style') // 스타일 정보
+            }));
+
+            // 결과 출력
+            console.log("텍스트:", textContent);
+            console.log("이미지:", images);
+
 
             // 모달 데이터 업데이트
             document.getElementById('modalUsername').textContent = userName;
             document.getElementById('modalPackageTitle').textContent = packageTitle;
-            document.getElementById('modalPackageContent').textContent = packageContent;
+            document.getElementById('modalPackageContent').innerHTML = textContent;
             document.getElementById('modalPackageCost').textContent = packageCost;
             document.getElementById('modalPackageMaxPeople').textContent = packageMaxPeople;
             document.getElementById('modalPackageStartDay').textContent = packageStartDay;
             document.getElementById('modalPackageEndDay').textContent = packageEndDay;
             document.getElementById('modalPackageRegDate').textContent = packageRegDate;
 
-            // 첨부파일 가져오기 및 슬라이더 초기화
-            fetch(`/admin/packageAttachments/${modalPackageId}`)
-                .then((response) => response.json())
-                .then((attachments) => {
-                    imageContainer.innerHTML = ''; // 기존 이미지 제거
-                    if (attachments && attachments.length > 0) {
-                        attachments.forEach((attachment) => {
-                            const img = document.createElement('img');
-                            img.src = `/img/${attachment.fileName.trim()}`; // 서버의 업로드 디렉토리 경로
-                            img.alt = '첨부 이미지';
-                            img.style.width = '100%';
-                            img.style.flexShrink = '0';
-                            imageContainer.appendChild(img);
-                        });
-                        showSlide(0); // 슬라이더 초기화
-                    } else {
-                        imageContainer.innerHTML = '<p>첨부파일이 없습니다.</p>';
-                    }
-                })
-                .catch((error) => {
-                    console.error('Error fetching attachments:', error);
-                    alert('첨부파일 정보를 불러오는 중 오류가 발생했습니다.');
-                });
+
+            images.forEach(image => {
+                const imgElement = document.createElement("img");
+                imgElement.src = image.src;
+                imgElement.alt = image.filename; // 이미지 파일 이름
+                imgElement.style.height = '200px';
+                imgElement.style.width = 'auto';
+                imgElement.style.objectFit = 'contain';
+
+                // 이미지 컨테이너에 추가
+                imageContainer.appendChild(imgElement);
+            })
 
             deleteButton.onclick = function () {
                 deletePackage(modalPackageId);

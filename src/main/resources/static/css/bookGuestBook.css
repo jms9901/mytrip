@@ -15,7 +15,7 @@ body{
 
 .flipbook-viewport .container{
     position:absolute;
-    top:55%;
+    top:50%;
     left:50%;
     margin:auto;
 }
@@ -68,7 +68,7 @@ body{
 
 .menu1 {
     position: absolute;
-    top: 3%;
+    top: 11%;
     left:51%;
     width: 100px;
     height: 250px;
@@ -80,7 +80,7 @@ body{
 
 .menu2 {
     position: absolute;
-    top: 4%;
+    top: 12%;
     left:55%;
     width: 100px;
     height: 250px;
@@ -92,7 +92,7 @@ body{
 
 .menu3 {
     position: absolute;
-    top: 5%;
+    top: 13%;
     left:59%;
     width: 100px;
     height: 250px;
@@ -104,7 +104,7 @@ body{
 
 .menu4 {
     position: absolute;
-    top: 6%;
+    top: 14%;
     left:63%;
     width: 100px;
     height: 250px;
@@ -116,7 +116,7 @@ body{
 }
 .menu5 {
     position: absolute;
-    top: 7%;
+    top: 15%;
     left:67%;
     width: 100px;
     height: 250px;
@@ -127,7 +127,7 @@ body{
     transition: top 0.3s ease;
 }
 .menu1:hover, .menu2:hover, .menu3:hover, .menu4:hover, .menu5:hover {
-    top: 2%;
+    top: 7%;
     cursor: pointer;
 }
 .logo{
@@ -205,8 +205,8 @@ body{
     height: 33px;
     background-size: cover;
     z-index: 9999;
-    right: 21%;
-    top: 13%;
+    right: 27%;
+    top: 18%;
     position: absolute;
     cursor: pointer;
 }
@@ -293,7 +293,7 @@ body{
     width:461px;
     height:600px;
     left: 50.05%;
-    top: 82px;
+    top: 50px;
 
 }
 .feed-entry {
@@ -487,5 +487,5 @@ body{
 }
 
 .backgroundGuestBook{
-    top:12%
+    top:17%
 }

@@ -5,6 +5,7 @@ import com.lec.spring.mytrip.domain.*;
 import com.lec.spring.mytrip.domain.attachment.BoardAttachment;
 import com.lec.spring.mytrip.domain.attachment.PackagePostAttachment;
 import com.lec.spring.mytrip.service.AdminService;
+import com.lec.spring.mytrip.service.PackagePostService;
 import com.lec.spring.mytrip.util.U;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -35,6 +36,7 @@ public class AdminController {
     private final AdminService adminService;
     private UserValidator userValidator;
     private AuthenticationManager authenticationManager;
+    private PackagePostService packagePostService;
 
     @Autowired
     public AdminController(AdminService adminService) {
@@ -231,9 +233,6 @@ public class AdminController {
     }
 
 
-
-
-
     // NOTE : 패키지
 
     // 승인 처리된 package 정보 가져오기
@@ -283,9 +282,10 @@ public class AdminController {
     // 패키지 첨부파일 조회
     @GetMapping("/packageAttachments/{packageId}")
     @ResponseBody
-    public ResponseEntity<List<PackagePostAttachment>> getPackageAttachments(@PathVariable int packageId) {
+    public ResponseEntity<List<PackagePost>> getPackageAttachments(@PathVariable int packageId) {
+        System.out.println(packageId);
         try {
-            List<PackagePostAttachment> attachments = adminService.findPackageAttachments(packageId);
+            List<PackagePost> attachments = packagePostService.getPackageDetailsById(packageId);
             return ResponseEntity.ok(attachments);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);

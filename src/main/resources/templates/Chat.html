@@ -188,10 +188,10 @@
         stompClient.connect({}, function(frame) {
             console.log('Connected: ' + frame);
 
-            // 메시지 구독
+
             stompClient.subscribe('/topic/messages', function(messageOutput) {
                 var messageData = JSON.parse(messageOutput.body);
-                showMessage(messageData.content);  // 기존 메시지 수신 로직 유지
+                showMessage(messageData.content);
             });
         });
     }
