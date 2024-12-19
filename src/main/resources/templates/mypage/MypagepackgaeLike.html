@@ -178,8 +178,14 @@
 
 
         function loadFeed(feeds) {
+            const processedPackageIds = new Set();
+
             if (feeds && feeds.length > 0) {
                 feeds.forEach((feed, index) => {
+                    if (processedPackageIds.has(feed.packageId)) {
+                        return;  // 중복된 packageId는 처리하지 않음
+                    }
+                    processedPackageIds.add(feed.packageId);
                     let attachmentHtml = '';
 
                     // 첨부파일이 있을 경우 처리
