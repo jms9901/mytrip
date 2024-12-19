@@ -1,13 +1,12 @@
-<<<<<<< HEAD
 @font-face {
     font-family: 'ONE-Mobile-POP';
     src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2105_2@1.0/ONE-Mobile-POP.woff') format('woff');
     font-weight: normal;
     font-style: normal;
 }
-=======
+
 /* font */
->>>>>>> 708bf8d5e7d50b57e001171f0ef3f89d8e9d8835
+
 @font-face {
     font-family: 'MinSans-Regular';
     src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/MinSans-Regular.woff') format('woff');
@@ -15,7 +14,7 @@
     font-style: normal;
 }
 
-<<<<<<< HEAD
+
 body {
     font-family: 'MinSans-Regular', sans-serif;
 }
@@ -31,8 +30,6 @@ body {
 }
 
 
-=======
->>>>>>> 708bf8d5e7d50b57e001171f0ef3f89d8e9d8835
 .hero {
     position: relative;
     text-align: center;
