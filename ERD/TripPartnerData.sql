@@ -8,7 +8,7 @@ values ('fullstackK08@naver.com',
         '',
         '',
         '나는 이경원이다',
-        'admin'
+        'ROLE_ADMIN'
        ),
        (
            'wonwon123123@naver.com',
@@ -19,7 +19,7 @@ values ('fullstackK08@naver.com',
            '',
            '',
            '',
-           'user'
+           'ROLE_USER'
        );
 
 # business 데이터
@@ -29,7 +29,7 @@ values       (
                  '1234',
                  'business1234',
                  '이경원',
-                 'business',
+                 'ROLE_BUSINESS',
                  '123-11-12345'
              ) ;
 

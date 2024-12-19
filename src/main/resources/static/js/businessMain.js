@@ -142,6 +142,9 @@ document.addEventListener("DOMContentLoaded", function () {
                         return;
                     }
 
+                    const cityId = selectedPackage.cityId;
+                    console.log("도시 ID: ", cityId);
+
                     // 패키지 상세보기 데이터 렌더링
                     packageDetailContainer.innerHTML = `
                         <div class="modal-content" data-package-id="${selectedPackage.selectedPackageId}">
@@ -195,10 +198,11 @@ document.addEventListener("DOMContentLoaded", function () {
                     // 게시판으로 이동
                     // 이벤트 위임 방식 사용 (동적으로 생성된 요소도 포함)
                     document.body.addEventListener('click', function (event) {
+
                         // 클릭된 요소가 이미지 버튼인지 확인
                         if (event.target.id === 'move-button') {
                             // 페이지 이동
-                            window.location.href = '/board/city/1';
+                            window.location.href = `/board/city/${cityId}`;
                         }
                     });
 
