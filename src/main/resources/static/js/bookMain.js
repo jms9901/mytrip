@@ -127,8 +127,10 @@ document.getElementById('ConnectionsCnt').addEventListener('click', function () 
 
                     // 프로필 이미지와 유저 이름 표시
                     li.innerHTML = `
-                        <img src="${profileImage}" alt="Profile" class="friend-profile-img">
+                       <img src="${profileImage}" alt="Profile" class="friend-profile-img" 
+                            onerror="this.onerror=null; this.src='/uploads/profiles/defaultProfile.jpg';">
                         <span class="friend-name" style="cursor: pointer">${userName}</span>
+                    
                     `;
 
                     // 클릭 시 개인 페이지로 이동
@@ -165,9 +167,11 @@ function handleFriendRequest(action, fromUserId, toUserId, requestItem) {
             // 요청이 성공하면 해당 항목 삭제
             if (action === "accept" || action === "reject") {
                 requestItem.remove();  // 해당 요청 항목 삭제
+                window.location.reload();
             }
         })
         .catch(error => console.error(`Error processing ${action} request:`, error));
+    window.location.reload();
 }
 
 
@@ -220,7 +224,8 @@ function loadFriendRequests() {
 
                     // 목록 생성
                     li.innerHTML = `
-                        <img src="${profileImage}" alt="Profile" class="friend-profile-img">
+                       <img src="${profileImage}" alt="Profile" class="friend-profile-img" 
+                            onerror="this.onerror=null; this.src='/uploads/profiles/defaultProfile.jpg';">
                         <span class="friend-name">${userName}</span>
                     `;
 
@@ -333,6 +338,7 @@ function submitUserChanges() {
         reader.readAsDataURL(profileImage);  // base64로 변환
     } else {
         sendRequest();  // 프로필 이미지가 없으면 바로 서버로 요청
+
     }
 
     // 요청 보내는 함수
@@ -357,11 +363,13 @@ function submitUserChanges() {
             .then(data => {
                 console.log("Success:", data);
                 alert("수정 완료!");
+                window.location.reload();
                 // 응답 데이터에 따라 추가 작업 수행
             })
             .catch(error => {
                 console.error("Error:", error);
                 alert("수정 실패! 비밀번호 확인해주세요");
+                window.location.reload();
             });
     }
 }
@@ -625,11 +633,14 @@ $(document).ready(function() {
                     }).join('');
                 }
 
+
+                const truncatedSubject = feed.boardSubject.length > 10 ? feed.boardSubject.substring(0, 10) + '...' : feed.boardSubject;
+
                 const entryHtml = `
                     <div class="feed-entry" style="background-image: url(/img/postFrame.png)" data-index="${index}">
-                        ${attachmentHtml}
-                        <div>${feed.boardSubject}</div>
-                    </div>
+                    ${attachmentHtml}
+                    <div>${truncatedSubject}</div> <!-- 수정된 제목 -->
+                </div>
                 `;
 
                 // 3개씩 묶어서 하나의 행으로 추가
@@ -700,6 +711,7 @@ async function sendRequest(endpoint, params) {
     const response = await fetch(`${apiUrl}/${endpoint}?${params}`, { method: "POST" });
     const result = await response.text();
     alert(result);
+    window.location.reload();
 }
 
 // // 친구 요청 보내기
@@ -720,6 +732,7 @@ document.getElementById("acceptFriendRequestForm").addEventListener("submit", (e
         toUserId: UserId
     });
     sendRequest("accept", params);
+    window.location.reload();
 });
 
 // 친구 요청 거절
@@ -730,4 +743,5 @@ document.getElementById("rejectFriendRequestForm").addEventListener("submit", (e
         toUserId: UserId
     });
     sendRequest("reject", params);
+    window.location.reload();
 });

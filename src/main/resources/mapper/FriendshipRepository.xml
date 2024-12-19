@@ -43,6 +43,7 @@
                  join user u on (u.user_id = f.to_user_id or u.user_id = f.from_user_id)
         where (f.to_user_id = #{userId} or f.from_user_id = #{userId})
           and f.friend_status = '수락'
+          and u.user_id != #{userId}
     </select>
 
     <select id="requestView" resultMap="FriendshipUserResultMap">

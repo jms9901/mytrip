@@ -30,6 +30,7 @@
                th:href="@{|/board/city/${cityId}/package/delete/${packageId}|}"
                class="btn btn-danger">삭제</a>
 
+
             <!-- 수정 버튼 -->
             <a th:if="${writerId == loggedInUserId}"
                th:href="@{|/board/city/${cityId}/package/edit/${packageId}|}"
@@ -133,6 +134,8 @@
         </div>
     </div>
 </div>
+<div id="flashMessage" th:if="${msg}" th:data-msg="${msg}"></div>
+
 
 
 <!-- Footer -->
@@ -141,6 +144,5 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="/js/board/package/detail.js"></script>
-<script th:src="@{/js/board/gotoMypage.js}"></script>
 </body>
 </html>
