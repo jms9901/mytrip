@@ -59,15 +59,45 @@
     <!-- package와 package_attachment를 JOIN하여 최신 10개 패키지와 첨부파일 명 조회 -->
     <select id="findTop10OrderByDateDesc" resultMap="PackageResultMap">
         SELECT
-            p.package_id, p.city_id, p.user_id, p.package_status, p.package_content,
-            p.package_regdate, p.package_title, p.package_cost, p.package_maxpeople,
-            p.package_start_day, p.package_end_day, pa.package_attachment_file
+            p.package_id,
+            p.city_id,
+            p.user_id,
+            p.package_status,
+            p.package_content,
+            p.package_regdate,
+            p.package_title,
+            p.package_cost,
+            p.package_maxpeople,
+            p.package_start_day,
+            p.package_end_day,
+            pa.package_attachment_file
         FROM
             package p
-                LEFT JOIN package_attachment pa ON p.package_id = pa.package_id
+                LEFT JOIN (
+                SELECT
+                    pa1.package_id,
+                    pa1.package_attachment_file
+                FROM
+                    package_attachment pa1
+                        INNER JOIN (
+                        SELECT
+                            package_id,
+                            MAX(package_attachment_id) AS max_id
+                        FROM
+                            package_attachment
+                        GROUP BY
+                            package_id
+                    ) pa2
+                                   ON pa1.package_id = pa2.package_id
+                                       AND pa1.package_attachment_id = pa2.max_id
+            ) pa
+                          ON p.package_id = pa.package_id
+        WHERE
+            p.package_status = '승인'
         ORDER BY
             p.package_id DESC
         LIMIT 10
     </select>
+
 
 </mapper>
