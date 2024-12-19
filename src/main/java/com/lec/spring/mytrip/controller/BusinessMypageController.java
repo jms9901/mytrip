@@ -20,9 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 @Controller
@@ -47,26 +45,46 @@ public class BusinessMypageController {
     @GetMapping("/business/{userId}")
     public String businessMypage(@PathVariable("userId") int userId, Model model) {
         try {
+            // 유저 정보 가져오기
             User user = businessMypageService.getUserById(userId);
-//            List<PackagePost> packagePost = packagePostService.getPackagesByUserId(userId);
-//            List<Payment> payment = businessMypageService.getPaymentByCompanyId(userId);
 
-            if(user == null) {
+            if (user == null) {
                 model.addAttribute("error", "해당 유저를 찾을 수 없습니다.");
                 return "error";
             }
 
-            if(!"승인".equals(user.getStatus())) {
+            // 유저 상태 확인
+            if (!"승인".equals(user.getStatus())) {
                 model.addAttribute("error", "접근 권한이 없습니다.");
                 return "error";
             }
 
-
+            // 유저 정보 추가
             model.addAttribute("user", user);
-//            model.addAttribute("packagePost", packagePost);
-//            model.addAttribute("payment", payment);
 
+            // 결제 정보와 패키지 정보 가져오기 (없으면 빈 리스트로 초기화)
+            List<PackagePost> packagePost = new ArrayList<>();
+            List<Payment> payment = new ArrayList<>();
+
+            try {
+                packagePost = packagePostRepository.likeCntByPackage(userId);
+            } catch (Exception e) {
+                log.warn("패키지 정보 로드 실패", e);
+            }
+
+            try {
+                payment = businessMypageService.getPaymentByCompanyId(userId);
+            } catch (Exception e) {
+                log.warn("결제 정보 로드 실패", e);
+            }
+
+            // 결제 정보와 패키지 정보 추가
+            model.addAttribute("packagePost", packagePost);
+            model.addAttribute("payment", payment);
+
+            // 비즈니스 마이페이지 뷰 반환
             return "mypage/businessMain";
+
         } catch (Exception e) {
             log.error("페이지 로드 중 오류 발생", e);
             model.addAttribute("error", e.getMessage());
@@ -89,7 +107,7 @@ public class BusinessMypageController {
             log.info("user found: {}", user);
             log.info("userID: {}", userId);
 
-            if(user == null) {
+            if (user == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND)
                         .body("해당 유저를 찾을 수 없습니다.");
             }
@@ -100,21 +118,30 @@ public class BusinessMypageController {
                         .body("접근 권한이 없습니다.");
             }
 
-            // 패키지 목록 로드
-//            List<PackagePost> packages = businessMypageService.likeCntByPackage(userId);
-            // 패키지 상세정보 로드
-//            PackagePost packageDetail = packagePostService.getPackageDetails(packageId);
-            // 결제 내역 로드
-//            List<Payment> payments = businessMypageService.getPaymentByCompanyId(userId);
+            // 패키지 정보 로드 (없으면 빈 리스트 반환)
+            List<PackagePost> packages = Collections.emptyList();
+            try {
+                packages = packagePostRepository.likeCntByPackage(userId);
+            } catch (Exception e) {
+                log.warn("패키지 정보 로드 실패", e);
+            }
 
-//            log.info("Business data: {}, Packages: {}, Payments: {}", user, packages, payments);
+            // 결제 정보 로드 (없으면 빈 리스트 반환)
+            List<Payment> payments = Collections.emptyList();
+            try {
+                payments = businessMypageService.getPaymentByCompanyId(userId);
+            } catch (Exception e) {
+                log.warn("결제 정보 로드 실패", e);
+            }
 
-            // 패키지, 패키지 상세정보, 결제 내역이 없는 경우 빈 배열 반환
-//            if (packages == null || packages.isEmpty() || payments == null || payments.isEmpty()) {
-//                return ResponseEntity.ok(Collections.emptyList());
-//            }
 
-            return ResponseEntity.ok(userId);
+            // 반환 데이터 생성
+            Map<String, Object> responseData = new HashMap<>();
+            responseData.put("user", user);
+            responseData.put("packages", packages);
+            responseData.put("payments", payments);
+
+            return ResponseEntity.ok(responseData);
 
         } catch (Exception e) {
             log.error("패키지 조회 중 오류 발생", e);

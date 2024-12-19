@@ -14,22 +14,39 @@ document.addEventListener("DOMContentLoaded", function() {
         slide.addEventListener('mouseover', stopSlide); // 마우스 오버 시 슬라이드 멈춤
         slide.addEventListener('mouseout', startSlide); // 마우스 아웃 시 슬라이드 재개
     });
+    // document.querySelector('.mypage').addEventListener('click', () => {
+    //     fetch('../../mypage/loginuserid')
+    //         .then(response => response.json())
+    //         .then(data => {
+    //             const loguser = data.userId;
+    //             if (loguser) {
+    //                 window.location.href = `/mypage/${loguser}`;
+    //             } else {
+    //                 alert("로그인된 사용자를 찾을 수 없습니다.");
+    //             }
+    //         })
+    //         .catch(error => {
+    //             console.error('에러 발생:', error);
+    //             alert("로그인 정보를 가져오는 데 실패했습니다.");
+    //         });
+    //
+    // });
+
+    // 로그인 유저 권한 확인 (일반유저, 비즈니스)
     document.querySelector('.mypage').addEventListener('click', () => {
-        fetch('../../mypage/loginuserid')
+        fetch('../../mypage/loginuserauthority')
             .then(response => response.json())
             .then(data => {
-                const loguser = data.userId;
-                if (loguser) {
-                    window.location.href = `/mypage/${loguser}`;
+                const redirectUrl = data.redirectUrl;
+                if (redirectUrl) {
+                    window.location.href = redirectUrl;
                 } else {
-                    alert("로그인된 사용자를 찾을 수 없습니다.");
+                    alert("권한 확인에 실패했습니다.");
                 }
             })
             .catch(error => {
                 console.error('에러 발생:', error);
                 alert("로그인 정보를 가져오는 데 실패했습니다.");
             });
-
-
-});
+    });
 });

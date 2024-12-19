@@ -116,18 +116,26 @@ document.getElementById('ConnectionsCnt').addEventListener('click', function () 
             if (data.length > 0) {
                 data.forEach(friendshipUserResultMap => {
                     const li = document.createElement('li');
+                    li.classList.add('friend-item');
 
                     // 프로필 이미지 경로 설정 (profile이 없으면 defaultProfile.jpg 사용)
-                    const profileImage = friendshipUserResultMap.user.profile ? `/uploads/profiles/${friendshipUserResultMap.user.profile}` : '/img/defaultProfile.jpg';
+                    const profileImage = friendshipUserResultMap.user.profile ? `/uploads/profiles/${friendshipUserResultMap.user.profile}` : '/uploads/profiles/defaultProfile.jpg';
 
                     // name이 null일 경우 "Unknown"으로 처리
                     const userName = friendshipUserResultMap.user.user_name || 'Unknown';
+                    const userId = friendshipUserResultMap.user.id;
 
                     // 프로필 이미지와 유저 이름 표시
                     li.innerHTML = `
                         <img src="${profileImage}" alt="Profile" class="friend-profile-img">
-                        <span class="friend-name">${userName}</span>
+                        <span class="friend-name" style="cursor: pointer">${userName}</span>
                     `;
+
+                    // 클릭 시 개인 페이지로 이동
+                    li.addEventListener('click', () => {
+                        window.location.href = `/mypage/${userId}`;
+                    });
+
                     friendListElement.appendChild(li);
                 });
             } else {
@@ -141,6 +149,7 @@ document.getElementById('ConnectionsCnt').addEventListener('click', function () 
         })
         .catch(error => console.error('Error fetching friend list:', error));
 });
+
 // 친구 요청 수락/거절 처리 함수
 function handleFriendRequest(action, fromUserId, toUserId, requestItem) {
     const params = new URLSearchParams({
@@ -182,7 +191,7 @@ function loadFriendRequests() {
                     // 프로필 이미지 경로 설정
                     const profileImage = friendshipUserResultMap.user.profile
                         ? `/uploads/profiles/${friendshipUserResultMap.user.profile}`
-                        : '/img/defaultProfile.jpg';
+                        : '/uploads/profiles/defaultProfile.jpg';
 
                     // 이름 설정
                     const userName = friendshipUserResultMap.user.user_name || 'Unknown';
