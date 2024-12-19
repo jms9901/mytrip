@@ -118,24 +118,34 @@ document.getElementById('ConnectionsCnt').addEventListener('click', function () 
                     const li = document.createElement('li');
                     li.classList.add('friend-item');
 
-                    // 프로필 이미지 경로 설정 (profile이 없으면 defaultProfile.jpg 사용)
-                    const profileImage = friendshipUserResultMap.user.profile ? `/uploads/profiles/${friendshipUserResultMap.user.profile}` : '/uploads/profiles/defaultProfile.jpg';
-
-                    // name이 null일 경우 "Unknown"으로 처리
-                    const userName = friendshipUserResultMap.user.user_name || 'Unknown';
-                    const userId = friendshipUserResultMap.user.id;
+                    // 조건에 맞는 데이터를 선택합니다.
+                    let profileImage, userName, selectedUserId;
+                    if (friendshipUserResultMap.fromUserId === userId) {
+                        // fromUserId가 userId와 같다면, toUser의 정보를 표시
+                        profileImage = friendshipUserResultMap.toUser.profile
+                            ? `/uploads/profiles/${friendshipUserResultMap.toUser.profile}`
+                            : '/uploads/profiles/defaultProfile.jpg';
+                        userName = friendshipUserResultMap.toUser.user_name || 'Unknown';
+                        selectedUserId = friendshipUserResultMap.toUser.id;
+                    } else if (friendshipUserResultMap.toUserId === userId) {
+                        // toUserId가 userId와 같다면, fromUser의 정보를 표시
+                        profileImage = friendshipUserResultMap.fromUser.profile
+                            ? `/uploads/profiles/${friendshipUserResultMap.fromUser.profile}`
+                            : '/uploads/profiles/defaultProfile.jpg';
+                        userName = friendshipUserResultMap.fromUser.user_name || 'Unknown';
+                        selectedUserId = friendshipUserResultMap.fromUser.id;
+                    }
 
                     // 프로필 이미지와 유저 이름 표시
                     li.innerHTML = `
                        <img src="${profileImage}" alt="Profile" class="friend-profile-img" 
                             onerror="this.onerror=null; this.src='/uploads/profiles/defaultProfile.jpg';">
                         <span class="friend-name" style="cursor: pointer">${userName}</span>
-                    
                     `;
 
                     // 클릭 시 개인 페이지로 이동
                     li.addEventListener('click', () => {
-                        window.location.href = `/mypage/${userId}`;
+                        window.location.href = `/mypage/${selectedUserId}`;
                     });
 
                     friendListElement.appendChild(li);
@@ -190,15 +200,20 @@ function loadFriendRequests() {
                 requestView.style.display = 'flex'; // 데이터가 있으면 표시
 
                 data.forEach(friendshipUserResultMap => {
+                    // fromUserId가 userId와 동일한 경우 건너뛰기
+                    if (friendshipUserResultMap.fromUserId === userId) {
+                        return;  // 해당 항목은 출력하지 않음
+                    }
+
                     const li = document.createElement('li');
 
-                    // 프로필 이미지 경로 설정
-                    const profileImage = friendshipUserResultMap.user.profile
-                        ? `/uploads/profiles/${friendshipUserResultMap.user.profile}`
+                    // fromUser의 프로필 이미지 경로 설정
+                    const profileImage = friendshipUserResultMap.fromUser.profile
+                        ? `/uploads/profiles/${friendshipUserResultMap.fromUser.profile}`
                         : '/uploads/profiles/defaultProfile.jpg';
 
-                    // 이름 설정
-                    const userName = friendshipUserResultMap.user.user_name || 'Unknown';
+                    // fromUser의 이름 설정
+                    const userName = friendshipUserResultMap.fromUser.user_name || 'Unknown';
 
                     // 수락 버튼 생성
                     const acceptButton = document.createElement('button');
@@ -244,6 +259,7 @@ function loadFriendRequests() {
         })
         .catch(error => console.error('Error fetching friend list:', error));
 }
+
 
 
 // 친구 요청 수락

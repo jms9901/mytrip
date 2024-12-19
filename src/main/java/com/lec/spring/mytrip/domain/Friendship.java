@@ -11,7 +11,11 @@ public class Friendship {
 
     @Setter
     @Getter
-    private User user;
+    private User fromUser;  // 발신자 (User 객체)
+
+    @Setter
+    @Getter
+    private User toUser;    // 수신자 (User 객체)
 
     private int requestFriendId;   // PK
     private int toUserId;          // 수신자 ID
