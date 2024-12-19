@@ -58,32 +58,34 @@
   </div>
 
   <!-- 검색 폼 -->
+  <!-- 검색 폼 -->
+  <!-- 검색 폼 -->
   <form id="roundTrip" name="frm" th:action="@{/flight/result}" method="post" enctype="multipart/form-data" class="w-100 w-md-75 w-lg-50">
     <div id="formContainer" class="row gy-3 d-flex">
       <!-- 출발지 -->
       <div class="col-12 col-md-2">
         <div class="text-center">
-          <div class="airport-code fw-bold">ICN</div>
-          <div class="airport-city text-muted">서울</div>
+          <div class="airport-code fw-bold" th:text="${flightRoundTrip.fromAirportId}">ICN</div>
+          <div class="airport-city text-muted">출발지</div>
         </div>
-        <input type="hidden" id="fromEntityId" name="fromAirportId" value="ICN">
+        <input type="hidden" id="fromEntityId" name="fromAirportId" th:value="${flightRoundTrip.fromAirportId}">
       </div>
       <!-- 유니코드 비행기 -->
       <div class="col-auto mx-2">
-        <span class="material-icons flight-icon">flight</span><!-- 비행기 유니코드 -->
+        <span class="material-icons flight-icon">flight</span>
       </div>
       <!-- 도착지 -->
       <div class="col-12 col-md-3">
         <div class="custom-dropdown">
           <div class="dropdown-button text-center d-flex flex-column align-items-center">
-            <div class="airport-code fw-bold" id="toAirportCode">도착</div>
-            <div class="airport-city text-muted" id="toAirportCity">선택<i class="fas fa-caret-down ms-2"></i></div>
+            <div class="airport-code fw-bold" id="toAirportCode" th:text="${flightRoundTrip.toAirportId}">도착</div>
+            <div class="airport-city text-muted">도착지</div>
           </div>
           <div class="dropdown-content p-2 border bg-white shadow">
             <div class="d-flex flex-wrap gap-2">
               <button class="btn btn-outline-primary dropdown-item-btn"
                       th:each="port : ${airports}"
-                      th:if="${port.airportCode} != 'ICN'"
+                      th:if="${port.airportCode} != flightRoundTrip.fromAirportId"
                       th:value="${port.airportCode}">
                 <span th:utext="${port.airportCode}"></span>
                 <br>
@@ -97,16 +99,18 @@
 
       <!-- 날짜 선택 -->
       <div class="col-12 col-md-3 d-flex">
-        <button id="start-date-btn" class="btn btn-outline-primary flex-fill" style="height: 50px; margin-right: 20px;">가는 날</button>
-        <input type="hidden" name="departDate" id="start-date-value">
-        <button id="end-date-btn" class="btn btn-outline-primary flex-fill" style="height: 50px;">오는 날</button>
-        <input type="hidden" name="returnDate" id="end-date-value">
+        <button id="start-date-btn" class="btn btn-outline-primary flex-fill" style="height: 50px; margin-right: 20px;"
+                th:text="${flightRoundTrip.departDate}">가는 날</button>
+        <input type="hidden" name="departDate" id="start-date-value" th:value="${flightRoundTrip.departDate}">
+        <button id="end-date-btn" class="btn btn-outline-primary flex-fill" style="height: 50px;"
+                th:text="${flightRoundTrip.returnDate}">오는 날</button>
+        <input type="hidden" name="returnDate" id="end-date-value" th:value="${flightRoundTrip.returnDate}">
       </div>
 
       <!-- 인원 및 좌석 선택 -->
       <div class="col-12 col-md-3">
-        <!-- 상대 위치 설정 -->
-        <button id="openSelectionBtn" class="btn btn-outline-secondary w-100">성인 1명 프리미엄 이코노미</button>
+        <button id="openSelectionBtn" class="btn btn-outline-secondary w-100"
+                th:text="|성인 ${flightRoundTrip.adultsHeadCnt}명 ${flightRoundTrip.cabinClass}|">성인 1명 프리미엄 이코노미</button>
 
         <div id="selectionContainer" class="mt-3 d-none p-3 border bg-white rounded shadow">
           <!-- 인원 선택 -->
@@ -116,36 +120,35 @@
               <div class="col">성인</div>
               <div class="col-auto">
                 <button class="btn btn-sm btn-outline-secondary" id="adult-decrease">-</button>
-                <span id="adult-count">1</span>
+                <span id="adult-count" th:text="${flightRoundTrip.adultsHeadCnt}">1</span>
                 <button class="btn btn-sm btn-outline-secondary" id="adult-increase">+</button>
-                <input type="hidden" id="adult-input" name="adultsHeadCnt" value="1"> <!-- 숨겨진 input 추가 -->
+                <input type="hidden" id="adult-input" name="adultsHeadCnt" th:value="${flightRoundTrip.adultsHeadCnt}">
               </div>
             </div>
             <div class="row mb-2">
               <div class="col">어린이</div>
               <div class="col-auto">
                 <button class="btn btn-sm btn-outline-secondary" id="child-decrease">-</button>
-                <span id="child-count">0</span>
+                <span id="child-count" th:text="${flightRoundTrip.childrenHeadCnt}">0</span>
                 <button class="btn btn-sm btn-outline-secondary" id="child-increase">+</button>
-                <input type="hidden" id="child-input" name="childrenHeadCnt" value="0"> <!-- 숨겨진 input 추가 -->
+                <input type="hidden" id="child-input" name="childrenHeadCnt" th:value="${flightRoundTrip.childrenHeadCnt}">
               </div>
             </div>
             <div class="row">
               <div class="col">아기</div>
               <div class="col-auto">
                 <button class="btn btn-sm btn-outline-secondary" id="infant-decrease">-</button>
-                <span id="infant-count">0</span>
+                <span id="infant-count" th:text="${flightRoundTrip.infantsHeadCnt}">0</span>
                 <button class="btn btn-sm btn-outline-secondary" id="infant-increase">+</button>
-                <input type="hidden" id="infant-input" name="infantsHeadCnt" value="0"> <!-- 숨겨진 input 추가 -->
+                <input type="hidden" id="infant-input" name="infantsHeadCnt" th:value="${flightRoundTrip.infantsHeadCnt}">
               </div>
             </div>
           </div>
           <!-- 좌석 선택 -->
-          <!-- 좌석 선택 -->
           <div>
             <h5>좌석 선택</h5>
-            <select name="cabinClass" class="form-select" id="cabin-class-select">
-              <option value="economy" selected>이코노미</option>
+            <select name="cabinClass" class="form-select" id="cabin-class-select" th:value="${flightRoundTrip.cabinClass}">
+              <option value="economy">이코노미</option>
               <option value="premium_economy">프리미엄 이코노미</option>
               <option value="business">비즈니스</option>
               <option value="first">퍼스트 클래스</option>
