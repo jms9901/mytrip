@@ -64,7 +64,7 @@
     <resultMap id="PackageAttachmentResultMap" type="com.lec.spring.mytrip.domain.attachment.PackagePostAttachment">
         <id property="packageAttachmentId" column="package_attachment_id"/>
         <result property="packageId" column="package_id"/>
-        <result property="fileName" column="package_attachment_file"/>
+        <result property="packageAttachmentFile" column="package_attachment_file"/>
     </resultMap>
 
     <resultMap id="BoardAttachmentResultMap" type="com.lec.spring.mytrip.domain.attachment.BoardAttachment">

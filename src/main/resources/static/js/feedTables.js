@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     if (attachments && attachments.length > 0) {
                         attachments.forEach((attachment) => {
                             const img = document.createElement('img');
-                            img.src = `/img/${attachment.fileName.trim()}`; // 서버의 업로드 디렉토리 경로
+                            img.src = `/uploads/${attachment.fileName.trim()}`; // 서버의 업로드 디렉토리 경로
                             img.alt = '첨부 이미지';
                             img.style.width = '100%';
                             img.style.flexShrink = '0';
@@ -69,12 +69,41 @@ document.addEventListener('DOMContentLoaded', function () {
             const boardCityName = event.target.getAttribute('data-cityName') || '[데이터 없음]';
             const boardUserName = event.target.getAttribute('data-userName') || '[데이터 없음]';
 
+            // HTML 데이터를 DOM으로 변환
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(boardContent, 'text/html');
+
+            // 텍스트와 이미지 분리
+            const textContent = doc.body.textContent.trim(); // 텍스트 추출
+            const imageElements = doc.querySelectorAll('img'); // 이미지 요소 추출
+
+            // 이미지 정보를 배열로 저장
+            const images = Array.from(imageElements).map(img => ({
+                src: img.getAttribute('src'), // 이미지 데이터 (Base64)
+                filename: img.getAttribute('data-filename'), // 파일 이름
+                style: img.getAttribute('style') // 스타일 정보
+            }));
+
+            // 결과 출력
+            console.log("텍스트:", textContent);
+            console.log("이미지:", images);
+
             document.getElementById('modalRegDate').textContent = regDate;
             document.getElementById('modalBoardSubject').textContent = boardSubject;
-            document.getElementById('modalBoardContent').textContent = boardContent;
+            document.getElementById('modalBoardContent').innerHTML = textContent;
             document.getElementById('modalBoardViewCount').textContent = boardViewCount;
             document.getElementById('modalBoardCityName').textContent = boardCityName;
             document.getElementById('modalBoardUserName').textContent = boardUserName;
+
+            images.forEach(image => {
+                const imgElement = document.createElement("img");
+                imgElement.src = image.src;
+                // imgElement.alt = image.filename; // 이미지 파일 이름
+                // imgElement.style = image.style;
+
+                // 이미지 컨테이너에 추가
+                imageContainer.appendChild(imgElement.src);
+            })
         }
     });
 
