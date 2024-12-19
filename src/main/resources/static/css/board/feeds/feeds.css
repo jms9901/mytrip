@@ -5,6 +5,14 @@
     box-sizing: border-box;
 }
 
+/* font */
+@font-face {
+    font-family: 'MinSans-Regular';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/MinSans-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
 /* 전체 레이아웃 스타일 */
 body {
     background-color: #000; /* 전체 배경색 검은색 */
