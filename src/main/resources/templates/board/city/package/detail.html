@@ -30,6 +30,7 @@
                th:href="@{|/board/city/${cityId}/package/delete/${packageId}|}"
                class="btn btn-danger">삭제</a>
 
+
             <!-- 수정 버튼 -->
             <a th:if="${writerId == loggedInUserId}"
                th:href="@{|/board/city/${cityId}/package/edit/${packageId}|}"
@@ -133,6 +134,8 @@
         </div>
     </div>
 </div>
+<div id="flashMessage" th:if="${msg}" th:data-msg="${msg}"></div>
+
 
 
 <!-- Footer -->

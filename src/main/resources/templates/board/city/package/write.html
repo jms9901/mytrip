@@ -17,6 +17,7 @@
     <link rel="stylesheet" th:href="@{/css/board/package/write.css}">
 </head>
 <body>
+
 <!-- Header Placeholder -->
 <div th:replace="~{fragments/header}"></div>
 
@@ -29,12 +30,12 @@
             <input type="hidden" id="cityId" name="cityId" th:value="${cityId}">
             <!-- 패키지 비용 -->
             <div>
-                <label for="packageCost">Package Cost:</label>
+                <label for="packageCost">패키지 비용:</label>
                 <input type="number" id="packageCost" name="packageCost" min="0" >
             </div>
             <!-- 최대 참여 가능 인원 -->
             <div>
-                <label for="packageMaxpeople">Max Participants:</label>
+                <label for="packageMaxpeople">패키지 최대 인원:</label>
                 <input type="number" id="packageMaxpeople" name="packageMaxpeople" min="0" required>
             </div>
             <!-- 패키지 시작 날짜 -->

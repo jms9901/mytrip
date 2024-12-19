@@ -30,13 +30,13 @@
             <input type="hidden" name="user.id" th:value="${packagePost.packagePost.user.id}">
             <!-- 패키지 비용 -->
             <div>
-                <label for="packageCost">Package Cost:</label>
+                <label for="packageCost">패키지 비용:</label>
                 <input type="number" id="packageCost" name="packageCost"
                        th:value="${packagePost.packagePost.packageCost}" required>
             </div>
             <!-- 최대 참여 가능 인원 -->
             <div>
-                <label for="packageMaxpeople">Max Participants:</label>
+                <label for="packageMaxpeople">패키지 최대 인원:</label>
                 <input type="number" id="packageMaxpeople" name="packageMaxpeople"
                        th:value="${packagePost.packagePost.packageMaxpeople}" required>
             </div>
