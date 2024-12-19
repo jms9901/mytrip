@@ -1,0 +1,80 @@
+/*!* Main Section CSS *!*/
+main {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #8aaad940;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/*main form {*/
+/*    display: flex;*/
+/*    flex-direction: column;*/
+/*    gap: 20px;*/
+/*}*/
+
+/*main form div {*/
+/*    display: flex;*/
+/*    flex-direction: column;*/
+/*}*/
+
+main form div label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+
+main form div input,
+main form div textarea {
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    background-color: #ffffff;
+    border-radius: 5px;
+}
+
+.note-editable {
+    background-color: #ffffff
+}
+
+main form div input:focus,
+main form div textarea:focus {
+    border-color: #0056b3;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 86, 179, 0.3);
+}
+
+.note-toolbar {
+    background-color: #ffffff;
+}
+/*main form .text-end {*/
+/*    display: flex;*/
+/*    justify-content: flex-end;*/
+/*    gap: 10px;*/
+/*    flex-direction: row;*/
+/*}*/
+
+/*main form .text-end .btn {*/
+/*    text-decoration: none;*/
+/*    color: #fff;*/
+/*    background-color: #0056b3;*/
+/*    border: none;*/
+/*    padding: 5px 10px;*/
+/*    border-radius: 5px;*/
+/*    font-size: 0.9rem;*/
+/*    transition: background-color 0.3s, color 0.3s;*/
+/*    cursor: pointer;*/
+/*}*/
+
+main form .text-end .btn:hover {
+    background-color: #004494;
+}
+
+main form .text-end .btn-primary {
+    background-color: #007bff;
+}
+
+main form .text-end .btn-primary:hover {
+    background-color: #0056b3;
+}
