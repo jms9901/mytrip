@@ -43,26 +43,32 @@
                 <div class="slide-track">
                     <!-- 슬라이드 복사본 (끝에 추가될 첫 슬라이드) -->
                     <div class="slide" th:each="pkg : ${latestPackages}">
-                        <img th:src="@{${pkg.packageAttachmentFile != null
-                             ? '/uploads/package/' + pkg.packageAttachmentFile
-                             : '/img/China.jpg'}}" th:alt="${pkg.packageTitle}">
-                        <p th:text="${pkg.packageTitle}"></p>
+                        <a th:href="@{|/board/city/${pkg.cityId}/package/detail/${pkg.packageId}|}">
+                            <img th:src="@{${pkg.packageAttachmentFile != null
+                         ? '/uploads/package/' + pkg.packageAttachmentFile
+                         : '/img/China.jpg'}}" th:alt="${pkg.packageTitle}">
+                            <p th:text="${pkg.packageTitle}"></p>
+                        </a>
                     </div>
 
                     <!-- 실제 슬라이드들 -->
                     <div class="slide" th:each="pkg : ${latestPackages}">
-                        <img th:src="@{${pkg.packageAttachmentFile != null
-                             ? '/uploads/package/' + pkg.packageAttachmentFile
-                             : '/img/China.jpg'}}" th:alt="${pkg.packageTitle}">
-                        <p th:text="${pkg.packageTitle}"></p>
+                        <a th:href="@{|/board/city/${pkg.cityId}/package/detail/${pkg.packageId}|}">
+                            <img th:src="@{${pkg.packageAttachmentFile != null
+                         ? '/uploads/package/' + pkg.packageAttachmentFile
+                         : '/img/China.jpg'}}" th:alt="${pkg.packageTitle}">
+                            <p th:text="${pkg.packageTitle}"></p>
+                        </a>
                     </div>
 
                     <!-- 슬라이드 복사본 (처음으로 돌아갈 마지막 슬라이드) -->
                     <div class="slide" th:each="pkg : ${latestPackages}">
-                        <img th:src="@{${pkg.packageAttachmentFile != null
-                             ? '/uploads/package/' + pkg.packageAttachmentFile
-                             : '/img/China.jpg'}}" th:alt="${pkg.packageTitle}">
-                        <p th:text="${pkg.packageTitle}"></p>
+                        <a th:href="@{|/board/city/${pkg.cityId}/package/detail/${pkg.packageId}|}">
+                            <img th:src="@{${pkg.packageAttachmentFile != null
+                         ? '/uploads/package/' + pkg.packageAttachmentFile
+                         : '/img/China.jpg'}}" th:alt="${pkg.packageTitle}">
+                            <p class="no-underline"  th:text="${pkg.packageTitle}"></p>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -91,7 +97,7 @@
                     <div class="row d-flex justify-content-center align-items-start">
                         <div class="col-md-4 mb-5" th:each="city : ${mostRecommendedCities}">
                             <!-- 이미지 -->
-                            <a th:href="@{|/post/${city.cityId}|}">
+                            <a th:href="@{|/board/city/${city.cityId}|}">
                                 <img th:src="@{|/img/${city.cityImg}|}" th:alt="${city.cityName}" class="img-fluid rounded shadow">
                             </a>
                             <!-- 텍스트 정보 -->
@@ -168,7 +174,7 @@
         <div id="scrollMenu">
             <a th:href="@{/aipage/start}">여행지 추천</a>
             <a th:href="@{/flight/search}">항공권 예약</a>
-            <a th:href="@{/post}">여행지 게시판</a>
+            <a th:href="@{/board/city/1}">여행지 게시판</a>
         </div>
 
         <button onclick="topFunction()" id="myBtn" title="Go to top">Top</button>
