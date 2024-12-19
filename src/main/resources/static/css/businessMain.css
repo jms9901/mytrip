@@ -7,7 +7,7 @@ body {
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
-    font-family: 'Kaushan Script';
+    font-family: "Oswald", sans-serif;
 }
 
 .main-container {
@@ -160,12 +160,14 @@ body {
 
 .package-name {
     font-weight: bold;
-    flex: 2;
+    /*flex: 2;*/
+    width: 200px;
 }
 
 .package-content {
-    flex: 2;
+    /*flex: 2;*/
     text-align: center;
+    width: 575px;
 }
 
 .package-status {
@@ -193,7 +195,8 @@ body {
 }
 
 .liked {
-    flex: 0.3;
+    /*flex: 0.3;*/
+    width: 80px;
     text-align: center;
     position: relative;
     display: flex;
@@ -210,6 +213,6 @@ body {
 
 .likedCnt {
     position: relative;
-    top: 3px;
-    left: 15px;
+    top: 9px;
+    left: 9px;
 }

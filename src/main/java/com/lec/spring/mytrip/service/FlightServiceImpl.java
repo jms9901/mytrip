@@ -1,6 +1,6 @@
 package com.lec.spring.mytrip.service;
 
-import com.lec.spring.mytrip.FlightApiCall;
+import com.lec.spring.mytrip.util.FlightApiCall;
 import com.lec.spring.mytrip.domain.Flight;
 import com.lec.spring.mytrip.form.flight.*;
 import com.lec.spring.mytrip.repository.FlightRepository;

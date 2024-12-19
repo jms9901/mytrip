@@ -19,33 +19,7 @@
 </head>
 <body>
 <!-- 헤더 부분 -->
-<header id="header">
-  <div class="topnav SMN_effect-6">
-    <a th:href="@{/main/mainpage}">
-      <img th:src="@{/img/logo.png}" alt="" class="logo">
-    </a>
-    <sec:authorize access="isAuthenticated()">
-      <a th:href="@{/aipage/start}" class="top-menu">여행지 추천</a>
-    </sec:authorize>
-    <sec:authorize access="isAuthenticated()">
-      <a th:href="@{/board/city/1}" class="top-menu">여행지 게시판</a>
-    </sec:authorize>
-    <sec:authorize access="isAuthenticated()">
-      <a th:href="@{/flight/search}" class="top-menu">항공권 조회</a>
-    </sec:authorize>
-    <a sec:authorize="isAnonymous()" th:href="@{/user/login}" class="top-menu" style="margin-left: 40vw;">login</a>
-    <form th:action="@{/user/mypage}" method="GET" sec:authorize="isAuthenticated()">
-      <button type="submit" class="mypage" style="font-family: 'Kaushan Script'; margin-left: 40vw;">Mypage</button></form>
-    <form th:action="@{/user/logout}" method="POST" sec:authorize="isAuthenticated()" th:with="user=${#authentication.getPrincipal()}">
-      <button type="submit" style="background-color: #142055; border: none;">
-        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16" style="color: #f2f2f2; background-color: #142055; margin-left: 50px; top: 20px">
-          <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0z"/>
-          <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"/>
-        </svg>
-      </button>
-    </form>
-  </div>
-</header>
+<div th:replace="~{fragments/header}"></div>
 
 <div id="pageContainer" class="container d-flex justify-content-center align-items-center min-vh-100">
   <div id="background-slider">
@@ -58,32 +32,34 @@
   </div>
 
   <!-- 검색 폼 -->
+  <!-- 검색 폼 -->
+  <!-- 검색 폼 -->
   <form id="roundTrip" name="frm" th:action="@{/flight/result}" method="post" enctype="multipart/form-data" class="w-100 w-md-75 w-lg-50">
     <div id="formContainer" class="row gy-3 d-flex">
       <!-- 출발지 -->
       <div class="col-12 col-md-2">
         <div class="text-center">
-          <div class="airport-code fw-bold">ICN</div>
-          <div class="airport-city text-muted">서울</div>
+          <div class="airport-code fw-bold" th:text="${flightRoundTrip.fromAirportId}">ICN</div>
+          <div class="airport-city text-muted">출발지</div>
         </div>
-        <input type="hidden" id="fromEntityId" name="fromAirportId" value="ICN">
+        <input type="hidden" id="fromEntityId" name="fromAirportId" th:value="${flightRoundTrip.fromAirportId}">
       </div>
       <!-- 유니코드 비행기 -->
       <div class="col-auto mx-2">
-        <span class="material-icons flight-icon">flight</span><!-- 비행기 유니코드 -->
+        <span class="material-icons flight-icon">flight</span>
       </div>
       <!-- 도착지 -->
       <div class="col-12 col-md-3">
         <div class="custom-dropdown">
           <div class="dropdown-button text-center d-flex flex-column align-items-center">
-            <div class="airport-code fw-bold" id="toAirportCode">도착</div>
-            <div class="airport-city text-muted" id="toAirportCity">선택<i class="fas fa-caret-down ms-2"></i></div>
+            <div class="airport-code fw-bold" id="toAirportCode" th:text="${flightRoundTrip.toAirportId}">도착</div>
+            <div class="airport-city text-muted">도착지</div>
           </div>
           <div class="dropdown-content p-2 border bg-white shadow">
             <div class="d-flex flex-wrap gap-2">
               <button class="btn btn-outline-primary dropdown-item-btn"
                       th:each="port : ${airports}"
-                      th:if="${port.airportCode} != 'ICN'"
+                      th:if="${port.airportCode} != flightRoundTrip.fromAirportId"
                       th:value="${port.airportCode}">
                 <span th:utext="${port.airportCode}"></span>
                 <br>
@@ -97,16 +73,18 @@
 
       <!-- 날짜 선택 -->
       <div class="col-12 col-md-3 d-flex">
-        <button id="start-date-btn" class="btn btn-outline-primary flex-fill" style="height: 50px; margin-right: 20px;">가는 날</button>
-        <input type="hidden" name="departDate" id="start-date-value">
-        <button id="end-date-btn" class="btn btn-outline-primary flex-fill" style="height: 50px;">오는 날</button>
-        <input type="hidden" name="returnDate" id="end-date-value">
+        <button id="start-date-btn" class="btn btn-outline-primary flex-fill" style="height: 50px; margin-right: 20px;"
+                th:text="${flightRoundTrip.departDate}">가는 날</button>
+        <input type="hidden" name="departDate" id="start-date-value" th:value="${flightRoundTrip.departDate}">
+        <button id="end-date-btn" class="btn btn-outline-primary flex-fill" style="height: 50px;"
+                th:text="${flightRoundTrip.returnDate}">오는 날</button>
+        <input type="hidden" name="returnDate" id="end-date-value" th:value="${flightRoundTrip.returnDate}">
       </div>
 
       <!-- 인원 및 좌석 선택 -->
       <div class="col-12 col-md-3">
-        <!-- 상대 위치 설정 -->
-        <button id="openSelectionBtn" class="btn btn-outline-secondary w-100">성인 1명 프리미엄 이코노미</button>
+        <button id="openSelectionBtn" class="btn btn-outline-secondary w-100"
+                th:text="|성인 ${flightRoundTrip.adultsHeadCnt}명 ${flightRoundTrip.cabinClass}|">성인 1명 프리미엄 이코노미</button>
 
         <div id="selectionContainer" class="mt-3 d-none p-3 border bg-white rounded shadow">
           <!-- 인원 선택 -->
@@ -116,36 +94,35 @@
               <div class="col">성인</div>
               <div class="col-auto">
                 <button class="btn btn-sm btn-outline-secondary" id="adult-decrease">-</button>
-                <span id="adult-count">1</span>
+                <span id="adult-count" th:text="${flightRoundTrip.adultsHeadCnt}">1</span>
                 <button class="btn btn-sm btn-outline-secondary" id="adult-increase">+</button>
-                <input type="hidden" id="adult-input" name="adultsHeadCnt" value="1"> <!-- 숨겨진 input 추가 -->
+                <input type="hidden" id="adult-input" name="adultsHeadCnt" th:value="${flightRoundTrip.adultsHeadCnt}">
               </div>
             </div>
             <div class="row mb-2">
               <div class="col">어린이</div>
               <div class="col-auto">
                 <button class="btn btn-sm btn-outline-secondary" id="child-decrease">-</button>
-                <span id="child-count">0</span>
+                <span id="child-count" th:text="${flightRoundTrip.childrenHeadCnt}">0</span>
                 <button class="btn btn-sm btn-outline-secondary" id="child-increase">+</button>
-                <input type="hidden" id="child-input" name="childrenHeadCnt" value="0"> <!-- 숨겨진 input 추가 -->
+                <input type="hidden" id="child-input" name="childrenHeadCnt" th:value="${flightRoundTrip.childrenHeadCnt}">
               </div>
             </div>
             <div class="row">
               <div class="col">아기</div>
               <div class="col-auto">
                 <button class="btn btn-sm btn-outline-secondary" id="infant-decrease">-</button>
-                <span id="infant-count">0</span>
+                <span id="infant-count" th:text="${flightRoundTrip.infantsHeadCnt}">0</span>
                 <button class="btn btn-sm btn-outline-secondary" id="infant-increase">+</button>
-                <input type="hidden" id="infant-input" name="infantsHeadCnt" value="0"> <!-- 숨겨진 input 추가 -->
+                <input type="hidden" id="infant-input" name="infantsHeadCnt" th:value="${flightRoundTrip.infantsHeadCnt}">
               </div>
             </div>
           </div>
           <!-- 좌석 선택 -->
-          <!-- 좌석 선택 -->
           <div>
             <h5>좌석 선택</h5>
-            <select name="cabinClass" class="form-select" id="cabin-class-select">
-              <option value="economy" selected>이코노미</option>
+            <select name="cabinClass" class="form-select" id="cabin-class-select" th:value="${flightRoundTrip.cabinClass}">
+              <option value="economy">이코노미</option>
               <option value="premium_economy">프리미엄 이코노미</option>
               <option value="business">비즈니스</option>
               <option value="first">퍼스트 클래스</option>
@@ -260,37 +237,7 @@
   <div><button id="scrollTopBtn">↑ 상단으로</button></div>
 
 <!-- Footer Section -->
-<footer id="footer">
-  <div class="footercontainer">
-    <div class="column1">
-      <a th:href="@{/aipage/start}"><img th:src="@{/img/logo.png}" alt=""></a>
-    </div>
-    <div class="column2">
-      <a th:href="@{/aipage/start}">여행지 추천</a>
-      <a th:href="@{/post}">여행지 게시판</a>
-      <a th:href="@{/flight/search}">항공권 예약</a>
-      <a th:href="@{/flight/search}">마이페이지</a>
-    </div>
-    <div class="column3">
-      <a th:href="@{/aipage/start}">이용약관</a>
-      <a th:href="@{/post}">공지사항</a>
-      <a th:href="@{/flight/search}">고객센터</a>
-    </div>
-
-    <!-- 아이콘과 텍스트를 묶는 컨테이너 -->
-    <div class="icon-and-text">
-      <div class="column4">
-        <a th:href="@{/aipage/start}"><img th:src="@{/img/Instagram_logo.png}" alt="Instagram"></a>
-        <a th:href="@{/aipage/start}"><img th:src="@{/img/facebook-logo.png}" alt="Facebook"></a>
-        <a th:href="@{/aipage/start}"><img th:src="@{/img/youtube_logo.png}" alt="YouTube"></a>
-        <a th:href="@{/aipage/start}"><img th:src="@{/img/naver_logo.png}" alt="Naver"></a>
-      </div>
-      <div class="column5">
-        <p>©트립파트너㈜. ALL RIGHTS RESERVED.</p>
-      </div>
-    </div>
-  </div>
-</footer>
+<div th:replace="~{fragments/header}"></div>
 
 
 
