@@ -19,3 +19,17 @@ window.addEventListener('scroll', () => {
     }
 });
 
+document.addEventListener('DOMContentLoaded', () => {
+    fetch('/aipage/username')
+        .then(response => response.json())
+        .then(data => {
+            const userNames = document.querySelectorAll('.user-name'); // 클래스명으로 모든 요소 선택
+            userNames.forEach((nameElement) => {
+                nameElement.textContent = data.name; // 각 요소에 사용자 이름 업데이트
+            });
+        })
+        .catch(error => {
+            console.error('에러 발생:', error);
+        });
+});
+
