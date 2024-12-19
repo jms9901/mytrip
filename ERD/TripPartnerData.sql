@@ -29,7 +29,7 @@ values       (
                  '1234',
                  'business1234',
                  '이경원',
-                 'ROLE_BUSINESS',
+                 'business',
                  '123-11-12345'
              ) ;
 

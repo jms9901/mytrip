@@ -91,7 +91,7 @@
         FROM board_liked bl
                  JOIN board b ON bl.board_id = b.board_id
                  LEFT JOIN board_attachment ba ON b.board_id = ba.board_id
-        WHERE bl.user_id = #{userId}
+        WHERE bl.user_id = #{userId} and b.board_category = '피드'
         ORDER BY bl.board_liked_date DESC
     </select>
 
