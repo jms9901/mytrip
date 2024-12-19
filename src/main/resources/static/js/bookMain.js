@@ -165,9 +165,11 @@ function handleFriendRequest(action, fromUserId, toUserId, requestItem) {
             // 요청이 성공하면 해당 항목 삭제
             if (action === "accept" || action === "reject") {
                 requestItem.remove();  // 해당 요청 항목 삭제
+                window.location.reload();
             }
         })
         .catch(error => console.error(`Error processing ${action} request:`, error));
+    window.location.reload();
 }
 
 
@@ -333,6 +335,7 @@ function submitUserChanges() {
         reader.readAsDataURL(profileImage);  // base64로 변환
     } else {
         sendRequest();  // 프로필 이미지가 없으면 바로 서버로 요청
+
     }
 
     // 요청 보내는 함수
@@ -357,11 +360,13 @@ function submitUserChanges() {
             .then(data => {
                 console.log("Success:", data);
                 alert("수정 완료!");
+                window.location.reload();
                 // 응답 데이터에 따라 추가 작업 수행
             })
             .catch(error => {
                 console.error("Error:", error);
                 alert("수정 실패! 비밀번호 확인해주세요");
+                window.location.reload();
             });
     }
 }
@@ -700,6 +705,7 @@ async function sendRequest(endpoint, params) {
     const response = await fetch(`${apiUrl}/${endpoint}?${params}`, { method: "POST" });
     const result = await response.text();
     alert(result);
+    window.location.reload();
 }
 
 // // 친구 요청 보내기
@@ -720,6 +726,7 @@ document.getElementById("acceptFriendRequestForm").addEventListener("submit", (e
         toUserId: UserId
     });
     sendRequest("accept", params);
+    window.location.reload();
 });
 
 // 친구 요청 거절
@@ -730,4 +737,5 @@ document.getElementById("rejectFriendRequestForm").addEventListener("submit", (e
         toUserId: UserId
     });
     sendRequest("reject", params);
+    window.location.reload();
 });
