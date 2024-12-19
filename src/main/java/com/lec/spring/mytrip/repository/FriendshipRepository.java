@@ -28,4 +28,6 @@ public interface FriendshipRepository {
     List<FriendshipUserResultMap> AcceptedFriends(Long userId);
 
     List<FriendshipUserResultMap> requestView(Long userId);
+
+    void delete(Friendship friendship);
 }

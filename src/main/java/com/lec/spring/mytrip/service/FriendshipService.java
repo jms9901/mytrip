@@ -58,10 +58,10 @@ public class FriendshipService {
         }
 
         Friendship friendship = existingRequest.get();
-        friendship.setFriendStatus(FriendshipStatus.거절);
-        friendshipRepository.rejectFriendRequest(toUserId, fromUserId);
+        friendshipRepository.delete(friendship);
         return "거절되었습니다";
     }
+
 
     // 친구 수 조회
     public int countAcceptedFriends(int userId){
