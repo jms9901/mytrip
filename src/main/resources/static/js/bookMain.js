@@ -630,11 +630,14 @@ $(document).ready(function() {
                     }).join('');
                 }
 
+
+                const truncatedSubject = feed.boardSubject.length > 10 ? feed.boardSubject.substring(0, 10) + '...' : feed.boardSubject;
+
                 const entryHtml = `
                     <div class="feed-entry" style="background-image: url(/img/postFrame.png)" data-index="${index}">
-                        ${attachmentHtml}
-                        <div>${feed.boardSubject}</div>
-                    </div>
+                    ${attachmentHtml}
+                    <div>${truncatedSubject}</div> <!-- 수정된 제목 -->
+                </div>
                 `;
 
                 // 3개씩 묶어서 하나의 행으로 추가

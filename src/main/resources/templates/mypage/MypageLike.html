@@ -304,10 +304,13 @@
                         }
                     }
 
+                    const truncatedSubject = feed.subject.length > 10 ? feed.subject.substring(0, 10) + '...' : feed.subject;
+
+
                     const entryHtml = `
-                <div class="feed-entry" style="background-image: url(/img/postFrame.png)" data-index="${index}">
+ <div class="feed-entry" style="background-image: url(/img/postFrame.png)" data-index="${index}">
                     ${attachmentHtml} <!-- 첨부파일 이미지 추가 -->
-                    <div>${feed.subject}</div>
+                    <div>${truncatedSubject}</div>  <!-- 수정된 제목 -->
                 </div>
             `;
 

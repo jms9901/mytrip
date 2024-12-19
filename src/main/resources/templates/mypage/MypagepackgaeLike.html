@@ -205,19 +205,28 @@
                     }
 
                     const entryHtml = `
-                <div class="feed-entry" style="background-image: url(/img/postFrame.png)"
-                data-city-id="${feed.cityId}"
-                    data-package-id="${feed.packageId}"
-                data-index="${index}">
-                    ${attachmentHtml} <!-- 첨부파일 이미지 추가 -->
-                    <div>${feed.packageTitle}</div>
-                </div>
+        <div class="feed-entry" style="background-image: url(/img/postFrame.png)"
+        data-city-id="${feed.cityId}"
+        data-package-id="${feed.packageId}"
+        data-index="${index}">
+        ${attachmentHtml} <!-- 첨부파일 이미지 추가 -->
+        <div class="package-title">${truncateText(feed.packageTitle, 10)}</div> <!-- 텍스트 자르기 -->
+    </div>
             `;
 
                     // 항목을 페이지에 추가
                     addEntryToPage(entryHtml, index + 1);
                     console.log(`feed Entry ${index + 1} added to page`);
+
+                    function truncateText(text, maxLength) {
+                        if (text.length > maxLength) {
+                            return text.substring(0, maxLength) + '...'; // 10글자 이상이면 잘라서 '...' 추가
+                        }
+                        return text; // 10글자 이하일 경우 그대로 반환
+                    }
                 });
+
+
                 // 클릭 이벤트 추가
                 document.querySelectorAll('.feed-entry').forEach(entry => {
                     entry.addEventListener('click', function () {
