@@ -53,6 +53,11 @@
           and f.friend_status = '대기'
     </select>
 
+    <delete id="delete">
+        DELETE FROM friendship
+        WHERE to_user_id = #{toUserId} AND from_user_id = #{fromUserId}
+    </delete>
+
     <!-- 결과 맵핑 -->
     <resultMap id="FriendshipUserResultMap" type="com.lec.spring.mytrip.domain.Friendship">
         <result property="requestFriendId" column="request_friend_id"/>

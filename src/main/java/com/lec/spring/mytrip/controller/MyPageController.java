@@ -79,6 +79,7 @@ public class MyPageController {
     public Map<String, String> loginUserAuthority(HttpSession session) {
 
         User loggedUser = U.getLoggedUser();  // 사용자 정보 가져오기
+//        System.out.println(loggedUser.toString());
 
         // 유저 ID와 권한 가져오기
         int userId = loggedUser.getId();
