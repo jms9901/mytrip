@@ -1,6 +1,6 @@
 // 로그인 유저 권한 확인 (일반유저, 비즈니스)
 document.querySelector('.mypage').addEventListener('click', () => {
-    fetch('../../mypage/loginuserauthority')
+    fetch('/mypage/loginuserauthority')
         .then(response => response.json())
         .then(data => {
             const redirectUrl = data.redirectUrl;

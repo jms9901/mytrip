@@ -16,7 +16,7 @@
 
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
     <!-- Navbar Brand-->
-    <a class="navbar-brand ps-3" th:href="@{/index.html}">Trip Partner</a>
+    <a class="navbar-brand ps-3" th:href="@{/main/mainpage}">Trip Partner</a> a
     <!-- Sidebar Toggle-->
     <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
     <div class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0"></div>
@@ -134,6 +134,7 @@
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" inert>
     <div class="modal-dialog">
         <div class="modal-content">
+            <div id="modalBoardId" style="display: none;" data-boardId=""></div>
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel"> 사용자 정보</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

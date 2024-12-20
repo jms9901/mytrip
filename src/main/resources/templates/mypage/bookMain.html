@@ -42,8 +42,8 @@
             <div style="background-image:url(/img/sample_left.png)">
                 <div class="mypageUserInfo">
                     <div class="circle">
-                        <img th:src="@{'/uploads/profiles/' + ${user.profile}}">
-
+                        <img th:src="@{'/uploads/profiles/' + ${user.profile}}"
+                             onerror="this.onerror=null; this.src='/uploads/profiles/defaultProfile.jpg';">
                     </div>
                     <div class="InfoArea">
                         <div>
@@ -64,7 +64,7 @@
                     <form id="sendFriendRequestForm">
                         <button type="submit" class="btn" id="freindrequestbtn" style="left: 330px;">친구 요청</button>
                     </form>
-                    <div class="Connections" id="openModalBtn">Connections.</div>
+                    <div class="Connections" id="openModalBtn">Friends.</div>
                     <div class="ConnectionsCnt" id="ConnectionsCnt">
                         <span th:text="${countAcceptedFriends}">0</span>
                     </div>

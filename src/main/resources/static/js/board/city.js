@@ -49,3 +49,30 @@ $().ready(function() {
         }
     });
 });
+
+// DOMContentLoaded 이벤트를 사용하여 DOM이 완전히 로드된 후 실행되도록 설정
+document.addEventListener("DOMContentLoaded", function () {
+    let scrollMenu = document.getElementById("scrollMenu");
+    let section3 = document.querySelector(".container"); // class를 사용하여 선택
+
+    if (!scrollMenu || !section3) {
+        console.error("scrollMenu 또는 section3 요소를 찾을 수 없습니다.");
+        return;
+    }
+
+    // 통합된 스크롤 이벤트 핸들러
+    function handleScroll() {
+        let section3Top = section3.offsetTop; // section3의 상단 위치
+        let scrollPosition = window.scrollY; // 현재 스크롤 위치
+
+        // 메뉴바 표시/숨기기 로직
+        if (scrollPosition >= section3Top) {
+            scrollMenu.style.display = "block"; // section3 이후에 메뉴바 표시
+        } else {
+            scrollMenu.style.display = "none"; // section3 이전에는 메뉴바 숨기기
+        }
+    }
+
+    // 기존의 `onscroll`에 영향을 주지 않도록 함수로 분리
+    window.addEventListener("scroll", handleScroll);
+});

@@ -1,3 +1,29 @@
+
+document.addEventListener('DOMContentLoaded', () => {
+
+    // 결제 완료
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('status') === 'success') {
+        alert('결제가 성공적으로 완료되었습니다!');
+    }
+
+
+    // 작성완료
+    const flashMessageDiv = document.getElementById('flashMessage');
+    if (flashMessageDiv) {
+        const message = flashMessageDiv.getAttribute('data-msg');
+        if (message) {
+            alert(message); // 또는 원하는 방식으로 메시지 표시
+        }
+    }
+});
+
+
+
+
+
+
+
 function increaseCount() {
     const countInput = document.getElementById('userCount'); // 메인 화면의 인원 수 입력 필드
     const maxPeople = parseInt(countInput.getAttribute('max')); // 최대 인원 수
@@ -78,3 +104,6 @@ if (cityIdMatch) {
 } else {
     console.error('cityId를 URL에서 찾을 수 없습니다.');
 }
+
+
+

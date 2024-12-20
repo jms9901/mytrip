@@ -1,3 +1,35 @@
+@font-face {
+    font-family: 'ONE-Mobile-POP';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2105_2@1.0/ONE-Mobile-POP.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* font */
+
+@font-face {
+    font-family: 'MinSans-Regular';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/MinSans-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+body {
+    font-family: 'MinSans-Regular', sans-serif;
+}
+
+
+.Ejskwk {
+    font-family: 'ONE-Mobile-POP', sans-serif;
+}
+
+.mt-4{
+    font-family: 'ONE-Mobile-POP', sans-serif;
+
+}
+
+
 .hero {
     position: relative;
     text-align: center;
@@ -25,7 +57,7 @@
     align-items: center;
     justify-content: center;
     text-align: center;
-    width: 130px; /* 카드의 너비 */
+    width: 170px; /* 카드의 너비 */
     border-radius: 10px; /* 모서리 둥글게 */
     overflow: hidden; /* 이미지가 넘치지 않도록 */
     background-color: #fff; /* 배경색 */
@@ -92,10 +124,11 @@
     right: 0;
     margin-bottom: 20px;
 }
-#groupWrite{
-    position: relative;
-    right: 0;
-    margin-bottom: 20px;
+
+#groupWrite {
+    position: absolute;
+    right: 18%;
+    margin-bottom: 20%;
 }
 
 
@@ -116,6 +149,8 @@
 }
 
 .slider-container {
+    margin-top: 45px;
+    margin-bottom: 120px;
     position: relative;
     width: auto;
     overflow: hidden;
@@ -129,13 +164,13 @@
 }
 
 .slider-item {
-    min-width: 25%; /* 4개씩 보이도록 설정 */
-    max-width: 25%;
+    min-width: 19%; /* 4개씩 보이도록 설정 */
+    max-width: 19%;
     box-sizing: border-box;
 }
 
 .card-img {
-    height: 170px;
+    height: 20vh;
 }
 
 .card-title{
@@ -177,7 +212,7 @@
 }
 .city-navigation {
 
-    margin-bottom: 60px; /* 아래 요소와의 간격 (선택) */
+    margin-bottom: 100px; /* 아래 요소와의 간격 (선택) */
 }
 /* 피드 버튼 섹션 스타일 */
 #feed-button {

@@ -118,22 +118,34 @@ document.getElementById('ConnectionsCnt').addEventListener('click', function () 
                     const li = document.createElement('li');
                     li.classList.add('friend-item');
 
-                    // 프로필 이미지 경로 설정 (profile이 없으면 defaultProfile.jpg 사용)
-                    const profileImage = friendshipUserResultMap.user.profile ? `/uploads/profiles/${friendshipUserResultMap.user.profile}` : '/uploads/profiles/defaultProfile.jpg';
-
-                    // name이 null일 경우 "Unknown"으로 처리
-                    const userName = friendshipUserResultMap.user.user_name || 'Unknown';
-                    const userId = friendshipUserResultMap.user.id;
+                    // 조건에 맞는 데이터를 선택합니다.
+                    let profileImage, userName, selectedUserId;
+                    if (friendshipUserResultMap.fromUserId === userId) {
+                        // fromUserId가 userId와 같다면, toUser의 정보를 표시
+                        profileImage = friendshipUserResultMap.toUser.profile
+                            ? `/uploads/profiles/${friendshipUserResultMap.toUser.profile}`
+                            : '/uploads/profiles/defaultProfile.jpg';
+                        userName = friendshipUserResultMap.toUser.user_name || 'Unknown';
+                        selectedUserId = friendshipUserResultMap.toUser.id;
+                    } else if (friendshipUserResultMap.toUserId === userId) {
+                        // toUserId가 userId와 같다면, fromUser의 정보를 표시
+                        profileImage = friendshipUserResultMap.fromUser.profile
+                            ? `/uploads/profiles/${friendshipUserResultMap.fromUser.profile}`
+                            : '/uploads/profiles/defaultProfile.jpg';
+                        userName = friendshipUserResultMap.fromUser.user_name || 'Unknown';
+                        selectedUserId = friendshipUserResultMap.fromUser.id;
+                    }
 
                     // 프로필 이미지와 유저 이름 표시
                     li.innerHTML = `
-                        <img src="${profileImage}" alt="Profile" class="friend-profile-img">
+                       <img src="${profileImage}" alt="Profile" class="friend-profile-img" 
+                            onerror="this.onerror=null; this.src='/uploads/profiles/defaultProfile.jpg';">
                         <span class="friend-name" style="cursor: pointer">${userName}</span>
                     `;
 
                     // 클릭 시 개인 페이지로 이동
                     li.addEventListener('click', () => {
-                        window.location.href = `/mypage/${userId}`;
+                        window.location.href = `/mypage/${selectedUserId}`;
                     });
 
                     friendListElement.appendChild(li);
@@ -165,9 +177,11 @@ function handleFriendRequest(action, fromUserId, toUserId, requestItem) {
             // 요청이 성공하면 해당 항목 삭제
             if (action === "accept" || action === "reject") {
                 requestItem.remove();  // 해당 요청 항목 삭제
+                window.location.reload();
             }
         })
         .catch(error => console.error(`Error processing ${action} request:`, error));
+    window.location.reload();
 }
 
 
@@ -186,15 +200,20 @@ function loadFriendRequests() {
                 requestView.style.display = 'flex'; // 데이터가 있으면 표시
 
                 data.forEach(friendshipUserResultMap => {
+                    // fromUserId가 userId와 동일한 경우 건너뛰기
+                    if (friendshipUserResultMap.fromUserId === userId) {
+                        return;  // 해당 항목은 출력하지 않음
+                    }
+
                     const li = document.createElement('li');
 
-                    // 프로필 이미지 경로 설정
-                    const profileImage = friendshipUserResultMap.user.profile
-                        ? `/uploads/profiles/${friendshipUserResultMap.user.profile}`
+                    // fromUser의 프로필 이미지 경로 설정
+                    const profileImage = friendshipUserResultMap.fromUser.profile
+                        ? `/uploads/profiles/${friendshipUserResultMap.fromUser.profile}`
                         : '/uploads/profiles/defaultProfile.jpg';
 
-                    // 이름 설정
-                    const userName = friendshipUserResultMap.user.user_name || 'Unknown';
+                    // fromUser의 이름 설정
+                    const userName = friendshipUserResultMap.fromUser.user_name || 'Unknown';
 
                     // 수락 버튼 생성
                     const acceptButton = document.createElement('button');
@@ -220,7 +239,8 @@ function loadFriendRequests() {
 
                     // 목록 생성
                     li.innerHTML = `
-                        <img src="${profileImage}" alt="Profile" class="friend-profile-img">
+                       <img src="${profileImage}" alt="Profile" class="friend-profile-img" 
+                            onerror="this.onerror=null; this.src='/uploads/profiles/defaultProfile.jpg';">
                         <span class="friend-name">${userName}</span>
                     `;
 
@@ -239,6 +259,7 @@ function loadFriendRequests() {
         })
         .catch(error => console.error('Error fetching friend list:', error));
 }
+
 
 
 // 친구 요청 수락
@@ -333,6 +354,7 @@ function submitUserChanges() {
         reader.readAsDataURL(profileImage);  // base64로 변환
     } else {
         sendRequest();  // 프로필 이미지가 없으면 바로 서버로 요청
+
     }
 
     // 요청 보내는 함수
@@ -357,11 +379,13 @@ function submitUserChanges() {
             .then(data => {
                 console.log("Success:", data);
                 alert("수정 완료!");
+                window.location.reload();
                 // 응답 데이터에 따라 추가 작업 수행
             })
             .catch(error => {
                 console.error("Error:", error);
                 alert("수정 실패! 비밀번호 확인해주세요");
+                window.location.reload();
             });
     }
 }
@@ -625,11 +649,14 @@ $(document).ready(function() {
                     }).join('');
                 }
 
+
+                const truncatedSubject = feed.boardSubject.length > 10 ? feed.boardSubject.substring(0, 10) + '...' : feed.boardSubject;
+
                 const entryHtml = `
                     <div class="feed-entry" style="background-image: url(/img/postFrame.png)" data-index="${index}">
-                        ${attachmentHtml}
-                        <div>${feed.boardSubject}</div>
-                    </div>
+                    ${attachmentHtml}
+                    <div>${truncatedSubject}</div> <!-- 수정된 제목 -->
+                </div>
                 `;
 
                 // 3개씩 묶어서 하나의 행으로 추가
@@ -700,6 +727,7 @@ async function sendRequest(endpoint, params) {
     const response = await fetch(`${apiUrl}/${endpoint}?${params}`, { method: "POST" });
     const result = await response.text();
     alert(result);
+    window.location.reload();
 }
 
 // // 친구 요청 보내기
@@ -720,6 +748,7 @@ document.getElementById("acceptFriendRequestForm").addEventListener("submit", (e
         toUserId: UserId
     });
     sendRequest("accept", params);
+    window.location.reload();
 });
 
 // 친구 요청 거절
@@ -730,4 +759,5 @@ document.getElementById("rejectFriendRequestForm").addEventListener("submit", (e
         toUserId: UserId
     });
     sendRequest("reject", params);
+    window.location.reload();
 });

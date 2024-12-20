@@ -74,8 +74,9 @@ public class KakaoPayApiUtil {
         params.put("total_amount", payment.getPrice()*payment.getUserCount()); // 상품 총액
         params.put("tax_free_amount", 0); // 비과세 금액 (기본값)
         params.put("approval_url", "http://localhost:8081/board/city/"
-                + payment.getCityId() +
-                "/package/detail/" + payment.getPackageId()); // 결제 성공 시 리다이렉트 URL
+                + payment.getCityId()
+                + "/package/detail/"
+                + payment.getPackageId() + "?status=success");
         params.put("cancel_url", "http://localhost:8081/board/city/"
                 + payment.getCityId() +
                 "/package/detail/" + payment.getPackageId()); // 결제 취소 시 리다이렉트 URL

@@ -111,7 +111,7 @@ document.addEventListener("DOMContentLoaded", function () {
             alert(body.error || '회원 가입 중 오류가 발생했습니다.');
           } else {
             errorDiv3.textContent = ''; // 성공 시 에러 메시지를 제거
-            alert('회원가입이 되었습니다.');
+            alert('회원가입이 되었습니다. 관리자의 승인이 필요합니다.');
             window.location.href = '/user/login'; // 성공 시 로그인 페이지로 리다이렉트
           }
         })
