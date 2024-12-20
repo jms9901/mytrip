@@ -38,21 +38,31 @@
     <!-- 친구 목록 조회 (User 정보 포함) -->
     <!-- 친구 목록 조회 (User 정보 포함) -->
     <select id="AcceptedFriends" resultMap="FriendshipUserResultMap">
-        select f.*, u.user_id, u.user_name, u.user_profile
+        select f.*,
+               u1.user_id as from_user_id, u1.user_name as from_user_name, u1.user_profile as from_user_profile,
+               u2.user_id as to_user_id, u2.user_name as to_user_name, u2.user_profile as to_user_profile
         from friendship f
-                 join user u on (u.user_id = f.to_user_id or u.user_id = f.from_user_id)
+                 join user u1 on u1.user_id = f.from_user_id
+                 join user u2 on u2.user_id = f.to_user_id
         where (f.to_user_id = #{userId} or f.from_user_id = #{userId})
           and f.friend_status = '수락'
-          and u.user_id != #{userId}
+
     </select>
 
+
     <select id="requestView" resultMap="FriendshipUserResultMap">
-        select f.*, u.user_id, u.user_name, u.user_profile
+        select f.*,
+               u1.user_id as from_user_id, u1.user_name as from_user_name, u1.user_profile as from_user_profile,
+               u2.user_id as to_user_id, u2.user_name as to_user_name, u2.user_profile as to_user_profile
         from friendship f
-                 join user u on (u.user_id = f.to_user_id or u.user_id = f.from_user_id)
+                 join user u1 on u1.user_id = f.from_user_id
+                 join user u2 on u2.user_id = f.to_user_id
         where (f.to_user_id = #{userId} or f.from_user_id = #{userId})
           and f.friend_status = '대기'
     </select>
+
+
+
 
     <delete id="delete">
         DELETE FROM friendship
@@ -67,12 +77,23 @@
         <result property="friendStatus" column="friend_status"/>
         <result property="friendshipDate" column="friendship_date"/>
 
-        <!-- User 객체 매핑 -->
-        <association property="user" javaType="com.lec.spring.mytrip.domain.User">
-            <result property="id" column="user_id"/>
-            <result property="name" column="user_name"/>
-            <result property="profile" column="user_profile"/>
+        <!-- fromUserName과 toUserName 추가 -->
+        <result property="fromUserName" column="from_user_name"/>
+        <result property="toUserName" column="to_user_name"/>
+
+        <!-- User 객체 매핑 (fromUser와 toUser) -->
+        <association property="fromUser" javaType="com.lec.spring.mytrip.domain.User">
+            <result property="id" column="from_user_id"/>
+            <result property="name" column="from_user_name"/>
+            <result property="profile" column="from_user_profile"/>
+        </association>
+
+        <association property="toUser" javaType="com.lec.spring.mytrip.domain.User">
+            <result property="id" column="to_user_id"/>
+            <result property="name" column="to_user_name"/>
+            <result property="profile" column="to_user_profile"/>
         </association>
     </resultMap>
+
 
 </mapper>

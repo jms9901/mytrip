@@ -81,15 +81,6 @@ CREATE TABLE city_liked
     PRIMARY KEY (user_id, city_id)
 ) COMMENT '도시 좋아요';
 
-CREATE TABLE declaration
-(
-    declaration_id       INT          NOT NULL AUTO_INCREMENT COMMENT '게시물 신고 테이블 ID',
-    board_id            INT          NOT NULL COMMENT '피드, 소모임 ID',
-    user_id              INT          NOT NULL COMMENT '신고자 ID',
-    declaration_content  VARCHAR(200) NOT NULL COMMENT '신고 내용',
-    declaration_category VARCHAR(100) NOT NULL COMMENT '신고 게시물의 종류',
-    PRIMARY KEY (declaration_id)
-) COMMENT '게시물 신고';
 
 CREATE TABLE friendship
 (
@@ -115,29 +106,6 @@ CREATE TABLE guest_book
     PRIMARY KEY (guest_book_id)
 ) COMMENT '방명록';
 
-CREATE TABLE message
-(
-    message_id        INT          NOT NULL AUTO_INCREMENT COMMENT '메시지 테이블 ID',
-    messageroom_id    INT          NOT NULL COMMENT '채팅방 ID',
-    from_user_id      INT          NOT NULL COMMENT '메세지를 보낸 사용자 ID',
-    to_user_id        INT          NOT NULL COMMENT '메세지를 받은  사용자 ID',
-    message_content   VARCHAR(100) NOT NULL COMMENT '메시지 내용',
-    message_send_date DATETIME     NOT NULL DEFAULT NOW() COMMENT '메시지 보낸 일자',
-    message_check     VARCHAR(20)  NOT NULL DEFAULT '미확인' COMMENT '메시지 확인 여부',
-    PRIMARY KEY (message_id)
-) COMMENT '메시지';
-
-ALTER TABLE message
-    ADD CONSTRAINT chk_message_check
-        CHECK (message_check IN('미확인', '확인'));
-
-CREATE TABLE messageroom
-(
-    messageroom_id INT NOT NULL AUTO_INCREMENT COMMENT '채팅방 테이블 ID',
-    to_user_id     INT NOT NULL COMMENT '대화 상대자의 ID',
-    from_user_id   INT NOT NULL COMMENT '개설한 사용자의 ID',
-    PRIMARY KEY (messageroom_id)
-) COMMENT '채팅방';
 
 CREATE TABLE package
 (
@@ -199,16 +167,6 @@ CREATE TABLE question_answer
     PRIMARY KEY (question_answer_id)
 ) COMMENT '질문에 대한 보기';
 
-CREATE TABLE search_history
-(
-    search_history_id INT           NOT NULL AUTO_INCREMENT COMMENT '검색 기록 테이블 ID',
-    user_id           INT           NOT NULL COMMENT '사용자 ID',
-    qry_url           VARCHAR(1000) NOT NULL COMMENT '검색 기록 쿼리',
-    start_name        VARCHAR(100)  NOT NULL COMMENT '출발지',
-    end_name          VARCHAR(100)  NOT NULL COMMENT '도착지',
-    PRIMARY KEY (search_history_id)
-) COMMENT '검색 기록';
-
 CREATE TABLE user
 (
     user_id                INT           NOT NULL AUTO_INCREMENT COMMENT '사용자 테이블 ID',
@@ -246,12 +204,14 @@ CREATE TABLE user_city
 ALTER TABLE city_liked
     ADD CONSTRAINT FK_user_TO_city_liked
         FOREIGN KEY (user_id)
-            REFERENCES user (user_id);
+            REFERENCES user (user_id)
+on delete cascade;
 
 ALTER TABLE city_liked
     ADD CONSTRAINT FK_city_TO_city_liked
         FOREIGN KEY (city_id)
-            REFERENCES city (city_id);
+            REFERENCES city (city_id)
+on delete cascade;
 
 ALTER TABLE user_city
     ADD CONSTRAINT FK_user_TO_user_city
@@ -266,12 +226,14 @@ ALTER TABLE package
 ALTER TABLE package_liked
     ADD CONSTRAINT FK_user_TO_package_liked
         FOREIGN KEY (user_id)
-            REFERENCES user (user_id);
+            REFERENCES user (user_id)
+on delete cascade ;
 
 ALTER TABLE package_liked
     ADD CONSTRAINT FK_package_TO_package_liked
         FOREIGN KEY (package_id)
-            REFERENCES package (package_id);
+            REFERENCES package (package_id)
+on delete cascade;
 
 ALTER TABLE payment_info
     ADD CONSTRAINT FK_user_TO_payment_info
@@ -295,12 +257,6 @@ ALTER TABLE board_attachment
             REFERENCES board (board_id)
             ON DELETE CASCADE ;
 
-ALTER TABLE declaration
-    ADD CONSTRAINT FK_user_TO_declaration
-        FOREIGN KEY (user_id)
-            REFERENCES user (user_id)
-            ON DELETE CASCADE ;
-
 ALTER TABLE board_comment
     ADD CONSTRAINT FK_board_TO_board_comment
         FOREIGN KEY (board_id)
@@ -312,11 +268,6 @@ ALTER TABLE board_comment
         FOREIGN KEY (user_id)
             REFERENCES user (user_id)
             ON DELETE CASCADE ;
-
-ALTER TABLE search_history
-    ADD CONSTRAINT FK_user_TO_search_history
-        FOREIGN KEY (user_id)
-            REFERENCES user (user_id);
 
 ALTER TABLE guest_book
     ADD CONSTRAINT FK_user_TO_guest_book
@@ -341,23 +292,19 @@ ALTER TABLE friendship
 ALTER TABLE board_liked
     ADD CONSTRAINT FK_user_TO_board_liked
         FOREIGN KEY (user_id)
-            REFERENCES user (user_id);
+            REFERENCES user (user_id)
+on delete cascade;
 
 ALTER TABLE board_liked
     ADD CONSTRAINT FK_board_TO_board_liked
         FOREIGN KEY (board_id)
-            REFERENCES board (board_id);
+            REFERENCES board (board_id)
+on delete cascade;
 
 ALTER TABLE board
     ADD CONSTRAINT FK_user_TO_board
         FOREIGN KEY (user_id)
             REFERENCES user (user_id);
-
-ALTER TABLE declaration
-    ADD CONSTRAINT FK_board_TO_declaration
-        FOREIGN KEY (board_id)
-            REFERENCES board (board_id)
-            ON DELETE CASCADE;
 
 ALTER TABLE board
     ADD CONSTRAINT FK_city_TO_board
@@ -368,31 +315,6 @@ ALTER TABLE user_city
     ADD CONSTRAINT FK_city_TO_user_city
         FOREIGN KEY (city_id)
             REFERENCES city (city_id);
-
-ALTER TABLE messageroom
-    ADD CONSTRAINT FK_user_TO_messageroom
-        FOREIGN KEY (to_user_id)
-            REFERENCES user (user_id);
-
-ALTER TABLE messageroom
-    ADD CONSTRAINT FK_user_TO_messageroom1
-        FOREIGN KEY (from_user_id)
-            REFERENCES user (user_id);
-
-ALTER TABLE message
-    ADD CONSTRAINT FK_messageroom_TO_message
-        FOREIGN KEY (messageroom_id)
-            REFERENCES messageroom (messageroom_id);
-
-ALTER TABLE message
-    ADD CONSTRAINT FK_user_TO_message
-        FOREIGN KEY (from_user_id)
-            REFERENCES user (user_id);
-
-ALTER TABLE message
-    ADD CONSTRAINT FK_user_TO_message1
-        FOREIGN KEY (to_user_id)
-            REFERENCES user (user_id);
 
 ALTER TABLE package
     ADD CONSTRAINT FK_user_TO_package
