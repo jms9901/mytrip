@@ -34,7 +34,7 @@
 <!-- Main Section -->
 <main class="container p-0">
     <!-- Hero Section -->
-    <div class="hero" th:each="city : ${cities}" th:if="${city.cityId == cityId}">
+    <div class="hero ml-0 mr-0" th:each="city : ${cities}" th:if="${city.cityId == cityId}">
         <img th:src="@{/img/{cityImg}(cityImg=${city.cityImg})}" alt="City Image">
         <h1 th:text="@{${city.cityName}}"></h1>
         <!-- City 좋아요 버튼 -->

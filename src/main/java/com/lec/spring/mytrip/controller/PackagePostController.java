@@ -292,7 +292,6 @@ public class PackagePostController {
             model.addAttribute("groupId", groupId);
         }
 
-
         List<City> sideCities = cityService.findCitiesByContinentOfThisCity(cityId);
         model.addAttribute("cities", sideCities);
 
