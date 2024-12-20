@@ -205,13 +205,13 @@ ALTER TABLE city_liked
     ADD CONSTRAINT FK_user_TO_city_liked
         FOREIGN KEY (user_id)
             REFERENCES user (user_id)
-on delete cascade;
+            on delete cascade;
 
 ALTER TABLE city_liked
     ADD CONSTRAINT FK_city_TO_city_liked
         FOREIGN KEY (city_id)
             REFERENCES city (city_id)
-on delete cascade;
+            on delete cascade;
 
 ALTER TABLE user_city
     ADD CONSTRAINT FK_user_TO_user_city
@@ -227,13 +227,13 @@ ALTER TABLE package_liked
     ADD CONSTRAINT FK_user_TO_package_liked
         FOREIGN KEY (user_id)
             REFERENCES user (user_id)
-on delete cascade ;
+            on delete cascade ;
 
 ALTER TABLE package_liked
     ADD CONSTRAINT FK_package_TO_package_liked
         FOREIGN KEY (package_id)
             REFERENCES package (package_id)
-on delete cascade;
+            on delete cascade;
 
 ALTER TABLE payment_info
     ADD CONSTRAINT FK_user_TO_payment_info
@@ -293,13 +293,13 @@ ALTER TABLE board_liked
     ADD CONSTRAINT FK_user_TO_board_liked
         FOREIGN KEY (user_id)
             REFERENCES user (user_id)
-on delete cascade;
+            on delete cascade;
 
 ALTER TABLE board_liked
     ADD CONSTRAINT FK_board_TO_board_liked
         FOREIGN KEY (board_id)
             REFERENCES board (board_id)
-on delete cascade;
+            on delete cascade;
 
 ALTER TABLE board
     ADD CONSTRAINT FK_user_TO_board

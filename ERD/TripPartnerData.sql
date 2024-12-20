@@ -29,7 +29,7 @@ values       (
                  '1234',
                  'business1234',
                  '이경원',
-                 'business',
+                 'ROLE_BUSINESS',
                  '123-11-12345'
              ) ;
 
@@ -491,16 +491,16 @@ VALUES
 
 INSERT INTO package_attachment (package_id, package_attachment_file)
 VALUES
-    (51, '/img/BailImg.jpg'),
-    (52, '/img/BangkokImg.jpg'),
-    (53, '/img/BarcelonaImg.jpg'),
-    (54, '/img/CebuImg.jpg'),
-    (55, '/img/DanangImg.jpg'),
-    (56, '/img/DelhiImg.jpg'),
-    (57, '/img/DubaiImg.jpg'),
-    (58, '/img/FranceImg.jpg'),
-    (59, '/img/FukuokaImg.jpg'),
-    (60, '/img/GuamImg.jpg');
+    (1, '/img/BailImg.jpg'),
+    (2, '/img/BangkokImg.jpg'),
+    (3, '/img/BarcelonaImg.jpg'),
+    (4, '/img/CebuImg.jpg'),
+    (5, '/img/DanangImg.jpg'),
+    (6, '/img/DelhiImg.jpg'),
+    (7, '/img/DubaiImg.jpg'),
+    (8, '/img/FranceImg.jpg'),
+    (9, '/img/FukuokaImg.jpg'),
+    (0, '/img/GuamImg.jpg');
 
 
 # 공항 정보 테이블
@@ -605,15 +605,15 @@ values(1,2);INSERT INTO package (city_id, user_id, package_content, package_stat
 insert into city_liked (user_id,city_id)
 values(1,3);
 insert into payment_info (user_id, package_id, user_count, payment_status)
-values(1,1,1,'결제완료');
+values(4,1,1,'결제완료');
 insert into payment_info (user_id, package_id, user_count, payment_status)
-values(1,2,1,'결제완료');
+values(4,2,1,'결제완료');
 insert into payment_info (user_id, package_id, user_count, payment_status)
-values(1,3,1,'결제완료');
+values(4,3,1,'결제완료');
 insert into payment_info (user_id, package_id, user_count, payment_status)
-values(1,4,1,'결제완료');
+values(4,4,1,'결제완료');
 insert into payment_info (user_id, package_id, user_count, payment_status)
-values(1,5,1,'결제완료');
+values(4,5,1,'결제완료');
 insert into payment_info (user_id, package_id, user_count, payment_status)
 values(1,6,1,'결제완료');
 insert into payment_info (user_id, package_id, user_count, payment_status)
