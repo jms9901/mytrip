@@ -79,7 +79,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
             } else {
                 const noCityMsg = document.createElement('div');
-                noCityMsg.textContent = "No cities liked yet.";
+                noCityMsg.textContent = "아직 좋아요 한 도시가 없어요!";
+                noCityMsg.style.position = "absolute";  // 절대 위치 지정
+                noCityMsg.style.top = "50px";  // 슬라이더 상단에서 50px 떨어진 위치
+                noCityMsg.style.left = "50%";  // 슬라이더의 수평 중앙
+                noCityMsg.style.transform = "translateX(-50%)";  // 중앙 정렬
                 slider.appendChild(noCityMsg);
             }
 

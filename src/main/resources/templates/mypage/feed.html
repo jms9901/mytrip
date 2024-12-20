@@ -18,6 +18,7 @@
     <!--	<script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/3.11.2/modernizr.min.js"></script>-->
     <link rel="stylesheet" type="text/css" href="/css/bookGuestBook.css">
     <link href='https://fonts.googleapis.com/css?family=Kaushan Script' rel='stylesheet'>
+    <link href="https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2105_2@1.0/ONE-Mobile-POP.woff" rel="stylesheet">
 
 </head>
 
@@ -45,15 +46,18 @@
         </div>
     </div>
 </div>
-<div class="menu1" id="1" style="background-image: url(/img/mypageMenu.png); z-index: -1;"><h4 id="Post">&nbsp;Invoice</h4></div>
-<div class="menu2" id="2" style="background-image: url(/img/mypageMenu.png);  z-index: -1;"><h4 id="PostLiked">&nbsp;Post</h4></div>
-<div class="menu3" id="3" style="background-image: url(/img/mypageMenu.png);  z-index: -1;"><h4 id="GuestBook">&nbsp;Post♥</h4></div>
-<div class="menu4" id="4" style="background-image: url(/img/mypageMenu.png);  z-index: -1;"><h4 id="PackageLiked">&nbsp;Package♥</h4>
+<div class="menu1" id="1" style="background-image: url(/img/mypageMenu.png);"><h4 id="Invoice">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;결제!</h4></div>
+<div class="menu2" id="2" style="background-image: url(/img/mypageMenu.png);"><h4 id="post">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;피드!</h4></div>
+<div class="menu3" id="3" style="background-image: url(/img/mypageMenu.png);"><h4 id="PostLiked">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;피드♥</h4></div>
+<div class="menu4" id="4" style="background-image: url(/img/mypageMenu.png);"><h4 id="PackageLiked">&nbsp;패키지♥</h4>
 </div>
-<div class="menu5" id="5" style="background-image: url(/img/mypageMenu.png);  z-index: -1;"><h4 id="Invoice">&nbsp;GuestBook</h4>
+<div class="menu5" id="5" style="background-image: url(/img/mypageMenu.png);">
+    <h4 id="GuestBook" >
+        &nbsp;방명록
+    </h4>
 </div>
 
-<button id="open-modal" class="open-modal-btn" style="margin-top:5%;margin-left:85%;border-radius: 20px; background: cornflowerblue"><h4>Create!</h4></button>
+<button id="open-modal" class="open-modal-btn" style="margin-top:5%;margin-left:85%;border-radius: 20px;background: linear-gradient(135deg, #a2c2e3, #f7c1d7); width: 120px;"><h4 style="font-family:'ONE-Mobile-POP', sans-serif; font-size: 20px; ">작성!</h4></button>
 <div class="writeFeed" style="background-image: url(/img/feedDetailFrame.png); ">
     <form action="/mypage/feed/createFeed" method="post" enctype="multipart/form-data">
         <br><br>
@@ -102,7 +106,7 @@
         <br><br>
         <input type="file" name="files" style=" margin-left:100px" multiple>  <!-- 여러 파일을 선택 가능 -->
         <br>
-        <button type="submit" style="margin-left:600px; margin-bottom: 20px">피드 작성</button>
+        <button type="submit" style="margin-left:600px; margin-bottom: 20px">작성하기</button>
         <!-- 모달 안에 닫기 버튼 추가 -->
         <button type="button" class="close-modal-btn" onclick="closeModal()">닫기</button>
     </form>

@@ -605,15 +605,15 @@ values(1,2);INSERT INTO package (city_id, user_id, package_content, package_stat
 insert into city_liked (user_id,city_id)
 values(1,3);
 insert into payment_info (user_id, package_id, user_count, payment_status)
-values(1,1,1,'결제완료');
+values(4,1,1,'결제완료');
 insert into payment_info (user_id, package_id, user_count, payment_status)
-values(1,2,1,'결제완료');
+values(4,2,1,'결제완료');
 insert into payment_info (user_id, package_id, user_count, payment_status)
-values(1,3,1,'결제완료');
+values(4,3,1,'결제완료');
 insert into payment_info (user_id, package_id, user_count, payment_status)
-values(1,4,1,'결제완료');
+values(4,4,1,'결제완료');
 insert into payment_info (user_id, package_id, user_count, payment_status)
-values(1,5,1,'결제완료');
+values(4,5,1,'결제완료');
 insert into payment_info (user_id, package_id, user_count, payment_status)
 values(1,6,1,'결제완료');
 insert into payment_info (user_id, package_id, user_count, payment_status)
