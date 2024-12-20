@@ -42,6 +42,23 @@ document.addEventListener('DOMContentLoaded', function () {
 
             console.log("Fetching attachments for boardId:", boardId);
 
+            document.body.addEventListener('click', function (event) {
+                if (event.target.classList.contains('board-details-button')) {
+                    const boardId = event.target.getAttribute('data-boardId');
+                    console.log("Board ID fetched for modal:", boardId);
+
+                    // modalBoardId에 Board ID 설정
+                    const modalBoardIdElement = document.getElementById('modalBoardId');
+                    if (modalBoardIdElement) {
+                        modalBoardIdElement.setAttribute('data-boardId', boardId);
+                        console.log("modalBoardId updated with boardId:", boardId);
+                    } else {
+                        console.error("Element with ID 'modalBoardId' not found.");
+                    }
+                }
+            });
+
+
             // 이미지 컨테이너 초기화
             const imageContainer = document.getElementById('imageContainer');
             imageContainer.innerHTML = ''; // 기존 이미지 제거
@@ -66,6 +83,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
 
             // 기타 모달 데이터 설정
+
             const regDate = event.target.getAttribute('data-date')?.split('T')[0] || '[데이터 없음]';
             const boardSubject = event.target.getAttribute('data-subject') || '[데이터 없음]';
             const boardContent = event.target.getAttribute('data-content') || '[데이터 없음]';
@@ -99,6 +117,7 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('modalBoardViewCount').textContent = boardViewCount;
             document.getElementById('modalBoardCityName').textContent = boardCityName;
             document.getElementById('modalBoardUserName').textContent = boardUserName;
+            // document.getElementById('modalBoardId').textContent = boardId;
 
             images.forEach(image => {
                 const imgElement = document.createElement("img");
@@ -115,11 +134,16 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
 
-    // 사용자 삭제
     window.deletePost = function () {
-        // 삭제를 위한 boardId 가져오기
-        const boardId = document.getElementById('modalBoardId').getAttribute('data-boardId');
+        const modalBoardIdElement = document.getElementById('modalBoardId');
 
+        if (!modalBoardIdElement) {
+            console.error("Element with ID 'modalBoardId' not found.");
+            alert("삭제하려는 게시물 정보를 찾을 수 없습니다.");
+            return;
+        }
+
+        const boardId = modalBoardIdElement.getAttribute('data-boardId');
         if (!boardId) {
             console.error("Board ID not found.");
             alert("삭제하려는 게시물 ID를 찾을 수 없습니다.");
@@ -127,34 +151,35 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         if (confirm('정말로 이 게시물을 삭제하시겠습니까?')) {
+            console.log("Deleting board with ID:", boardId);
             fetch('/admin/deletePost', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
+                    'Content-Type': 'application/x-www-form-urlencoded',
                 },
-                body: new URLSearchParams({
-                    boardId: boardId // 서버로 숫자형 boardId 전달
-                })
+                body: new URLSearchParams({ boardId }),
             })
                 .then(response => {
+                    console.log("Server response status:", response.status);
                     if (response.ok) {
-                        console.log('Board deleted successfully.');
-                        const modalInstance = bootstrap.Modal.getInstance(document.getElementById('exampleModal'));
-                        if (modalInstance) {
-                            modalInstance.hide(); // 모달 닫기
-                        }
-                        reloadTable(); // 테이블 리로드
+                        return response.text();
                     } else {
-                        console.error('Failed to delete board. Server response status:', response.status);
-                        alert('게시물 삭제에 실패했습니다. 다시 시도해 주세요.');
+                        throw new Error(`Failed to delete board. Status: ${response.status}`);
                     }
                 })
+                .then(data => {
+                    console.log("Server response data:", data);
+                    alert(data);
+                    location.reload(); // 테이블 새로고침
+                })
                 .catch(error => {
-                    console.error('Error deleting board:', error);
-                    alert('게시물 삭제 중 오류가 발생했습니다.');
+                    console.error("Error deleting board:", error);
+                    alert("게시물 삭제 중 오류가 발생했습니다.");
                 });
+
         }
     };
+
 
     const sliderContainer = document.getElementById('sliderContainer');
     const imageContainer = document.getElementById('imageContainer');

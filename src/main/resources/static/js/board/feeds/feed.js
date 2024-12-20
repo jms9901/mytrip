@@ -31,3 +31,30 @@ if (cityIdMatch) {
 } else {
     console.error('cityId를 URL에서 찾을 수 없습니다.');
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+    const scrollMenu = document.getElementById("scrollMenu");
+
+    if (!scrollMenu) {
+        console.error("scrollMenu 요소를 찾을 수 없습니다.");
+        return;
+    }
+
+    // 스크롤 이벤트 핸들러
+    function handleScroll() {
+        const scrollPosition = window.scrollY || document.documentElement.scrollTop; // 현재 스크롤 위치
+
+        // 스크롤 위치가 10px 이상이면 메뉴 표시
+        if (scrollPosition > 10) {
+            scrollMenu.style.display = "block"; // 메뉴 표시
+        } else {
+            scrollMenu.style.display = "none"; // 메뉴 숨김
+        }
+    }
+
+    // 초기 메뉴 상태 설정
+    scrollMenu.style.display = "none"; // 기본적으로 숨김
+
+    // 스크롤 이벤트 추가
+    window.addEventListener("scroll", handleScroll);
+});
