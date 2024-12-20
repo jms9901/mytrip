@@ -20,6 +20,7 @@ public class Feed {
     private String boardCategory;               // 게시물 카테고리 ("소모임" / "피드")
     private int userId;
     private User user;
+    private String userProfile;
     private City city;                          // 도시
     private List<PostAttachment> attachments;   // 첨부파일
     private List<String> attachmentFiles;

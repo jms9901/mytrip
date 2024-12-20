@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     console.log("JavaScript Loaded");
 
-    let previouslyFocusedElement = null; // 이전 포커스된 요소 저장
+    let previouslyFocusedElement = null;
 
     // 모달 요소 가져오기
     const modal = document.getElementById('exampleModal');
@@ -10,23 +10,15 @@ document.addEventListener('DOMContentLoaded', function () {
     modal.addEventListener('show.bs.modal', () => {
         console.log("Modal is opening...");
         previouslyFocusedElement = document.activeElement; // 현재 포커스된 요소 저장
-        modal.removeAttribute('aria-hidden'); // aria-hidden 제거
-        modal.removeAttribute('inert'); // inert 제거
-
-        // 모달 내부의 첫 번째 포커스 가능한 요소로 이동
-        const focusableElement = modal.querySelector('input, [href], select, textarea, [tabindex]:not([tabindex="-1"])');
-        if (focusableElement) {
-            focusableElement.focus();
-        }
+        modal.removeAttribute('aria-hidden');
+        modal.removeAttribute('inert');
     });
 
     // 모달 닫기 이벤트
     modal.addEventListener('hide.bs.modal', () => {
         console.log("Modal is closing...");
-        modal.setAttribute('aria-hidden', 'true'); // aria-hidden 추가
-        modal.setAttribute('inert', ''); // inert 추가
-
-        // 이전 포커스된 요소로 복원
+        modal.setAttribute('aria-hidden', 'true');
+        modal.setAttribute('inert', '');
         if (previouslyFocusedElement) {
             previouslyFocusedElement.focus();
         }
@@ -39,29 +31,22 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // 데이터 가져오기
             const boardId = event.target.getAttribute('data-boardId');
+            const modalBoardIdElement = document.getElementById('modalBoardId');
 
             console.log("Fetching attachments for boardId:", boardId);
 
-            document.body.addEventListener('click', function (event) {
-                if (event.target.classList.contains('board-details-button')) {
-                    const boardId = event.target.getAttribute('data-boardId');
-                    console.log("Board ID fetched for modal:", boardId);
-
-                    // modalBoardId에 Board ID 설정
-                    const modalBoardIdElement = document.getElementById('modalBoardId');
-                    if (modalBoardIdElement) {
-                        modalBoardIdElement.setAttribute('data-boardId', boardId);
-                        console.log("modalBoardId updated with boardId:", boardId);
-                    } else {
-                        console.error("Element with ID 'modalBoardId' not found.");
-                    }
-                }
-            });
-
+            // modalBoardId에 Board ID 설정
+            if (modalBoardIdElement) {
+                modalBoardIdElement.setAttribute('data-boardId', boardId);
+                console.log("modalBoardId updated with boardId:", boardId);
+            } else {
+                console.error("Element with ID 'modalBoardId' not found.");
+                return;
+            }
 
             // 이미지 컨테이너 초기화
             const imageContainer = document.getElementById('imageContainer');
-            imageContainer.innerHTML = ''; // 기존 이미지 제거
+            imageContainer.innerHTML = '';
 
             // 첨부파일 가져오기
             fetch(`/admin/boardAttachments/${boardId}`)
@@ -70,8 +55,9 @@ document.addEventListener('DOMContentLoaded', function () {
                     if (attachments && attachments.length > 0) {
                         attachments.forEach((attachment) => {
                             const img = document.createElement('img');
-                            img.src = `/uploads/${attachment.fileName.trim()}`; // 서버의 업로드 디렉토리 경로
+                            img.src = `/uploads/${attachment.fileName.trim()}`;
                             img.alt = '첨부 이미지';
+                            imageContainer.appendChild(img);
                         });
                     } else {
                         imageContainer.innerHTML = '<p>첨부파일이 없습니다.</p>';
@@ -82,8 +68,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     alert("첨부파일 정보를 불러오지 못했습니다.");
                 });
 
-            // 기타 모달 데이터 설정
-
+            // 모달 데이터 설정
             const regDate = event.target.getAttribute('data-date')?.split('T')[0] || '[데이터 없음]';
             const boardSubject = event.target.getAttribute('data-subject') || '[데이터 없음]';
             const boardContent = event.target.getAttribute('data-content') || '[데이터 없음]';
@@ -117,7 +102,6 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('modalBoardViewCount').textContent = boardViewCount;
             document.getElementById('modalBoardCityName').textContent = boardCityName;
             document.getElementById('modalBoardUserName').textContent = boardUserName;
-            // document.getElementById('modalBoardId').textContent = boardId;
 
             images.forEach(image => {
                 const imgElement = document.createElement("img");
@@ -133,10 +117,9 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-
     window.deletePost = function () {
         const modalBoardIdElement = document.getElementById('modalBoardId');
-
+        console.log('modalBoardId에 뭐가 들어올까?? :', modalBoardIdElement);
         if (!modalBoardIdElement) {
             console.error("Element with ID 'modalBoardId' not found.");
             alert("삭제하려는 게시물 정보를 찾을 수 없습니다.");
@@ -160,36 +143,32 @@ document.addEventListener('DOMContentLoaded', function () {
                 body: new URLSearchParams({ boardId }),
             })
                 .then(response => {
-                    console.log("Server response status:", response.status);
                     if (response.ok) {
-                        return response.text();
+                        console.log('Board deleted successfully.');
+                        alert('성공적으로 게시물이 삭제되었습니다.')
+                        location.reload(); // 테이블 새로고침
                     } else {
-                        throw new Error(`Failed to delete board. Status: ${response.status}`);
+                        console.error('Failed to delete board. Server response status:', response.status);
+                        alert('게시물 삭제에 실패했습니다.');
                     }
                 })
-                .then(data => {
-                    console.log("Server response data:", data);
-                    alert(data);
-                    location.reload(); // 테이블 새로고침
-                })
-                .catch(error => {
-                    console.error("Error deleting board:", error);
-                    alert("게시물 삭제 중 오류가 발생했습니다.");
+                .catch((error) => {
+                    console.error('Error deleting board:', error);
+                    alert('게시물 삭제 중 오류가 발생했습니다.');
                 });
-
         }
     };
 
-
+    // 슬라이더 초기화
     const sliderContainer = document.getElementById('sliderContainer');
     const imageContainer = document.getElementById('imageContainer');
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
     let currentIndex = 0;
 
-    // 슬라이드 표시 함수
     function showSlide(index) {
         const images = imageContainer.querySelectorAll('img');
+        if (images.length === 0) return;
 
         if (index < 0) {
             currentIndex = images.length - 1;
@@ -203,12 +182,10 @@ document.addEventListener('DOMContentLoaded', function () {
         imageContainer.style.transform = `translateX(${offset}px)`;
     }
 
-    // 이전 버튼 클릭 이벤트
     prevBtn.addEventListener('click', function () {
         showSlide(currentIndex - 1);
     });
 
-    // 다음 버튼 클릭 이벤트
     nextBtn.addEventListener('click', function () {
         showSlide(currentIndex + 1);
     });

@@ -16,6 +16,7 @@
             b.user_id,
             u.user_id,
             u.user_name,
+            u.user_profile,
             c.city_name,
             c.city_id,
             ba.board_attachment_file
@@ -62,6 +63,7 @@
         <result property="user.id" column="user_id"/>
         <result property="user.name" column="user_name"/>
         <result property="userId" column="user_id"/>
+        <result property="userProfile" column="user_profile"/>
 
         <!-- City 객체 매핑 -->
         <association property="city" javaType="com.lec.spring.mytrip.domain.City">

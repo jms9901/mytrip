@@ -7,7 +7,9 @@
       <a th:href="@{/aipage/start}">여행지 추천</a>
       <a th:href="@{/board/city/1}">여행지 게시판</a>
       <a th:href="@{/flight/search}">항공권 예약</a>
-      <a th:href="@{/flight/search}">마이페이지</a>
+      <a sec:authorize="isAnonymous()" th:href="@{/user/login}">login</a>
+<!--      <form th:action="@{/user/mypage}" method="GET" sec:authorize="isAuthenticated()">-->
+<!--        <button id="myFoot" type="submit">마이페이지</button></form>-->
     </div>
     <div class="column3">
       <a href="#">이용약관</a>

@@ -33,25 +33,34 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // 데이터 가져오기
             const boardId = event.target.getAttribute('data-boardId');
+            const modalBoardIdElement = document.getElementById('modalBoardId');
+
             console.log("Fetching attachments for boardId:", boardId);
+
+            // modalBoardId에 Board ID 설정
+            if (modalBoardIdElement) {
+                modalBoardIdElement.setAttribute('data-boardId', boardId);
+                console.log("modalBoardId updated with boardId:", boardId);
+            } else {
+                console.error("Element with ID 'modalBoardId' not found.");
+                return;
+            }
+
+            // 이미지 컨테이너 초기화
+            const imageContainer = document.getElementById('imageContainer');
+            imageContainer.innerHTML = '';
 
             // 첨부파일 가져오기
             fetch(`/admin/boardAttachments/${boardId}`)
                 .then((response) => response.json())
                 .then((attachments) => {
-                    const imageContainer = document.getElementById('imageContainer');
-                    imageContainer.innerHTML = ''; // 기존 이미지 제거
-
                     if (attachments && attachments.length > 0) {
                         attachments.forEach((attachment) => {
                             const img = document.createElement('img');
-                            img.src = `/uploads/${attachment.fileName.trim()}`; // 서버의 업로드 디렉토리 경로
+                            img.src = `/uploads/${attachment.fileName.trim()}`;
                             img.alt = '첨부 이미지';
-                            img.style.width = '100%';
-                            img.style.flexShrink = '0';
                             imageContainer.appendChild(img);
                         });
-                        showSlide(0); // 슬라이더 초기화
                     } else {
                         imageContainer.innerHTML = '<p>첨부파일이 없습니다.</p>';
                     }
@@ -60,7 +69,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     console.error("Error fetching attachments:", error);
                     alert("첨부파일 정보를 불러오지 못했습니다.");
                 });
-
             // 모달 데이터 업데이트
             const regDate = event.target.getAttribute('data-date')?.split('T')[0] || '[데이터 없음]';
             const boardSubject = event.target.getAttribute('data-subject') || '[데이터 없음]';
@@ -98,14 +106,58 @@ document.addEventListener('DOMContentLoaded', function () {
             images.forEach(image => {
                 const imgElement = document.createElement("img");
                 imgElement.src = image.src;
-                // imgElement.alt = image.filename; // 이미지 파일 이름
-                // imgElement.style = image.style;
+                imgElement.alt = image.filename; // 이미지 파일 이름
+                imgElement.style.height = '200px';
+                imgElement.style.width = 'auto';
+                imgElement.style.objectFit = 'contain';
 
                 // 이미지 컨테이너에 추가
-                imageContainer.appendChild(imgElement.src);
-            })
+                imageContainer.appendChild(imgElement);
+            });
         }
     });
+
+    window.deletePost = function () {
+        const modalBoardIdElement = document.getElementById('modalBoardId');
+        console.log('modalBoardId에 뭐가 들어올까?? :', modalBoardIdElement);
+        if (!modalBoardIdElement) {
+            console.error("Element with ID 'modalBoardId' not found.");
+            alert("삭제하려는 게시물 정보를 찾을 수 없습니다.");
+            return;
+        }
+
+        const boardId = modalBoardIdElement.getAttribute('data-boardId');
+        if (!boardId) {
+            console.error("Board ID not found.");
+            alert("삭제하려는 게시물 ID를 찾을 수 없습니다.");
+            return;
+        }
+
+        if (confirm('정말로 이 게시물을 삭제하시겠습니까?')) {
+            console.log("Deleting board with ID:", boardId);
+            fetch('/admin/deletePost', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({ boardId }),
+            })
+                .then(response => {
+                    if (response.ok) {
+                        console.log('Board deleted successfully.');
+                        alert('성공적으로 게시물이 삭제되었습니다.')
+                        location.reload(); // 테이블 새로고침
+                    } else {
+                        console.error('Failed to delete board. Server response status:', response.status);
+                        alert('게시물 삭제에 실패했습니다.');
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error deleting board:', error);
+                    alert('게시물 삭제 중 오류가 발생했습니다.');
+                });
+        }
+    };
 
     // 슬라이더 초기화
     const sliderContainer = document.getElementById('sliderContainer');

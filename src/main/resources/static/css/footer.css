@@ -83,3 +83,9 @@
     margin: 0;
     padding: 0;
 }
+
+#myFoot {
+    all: unset; /* 모든 기본 스타일 제거 */
+    cursor: pointer; /* 버튼임을 나타내는 손가락 커서 */
+    color: white;
+}
