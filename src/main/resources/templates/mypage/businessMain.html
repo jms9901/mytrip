@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://fonts.googleapis.com/css?family=Kaushan Script' rel='stylesheet'>
+    <link rel="stylesheet" href="/css/businessMain.css">
+    <link rel="stylesheet" href="/css/businessPaymentList.css">
+    <link rel="stylesheet" href="/css/businessUpdate.css">
+    <link rel="stylesheet" href="/css/businessPackageDetail.css">
+    <script src="/js/businessMain.js"></script>
+    <title>Business Main Mypage</title>
+</head>
+<body style="background-image: url(/img/mypageBackground.jpg)">
+
+<!-- 홈 버튼 -->
+<button type="button">
+    <a style="background-image: url(/img/logo.png)" type="button" class="homeLogo-Button" th:href="@{/main/mainpage}"></a>
+</button>
+<div class="main-container">
+    <div class="camera">
+        <div class="camera-lens"></div>
+        <div class="camera-sensor"></div>
+    </div>
+    <div class="container">
+        <div class="profile-section">
+            <!-- 비즈니스 개인정보 수정 링크 연결  -->
+            <button type="button" style="border: none; background-color: #e9eefb;">
+                <img class="profile-icon-Button"  id="profile-icon-Button" src="/img/defaultProfile.jpg">
+            </button>
+            <div class="business-name" id="business-name">[[${user.username}]]</div>
+        </div>
+
+        <!-- 패키지 목록 -->
+        <div class="package-section">
+            <div class="package-header">Package List</div>
+            <!-- 등록한 패키지 목록 -->
+            <div class="package-list">
+<!--                등록한 패키지 목록 동적으로 추가 -->
+                <div th:each="packagePost : ${packages}" class="package-item">
+                    <div class="package-title">
+                        <div class="package-name" th:text="${packagePost.packageTitle}"></div>
+                    </div>
+                    <div class="package-content" th:text="${packagePost.packageContent}"></div>
+                    <div class="package-status ${getStatusClass(packages.packageStatus)}"></div>
+                    <div class="liked">
+                        <img src="/img/heart-icon-fill.png" alt="heart-icon-fill" id="liked-heart-icon">
+                        <span class="likedCnt" th:text="${packagePost.likedCount}"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--  개인정보 수정 모달   -->
+        <div class="userInfo">
+            <!--   개인정보 수정 모달 동적 생성   -->
+        </div>
+
+        <!-- 패키지 결제 내역 리스트 버튼 -->
+        <button type="button" style="border: none; background-color: rgb(255 255 255 / 0%);" class="package-payment">
+            <img src="/img/paymentListIcon.png" alt="package-payment-button" id="package-payment-button" class="package-payment-button">
+        </button>
+
+        <!--  결제 리스트 모달   -->
+        <div class="paymentList">
+            <!--  결제 리스트 동적 생성  -->
+        </div>
+
+        <!--  패키지 상세정보 모달  -->
+        <div class="packageDetail">
+            <!--   패키지 상세보기 동적 추가    -->
+        </div>
+
+
+    </div>
+
+</div>
+
+</body>
+</html>

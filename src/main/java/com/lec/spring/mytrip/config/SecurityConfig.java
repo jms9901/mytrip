@@ -1,6 +1,6 @@
 package com.lec.spring.mytrip.config;
 
-import com.lec.spring.mytrip.config.oauth.PrincipalOauth2UserService;
+import jakarta.servlet.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -8,64 +8,52 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
+    @Autowired
+    private CustomFilter customFilter;
+
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    // oauth 로그인
-    // AuthenticationManager 빈 생성
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
-    // OAuth2 Client
-    private PrincipalOauth2UserService principalOauth2UserService;
-
-    @Autowired
-    public void setPrincipalOauth2UserService(PrincipalOauth2UserService principalOauth2UserService) {
-        this.principalOauth2UserService = principalOauth2UserService;
-    }
-
-    // SecurityFilterChain을 bean으로 등록해서 설정
+    // spring security 에서 보안 필터 체인을 나타내는 인터페이스
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, PrincipalDetailService principalDetailService) throws Exception{
-        return http
-                // csrf 비활성화
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, AccessDeniedHandler accessDeniedHandler) throws Exception {
+        http
                 .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(auth -> auth
-                        // 해당 url로 들어오는 요청은 인증만 필요
-//                        .requestMatchers().authenticated()
-//                        // 해당 url로 들어오는 요청은 인증 뿐아니라 권한도 필요
-//                        .requestMatchers("").hasAnyRole("ROLE_USER")
-//                        .requestMatchers().hasAnyRole("ROLE_BUSINESS")
-//                        .requestMatchers().hasAnyRole("ROLE_ADMIN")
-                        // 그 밖의 요청들은 모두 허용
-                        .anyRequest().permitAll())
+                .authorizeRequests(auth -> auth
+                        .requestMatchers("/main/**","/user/**", "/user/login", "/oauth2/**", "/css/**", "/js/**", "/img/**", "/admin/adminLogin", "admin/login","/admin/auth", "/uploads/**" ).permitAll()
+                        .requestMatchers( "/flight/**", "/board/**", "/aipage/**", "/mypage/**").hasAnyAuthority("ROLE_USER", "ROLE_BUSINESS")
+                        .anyRequest().authenticated())
                 .formLogin(form -> form
                         .loginPage("/user/login")
                         .loginProcessingUrl("/user/login")
-                        .defaultSuccessUrl("/user/home", true))
-                .logout(httpSecurityLogoutConfigurer -> httpSecurityLogoutConfigurer
+                        .defaultSuccessUrl("/main/mainpage", true))
+                .logout(logout -> logout
                         .logoutUrl("/user/logout")
-                        .invalidateHttpSession(false))
-//                .exceptionHandling(httpSecurityExceptionHandlingConfigurer -> httpSecurityExceptionHandlingConfigurer
-//                        .accessDeniedHandler())
-                .oauth2Login(httpSecurityOAuth2LoginConfigurer -> httpSecurityOAuth2LoginConfigurer
+                        .invalidateHttpSession(true))
+                .oauth2Login(oauth2 -> oauth2
                         .loginPage("/user/login")
-                        .userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig
-                            .userService(principalOauth2UserService)))
-                .build();
+                        .defaultSuccessUrl("/main/mainpage", true));
 
+        // 사용자 상태 확인 필터 추가
+        http.addFilterBefore((Filter)customFilter, UsernamePasswordAuthenticationFilter.class);
+
+        return http.build();
     }
 }

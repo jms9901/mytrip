@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lec.spring.mytrip.repository.LikeRepository">
+<!--    //도시-->
+<!--    //내가 좋아요를 했는가?-->
+    <!-- 도시 좋아요 상태 확인 -->
+    <select id="checkIfCityLiked" resultType="boolean">
+        SELECT CASE WHEN EXISTS (
+            SELECT 1 FROM city_liked
+            WHERE user_id = #{userId} AND city_id = #{cityId}
+        ) THEN TRUE ELSE FALSE END
+    </select>
+<!--    //좋아요 증가-->
+    <insert id="incrementCityLike">
+        INSERT INTO city_liked (user_id, city_id, city_liked_date)
+        VALUES (#{userId}, #{cityId}, NOW())
+    </insert>
+    <!-- 도시 좋아요 감소 -->
+    <delete id="decrementCityLike">
+        DELETE FROM city_liked
+        WHERE user_id = #{userId} AND city_id = #{cityId}
+    </delete>
+
+    <select id="findAllCityLike">
+        SELECT count(*)
+        FROM city_liked
+    </select>
+
+    <!-- 특정 사용자의 좋아요한 도시 조회 -->
+    <!-- 형님 -->
+    <select id="getLikedCityByUserId" resultType="com.lec.spring.mytrip.domain.City">
+        SELECT c.city_img, c.city_name
+        FROM city c
+                 JOIN city_liked cl ON c.city_id = cl.city_id
+        WHERE cl.user_id = #{userId}
+    </select>
+
+<!--    //피드-->
+<!--    //내가 좋아요를 했는가?-->
+    <!-- 게시글 좋아요 상태 확인 -->
+    <select id="checkIfPeedLiked" resultType="boolean">
+        SELECT CASE WHEN EXISTS (
+            SELECT 1 FROM board_liked
+            WHERE user_id = #{userId} AND board_id = #{peedId}
+        ) THEN TRUE ELSE FALSE END
+    </select>
+<!--    //좋아요 증가-->
+    <insert id="incrementPeedLike">
+        INSERT INTO board_liked (user_id, board_id, board_liked_date)
+        VALUES (#{userId}, #{peedId}, NOW())
+    </insert>
+<!--    //좋아요 감소-->
+    <delete id="decrementPeedLike">
+        DELETE FROM board_liked
+        WHERE user_id = #{userId} AND board_id = #{peedId}
+    </delete>
+
+    <select id="findAllPeedLike">
+        SELECT count(*)
+        FROM board_liked
+    </select>
+
+    <resultMap id="boardResultMap" type="com.lec.spring.mytrip.domain.Board">
+        <result property="boardId" column="boardId"/>
+        <result property="authorId" column="authorId"/>
+        <result property="cityId" column="cityId"/>
+        <result property="subject" column="subject"/>
+        <result property="content" column="content"/>
+        <result property="viewCount" column="viewCount"/>
+        <result property="date" column="date"/>
+        <result property="category" column="category"/>
+        <result property="attachmentFile" column="attachmentFile"/>
+        <result property="likedUserId" column="likedUserId"/>
+        <result property="likedDate" column="likedDate"/>
+    </resultMap>
+
+    <select id="findLikedPostsByUser" resultMap="boardResultMap">
+        SELECT
+            b.board_id AS boardId,
+            b.user_id AS authorId,
+            b.city_id AS cityId,
+            b.board_subject AS subject,
+            b.board_content AS content,
+            b.board_view_count AS viewCount,
+            b.board_date AS date,
+            b.board_category AS category,
+            ba.board_attachment_file AS attachmentFile,
+            bl.user_id AS likedUserId,
+            bl.board_liked_date AS likedDate
+        FROM board_liked bl
+                 JOIN board b ON bl.board_id = b.board_id
+                 LEFT JOIN board_attachment ba ON b.board_id = ba.board_id
+        WHERE bl.user_id = #{userId} and b.board_category = '피드'
+        ORDER BY bl.board_liked_date DESC
+    </select>
+
+
+
+
+
+
+    <!--    //패키지-->
+<!--    //내가 좋아요를 했는가?-->
+    <!-- 패키지 좋아요 상태 확인 -->
+    <select id="checkIfPackageLiked" resultType="boolean">
+        SELECT CASE WHEN EXISTS (
+            SELECT 1 FROM package_liked
+            WHERE user_id = #{userId} AND package_id = #{packageId}
+        ) THEN TRUE ELSE FALSE END
+    </select>
+<!--    //좋아요 증가-->
+    <insert id="incrementPackageLike">
+        INSERT INTO package_liked (user_id, package_id, package_liked_date)
+        VALUES (#{userId}, #{packageId}, NOW())
+    </insert>
+<!--    //좋아요 감소-->
+    <delete id="decrementPackageLike">
+        DELETE FROM package_liked
+        WHERE user_id = #{userId} AND package_id = #{packageId}
+    </delete>
+
+    <select id="findAllPackageLike">
+        SELECT count(*)
+        FROM package_liked
+    </select>
+
+    <!--좋아요한 패키지 리스트-->
+    <select id="getLikedPackageDetails" resultType="com.lec.spring.mytrip.domain.PackagePost">
+        SELECT
+            p.package_title AS packageTitle,
+            pa.package_attachment_file AS packageAttachmentFile,
+        p.package_id as packageId,
+        p.city_id as cityId
+        FROM
+            package_liked pl
+                JOIN
+            package p ON pl.package_id = p.package_id
+                LEFT JOIN
+            package_attachment pa ON p.package_id = pa.package_id
+        WHERE
+            pl.user_id = #{userId}
+    </select>
+
+    <!-- 좋아요한 도시 ID -->
+    <select id="getLikedCityIds" resultType="int">
+        SELECT city_id FROM city_liked WHERE user_id = #{userId}
+    </select>
+
+    <!-- 좋아요한 게시글 ID -->
+    <select id="getLikedPostIds" resultType="int">
+        SELECT board_id FROM board_liked WHERE user_id = #{userId}
+    </select>
+
+    <!-- 좋아요한 패키지 ID -->
+    <select id="getLikedPackageIds" resultType="int">
+        SELECT package_id FROM package_liked WHERE user_id = #{userId}
+    </select>
+
+
+
+
+
+    <!--총 좋아요 나타내기-->
+    <!-- 도시의 총 좋아요 수 -->
+    <select id="getCityLikeCount" resultType="int">
+        SELECT COUNT(*)
+        FROM city_liked
+        WHERE city_id = #{cityId}
+    </select>
+
+    <!-- 포스트의 총 좋아요 수 -->
+    <select id="getPostLikeCount" resultType="int">
+        SELECT COUNT(*)
+        FROM board_liked
+        WHERE board_id = #{boardId}
+    </select>
+
+    <!-- 패키지의 총 좋아요 수 -->
+    <select id="getPackageLikeCount" resultType="int">
+        SELECT COUNT(*)
+        FROM package_liked
+        WHERE package_id = #{packageId}
+    </select>
+</mapper>

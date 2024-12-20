@@ -2,12 +2,9 @@ package com.lec.spring.mytrip.service;
 
 import com.lec.spring.mytrip.domain.GuestBook;
 
-
 import java.util.List;
 
-
 public interface GuestBookService {
-
     // 방명록 작성
     void addGuestBook(GuestBook guestBook);
 

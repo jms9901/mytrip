@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lec.spring.mytrip.repository.UserCityRepository">
+
+    <select id="findUserIdByName" resultType="int">
+        SELECT user_id
+        FROM user
+        WHERE user_username = #{username}
+        LIMIT 1
+    </select>
+
+
+
+    <select id="findNameByUsername" resultType="string">
+        SELECT user_name
+        FROM user
+        WHERE user_username = #{username}
+    </select>
+
+    <insert id="insertUserCity">
+        INSERT INTO user_city (user_id, city_id, created_date)
+        VALUES (#{userId}, #{cityId}, NOW());
+    </insert>
+
+
+
+</mapper>

@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lec.spring.mytrip.repository.PackagePostRepository">
+
+    <!-- ResultMap 정의 -->
+
+    <resultMap id="userMap" type="com.lec.spring.mytrip.domain.User">
+        <result column="user_id" property="id"/>
+        <result column="u_username" property="username"/>
+        <result column="u_email" property="email"/>
+        <result column="u_regdate" property="regDate"/>
+    </resultMap>
+
+    <resultMap id="PackagePostResultMap" type="com.lec.spring.mytrip.domain.PackagePost">
+        <id property="packageId" column="package_id"/>
+        <result property="cityId" column="city_id"/>
+        <result property="packageStatus" column="package_status"/>
+        <result property="packageContent" column="package_content"/>
+        <result property="packageRegdate" column="package_regdate"/>
+        <result property="packageTitle" column="package_title"/>
+        <result property="packageCost" column="package_cost"/>
+        <result property="packageMaxpeople" column="package_maxpeople"/>
+        <result property="packageStartDay" column="package_start_day"/>
+        <result property="packageEndDay" column="package_end_day"/>
+        <collection property="user" resultMap="userMap"/>
+    </resultMap>
+
+    <!-- 패키지 상세 조회 -->
+    <select id="findById" parameterType="int" resultMap="PackagePostResultMap">
+        SELECT * FROM package
+        WHERE package_id = #{packageId}
+    </select>
+
+    <!-- 도시별 패키지 조회 -->
+    <select id="findByCityId" parameterType="int" resultMap="PackagePostResultMap">
+        SELECT package_id,
+               user_id,
+               package_status,
+               package_content,
+               package_regdate,
+               package_title,
+               package_cost,
+               package_maxpeople,
+               package_start_day,
+               package_end_day
+        FROM package
+        WHERE city_id = #{cityId}
+        AND package_status = '승인'
+        ORDER BY package_regdate DESC
+    </select>
+
+    <!-- 사용자별 패키지 조회 -->
+    <select id="findByUserId" resultMap="PackagePostResultMap">
+        SELECT * FROM package
+        WHERE user_id = #{user.id}
+    </select>
+
+    <!-- 패키지 상태별 조회 -->
+    <select id="findByStatus" parameterType="string" resultMap="PackagePostResultMap">
+        SELECT * FROM package
+        WHERE package_status = #{status}
+    </select>
+    
+    <!-- 도시별 승인 된 데이터만 조회(board 출력용) -->
+    <select id="findByCityAndStatus" parameterType="int" resultMap="PackagePostResultMap">
+        SELECT * FROM package
+        WHERE city_id = #{cityId}
+            AND package_status = '승인'
+    </select>
+
+    <!-- 패키지 제목 검색 -->
+    <select id="searchByTitle" parameterType="string" resultMap="PackagePostResultMap">
+        SELECT * FROM package
+        WHERE package_title LIKE CONCAT('%', #{title}, '%')
+    </select>
+
+    <!-- 패키지 저장 -->
+    <insert id="save" flushCache="true" parameterType="com.lec.spring.mytrip.domain.PackagePost"
+            useGeneratedKeys="true" keyProperty="packageId" keyColumn="package_id">
+        INSERT INTO package (
+            city_id, user_id, package_status, package_content,
+            package_regdate, package_title, package_cost, package_maxpeople,
+            package_start_day, package_end_day
+        ) VALUES (
+                     #{cityId}, #{user.id}, #{packageStatus}, #{packageContent},
+                     NOW(), #{packageTitle}, #{packageCost}, #{packageMaxpeople},
+                     #{packageStartDay}, #{packageEndDay}
+                 )
+    </insert>
+
+    <!-- 패키지 수정 -->
+    <update id="update" flushCache="true" parameterType="com.lec.spring.mytrip.domain.PackagePost">
+        UPDATE package
+        SET
+            city_id = #{cityId},
+            package_content = #{packageContent},
+            package_title = #{packageTitle},
+            package_cost = #{packageCost},
+            package_maxpeople = #{packageMaxpeople},
+            package_start_day = #{packageStartDay},
+            package_end_day = #{packageEndDay}
+        WHERE package_id = #{packageId}
+    </update>
+
+    <!-- 패키지 삭제 -->
+    <delete id="deleteById" flushCache="true" parameterType="int">
+        DELETE FROM package
+        WHERE package_id = #{packageId}
+    </delete>
+
+    <!-- 기업 회원이 등록한 패키지 리스트와 그에 해당 패키지의 좋아요 수 -->
+    <select id="likeCntByPackage" resultType="com.lec.spring.mytrip.domain.PackagePost">
+        SELECT
+            pk.package_id AS packageId,
+            pk.package_title AS packageTitle,
+            pk.package_content AS packageContent,
+            pk.package_status AS packageStatus,
+            COALESCE(liked_count.cnt, 0) AS likedCount
+        FROM package pk
+                 LEFT JOIN (
+            SELECT
+                package_id,
+                COUNT(*) AS cnt
+            FROM package_liked
+            GROUP BY package_id
+        ) liked_count ON pk.package_id = liked_count.package_id
+        WHERE pk.user_id = #{userId}
+        ORDER BY pk.package_id DESC
+    </select>
+
+    <!-- 도시 이름과 함께 패키지 상세정보 조회 -->
+    <select id="mypagePackageDetail" resultType="com.lec.spring.mytrip.domain.PackagePost">
+        SELECT
+            p.package_id,
+            p.package_title,
+            p.package_content,
+            p.package_cost,
+            p.package_maxpeople,
+            p.package_regdate,
+            p.package_start_day,
+            p.package_end_day,
+            c.city_name,
+            c.city_id
+        FROM
+            package p
+        JOIN city c
+        ON p.city_id = c.city_id
+    </select>
+
+</mapper>

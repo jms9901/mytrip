@@ -1,0 +1,25 @@
+/* 패럴렉스 효과를 위한 고정 배경 이미지 */
+.parallax {
+    background-image: url('../img/mainimg.jpg');
+    height: 700px; /* 섹션 높이 */
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    z-index: 1; /* 패럴렉스 섹션의 z-index 조정 */
+}
+
+#section1 {
+    background-color: #142055;
+    width: 100%;
+    position: relative;
+    z-index: 2; /* 섹션의 z-index 조정 */
+}
+
+#mainimg {
+    display: block;
+    width: 95%;
+    position: relative; /* position 속성 추가 */
+    z-index: 1;
+}
+

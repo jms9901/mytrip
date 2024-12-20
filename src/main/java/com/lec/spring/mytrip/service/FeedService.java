@@ -1,36 +1,34 @@
 package com.lec.spring.mytrip.service;
 
+import com.lec.spring.mytrip.domain.City;
 import com.lec.spring.mytrip.domain.Feed;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
 public interface FeedService {
 
-    // 피드 작성 >> INSERT
-    int write(Feed feed, Map<String, MultipartFile> files);
-
-    // 특정 피드 id의  피드 조회 >> SELECT
-    // 트랜잭션 처리
-    @Transactional
-    Feed detail(Long id);
-
-    // 피드 목록 조회 >> SELECT
-    List<Feed> list();
-
-    // 특정 id 의 글 읽어오기 (SELECT)
-    // 조회수 증가 없음
-    Feed findById(Long id);
-
-    // 특정 피드 id의 피드 수정하기 (제목, 내용, 이미지-첨부파일, 도시) >> UPDATE
-    int update(Feed feed, Map<String, MultipartFile> files, Long[] delfile);
-
-    // 특정 피드 id의 글 삭제하기 >> DELETE
-    int deleteById(Long id);
+    List<Feed> getFeedByUserId(int userId);
 
 
+    public List<Feed> findRecentFeedsByUserId(int userId);
+
+    void insertFeed(Feed feed,List<MultipartFile> files) throws IOException;
+
+    void updateFeed(int boardId, int userId, String boardSubject, String boardContent, int cityId, List<MultipartFile> files) throws IOException;
+
+    void deleteFeed(int boardId, int userId);
+
+
+    // 도시 및 카테고리 별 불러오기
+    List<Feed> findByCityAndCategory(int cityId, String Category);
+
+    Feed detail(int id);
+
+    int deleteGroup(int boardId);
+
+    String generateUniqueFileName(String originalFileName, int userId);
 }

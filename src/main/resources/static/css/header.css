@@ -1,0 +1,103 @@
+/* header */
+.topnav {
+    font-family: 'MinSans-Regular', sans-serif;
+    background-color: #142055;
+    overflow: hidden;
+    height: 200px;
+    display: flex;
+    align-items: center;
+}
+
+/* header의 a태그 */
+.topnav .top-menu {
+    font-family: 'MinSans-Regular', sans-serif !important;
+    color: #f2f2f2 !important;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 1.2vw !important;
+    position: relative;
+    top: 20px;
+    left: 100px;
+    margin-right: 80px;
+}
+
+/* header의 a태그에 마우스 hover */
+.topnav .top-menu:hover {
+    color: #c8a755 !important;
+}
+
+/* header의 로고 */
+.topnav .logo {
+    position: relative;
+    float: left;
+    left: 40px;
+    width: 90px;
+    height: 95px;
+}
+
+
+
+/* 마이페이지 버튼 */
+.mypage {
+    font-size: 3.4vw;
+    margin-left: 450px;
+    color: white;
+    background-color: #142055;
+    border: none;
+    border-radius: 15px;
+    padding: 14px 16px;
+}
+
+/* 로그아웃 버튼 */
+.logout {
+    font-size: 24px;
+}
+
+/* 마이페이지 버튼 hover */
+.mypage:hover {
+    font-family: 'BMkkubulimTTF-Regular', sans-serif;
+    background-color: #ddd;
+    color: black;
+    text-decoration: none; /* 호버 시 밑줄 제거 */
+}
+
+/* 특정 a 태그에만 효과 적용 */
+.SMN_effect-6 .top-menu {
+    padding: 10px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    position: relative;
+    display: inline-block;
+    text-decoration: none;
+    color: inherit; /* 기본 색상 유지 */
+}
+
+.SMN_effect-6 .top-menu:before {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #c8a755;
+    transform: scaleX(0);
+    transition: transform 0.5s ease;
+}
+
+.SMN_effect-6 .top-menu:hover:before, .SMN_effect-6 .top-menu:focus:before {
+    transform: scaleX(1);
+}
+
+/* font */
+@font-face {
+    font-family: 'MinSans-Regular';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/MinSans-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'BMkkubulimTTF-Regular';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2410-1@1.0/BMkkubulimTTF-Regular.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}

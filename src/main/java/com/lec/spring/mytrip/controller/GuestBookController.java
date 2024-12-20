@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.List;
 
 @RestController
-@RequestMapping("/bookGuestBook")
+@RequestMapping("bookMain/bookGuestBook")
 public class GuestBookController {
 
     private final GuestBookService guestBookService;
@@ -21,8 +21,12 @@ public class GuestBookController {
         this.guestBookService = guestBookService;
     }
 
+
+
+
+
     // 방명록 추가
-    @PostMapping("/add")
+    @PostMapping("/add/{userId}")
     public Map<String, Object> addGuestBook(@RequestBody GuestBook guestBook) {
         guestBookService.addGuestBook(guestBook);
         Map<String,Object> response = new HashMap<>();

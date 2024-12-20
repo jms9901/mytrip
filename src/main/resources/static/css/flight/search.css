@@ -1,0 +1,340 @@
+/* 전체 컨테이너 */
+#pageContainer {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: visible;
+}
+
+/* 배경 슬라이더 */
+#background-slider {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50%; /* 검색창 중간까지만 표시 */
+    z-index: -1; /* 검색창 뒤에 배치 */
+}
+
+.slider-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0; /* 기본적으로 보이지 않도록 */
+    transition: opacity 1.5s ease-in-out;
+}
+
+.slider-image.active {
+    opacity: 1; /* 활성화된 이미지만 보이도록 */
+}
+
+
+
+
+
+
+#image-slider {
+    position: relative;
+    width: 100%;
+    height: 40vh; /* 이미지 높이 설정 */
+    overflow: hidden;
+}
+
+.slider-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    transition: opacity 2s ease-in-out;
+}
+
+.slider-image.active {
+    opacity: 1;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+#selection-container {
+    position: absolute; /* 부모 요소 기준으로 절대 위치 */
+    top: 100%; /* 버튼 바로 아래 */
+    left: 0; /* 버튼의 왼쪽 정렬 */
+    z-index: 1050; /* 다른 요소 위에 표시 */
+    background-color: white; /* 배경색 */
+    border: 1px solid #ddd; /* 테두리 */
+    padding: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 그림자 */
+    width: 300px; /* 적절한 크기 */
+    display: none; /* 기본적으로 숨김 */
+}
+/* 드롭박스 활성화 */
+#selectionContainer.d-block {
+    display: block;
+}
+
+#selectionContainer.d-none {
+    display: none;
+}
+
+.dropdown-content{
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+/* 버튼 스타일 */
+.btn-decrease, .btn-increase {
+    cursor: pointer;
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+}
+.btn-decrease:hover, .btn-increase:hover {
+    background-color: #e9ecef;
+}
+/*커스텀 드롭다운*/
+
+/*인원 선택*/
+/*인원 선택*/
+#selectionContainer {
+    display: none; /* 기본적으로 숨김 */
+    /* position: absolute; 버튼 기준으로 위치 설정 */
+    top: calc(100% + 5px); /* 버튼 바로 아래, 약간의 간격 */
+    left: 0; /* 버튼의 왼쪽 정렬 */
+    z-index: 1000; /* 다른 요소 위로 올리기 */
+    background-color: white; /* 배경색 */
+    border: 1px solid #ddd; /* 테두리 */
+    padding: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 그림자 */
+    width: 300px; /* 원하는 크기 */
+
+}
+
+#openSelectionBtn {
+    position: relative; /* 기준이 되는 버튼 설정 */
+}
+
+.selectTag {
+    width: 100% ; /*부모요소 꽉 채우게*/
+}
+
+#roundTrip {
+    position: relative;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    z-index: 10; /* 검색창을 최상위로 배치 */
+    width: 90%;         /* 전체 화면의 90% 크기 */
+    max-width: 1100px;   /* 최대 너비를 800px로 제한 */
+    margin: 0 auto;     /* 중앙 정렬 */
+}
+
+.sungekAge {
+    display: block;
+}
+
+.sungekCnt {
+    display: block;
+}
+
+
+
+.flight-icon {
+    font-size: 40px; /* 아이콘 크기 */
+    color: #007bff; /* 아이콘 색상 */
+    transform: rotate(90deg); /* 오른쪽으로 90도 회전 */
+    display: inline-block; /* 위치 조정을 위해 block 속성 */
+
+}
+.icon-container {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* 부모 컨테이너 내에서 가운데 정렬 */
+}
+
+
+
+.text-center {
+    text-align: center;
+}
+
+.airport-code {
+    font-size: 24px;
+    font-weight: bold;
+    color: #000;
+}
+.dropdown-button .airport-code {
+    font-size: 24px; /* 크고 두껍게 */
+    font-weight: bold;
+    color: #000;
+}
+.dropdown-button .airport-city {
+    font-size: 14px; /* 작은 텍스트 */
+    color: #6c757d;
+}
+
+.airport-city {
+    font-size: 14px;
+    color: #6c757d; /* 회색 텍스트 */
+}
+.dropdown-button.selected {
+    /* 선택 전과 동일한 스타일 유지 */
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.custom-dropdown {
+    position: relative;
+}
+
+.dropdown-button {
+    background-color: transparent;
+    border-radius: 8px;
+    padding: 8px 12px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dropdown-content {
+    position: absolute;
+    top: 100%; /* 버튼 바로 아래 */
+    left: 0;
+    width: 100%; /* 부모 너비에 맞춤 */
+    max-height: 300px; /* 스크롤 가능한 최대 높이 */
+    overflow-y: auto; /* 스크롤 활성화 */
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1050; /* 다른 요소 위로 표시 */
+    display: none; /* 기본적으로 숨김 */
+}
+
+.dropdown-content.show {
+    display: block; /* 열릴 때 표시 */
+}
+
+/* 도착지 드롭다운 버튼 스타일 */
+.custom-dropdown .dropdown-item-btn {
+    width: calc(33.333% - 10px); /* 한 줄에 3개씩 배치 */
+    text-align: center;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 14px;
+    white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+    background-color: #fff;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    box-sizing: border-box; /* 패딩과 테두리 포함 크기 설정 */
+}
+
+.custom-dropdown .dropdown-item-btn:hover {
+    background-color: #f0f8ff; /* 선택 시 효과 */
+    border-color: #007bff; /* 선택 시 테두리 색 변경 */
+}
+
+.dropdown-content::-webkit-scrollbar {
+    width: 8px; /* 스크롤바 너비 */
+}
+
+.dropdown-content::-webkit-scrollbar-thumb {
+    background-color: #ccc; /* 스크롤바 색상 */
+    border-radius: 4px; /* 스크롤바 모서리 둥글게 */
+}
+
+.dropdown-content::-webkit-scrollbar-thumb:hover {
+    background-color: #aaa; /* 스크롤바 hover 색상 */
+}
+
+
+i.fa-plane {
+    color: #6c757d;
+    font-size: 1.5rem;
+}
+/* 로딩 화면 스타일 */
+#loading-overlay {
+    display: none; /* 페이지 초기 로딩 시 완전히 숨김 */
+    position: fixed;
+    top: 0;
+    left: 10%; /* 좌우에 여백 */
+    width: 80%; /* 화면의 80%만 차지 */
+    height: 100%; /* 위아래 여백 없이 전체 화면 */
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    overflow: hidden; /* 넘치는 부분을 숨김 */
+}
+
+.background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 150%;
+    height: 100%;
+    background-size: cover; /* 화면에 꽉 차게 비율 유지 */
+    background-position: center; /* 이미지 중앙 정렬 */
+    background-repeat: no-repeat; /* 이미지 반복 방지 */
+    filter: brightness(0.7); /* 배경 어둡게 */
+    z-index: 1;
+    animation: moveBackground 10s linear infinite; /* 애니메이션 적용 */
+}
+
+.loading-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    color: #fff;
+    width: 100%;
+}
+
+.loading-text {
+    font-size: 2.5rem; /* 텍스트 크기 */
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+
+.loading-bar-container {
+    position: relative;
+    width: 70%; /* 로딩 바 너비 설정 */
+    max-width: 800px;
+    height: 15px; /* 로딩 바 높이 */
+    background-color: #444;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+.loading-bar {
+    position: absolute;
+    height: 100%;
+    width: 0;
+    background-color: #007bff;
+    transition: width 2s linear;
+}
+
+/* 배경 애니메이션 */
+@keyframes moveBackground {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+

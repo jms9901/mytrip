@@ -20,8 +20,11 @@ public class PrincipalDetailService implements UserDetailsService {
         this.authorityRepository = sqlSession.getMapper(AuthorityRepository.class);
     }
 
+    // 해당 메서드에 주어진 username 을 기반으로 사용자의 세부 정보를 로드
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        System.out.println("loadUserByUsername (" + username + ") 호출");
+
         User user = userRepository.findByUsername(username);
 
         if (user != null) {
@@ -32,3 +35,4 @@ public class PrincipalDetailService implements UserDetailsService {
         throw new UsernameNotFoundException(username);
     }
 }
+// git push를 위한 주석 241210 10:45

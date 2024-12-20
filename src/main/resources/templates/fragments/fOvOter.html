@@ -1,0 +1,33 @@
+<footer id="footer">
+  <div class="footercontainer">
+    <div class="column1">
+      <a th:href="@{/aipage/start}"><img th:src="@{/img/logo.png}" alt=""></a>
+    </div>
+    <div class="column2">
+      <a th:href="@{/aipage/start}">여행지 추천</a>
+      <a th:href="@{/board/city/1}">여행지 게시판</a>
+      <a th:href="@{/flight/search}">항공권 예약</a>
+      <a sec:authorize="isAnonymous()" th:href="@{/user/login}">login</a>
+<!--      <form th:action="@{/user/mypage}" method="GET" sec:authorize="isAuthenticated()">-->
+<!--        <button id="myFoot" type="submit">마이페이지</button></form>-->
+    </div>
+    <div class="column3">
+      <a href="#">이용약관</a>
+      <a href="#">공지사항</a>
+      <a href="#">고객센터</a>
+    </div>
+
+    <!-- 아이콘과 텍스트를 묶는 컨테이너 -->
+    <div class="icon-and-text">
+      <div class="column4">
+        <a href="https://www.instagram.com/"><img th:src="@{/img/Instagram_logo.png}" alt="Instagram"></a>
+        <a href="https://www.facebook.com/"><img th:src="@{/img/facebook-logo.png}" alt="Facebook"></a>
+        <a href="https://www.youtube.com/results?search_query=%EC%97%AC%ED%96%89"><img th:src="@{/img/youtube_logo.png}" alt="YouTube"></a>
+        <a href="https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=0&ie=utf8&query=%EC%97%AC%ED%96%89"><img th:src="@{/img/naver_logo.png}" alt="Naver"></a>
+      </div>
+      <div class="column5">
+        <p>©트립파트너㈜. ALL RIGHTS RESERVED.</p>
+      </div>
+    </div>
+  </div>
+</footer>

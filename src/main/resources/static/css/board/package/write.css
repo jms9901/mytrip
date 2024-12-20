@@ -1,0 +1,97 @@
+/* Main Section CSS */
+/* font */
+@font-face {
+    font-family: 'MinSans-Regular';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/MinSans-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+main {
+    padding: 20px;
+    max-width: 1300px;
+    margin: 25px auto;
+    background-color: #797a7f75;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+main form div label {
+    font-weight: bold;
+    margin-top: 20px;
+    margin-bottom: 5px;
+}
+
+main form div input,
+main form div textarea {
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    background-color: #ffffff;
+    border-radius: 5px;
+}
+
+main form div input:focus,
+main form div textarea:focus {
+    border-color: #0056b3bd;;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 86, 179, 0.3);
+}
+
+main form div button {
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    background-color: #0056b3;
+    color: #ffffff;
+    border-radius: 5px;
+}
+
+main form div button :hover {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+.note-toolbar {
+    background-color: #ffffff;
+}
+
+.note-editor .note-editing-area .note-editable {
+    background-color: #ffffff;
+}
+
+main form div button:hover {
+    background-color: #004494;
+}
+
+#form-submit-btn {
+    align-self: flex-start;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: background-color 0.3s, color 0.3s;
+    text-decoration: none;
+}
+
+main a.btn {
+    text-decoration: none;
+    color: #000000;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+main a.btn:hover,
+#form-submit-btn :hover {
+    background-color: #0056b3;
+    color: #ffffff;
+}
+
+
+#start-date-btn:hover,
+#end-date-btn:hover {
+    background-color: #ffffff;
+    color: #000000;
+}

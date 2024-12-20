@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lec.spring.mytrip.repository.CommentRepository">
+
+    <!-- 댓글 삽입 -->
+    <insert id="insertComment" parameterType="com.lec.spring.mytrip.domain.Comment">
+        INSERT INTO board_comment (board_id, user_id, comment_content, comment_date)
+        VALUES (#{boardId}, #{userId}, #{content}, NOW())
+    </insert>
+
+    <select id="findCommentsByBoardId" parameterType="int" resultType="com.lec.spring.mytrip.domain.Comment">
+        SELECT
+        bc.board_comment_id AS commentId,
+        bc.board_id AS boardId,
+        bc.user_id AS userId,
+        u.user_name AS userName,
+        bc.comment_content AS content,
+        bc.comment_date AS date
+        FROM board_comment bc
+        JOIN user u ON bc.user_id = u.user_id   <!-- user 테이블과 조인 -->
+        WHERE bc.board_id = #{boardId}
+        ORDER BY bc.comment_date DESC
+    </select>
+
+    <!-- 댓글 삭제 -->
+    <delete id="deleteComment" parameterType="int">
+        DELETE FROM board_comment
+        WHERE board_comment_id = #{commentId}
+    </delete>
+    <!-- 게시글 작성자 ID 조회 -->
+    <select id="findBoardWriterIdByBoardId" parameterType="int" resultType="int">
+        SELECT user_id
+        FROM board
+        WHERE board_id = #{boardId}
+    </select>
+
+</mapper>

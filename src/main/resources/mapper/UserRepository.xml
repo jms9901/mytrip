@@ -10,7 +10,7 @@
             user_email as "email",
             user_password as "password",
             user_username as "username",
-            user_phonenumber as "phoneNumber",
+            user_name as "name",
             user_regdate as "regDate",
             user_profile as "profile",
             user_provider as "provider",
@@ -36,10 +36,10 @@
             useGeneratedKeys="true" keyProperty="id" keyColumn="user_id">
         insert into user (
             user_email, user_password, user_username, user_name,
-            user_phonenumber, user_birthday, user_provider, business_companynumber, user_authorization, user_status
+            user_birthday, user_provider, business_companynumber, user_authorization, user_status
         ) values (
                      #{email}, #{password}, #{username}, #{name},
-                     #{phoneNumber}, #{birthday}, #{provider}, #{companyNumber}, #{authorization}, #{status}
+                     #{birthday}, #{provider}, #{companyNumber}, #{authorization}, #{status}
                  )
     </insert>
 
@@ -48,4 +48,31 @@
         and user_email = #{email}
     </select>
 
+    <update id="updateIntroduction">
+        UPDATE user
+        SET user_introdution = #{introduction}
+        WHERE user_id = #{userid}
+    </update>
+
+    <select id="findListById" resultType="com.lec.spring.mytrip.domain.User">
+        <include refid="SELECT_USER"/>
+        and user_id = #{id}
+    </select>
+
+    <!-- 사용자 업데이트 -->
+    <update id="updateUser" parameterType="map">
+        UPDATE user
+        SET user_password = #{password},
+            user_introdution = #{introduction},
+            user_profile = #{profile}
+        WHERE user_id = #{userId}
+    </update>
+
+    <!-- 기업 사용자 업데이트  -->
+    <update id="updateCompany" parameterType="map">
+        UPDATE user
+        SET user_password = #{password},
+            user_profile = #{profile}
+        WHERE user_id = #{userId}
+    </update>
 </mapper>

@@ -1,0 +1,286 @@
+body {
+    background-image: url('/static/img/flight/cloud.png.jpg');
+    background-size: cover; /* 이미지를 컨테이너 크기에 맞게 조정 */
+    background-position: center; /* 이미지를 가운데 정렬 */
+    background-repeat: no-repeat; /* 배경 이미지 반복 방지 */
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    overflow-x: hidden; /* 가로 스크롤 방지 */
+}
+
+/* .container 설정 */
+.container {
+
+    display: flex; /* 컨텐츠 정렬 */
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* 세로 정렬: 위로 올림 */
+    height: 120%; /* 부모 요소의 전체 높이 사용 */
+    width: 100%; /* 부모 요소의 전체 너비 사용 */
+    padding-top: 20px; /* 컨텐츠 위 여백 */
+}
+
+/* 제목 스타일 */
+h1 {
+    position: relative;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    font-size: 36px; /* 제목 크기 */
+    margin-bottom: 40px; /* 티켓과의 간격 */
+}
+
+/* 티켓 스타일 (정적인 위치로 복원) */
+.ticket {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: center;
+    width: 700px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    margin-bottom: 20px;
+    transition: none; /* 부드러운 전환 효과 제거 */
+}
+
+/* 왼쪽 이미지 섹션 */
+.ticket-image-box {
+    flex: 1;
+    background-size: cover;
+    background-position: center;
+}
+
+.ticket-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* 오른쪽 텍스트 섹션 */
+.ticket-details {
+    flex: 2;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.ticket-header {
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 18px;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+.route {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.route span {
+    font-size: 14px;
+    color: #888;
+}
+
+.details {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.airportId {
+    display: inline;
+}
+
+.details div {
+    text-align: left;
+}
+
+.details div p {
+    margin: 4px 0;
+    font-size: 14px;
+    color: #333;
+}
+
+.details div p span {
+    font-weight: bold;
+}
+
+.airline {
+    font-size: 12px;
+    color: #666;
+    text-align: center;
+    margin-top: 10px;
+    display: flex; /* 가로로 정렬하기 위한 flexbox */
+    align-items: center; /* 이미지와 텍스트의 수직 정렬 */
+    justify-content: center; /* 수평 가운데 정렬 */
+}
+
+.airline img {
+    width: 20px; /* 적절한 너비 설정 */
+    height: auto; /* 비율 유지 */
+    margin-right: 8px; /* 이미지와 텍스트 사이 간격 추가 */
+}
+
+/* 스크롤 인디케이터 */
+/* 스크롤 인디케이터 */
+#scroll-indicator {
+    margin: 60px 0; /* 티켓과 가격 사이 간격 */
+    text-align: center;
+    opacity: 1;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* 숨겨진 상태 */
+/* 숨겨진 상태 */
+#scroll-indicator.hidden {
+    opacity: 0;
+    transform: translateY(20px); /* Y축만 이동 */
+}
+
+#scroll-indicator .arrow {
+    font-size: 40px; /* 화살표 크기 */
+    color: white; /* 화살표 색상 */
+    animation: bounce 1.5s infinite; /* 위아래로 움직이는 애니메이션 */
+}
+
+#scroll-indicator p {
+    margin: 5px 0 0;
+    font-size: 16px; /* 텍스트 크기 */
+    font-weight: bold; /* 텍스트 강조 */
+    color: white; /* 텍스트 색상 */
+}
+
+/* 화살표의 위아래 움직이는 애니메이션 */
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0); /* 기본 위치 */
+    }
+    50% {
+        transform: translateY(-10px); /* 살짝 위로 이동 */
+    }
+}
+
+
+
+/* 가격 섹션 */
+.price-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* 항목 간격 */
+    margin-top: 50px;
+    width: 700px; /* 고정된 너비 */
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* 부드러운 그림자 */
+    font-family: Arial, sans-serif;
+}
+
+/* 개별 가격 항목 */
+.price-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 20px;
+    background-color: white;
+    border-radius: 8px; /* 모서리 둥글게 */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid rgba(0, 0, 0, 0.1); /* 연한 테두리 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05); /* 살짝 떠 있는 느낌 */
+    gap: 20px; /* 내부 요소 간의 간격 */
+}
+
+/* 가격 항목 호버 효과 */
+.price-item:hover {
+    transform: translateY(-4px); /* 약간 위로 이동 */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* 강조된 그림자 */
+}
+
+/* 사이트 정보 */
+.site-info {
+    flex: 2;
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    display: flex;
+    align-items: center;
+}
+
+/* 가격 정보 */
+.price-info {
+    flex: 1;
+    font-size: 18px;
+    font-weight: bold;
+    color: #007bff;
+    text-align: right;
+    margin-right: 10px; /* 버튼과 간격 추가 */
+}
+
+/* 버튼 스타일 */
+.select-button .btn {
+    display: inline-block; /* 버튼처럼 동작 */
+    text-decoration: none; /* 밑줄 제거 */
+    background-color: #007bff; /* 기본 배경색 */
+    color: white; /* 텍스트 색상 */
+    padding: 10px 25px; /* 버튼 내부 여백 */
+    border-radius: 8px; /* 둥근 모서리 */
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    transition: background-color 0.3s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 버튼 그림자 */
+    cursor: pointer; /* 클릭 가능한 상태로 변경 */
+}
+
+/* 버튼 호버 효과 */
+.select-button .btn:hover {
+    background-color: #0056b3; /* 호버 시 배경색 */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* 강조된 그림자 */
+}
+
+.select-button .btn:active {
+    background-color: #003f88; /* 클릭 시 배경색 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 클릭 시 그림자 축소 */
+}
+
+/* 뒤로가기 버튼 스타일 */
+.back-button {
+    position: fixed; /* 스크롤해도 화면에 고정 */
+    top: 20px; /* 화면 상단에서 20px 아래 */
+    left: 20px; /* 화면 왼쪽에서 20px 오른쪽 */
+    padding: 10px 20px; /* 내부 여백 */
+    font-size: 14px; /* 텍스트 크기 */
+    font-weight: bold; /* 텍스트 굵기 */
+    background-color: #dc3545; /* 빨간색 배경 */
+    color: white; /* 흰색 텍스트 */
+    border: none; /* 테두리 제거 */
+    border-radius: 8px; /* 모서리를 둥글게 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 부드러운 그림자 */
+    z-index: 1000; /* 항상 위에 표시 */
+    cursor: pointer; /* 클릭 가능한 상태로 설정 */
+    transition: background-color 0.3s ease, transform 0.2s ease; /* 부드러운 전환 효과 */
+    text-align: center; /* 텍스트 가운데 정렬 */
+}
+
+/* 호버 효과 */
+.back-button:hover {
+    background-color: #c82333; /* 더 진한 빨간색 */
+    transform: translateY(-2px); /* 살짝 위로 이동 */
+}
+
+/* 클릭 효과 */
+.back-button:active {
+    background-color: #bd2130; /* 클릭 시 어두운 빨간색 */
+    transform: translateY(0); /* 원래 위치로 돌아오기 */
+}
+
