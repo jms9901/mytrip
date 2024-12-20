@@ -217,6 +217,7 @@ public class FeedServiceImpl implements FeedService{
 //            }
             feed.setBoardLiked(likeRepository.getPostLikeCount(feed.getBoardId()));
         });
+
         return c;
     }
 

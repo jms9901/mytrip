@@ -140,7 +140,8 @@
             p.package_regdate,
             p.package_start_day,
             p.package_end_day,
-            c.city_name
+            c.city_name,
+            c.city_id
         FROM
             package p
         JOIN city c

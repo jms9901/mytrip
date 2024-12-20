@@ -249,6 +249,9 @@ public class BusinessMypageController {
         try {
             List<PackagePost> packagePost = packagePostService.getPackageDetailsById(packageId);
 
+            int cityId = packagePost.get(0).getCityId();
+            log.info("cityId: {}", cityId);
+
             if(packagePost == null) {
                 return ResponseEntity.notFound().build();
             }
