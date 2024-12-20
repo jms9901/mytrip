@@ -18,55 +18,111 @@
 </head>
 <body>
 <!-- 전체 레이아웃 -->
-<div class="container-fluid vh-100 d-flex p-0">
-    <!-- 사이드 메뉴 -->
-    <aside class="col-2 bg-secondary text-white p-3" >
-        <h5>타 도시 이동</h5>
-        <ul class="list-unstyled">
-            <li th:each="city : ${cities}">
-                <a th:href="@{/board/city/{cityId}/feeds(cityId=${city.cityId})}"
-                   class="text-decoration-none text-white d-block py-2"
-                   th:text="${city.cityName}">도시명</a>
-            </li>
-        </ul>
-    </aside>
-
-    <!-- 메인 피드 -->
-    <main class="col d-flex justify-content-center align-items-start overflow-auto p-4">
-        <div class="w-100" style="max-width: 600px;">
-            <div class="card mb-4" th:each="feed : ${feeds}">
-                <div class="card-body">
-                    <!-- 제목 -->
-                    <h5 class="card-title" th:text="${feed.boardSubject}">제목</h5>
-                    <!-- 작성자와 날짜 -->
-                    <p class="text-muted">
-                        작성자: <a th:href="@{|/mypage/${feed.userId}|}" th:text="${feed.user.name}">유저명</a> |
-                        날짜: <span th:text="${#temporals.format(feed.boardDate, 'yyyy-MM-dd')}">2024-12-12</span>
-                    </p>
-                    <!-- 이미지 -->
-                    <div class="mb-2">
-                        <img th:src="${(feed.attachmentFiles != null
-                                                and not #lists.isEmpty(feed.attachmentFiles)
-                                                and feed.attachmentFiles[0] != null)
-                                                ? '/uploads/' + feed.attachmentFiles[0]
-                                                : '/img/china.jpg'}"
-                             alt="피드 이미지" class="feed-image">
-                    </div>
-                    <!-- 본문 -->
-                    <p class="card-text" th:utext="${feed.boardContent}">내 내용</p>
-0
-                    <!-- 좋아요 버튼 -->
-                    <div class="d-flex justify-content-end align-items-center">
-                        <button class="likeButton btn" type="button" th:data-group-id="${feed.boardId}">
-                            <span class="likeCount">0</span> <!-- 좋아요 수 -->
-                            <i class="bi bi-heart"></i>
-                        </button>
-                    </div>
-                </div>
+<div class="container-fluid">
+    <!-- 대륙 네비게이션 -->
+    <div class="continent-navigation text-center my-3">
+        <div class="d-flex justify-content-center align-items-center gap-3">
+            <div class="continent-item">
+                <a th:href="@{|/board/city/15/feeds|}" class="text-decoration-none">
+                    <img src="/img/japan.jpg" alt="일본" class="continent-img">
+                    <p>일본</p>
+                </a>
+            </div>
+            <div class="continent-item">
+                <a th:href="@{|/board/city/7/feeds|}" class="text-decoration-none">
+                    <img src="/img/China.jpg" alt="아시아" class="continent-img">
+                    <p>아시아</p>
+                </a>
+            </div>
+            <div class="continent-item">
+                <a th:href="@{|/board/city/6/feeds|}" class="text-decoration-none">
+                    <img src="/img/europe.jpg" alt="유럽" class="continent-img">
+                    <p>유럽</p>
+                </a>
+            </div>
+            <div class="continent-item">
+                <a th:href="@{|/board/city/1/feeds|}" class="text-decoration-none">
+                    <img src="/img/SouthPacific.jpg" alt="남태평양" class="continent-img">
+                    <p>남태평양</p>
+                </a>
+            </div>
+            <div class="continent-item">
+                <a th:href="@{|/board/city/2/feeds|}" class="text-decoration-none">
+                    <img src="/img/southeastasia.jpg" alt="동남아시아" class="continent-img">
+                    <p>동남아</p>
+                </a>
+            </div>
+            <div class="continent-item">
+                <a th:href="@{|/board/city/9/feeds|}" class="text-decoration-none">
+                    <img src="/img/America.jpg" alt="아메리카" class="continent-img">
+                    <p>아메리카</p>
+                </a>
             </div>
         </div>
-        <a id="backToList" th:href="@{|/board/city/${cityId}|}" class="btn btn-secondary">목록</a>
-    </main>
+    </div>
+
+
+    <div style="position: fixed; bottom: 20px; left: 20px; display: flex; flex-direction: column; gap: 10px;">
+        <a th:href="@{/main/mainpage}" class="btn btn-primary">홈으로 이동</a>
+        <a th:href="@{|/board/city/${cityId}|}" class="btn btn-secondary">여행지 게시판</a>
+    </div>
+
+
+    <!-- 메인 콘텐츠 -->
+    <div class="container-fluid">
+        <div class="row">
+
+            <!-- 메인 피드 -->
+            <main class="col-lg-8 py-4">
+                <div class="w-100 mx-auto" style="max-width: 600px;">
+                    <div class="card mb-4" th:each="feed : ${feeds}">
+                        <div class="card-header d-flex align-items-center">
+                            <!-- TODO : img 할 것  -->
+                            <img src="/img/...jpg" alt="User" class="user-avatar">
+                            <a class="ms-2 text-decoration-none" th:href="@{|/mypage/${feed.userId}|}" th:text="${feed.user.name}">유저명</a>
+
+                        </div>
+                        <img th:src="${(feed.attachmentFiles != null
+                        and not #lists.isEmpty(feed.attachmentFiles)
+                        and feed.attachmentFiles[0] != null)
+                        ? '/uploads/' + feed.attachmentFiles[0]
+                        : '/img/china.jpg'}"
+                        alt="피드 이미지" class="card-img-top">
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${feed.boardSubject}">제목</h5>
+                            <p class="text-muted">
+                            날짜: <span th:text="${#temporals.format(feed.boardDate, 'yyyy-MM-dd')}">2024-12-12</span>
+                            </p>
+                            <p class="card-text" th:utext="${feed.boardContent}">내 내용</p>
+                            <!-- 좋아요 버튼 -->
+                            <div class="d-flex justify-content-end align-items-center">
+                                <button class="likeButton btn" type="button" th:data-group-id="${feed.boardId}">
+                                    <span class="likeCount">0</span> <!-- 좋아요 수 -->
+                                    <i class="bi bi-heart"></i>
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </main>
+            <!-- 사이드 메뉴 -->
+            <aside class="col-2 bg-secondary text-white p-3" >
+                <h5>타 도시 이동</h5>
+                <ul class="list-unstyled">
+                    <li th:each="city : ${cities}">
+                        <a th:href="@{/board/city/{cityId}/feeds(cityId=${city.cityId})}"
+                           class="text-decoration-none text-white d-block py-2"
+                           th:text="${city.cityName}">도시명</a>
+                    </li>
+                </ul>
+            </aside>
+
+
+
+        </div>
+    </div>
+
 </div>
 <!-- 스크립트 -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

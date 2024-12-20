@@ -8,6 +8,7 @@ body {
     background-position: center;
     background-attachment: fixed;
     font-family: "Oswald", sans-serif;
+    flex-direction: column;
 }
 
 .main-container {
@@ -83,7 +84,7 @@ body {
     box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
     display: flex;
     overflow: hidden;
-    flex-direction: column
+    flex-direction: column;
 }
 
 .profile-section {
@@ -113,6 +114,8 @@ body {
 .package-section {
     width: 96%;
     padding: 20px;
+    flex-grow: 1;
+    overflow: hidden;
 }
 
 .package-header {
@@ -139,9 +142,24 @@ body {
 .package-list {
     display: flex;
     flex-direction: column;
+    flex-grow: 1;
     gap: 10px;
-    max-height: 690px; /* Set a fixed height */
-    overflow-y: auto; /* Enables vertical scroll */
+    max-height: 522px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+}
+
+.package-list::-webkit-scrollbar {
+    width: 10px; /* 스크롤바 너비 */
+}
+
+.package-list::-webkit-scrollbar-thumb {
+    background: #888; /* 스크롤바 색상 */
+    border-radius: 5px;
+}
+
+.package-list::-webkit-scrollbar-thumb:hover {
+    background: #555; /* 스크롤바 Hover 색상 */
 }
 
 .package-item {
