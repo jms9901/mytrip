@@ -39,12 +39,12 @@ public class CustomFilter implements Filter {
                 httpResponse.getWriter().write("<script>alert('관리자의 승인이 필요합니다. 관리자에게 문의 바랍니다.'); window.location='/user/logout';</script>");
                 httpResponse.getWriter().flush();
                 return;
-            } else if ("거절".equals(user.getStatus())) {
-                httpResponse.getWriter().write("<script>alert('관리자의 승인이 거절되었습니다. 관리자에게 문의 바랍니다.'); window.location='/user/logout';</script>");
-                httpResponse.getWriter().flush();
-                return;
             } else if ("ROLE_DORMANT".equals(user.getAuthorization())) {
                 httpResponse.getWriter().write("<script>alert('ROLE_DORMANT 권한으로 접근할 수 없습니다. 관리자에게 문의 바랍니다.'); window.location='/user/logout';</script>");
+                httpResponse.getWriter().flush();
+                return;
+            } else if ("거절".equals(user.getStatus())) {
+                httpResponse.getWriter().write("<script>alert('관리자의 승인이 거절되었습니다. 관리자에게 문의 바랍니다.'); window.location='/user/logout';</script>");
                 httpResponse.getWriter().flush();
                 return;
             }
