@@ -593,7 +593,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const homeLogoButton = document.querySelector('.homeLogo-Button');
     if (homeLogoButton) {
         homeLogoButton.addEventListener('click', function () {
-            window.location.href = '/main/mainPage'; // 홈페이지로 이동
+            window.location.href = '/main/mainpage'; // 홈페이지로 이동
         });
     }
 })
