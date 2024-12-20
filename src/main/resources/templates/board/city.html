@@ -126,7 +126,7 @@
                                               and not #lists.isEmpty(package.packageAttachmentFile)
                                               and package.packageAttachmentFile != null)
                                               ? '/uploads/package/' + package.packageAttachmentFile
-                                              : '/img/china.jpg'}" alt="Package Image">
+                                              : '/img/logo.png'}" alt="Package Image"><img
                                 <a  class="card-title m-1" th:href="@{|${cityId}/package/detail/${package.packageId}|}" th:text="${package.packageTitle}"></a>
                                 <!-- Package 좋아요 버튼 -->
                                 <button sec:authorize="hasRole('ROLE_USER')" class="likeButton packageLikeButton btn" type="button" th:data-package-id="${package.packageId}">
@@ -152,7 +152,7 @@
                                              and not #lists.isEmpty(feed.attachmentFiles)
                                              and feed.attachmentFiles[0] != null)
                                             ? '/uploads/' + feed.attachmentFiles[0]
-                            : '/img/china.jpg'}" alt="Package Image">
+                            : '/img/logo.png'}" alt="Package Image">
                                 <a class="card-title m-1" th:href="@{|${cityId}/group/detail/${feed.boardId}|}" th:text="${feed.boardSubject}"></a>
                                 <!-- Group 좋아요 버튼 -->
                                 <button sec:authorize="hasRole('ROLE_USER')" class="likeButton groupLikeButton btn" type="button" th:data-group-id="${feed.boardId}">
