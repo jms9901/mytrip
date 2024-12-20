@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const username = event.target.getAttribute('data-username');
             const userEmail = event.target.getAttribute('data-useremail');
             const userStatus = event.target.getAttribute('data-userstatus');
-            const userBirthday = event.target.getAttribute('data-userbirthday');
+            const userCompanynumber = event.target.getAttribute('data-usercompanyNumber');
             let userRegDate = event.target.getAttribute('data-userregdate');
 
             userRegDate = userRegDate ? userRegDate.split('T')[0] : '[데이터 없음]';
@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('modalName').textContent = username || '[데이터 없음]';
             document.getElementById('modalusername').textContent = userUsername || '[데이터 없음]';
             document.getElementById('modalEmail').textContent = userEmail || '[데이터 없음]';
-            document.getElementById('modalBirthday').textContent = userBirthday || '[데이터 없음]';
+            document.getElementById('modalCompanynumber').textContent = userCompanynumber || '[데이터 없음]';
             document.getElementById('modalRegDate').textContent = userRegDate || '[데이터 없음]';
 
             // 모달에 userId를 숨겨진 데이터로 저장 (삭제 시 사용)
