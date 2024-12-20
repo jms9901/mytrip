@@ -43,7 +43,9 @@ public class PackagePostServiceImpl implements PackagePostService {
         if (postAndAttachment.getPackagePost() == null) {
             throw new IllegalArgumentException("ID가 " + packageId + "인 패키지를 찾을 수 없습니다.");
         }
+
         postAndAttachment.setPackagePostAttachment(packageAttachmentService.getAttachmentsByPackageId(packageId));
+
         if (postAndAttachment.getPackagePost() == null) {
             throw new IllegalArgumentException("ID가 " + packageId + "인 패키지를 찾을 수 없습니다.");
         }
