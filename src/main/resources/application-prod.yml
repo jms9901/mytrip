@@ -13,7 +13,7 @@ spring:
     suffix: .html
 
   datasource:
-    driver-class-name: java.sql.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
     url: ${APP_DB_ENDPOINT}
     username: ${APP_DB_USERNAME}
     password: ${APP_DB_PASSWORD}
