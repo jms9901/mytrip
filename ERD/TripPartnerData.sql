@@ -1,25 +1,14 @@
 #  user admin 데이터
 insert into user (user_email, user_password, user_username, user_name,  user_birthday, user_profile, user_provider, user_introdution, user_authorization)
 values ('fullstackK08@naver.com',
-        '$2a$10$y54jausXmoCMgc4wKgAAc.L2VQsLbk0vCDZ33mMKw4UrG/SXSPlxW',
-        'admin1234',
+        '$2a$10$ibymV61gNzE.3QYy9cG.BOpiaXKRcVBw3aD4D8kuozS/.VsTfgY9O',
+        'wjdanstjs',
         '이경원',
         '2000-04-24',
         '',
         '',
         '나는 이경원이다',
         'ROLE_ADMIN'
-       ),
-       (
-           'wonwon123123@naver.com',
-           '1234',
-           'user1234',
-           '이경원',
-           '2000-02-11',
-           '',
-           '',
-           '',
-           'ROLE_USER'
        );
 
 # business 데이터

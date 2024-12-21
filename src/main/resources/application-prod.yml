@@ -1,0 +1,72 @@
+server:
+  port: 8080
+  tomcat:
+    max-http-form-post-size: 10GB
+
+spring:
+  application:
+    name: mytrip
+
+  thymeleaf:
+    cache: false
+    prefix: classpath:templates/
+    suffix: .html
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${APP_DB_ENDPOINT}
+    username: ${APP_DB_USERNAME}
+    password: ${APP_DB_PASSWORD}
+
+  security:
+    user:
+      name: ${APP_SEC_USERNAME}
+      password: ${APP_SEC_PASSWORD}
+
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${APP_OAUTH_GOOGLE_ID}
+            client-secret: ${APP_OAUTH_GOOGLE_SECRET}
+            scope:
+              - email
+              - profile
+          kakao:
+            client-id: ${APP_OAUTH_KAKAO_ID}
+            client-secret: ${APP_OAUTH_KAKAO_SECRET}
+            redirect-uri: http://localhost:8081/login/oauth2/code/kakao
+            authorization-grant-type: authorization_code
+            client-authentication-method: client_secret_post
+            scope:
+              - profile_nickname
+              - profile_image
+              - account_email
+            client-name: kakao
+            provider: kakao
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token   # Access Token 요청 URI
+            user-info-uri: https://kapi.kakao.com/v2/user/me  # 사용자 profile 요청
+            user-name-attribute: id
+
+  servlet:
+    # Multipart request 의 업로드 파일 크기 제한 설정
+    multipart:
+      max-file-size: 10GB   # 요청 파일 하나의 최대 크기
+      max-request-size: 10GB  # 요청 파일 전체의 최대 크기
+
+mybatis:
+  mapper-locations: classpath:mapper/**/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+
+app:
+  upload:
+    path: upload
+
+  oauth2:
+    password: ${APP_OAUTH_PASSWORD}
+
+debug: true
