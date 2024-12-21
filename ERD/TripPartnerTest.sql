@@ -93,3 +93,5 @@ delete from user where user_id = 41;
 alter table board modify column board_content LONGTEXT;
 
 update user_city set created_date = '2024-12-18 15:11:13' where created_date = '2024-12-19 15:19:26'
+
+delete from package where package_id = 7;
