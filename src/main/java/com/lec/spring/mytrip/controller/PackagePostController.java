@@ -140,7 +140,7 @@ public class PackagePostController {
                                   Model model) {
         // 패키지 수정 페이지로 이동
         model.addAttribute("packagePost", packagePostService.getPackageDetails(packageId));
-        return "/board/city/package/edit";
+        return "board/city/package/edit";
     }
 
     // 패키지 수정 저장 안써
@@ -271,7 +271,7 @@ public class PackagePostController {
             return "redirect:/board/city/" + cityId;
         } else {
             redirectAttributes.addFlashAttribute("errorMessage", "그룹 삭제에 실패했습니다.");
-            return "redirect:/board/city/" + cityId + "/group/detail/" + groupId;
+            return "redirect:board/city/" + cityId + "/group/detail/" + groupId;
         }
     }
 
