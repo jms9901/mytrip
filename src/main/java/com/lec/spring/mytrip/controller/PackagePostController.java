@@ -65,7 +65,7 @@ public class PackagePostController {
 //        System.out.println("소모임 목록" + feeds.toString());
 
 
-        return "/board/city";
+        return "board/city";
     }
 
     // 검색 결과 페이지 이동 -> 당장 안쓸듯?
