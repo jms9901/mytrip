@@ -3,6 +3,7 @@ package com.lec.spring.mytrip.util;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lec.spring.mytrip.form.flight.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
@@ -19,7 +20,9 @@ public class FlightApiCall {
 
     //    @Value("${api.flight.key}") 실 서비스 단에서 바꾸죠
 //    private String apiKey;
-    private String apiKey = "${APP_APIKEY_FLIGHT}";
+    @Value("${APP_APIKEY_FLIGHT}")
+    private String apiKey;
+
 
     // api 최초 호출
     public FlightRoundTripResponse fetchFlightData(FlightRoundTrip flightRoundTrip) {

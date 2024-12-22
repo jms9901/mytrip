@@ -18,6 +18,9 @@ spring:
     username: ${APP_DB_USERNAME}
     password: ${APP_DB_PASSWORD}
 
+  api:
+    kakaopay: ${APP_APIKEY_KAKAOPAY}
+    flight: ${APP_APIKEY_FLIGHT}
 
   security:
     user:

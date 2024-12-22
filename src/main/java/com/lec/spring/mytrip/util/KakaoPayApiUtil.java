@@ -5,6 +5,7 @@ import com.lec.spring.mytrip.domain.Payment;
 import com.lec.spring.mytrip.domain.payment.Response;
 import org.hibernate.annotations.Comment;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -22,7 +23,8 @@ public class KakaoPayApiUtil {
 
 
     private static final String CID = "TC0ONETIME"; // 테스트용 가맹점 코드
-    private static final String SECRET_KEY = "${APP_APIKEY_KAKAOPAY}"; // 실제 Secret Key 사용
+    @Value("${APP_APIKEY_KAKAOPAY}")
+    private static String SECRET_KEY; // 실제 Secret Key 사용
     private static final String READY_URL = "https://open-api.kakaopay.com/online/v1/payment/ready";
 
     @Autowired
