@@ -126,7 +126,7 @@
                                               and not #lists.isEmpty(package.packageAttachmentFile)
                                               and package.packageAttachmentFile != null)
                                               ? '/uploads/package/' + package.packageAttachmentFile
-                                              : '/img/logo.png'}" alt="Package Image"><img
+                                              : '/img/logo.png'}" alt="Package Image">
                                 <a  class="card-title m-1" th:href="@{|${cityId}/package/detail/${package.packageId}|}" th:text="${package.packageTitle}"></a>
                                 <!-- Package 좋아요 버튼 -->
                                 <button sec:authorize="hasRole('ROLE_USER')" class="likeButton packageLikeButton btn" type="button" th:data-package-id="${package.packageId}">

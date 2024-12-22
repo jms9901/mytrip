@@ -50,6 +50,7 @@ public class KakaoPayApiUtil {
     private HttpHeaders createHeaders() {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "SECRET_KEY " + SECRET_KEY);
+        System.out.println(SECRET_KEY);
         headers.setContentType(MediaType.APPLICATION_JSON);
         System.out.println("header 구성 : " + headers);
         return headers;
