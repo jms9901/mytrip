@@ -129,7 +129,7 @@ public class PackagePostController {
        redirectAttributes.addFlashAttribute("msg", "관리자 승인 후 패키지가 등록됩니다.");
 
         // 저장 후 상세 페이지로 리다이렉트
-        return "redirect:/board/city/" + cityId + "/package/detail/" + packageId;
+        return "redirect:board/city/" + cityId + "/package/detail/" + packageId;
     }
 
     // 패키지 수정 페이지 이동 안써
@@ -154,7 +154,7 @@ public class PackagePostController {
         int id = packagePostService.updatePackage(packagePost, files);
 
         // 저장 후 상세 페이지로 리다이렉트
-        return "redirect:/board/city/" + cityId + "/package/detail/" + packageId;
+        return "redirect:board/city/" + cityId + "/package/detail/" + packageId;
     }
 
     // 패키지 삭제
@@ -165,7 +165,7 @@ public class PackagePostController {
         // 패키지 삭제 처리
         System.out.println("삭제 컨트롤러 진입");
         packagePostService.deletePackage(packageId, userId);
-        return "redirect:/board/city/" + cityId;
+        return "redirect:board/city/" + cityId;
     }
 
     // 결제 페이지 이동
@@ -224,7 +224,7 @@ public class PackagePostController {
             throw new RuntimeException(e);
         }
 
-        return "redirect:/board/city/" + cityId + "/group/detail/" + feed.getBoardId();
+        return "redirect:board/city/" + cityId + "/group/detail/" + feed.getBoardId();
     }
 
     // 소모임 수정 페이지 이동
@@ -257,7 +257,7 @@ public class PackagePostController {
             throw new RuntimeException(e);
         }
 
-        return "redirect:/board/city/" + cityId + "/group/detail/" + feed.getBoardId();
+        return "redirect:board/city/" + cityId + "/group/detail/" + feed.getBoardId();
     }
 
     // 소모임 삭제
