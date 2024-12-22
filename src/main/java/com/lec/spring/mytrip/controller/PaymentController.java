@@ -44,7 +44,7 @@ public class PaymentController {
         String url = response.getResponse().get("next_redirect_pc_url").toString();
         System.out.println("리다이렉트 URL: " + url);
 
-        return "redirect:" + url;
+        return "redirect:/" + url;
     }
 
     @GetMapping("/payment")
