@@ -183,7 +183,7 @@ public class FlightController {
     @PostMapping("/search/startSearch")
     public String startSearch(@RequestParam String sessionId, Model model) {
         model.addAttribute("sessionId", sessionId);
-        return "result"; // result.html 페이지로 이동
+        return "flight/result"; // result.html 페이지로 이동
     }
 
     @PostMapping("/result/completeSearch")
@@ -192,7 +192,7 @@ public class FlightController {
         String token = (String) data.get("token");
         model.addAttribute("itineraryId", itineraryId);
         model.addAttribute("token", token);
-        return "detail"; // detail.html 페이지로 이동
+        return "flight/detail"; // detail.html 페이지로 이동
     }
 
 
