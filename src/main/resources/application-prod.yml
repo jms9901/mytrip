@@ -18,6 +18,7 @@ spring:
     username: ${APP_DB_USERNAME}
     password: ${APP_DB_PASSWORD}
 
+
   security:
     user:
       name: ${APP_SEC_USERNAME}
@@ -64,7 +65,7 @@ mybatis:
 
 app:
   upload:
-    path: upload
+    path: uploads
 
   oauth2:
     password: ${APP_OAUTH_PASSWORD}
