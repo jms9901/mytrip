@@ -67,7 +67,7 @@ public class KakaoPayApiUtil {
         // 요청 파라미터 생성
         Map<String, Object> params = new HashMap<>();
         params.put("cid", CID); // Test 용 가맹점 코드
-//        params.put("Authorization", "SECRET_KEY " + SECRET_KEY); // 인증 키
+        params.put("Authorization", "SECRET_KEY " + SECRET_KEY); // 인증 키
         params.put("partner_order_id", order); // 가맹점 주문번호
 //        params.put("partner_user_id", payment.getUserId()); // 가맹점 회원 ID
         params.put("partner_user_id", payment.getUserId()); // 가맹점 회원 ID
