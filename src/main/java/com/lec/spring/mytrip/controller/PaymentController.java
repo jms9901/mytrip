@@ -42,9 +42,9 @@ public class PaymentController {
 
         // 리다이렉트 URL 확인
         String url = response.getResponse().get("next_redirect_pc_url").toString();
-        System.out.println("리다이렉트 URL: " + url);
+        System.out.println("리다이렉트 URL:" + url);
 
-        return "redirect:/" + url;
+        return "redirect:" + url;
     }
 
     @GetMapping("/payment")
