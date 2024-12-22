@@ -715,7 +715,7 @@ $(document).ready(function() {
 
 
 });
-const apiUrl = "http://localhost:8081/friendship";
+const apiUrl = "http://15.161.181.40:8080/friendship";
 const UserId = pathParts[pathParts.length - 1];
 // 모달 열기 및 닫기
 const modal = document.getElementById("friendshipModal");

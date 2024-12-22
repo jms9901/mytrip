@@ -41,7 +41,7 @@ function loadMoreData(sessionId) {
     //complete일 경우 더 이상 쿼리를 진행하디 않음
 
     $.ajax({
-        url: 'http://localhost:8082/flight/result/incomplete', // API 엔드포인트
+        url: 'http://15.165.181.40:8080/flight/result/incomplete', // API 엔드포인트
         method: 'POST', // HTTP 요청 방식
         contentType: 'application/json', // Content-Type 설정
         data: JSON.stringify({
