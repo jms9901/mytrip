@@ -62,7 +62,7 @@ public class FeedServiceImpl implements FeedService{
         // 파일이 첨부되었는지 확인
         if (files != null && !files.isEmpty()) {
             String projectDirectory = System.getProperty("user.dir");  // 프로젝트 루트 경로
-            String uploadDirectory = projectDirectory + "\\uploads";  // uploads 폴더 경로
+            String uploadDirectory = projectDirectory + "/uploads";  // uploads 폴더 경로
             String staticUploadDirectory = projectDirectory + "/src/main/resources/static/uploads"; // static 폴더 아래
 
 
