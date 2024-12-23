@@ -320,6 +320,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     `;
 
                     const paymentModalButton = payments.querySelector('.closebutton');
+                    const payStatusSelect = document.getElementById('pay-status-select');
+
 
                     // 모달 표시
                     payments.style.display = 'block';
@@ -329,18 +331,18 @@ document.addEventListener('DOMContentLoaded', function() {
                         payments.innerHTML = '';  // 모달 닫기 시 초기화
                         payments.style.display = 'none';
                     });
+
                     // 상태 필터링 이벤트 등록
-                    const payStatusSelect = document.getElementById('pay-status-select');
                     payStatusSelect.addEventListener('change', function () {
                         const selectedStatus = this.value.trim(); // 선택된 상태 값
                         const paymentRows = document.querySelectorAll('.payment-table tbody tr');
 
                         paymentRows.forEach(row => {
                             const statusCell = row.querySelector('.pay-status');
-                            const rowClass = statusCell.classList.contains(selectedStatus);
+                            const rowClass = statusCell.textContent.trim(); // 상태 텍스트 가져오기
 
                             // 전체 선택 시 모든 행 표시, 특정 상태 선택 시 필터링
-                            if (selectedStatus === '' || rowClass) {
+                            if (selectedStatus === '' || rowClass === selectedStatus) {
                                 row.style.display = '';
                             } else {
                                 row.style.display = 'none';
@@ -378,28 +380,28 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // 상태에 따른 한국어 텍스트 반환하는 함수 추가 -> 결제 상태
-        function getPaymentStatusText(status) {
-            switch (status.trim()) {
-                case '결제완료' :
-                    return '결제완료';
-                case '결제취소' :
-                    return '결제취소';
-                default:
-                    return '';
-            }
-        }
+function getPaymentStatusText(status) {
+    switch (status.trim()) {
+        case '결제완료' :
+            return '결제완료';
+        case '결제취소' :
+            return '결제취소';
+        default:
+            return '';
+    }
+}
 
 // 상태에 따른 CSS 클래스를 반환하는 함수 추가
-        function getPaymentStatusClass(status) {
-            switch (status.trim()) {
-                case '결제완료' :
-                    return 'payment-complete';
-                case '결제취소' :
-                    return 'payment-cancel';
-                default:
-                    return '';
-            }
-        }
+function getPaymentStatusClass(status) {
+    switch (status.trim()) {
+        case '결제완료' :
+            return 'payment-complete';
+        case '결제취소' :
+            return 'payment-cancel';
+        default:
+            return '';
+    }
+}
 
 // 개인 정보 조회 및 수정
 document.addEventListener('DOMContentLoaded', function () {
@@ -544,26 +546,26 @@ document.addEventListener('DOMContentLoaded', function () {
                                 newPassword: newPassword,
                             };
 
-                                fetch(`/mypage/business/update/${userId}`, {
-                                    method: "POST",
-                                    headers: {
-                                        "Content-Type": "application/json"
-                                    },
-                                    body: JSON.stringify(formData)
-                                })
-                                    .then(response => response.json())
-                                    .then(data => {
-                                        console.log("Success:", data);
-                                        alert(data.message || "프로필이 성공적으로 업데이트되었습니다.");
+                            fetch(`/mypage/business/update/${userId}`, {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json"
+                                },
+                                body: JSON.stringify(formData)
+                            })
+                                .then(response => response.json())
+                                .then(data => {
+                                    console.log("Success:", data);
+                                    alert(data.message || "프로필이 성공적으로 업데이트되었습니다.");
 
-                                        // 모달 숨기기
-                                        profileUpdateModal.classList.add('hidden');
-                                        profileUpdateModal.style.display = 'none';
-                                    })
-                                    .catch(error => {
-                                        console.error("Error:", error);
-                                        alert("프로필 업데이트 중 오류가 발생했습니다.");
-                                    });
+                                    // 모달 숨기기
+                                    profileUpdateModal.classList.add('hidden');
+                                    profileUpdateModal.style.display = 'none';
+                                })
+                                .catch(error => {
+                                    console.error("Error:", error);
+                                    alert("프로필 업데이트 중 오류가 발생했습니다.");
+                                });
                         });
                     } else {
                         console.error("모달 요소를 찾을 수 없습니다.");
