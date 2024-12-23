@@ -254,7 +254,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const paymentButton = document.getElementById('package-payment-button');
     const payments = document.querySelector('.paymentList');
     const paymentModal = document.getElementById('payment-modal');
-    const paymentModalButton = payments.querySelector('.closebutton');
 
     if (paymentButton) {
         paymentButton.addEventListener('click', function () {
@@ -321,6 +320,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     // 모달 요소 찾기
                     const payStatusSelect = payments.querySelector('.pay-status-select');
+                    const paymentModalButton = payments.querySelector('.closebutton');
 
                     // 모달 표시
                     paymentModal.style.display = 'block';
