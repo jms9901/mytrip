@@ -39,9 +39,9 @@
                p.payment_date AS Date,
                p.payment_status AS Status
         FROM payment_info p
-                 JOIN user u ON p.user_id = u.user_id
-                 JOIN package pk ON p.package_id = pk.package_id
-        WHERE u.user_id = #{userId}
+            LEFT JOIN package pk ON p.package_id = pk.package_id
+            LEFT JOIN user u ON p.user_id = u.user_id
+        WHERE pk.user_id = #{userId}
         ORDER BY p.payment_date DESC;
     </select>
 
