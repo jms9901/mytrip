@@ -320,7 +320,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     `;
 
                     const paymentModalButton = payments.querySelector('.closebutton');
-                    const payStatusSelect = document.getElementById('pay-status-select');
+                    const payStatusSelect = document.querySelector('.pay-status');
 
 
                     // 모달 표시
