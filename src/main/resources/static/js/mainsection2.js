@@ -31,4 +31,18 @@ document.addEventListener("DOMContentLoaded", function() {
     //         });
     //
     // });
+    // 텍스트 길이 제한 함수
+    function truncateContent(text, maxLength) {
+        if (text.length > maxLength) {
+            return text.slice(0, maxLength) + "...";
+        }
+        return text;
+    }
+
+    // 슬라이드 텍스트 길이 제한 적용
+    const slideTitles = document.querySelectorAll('.slide p');
+    slideTitles.forEach(title => {
+        const originalText = title.textContent.trim();
+        title.textContent = truncateContent(originalText, 10); // 최대 10글자로 제한
+    });
 });
