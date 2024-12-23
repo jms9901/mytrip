@@ -162,9 +162,11 @@
             if (payments && payments.length > 0) {
 
                 payments.forEach((payment, index) => {
+                    const truncatedPackageTitle = payment.packageTitle.length > 15 ? payment.packageTitle.substring(0, 15) + '...' : payment.packageTitle;
+
                     const entryHtml = `
                     <div class="payment-entry" style="background-image: url(/img/paymentReceipt.png); margin-left: 9%; background-repeat: no-repeat; background-size: contain; height: 26%; font-size:15px; line-height: 70%" >
-                        <h4><br><br><br><br><br>&nbsp&nbsp Package: ${payment.packageTitle}</h4>
+                        <h4><br><br><br><br><br>&nbsp&nbsp Package: ${truncatedPackageTitle}</h4>
                         <p>&nbsp&nbsp Date: ${payment.date}</p>
                         <p>&nbsp&nbsp Price: ${payment.price}</p>
                         <p>&nbsp&nbsp Status: ${payment.status}</p>
