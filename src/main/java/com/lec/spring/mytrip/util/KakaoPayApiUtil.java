@@ -24,7 +24,7 @@ public class KakaoPayApiUtil {
 
     private static final String CID = "TC0ONETIME"; // 테스트용 가맹점 코드
     @Value("${APP_APIKEY_KAKAOPAY}")
-    private static String SECRET_KEY; // 실제 Secret Key 사용
+    private String SECRET_KEY; // 실제 Secret Key 사용
     private static final String READY_URL = "https://open-api.kakaopay.com/online/v1/payment/ready";
 
     @Autowired
