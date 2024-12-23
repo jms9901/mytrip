@@ -35,7 +35,7 @@ body {
     border-radius: 10px;
     width: 90%;
     max-width: 600px;
-    height: 740px;
+    height: 780px;
     padding: 20px;
     position: relative;
     margin: 80px 600px;
@@ -119,7 +119,7 @@ body {
 
 #packageContent {
     margin-top: 10px;
-    max-height: 500px;
+    max-height: 450px;
     overflow-y: auto;
     padding-right: 10px;
     box-sizing: border-box;
