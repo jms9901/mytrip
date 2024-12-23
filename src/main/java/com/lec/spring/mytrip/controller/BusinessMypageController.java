@@ -229,7 +229,9 @@ public class BusinessMypageController {
     @ResponseBody
     public ResponseEntity<List<Payment>> getBusinessPayments(@PathVariable("userId") int userId) {
         try {
+            log.info("컨트롤러에서 보내는 비지니스 아이디 {}", userId);
             List<Payment> payments = businessMypageService.getPaymentByCompanyId(userId);
+            payments.forEach(e -> log.info("이거 나오면 대따 대따 다대따: {}", e.toString()));
             log.info("Business data: {}", payments);
             log.info("userId found: {}", userId);
             return ResponseEntity.ok(payments);
