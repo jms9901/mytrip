@@ -102,7 +102,10 @@ public class BusinessMypageService {
     // 모든 패키지에 관한 일반 유저가 결제한 결제 내역 -> 결제 상태 조회
     @Transactional
     public List<Payment> getPaymentByCompanyId(int userId) {
-        return paymentsRepository.getPaymentByCompanyId(userId);
+        System.out.println("Business payments List service 진입");
+        List<Payment> paymentByCompanyId = paymentsRepository.getPaymentByCompanyId(userId);
+        paymentByCompanyId.forEach(payment -> log.info("Payment: {}", payment));
+        return paymentByCompanyId;
     }
 
 }
