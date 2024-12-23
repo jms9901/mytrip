@@ -142,6 +142,12 @@ document.addEventListener("DOMContentLoaded", function () {
                         return;
                     }
 
+                    // 금액 포맷팅 함수
+                    function formatCurrency(amount) {
+                        if (!amount) return '0'; // 금액이 없으면 기본값 반환
+                        return Number(amount).toLocaleString('ko-KR');
+                    }
+
                     const cityId = selectedPackage.cityId;
                     console.log("도시 ID: ", cityId);
 
@@ -166,7 +172,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                 <div class="cityName" id="cityName"><strong>도시:</strong>  ${selectedPackage.cityName}</div>
                                 <div class="packageStartDay" id="packageStartDay"><strong>시작일:</strong>   ${formatDate(selectedPackage.packageStartDay)}</div>
                                 <div class="packageEndDay" id="packageEndDay"><strong>종료일:</strong>   ${formatDate(selectedPackage.packageEndDay)}</div>
-                                <div class="packagCost" id="packageCost"><strong>금액:</strong>   ${selectedPackage.packageCost}원</div>
+                                <div class="packagCost" id="packageCost"><strong>금액:</strong>   ${formatCurrency(selectedPackage.packageCost)}원</div>
                                 <div class="packageMaxpeople" id="packageMaxpeople"><strong>최대 인원:</strong>   ${selectedPackage.packageMaxpeople}명</div>
                                 <div class="package-details">
                                     <strong>패키지 내용:</strong>
