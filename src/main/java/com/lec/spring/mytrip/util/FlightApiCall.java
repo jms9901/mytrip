@@ -19,7 +19,7 @@ public class FlightApiCall {
 
     //    @Value("${api.flight.key}") 실 서비스 단에서 바꾸죠
 //    private String apiKey;
-    private String apiKey = "6400a15222msh8627a40b3bd3531p1bdef5jsnaa784d38dcf3";
+    private String apiKey = "1e1b602d1emshd93efd487538711p1bdebdjsne488646e0f15";
 
     // api 최초 호출
     public FlightRoundTripResponse fetchFlightData(FlightRoundTrip flightRoundTrip) {
@@ -67,11 +67,11 @@ public class FlightApiCall {
                 flightRoundTripResponse.setFlights(flights);
                 return flightRoundTripResponse;
             } else {
-                System.out.println("API 호출 실패. 응답 코드: " + responseCode); // 응답 코드가 성공적이지 않으면 출력
+                System.out.println("API 호출 실패. 응답 코드: " + responseCode);
                 throw new RuntimeException("API 호출 실패. 응답 코드: " + responseCode);
             }
         } catch (Exception e) {
-            System.out.println("API 호출 중 예외 발생: " + e.getMessage()); // 예외 발생 시 메시지 출력
+            System.out.println("API 호출 중 예외 발생: " + e.getMessage());
             throw new RuntimeException("API 호출 중 예외 발생", e);
         }
     }
@@ -125,15 +125,14 @@ public class FlightApiCall {
                 }
                 in.close();
 
-                // API 응답 내용 출력
+
 //                System.out.println("API 응답 내용: " + response.toString());
 
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode rootNode = objectMapper.readTree(response.toString());
                 JsonNode flightsNode = rootNode.path("data");
 
-                // rootNode를 먼저 출력하여 구조 확인
-//                System.out.println("rootNode 내용: " + rootNode.toString());
+//                System.out.println(rootNode.toString());
 
                 List<FlightRoundTripInfo> flights = parseFlights(flightsNode);
 
@@ -141,11 +140,11 @@ public class FlightApiCall {
                 flightRoundTripResponse.setFlights(flights);
                 return flightRoundTripResponse;
             } else {
-                System.out.println("API 호출 실패. 응답 코드: " + responseCode); // 응답 코드가 성공적이지 않으면 출력
+                System.out.println("API 호출 실패. 응답 코드: " + responseCode);
                 throw new RuntimeException("API 호출 실패. 응답 코드: " + responseCode);
             }
         } catch (Exception e) {
-            System.out.println("API 호출 중 예외 발생: " + e.getMessage()); // 예외 발생 시 메시지 출력
+            System.out.println("API 호출 중 예외 발생: " + e.getMessage());
             throw new RuntimeException("API 호출 중 예외 발생", e);
         }
     }
@@ -294,9 +293,7 @@ public class FlightApiCall {
                     rootNode.path("data").path("itinerary").path("pricingOptions")
             );
 
-            // FlightDetailResponse 생성
             FlightDetailResponse response = new FlightDetailResponse();
-
 
             response.setDetails(
                     pricingOptions.stream()
@@ -328,7 +325,7 @@ public class FlightApiCall {
         FlightDetailTicketInfo ticketInfo = new FlightDetailTicketInfo();
 
         // 출발 관련 정보 설정
-        JsonNode outLeg = path.get(0); // 가는 편 데이터
+        JsonNode outLeg = path.get(0);
         JsonNode outSegment = outLeg.path("segments").get(0);
         ticketInfo.setOutAirport(outSegment.path("origin").path("displayCode").asText());
         ticketInfo.setOutCity(outSegment.path("origin").path("city").asText());
@@ -340,7 +337,7 @@ public class FlightApiCall {
         ticketInfo.setOutCarrierLog(outSegment.path("marketingCarrier").path("logo").asText());
 
         // 도착 관련 정보 설정
-        JsonNode returnLeg = path.get(1); // 오는 편 데이터
+        JsonNode returnLeg = path.get(1);
         JsonNode returnSegment = returnLeg.path("segments").get(0);
         ticketInfo.setReturnAirport(returnSegment.path("origin").path("displayCode").asText());
         ticketInfo.setReturnCity(returnSegment.path("origin").path("city").asText());
@@ -364,9 +361,9 @@ public class FlightApiCall {
                 option.put("siteName", agentNode.path("name").asText());
                 // 가격을 정수로 변환 후 쉼표 추가
                 double rawPrice = agentNode.path("price").asDouble();
-                int roundedPrice = (int) Math.round(rawPrice); // 반올림 후 정수화
-                String formattedPrice = formatter.format(roundedPrice); // 쉼표 추가 포맷
-                option.put("price", "₩" + formattedPrice); // 포맷된 가격에 '₩' 추가
+                int roundedPrice = (int) Math.round(rawPrice);
+                String formattedPrice = formatter.format(roundedPrice);
+                option.put("price", "₩" + formattedPrice);
                 option.put("url", agentNode.path("url").asText());
 
                 if(!pricingOptionsNull(option)) pricingOptions.add(option);
@@ -383,10 +380,10 @@ public class FlightApiCall {
             return "https://sky-scanner3.p.rapidapi.com/flights/detail" +
                     "?itineraryId=" + URLEncoder.encode(itineraryId, "UTF-8") +
                     "&token=" + URLEncoder.encode(token, "UTF-8") +
-                    "&stops=direct" + // 직항만 필터링
-                    "&market=KR" +    // 마켓 정보 (KR: 한국)
-                    "&currency=KRW" + // 화폐 정보 (KRW: 원화)
-                    "&locale=ko-KR";  // 로케일 정보 (ko-KR: 한국어)
+                    "&stops=direct" +
+                    "&market=KR" +
+                    "&currency=KRW" +
+                    "&locale=ko-KR";
         } catch (Exception e) {
             throw new RuntimeException("URL 구성 중 오류 발생: " + e.getMessage(), e);
         }

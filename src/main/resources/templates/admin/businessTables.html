@@ -116,7 +116,7 @@
                                                      data-userusername=${businessUsers.username},
                                                      data-useremail=${businessUsers.email},
                                                      data-userstatus=${businessUsers.status},
-                                                     data-userbirthday=${businessUsers.birthday},
+                                                     data-usercompanynumber=${businessUsers.companyNumber},
                                                      data-userregdate=${businessUsers.regDate}"
                                             th:text="${businessUsers.status ?: '상세 없음'}">
                                         </button>
@@ -142,7 +142,7 @@
                 <p><strong>이 름:</strong> <span id="modalName">[데이터 없음]</span></p>
                 <p><strong>아이디:</strong> <span id="modalusername">[데이터 없음]</span></p> <!-- user_username 표시 -->
                 <p><strong>이메일:</strong> <span id="modalEmail">[데이터 없음]</span></p>
-                <p><strong>생년월일:</strong> <span id="modalBirthday">[데이터 없음]</span></p>
+                <p><strong>사업자번호:</strong> <span id="modalCompanynumber">[데이터 없음]</span></p>
                 <p><strong>가입일자:</strong> <span id="modalRegDate">[데이터 없음]</span></p>
             </div>
             <div class="modal-footer">

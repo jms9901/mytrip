@@ -13,10 +13,10 @@
         <result property="regDate" column="user_regdate"/>
         <result property="provider" column="user_birthday"/>
         <result property="profile" column="user_profile"/>
-        <result property="birthday" column="user_provider"/>
+        <result property="birthday" column="user_birthday"/>
         <result property="introduction" column="user_introdution"/>
         <result property="authorization" column="user_authorization"/>
-        <result property="companyNumber" column="user_companynumber"/>
+        <result property="companyNumber" column="business_companynumber"/>
         <result property="status" column="user_status"/>
     </resultMap>
 
