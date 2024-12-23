@@ -320,16 +320,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     // 모달 요소 찾기
                     const payStatusSelect = payments.querySelector('.pay-status-select');
-                    const paymentModalButton = payments.querySelector('.closebutton');
+                    const paymentModal = payments.querySelector('.closebutton');
 
                     // 모달 표시
-                    paymentModal.style.display = 'block';
+                    if (paymentModal) {
+                        paymentModal.style.display = 'block';
 
-                    // 모달 닫기
-                    if (paymentModalButton) {
-                        paymentModalButton.addEventListener('click', function () {
+                        // 닫기 버튼 이벤트 등록
+                        const paymentClose = paymentModal.querySelector('.close-button');
+                        paymentClose.addEventListener('click', function () {
                             payments.innerHTML = ''; // 모달 닫기 시 초기화
-                            payments.style.display = 'none';
+                            paymentModal.style.display = 'none';
                         });
                     }
 

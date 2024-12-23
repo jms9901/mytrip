@@ -4,9 +4,9 @@ body {
     font-family: "Oswald", sans-serif;
 }
 
-.modal .hidden {
-    display: none;
-}
+/*.modal .hidden {*/
+/*    display: none;*/
+/*}*/
 
 .button {
     cursor: pointer;
@@ -49,6 +49,7 @@ body {
     flex-direction: column;
     align-items: center;
     margin-top: -38px;
+    overflow: hidden; /* 스크롤 막기 */
 }
 
 .modal-header {
@@ -98,24 +99,43 @@ body {
     margin-top: 5px;
 }
 
+.payment-table tbody {
+    display: block; /* 블록 레이아웃으로 설정 */
+    max-height: 550px; /* 최대 높이 제한 */
+    overflow-y: auto; /* 세로 스크롤 활성화 */
+    width: 100%; /* 테이블 너비 유지 */
+}
+
+.payment-table thead,
+.payment-table tbody tr {
+    display: table; /* 기존 테이블 형식 유지 */
+    width: 100%; /* 테이블 열 너비 일치 */
+    table-layout: fixed; /* 고정된 레이아웃으로 설정 */
+}
+
+.payment-table th,
+.payment-table td {
+    word-wrap: break-word; /* 텍스트 줄바꿈 */
+}
+
 .payment-table th, .payment-table td {
     padding: 10px;
     text-align: center;
 }
 
-.payment-table th {
-    font-weight: bold;
-    display: table-cell;
-    position: relative;
-    top: -48px;
-}
+/*.payment-table th {*/
+/*    font-weight: bold;*/
+/*    display: table-cell;*/
+/*    position: relative;*/
+/*    top: -48px;*/
+/*}*/
 
-.payment-table tr {
-    border: 1px solid #ccc;
-    padding: 4px;
-    border-radius: 3%;
-    margin: 3px;
-}
+/*.payment-table tr {*/
+/*    border: 1px solid #ccc;*/
+/*    padding: 4px;*/
+/*    border-radius: 3%;*/
+/*    margin: 3px;*/
+/*}*/
 
 .payment-complete {
     background-color: #4CAF50; /* 초록색 바탕 */
