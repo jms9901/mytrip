@@ -319,10 +319,12 @@ document.addEventListener('DOMContentLoaded', function() {
                         </div>
                     `;
 
+                    payments.style.display = 'block';
+
                     const paymentModalButton = payments.querySelector('.closebutton');
 
                     // 모달 표시
-                    payments.style.display = 'block';
+
 
                     // 패키지 모달 닫기
                     paymentModalButton.addEventListener('click', function() {
