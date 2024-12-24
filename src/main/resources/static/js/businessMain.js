@@ -250,10 +250,9 @@ function getStatusClass(status) {
 }
 
 // 결제 버튼 모달
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function() {
     const paymentButton = document.getElementById('package-payment-button');
     const payments = document.querySelector('.paymentList');
-    const paymentModal = document.getElementById('payment-modal');
 
     if (paymentButton) {
         paymentButton.addEventListener('click', function () {
@@ -261,21 +260,23 @@ document.addEventListener('DOMContentLoaded', function () {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                },
+                    'Content-Type': 'application/json'
+                }
             })
                 .then(response => {
-                    console.log('결제 내역 서버 응답: ', response);
+                    console.log("결제 내역 서버 응답: ", response);
                     if (!response.ok) {
                         throw new Error(`HTTP error! status: ${response.status} / 결제 정보를 불러올 수 없습니다.`);
                     }
                     return response.json();
                 })
                 .then(paymentData => {
-                    console.log('결제 내역 데이터: ', paymentData);
+                    console.log("결제 내역 데이터: ", paymentData);
+                    const paymentModal = document.getElementById('payment-modal');
 
+                    // 항상 테이블을 초기화하고 기본 구조를 유지
                     payments.innerHTML = `
-                        <div class="modal" id="payment-modal">
+                        <div class="modal hidden" id="payment-modal">
                             <div class="modal-payment">
                                 <div class="modal-header">
                                     <span class="closebutton">&times;</span>
@@ -284,8 +285,8 @@ document.addEventListener('DOMContentLoaded', function () {
                                     <label for="payment-select" id="payment-status">
                                         <select name="payment-select" id="payment-status" class="pay-status-select">
                                             <option value="" selected>전체</option>
-                                            <option value="결제완료">결제완료</option>
-                                            <option value="결제취소">결제취소</option>
+                                            <option value="결제 완료">결제 완료</option>
+                                            <option value="결제 취소">결제 취소</option>
                                         </select>
                                     </label>
 
@@ -302,15 +303,15 @@ document.addEventListener('DOMContentLoaded', function () {
                                             ${paymentData.length === 0
                         ? `<tr><td colspan="4" style="text-align:center;">결제 내역이 없습니다.</td></tr>`
                         : paymentData.map(payments => `
-                                                <tr>
-                                                    <td>${payments.userName}</td>
-                                                    <td>${payments.packageTitle}</td>
-                                                    <td>${payments.totalPrice}</td>
-                                                    <td class="pay-status ${getPaymentStatusClass(payments.status)}">
-                                                        ${getPaymentStatusText(payments.status)}
-                                                    </td>
-                                                </tr>
-                                            `).join('')}
+                                                    <tr>
+                                                        <td>${payments.userName}</td>
+                                                        <td>${payments.packageTitle}</td>
+                                                        <td>${payments.totalPrice}</td>
+                                                        <td class="pay-status ${getPaymentStatusClass(payments.status)}">
+                                                            ${getPaymentStatusText(payments.status)}
+                                                        </td>
+                                                    </tr>
+                                                `).join('')}
                                         </tbody>
                                     </table>
                                 </div>
@@ -318,44 +319,38 @@ document.addEventListener('DOMContentLoaded', function () {
                         </div>
                     `;
 
-                    // 모달 요소 찾기
-                    const payStatusSelect = payments.querySelector('.pay-status-select');
-                    const paymentModal = payments.querySelector('.closebutton');
-
                     // 모달 표시
-                    if (paymentModal) {
-                        paymentModal.style.display = 'block';
+                    payments.style.display = 'block';
 
-                        // 닫기 버튼 이벤트 등록
-                        const paymentClose = paymentModal.querySelector('.close-button');
-                        paymentClose.addEventListener('click', function () {
-                            payments.innerHTML = ''; // 모달 닫기 시 초기화
-                            paymentModal.style.display = 'none';
-                        });
-                    }
+                    // closebutton 클릭 시 모달 닫기
+                    const paymentModalButton = payments.querySelector('.closebutton');
+                    paymentModalButton.addEventListener('click', function() {
+                        payments.innerHTML = '';  // 모달 닫기 시 초기화
+                        payments.style.display = 'none';
+                    });
 
                     // 상태 필터링 이벤트 등록
-                    if (payStatusSelect) {
-                        payStatusSelect.addEventListener('change', function () {
-                            const selectedStatus = this.value.trim();
-                            const paymentRows = document.querySelectorAll('.payment-table tbody tr');
+                    const payStatusSelect = document.getElementById('pay-status-select');
+                    payStatusSelect.addEventListener('change', function () {
+                        const selectedStatus = this.value.trim(); // 선택된 상태 값
+                        const paymentRows = document.querySelectorAll('.payment-table tbody tr');
 
-                            paymentRows.forEach(row => {
-                                const statusCell = row.querySelector('.pay-status');
-                                const rowClass = statusCell.textContent.trim();
+                        paymentRows.forEach(row => {
+                            const statusCell = row.querySelector('.pay-status');
+                            const rowClass = statusCell.classList.contains(selectedStatus);
 
-                                // 필터링 로직
-                                if (selectedStatus === '' || rowClass === selectedStatus) {
-                                    row.style.display = '';
-                                } else {
-                                    row.style.display = 'none';
-                                }
-                            });
+                            // 전체 선택 시 모든 행 표시, 특정 상태 선택 시 필터링
+                            if (selectedStatus === '' || rowClass) {
+                                row.style.display = '';
+                            } else {
+                                row.style.display = 'none';
+                            }
                         });
-                    }
+                    });
+
                 })
                 .catch(error => {
-                    console.error('결제 정보 로딩 중 오류 발생', error);
+                    console.error("결제 정보 로딩 중 오류 발생", error);
                     if (!payments.innerHTML) {
                         payments.innerHTML = '<p>결제 정보를 불러오는 중 오류가 발생했습니다.</p>';
                     }
