@@ -138,13 +138,13 @@ body {
 /*}*/
 
 .payment-complete {
-    background-color: #4CAF50; /* 초록색 바탕 */
-    color: black; /* 검은색 글씨 */
+    color: #00ad49;
+    font-weight: 900;
 }
 
 .payment-cancel {
-    background-color: #F44336; /* 빨간 바탕 */
-    color: black; /* 검은색 글씨 */
+    color: #F44336;
+    font-weight: 900;
 }
 
 /* Center Modal */
