@@ -17,12 +17,8 @@ import java.util.stream.Collectors;
 
 @Component
 public class FlightApiCall {
-
-    //    @Value("${api.flight.key}") 실 서비스 단에서 바꾸죠
-//    private String apiKey;
     @Value("${APP_APIKEY_FLIGHT}")
     private String apiKey;
-
 
     // api 최초 호출
     public FlightRoundTripResponse fetchFlightData(FlightRoundTrip flightRoundTrip) {
@@ -79,7 +75,7 @@ public class FlightApiCall {
         }
     }
 
-    //API 쿼리 URL 구성
+    // API1 쿼리 URL 구성
     private String buildRoundTripUrl(FlightRoundTrip flightRoundTrip) throws Exception {
 
         System.out.println(flightRoundTrip.getFromAirportId());
@@ -152,7 +148,7 @@ public class FlightApiCall {
         }
     }
 
-    //API 쿼리 URL 구성
+    // API2 쿼리 URL 구성
     private String buildIncompleteUrl(String sessionId) throws Exception {
 
         return "https://sky-scanner3.p.rapidapi.com/flights/search-incomplete" +
@@ -163,7 +159,6 @@ public class FlightApiCall {
                 "&locale=ko-KR"
                 ;
     }
-
 
     //  roundTrip Api 에서 필요한 값 추출
     private List<FlightRoundTripInfo> parseFlights(JsonNode flightsNode) {
@@ -376,8 +371,6 @@ public class FlightApiCall {
         return pricingOptions;
     }
 
-
-
     private String buildDetailUrl(String itineraryId, String token) {
         try {
             return "https://sky-scanner3.p.rapidapi.com/flights/detail" +
@@ -393,9 +386,7 @@ public class FlightApiCall {
     }
 
 
-
     //NULL 확인 단
-
     public boolean roundTripInfoNull(FlightRoundTripInfo flight) {
         return Objects.isNull(flight.getId()) ||
                 Objects.isNull(flight.getPrice()) ||
@@ -423,8 +414,4 @@ public class FlightApiCall {
                 Objects.isNull(option.get("price")) ||
                 Objects.isNull(option.get("url"));
     }
-
-
-
-
 } // end class

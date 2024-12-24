@@ -250,9 +250,10 @@ function getStatusClass(status) {
 }
 
 // 결제 버튼 모달
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const paymentButton = document.getElementById('package-payment-button');
     const payments = document.querySelector('.paymentList');
+    const paymentModal = document.getElementById('payment-modal');
 
     if (paymentButton) {
         paymentButton.addEventListener('click', function () {
@@ -260,23 +261,21 @@ document.addEventListener('DOMContentLoaded', function() {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                }
+                    'Content-Type': 'application/json',
+                },
             })
                 .then(response => {
-                    console.log("결제 내역 서버 응답: ", response);
+                    console.log('결제 내역 서버 응답: ', response);
                     if (!response.ok) {
                         throw new Error(`HTTP error! status: ${response.status} / 결제 정보를 불러올 수 없습니다.`);
                     }
                     return response.json();
                 })
                 .then(paymentData => {
-                    console.log("결제 내역 데이터: ", paymentData);
-                    const paymentModal = document.getElementById('payment-modal');
+                    console.log('결제 내역 데이터: ', paymentData);
 
-                    // 항상 테이블을 초기화하고 기본 구조를 유지
                     payments.innerHTML = `
-                        <div class="modal hidden" id="payment-modal">
+                        <div class="modal" id="payment-modal">
                             <div class="modal-payment">
                                 <div class="modal-header">
                                     <span class="closebutton">&times;</span>
@@ -285,8 +284,8 @@ document.addEventListener('DOMContentLoaded', function() {
                                     <label for="payment-select" id="payment-status">
                                         <select name="payment-select" id="payment-status" class="pay-status-select">
                                             <option value="" selected>전체</option>
-                                            <option value="결제 완료">결제 완료</option>
-                                            <option value="결제 취소">결제 취소</option>
+                                            <option value="결제완료">결제완료</option>
+                                            <option value="결제취소">결제취소</option>
                                         </select>
                                     </label>
 
@@ -303,15 +302,15 @@ document.addEventListener('DOMContentLoaded', function() {
                                             ${paymentData.length === 0
                         ? `<tr><td colspan="4" style="text-align:center;">결제 내역이 없습니다.</td></tr>`
                         : paymentData.map(payments => `
-                                                    <tr>
-                                                        <td>${payments.userName}</td>
-                                                        <td>${payments.packageTitle}</td>
-                                                        <td>${payments.totalPrice}</td>
-                                                        <td class="pay-status ${getPaymentStatusClass(payments.status)}">
-                                                            ${getPaymentStatusText(payments.status)}
-                                                        </td>
-                                                    </tr>
-                                                `).join('')}
+                                                <tr>
+                                                    <td>${payments.userName}</td>
+                                                    <td>${payments.packageTitle}</td>
+                                                    <td>${payments.totalPrice}</td>
+                                                    <td class="pay-status ${getPaymentStatusClass(payments.status)}">
+                                                        ${getPaymentStatusText(payments.status)}
+                                                    </td>
+                                                </tr>
+                                            `).join('')}
                                         </tbody>
                                     </table>
                                 </div>
@@ -319,87 +318,76 @@ document.addEventListener('DOMContentLoaded', function() {
                         </div>
                     `;
 
+                    // 모달 요소 찾기
+                    const payStatusSelect = payments.querySelector('.pay-status-select');
+                    const paymentModal = payments.querySelector('.closebutton');
+
                     // 모달 표시
-                    payments.style.display = 'block';
+                    if (paymentModal) {
+                        paymentModal.style.display = 'block';
 
-                    const paymentModalButton = payments.querySelector('.closebutton');
-
-                    // 패키지 모달 닫기
-                    paymentModalButton.addEventListener('click', function() {
-                        payments.innerHTML = '';  // 모달 닫기 시 초기화
-                        payments.style.display = 'none';
-                    });
-                    // 상태 필터링 이벤트 등록
-                    const payStatusSelect = document.getElementById('pay-status-select');
-                    payStatusSelect.addEventListener('change', function () {
-                        const selectedStatus = this.value.trim(); // 선택된 상태 값
-                        const paymentRows = document.querySelectorAll('.payment-table tbody tr');
-
-                        paymentRows.forEach(row => {
-                            const statusCell = row.querySelector('.pay-status');
-                            const rowClass = statusCell.classList.contains(selectedStatus);
-
-                            // 전체 선택 시 모든 행 표시, 특정 상태 선택 시 필터링
-                            if (selectedStatus === '' || rowClass) {
-                                row.style.display = '';
-                            } else {
-                                row.style.display = 'none';
-                            }
+                        // 닫기 버튼 이벤트 등록
+                        const paymentClose = paymentModal.querySelector('.close-button');
+                        paymentClose.addEventListener('click', function () {
+                            payments.innerHTML = ''; // 모달 닫기 시 초기화
+                            paymentModal.style.display = 'none';
                         });
-                    });
+                    }
 
+                    // 상태 필터링 이벤트 등록
+                    if (payStatusSelect) {
+                        payStatusSelect.addEventListener('change', function () {
+                            const selectedStatus = this.value.trim();
+                            const paymentRows = document.querySelectorAll('.payment-table tbody tr');
+
+                            paymentRows.forEach(row => {
+                                const statusCell = row.querySelector('.pay-status');
+                                const rowClass = statusCell.textContent.trim();
+
+                                // 필터링 로직
+                                if (selectedStatus === '' || rowClass === selectedStatus) {
+                                    row.style.display = '';
+                                } else {
+                                    row.style.display = 'none';
+                                }
+                            });
+                        });
+                    }
                 })
                 .catch(error => {
-                    console.error("결제 정보 로딩 중 오류 발생", error);
+                    console.error('결제 정보 로딩 중 오류 발생', error);
                     if (!payments.innerHTML) {
                         payments.innerHTML = '<p>결제 정보를 불러오는 중 오류가 발생했습니다.</p>';
                     }
                 });
         });
     }
-
-    // 결제 상태 필터링
-    const payStatusSelect = document.querySelector('.pay-status-select');
-    if (payStatusSelect) {
-        payStatusSelect.addEventListener('change', function () {
-            const selectedStatus = this.value;
-            const paymentRows = document.querySelectorAll('.payment-table tbody tr');
-
-            paymentRows.forEach(row => {
-                const statusCell = row.querySelector('.pay-status');
-                if (selectedStatus === '' || statusCell.textContent.trim() === selectedStatus) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
-            });
-        });
-    }
 });
 
+
 // 상태에 따른 한국어 텍스트 반환하는 함수 추가 -> 결제 상태
-        function getPaymentStatusText(status) {
-            switch (status.trim()) {
-                case '결제완료' :
-                    return '결제완료';
-                case '결제취소' :
-                    return '결제취소';
-                default:
-                    return '';
-            }
-        }
+function getPaymentStatusText(status) {
+    switch (status.trim()) {
+        case '결제완료' :
+            return '결제완료';
+        case '결제취소' :
+            return '결제취소';
+        default:
+            return '';
+    }
+}
 
 // 상태에 따른 CSS 클래스를 반환하는 함수 추가
-        function getPaymentStatusClass(status) {
-            switch (status.trim()) {
-                case '결제완료' :
-                    return 'payment-complete';
-                case '결제취소' :
-                    return 'payment-cancel';
-                default:
-                    return '';
-            }
-        }
+function getPaymentStatusClass(status) {
+    switch (status.trim()) {
+        case '결제완료' :
+            return 'payment-complete';
+        case '결제취소' :
+            return 'payment-cancel';
+        default:
+            return '';
+    }
+}
 
 // 개인 정보 조회 및 수정
 document.addEventListener('DOMContentLoaded', function () {
@@ -544,26 +532,26 @@ document.addEventListener('DOMContentLoaded', function () {
                                 newPassword: newPassword,
                             };
 
-                                fetch(`/mypage/business/update/${userId}`, {
-                                    method: "POST",
-                                    headers: {
-                                        "Content-Type": "application/json"
-                                    },
-                                    body: JSON.stringify(formData)
-                                })
-                                    .then(response => response.json())
-                                    .then(data => {
-                                        console.log("Success:", data);
-                                        alert(data.message || "프로필이 성공적으로 업데이트되었습니다.");
+                            fetch(`/mypage/business/update/${userId}`, {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json"
+                                },
+                                body: JSON.stringify(formData)
+                            })
+                                .then(response => response.json())
+                                .then(data => {
+                                    console.log("Success:", data);
+                                    alert(data.message || "프로필이 성공적으로 업데이트되었습니다.");
 
-                                        // 모달 숨기기
-                                        profileUpdateModal.classList.add('hidden');
-                                        profileUpdateModal.style.display = 'none';
-                                    })
-                                    .catch(error => {
-                                        console.error("Error:", error);
-                                        alert("프로필 업데이트 중 오류가 발생했습니다.");
-                                    });
+                                    // 모달 숨기기
+                                    profileUpdateModal.classList.add('hidden');
+                                    profileUpdateModal.style.display = 'none';
+                                })
+                                .catch(error => {
+                                    console.error("Error:", error);
+                                    alert("프로필 업데이트 중 오류가 발생했습니다.");
+                                });
                         });
                     } else {
                         console.error("모달 요소를 찾을 수 없습니다.");
