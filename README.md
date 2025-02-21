@@ -1,6 +1,7 @@
 ﻿# 🛫 Mytrip
 
 ### 🛠 Skills
+<div align=center>
 <!-- DevOps -->
 <img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white">
 <img src="https://img.shields.io/badge/notion-000000?style=for-the-badge&logo=notion&logoColor=white">
@@ -32,6 +33,7 @@
 <!-- Deploy -->
 <img src="https://img.shields.io/badge/amazon ec2-FF9900?style=for-the-badge&logo=amazonec2&logoColor=white">
 <img src="https://img.shields.io/badge/amazon rds-527FFF?style=for-the-badge&logo=amazonrds&logoColor=white">
+</div>
 
 <hr/>
 
