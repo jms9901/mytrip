@@ -1,9 +1,6 @@
-﻿# Mytrip
+﻿# 🛫 Mytrip
 
-### Skills
-<div align=center><h1>📚 STACKS</h1></div>
-
-<div align=center> 
+### ⚙ Skills
   <!-- DevOps -->
   <img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white">
   <img src="https://img.shields.io/badge/notion-000000?style=for-the-badge&logo=notion&logoColor=white">
@@ -39,8 +36,8 @@
   <img src="https://img.shields.io/badge/amazon ec2-FF9900?style=for-the-badge&logo=amazonec2&logoColor=white">
   <img src="https://img.shields.io/badge/amazon rds-527FFF?style=for-the-badge&logo=amazonrds&logoColor=white">
   <br>
-</div>
 
+<hr/>
 
 ### 커밋명령어
     - feat : 새로운 기능 추가
