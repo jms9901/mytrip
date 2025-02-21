@@ -45,7 +45,7 @@
 <img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white">
 <img src="https://img.shields.io/badge/mybatis-ED8B00?style=for-the-badge&logo=mybatis&logoColor=white">
 <img src="https://img.shields.io/badge/web socket-02569B?style=for-the-badge&logo=websocket&logoColor=white">
-<img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logoColor=white">
+<img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=java&logoColor=white">
 <img src="https://img.shields.io/badge/lombok-BC0227?style=for-the-badge&logo=lombok&logoColor=white">
 
 <!-- Deploy -->
